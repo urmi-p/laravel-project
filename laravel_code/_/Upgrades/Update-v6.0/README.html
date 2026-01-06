@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v6.0</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v6.0</h1>
+              <p class="lead">Updated:  25, May 2025</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="w-100 d-block text-center">
+            <a href="https://sponzyscript.com/changelog/" target="_blank">
+              <img class="img-fluid mb-5 rounded" src="../assets/images/changelog.png">
+            </a>
+          </div>
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 5.9</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Login as Admin</li>
+  
+              <li>Copy the file <code><strong>config > app.php</strong></code> from the folder <code><strong>Script</strong></code> to your current site</li>
+              <li>Copy the file <code><strong>bootstrap > cache > packages.php</strong></code> from the folder <strong><code>Script</code></strong> to your current site</li>
+  
+              <li>Copy the following folder from the folder <strong><code>Script</code></strong> to your current site:</li>
+               <ul>
+                 <li><strong>vendor</strong> (Full folder)</li>
+               </ul>
+               <br />
+  
+               <li>Unzip the file <code><strong>v6.0.zip</strong></code> and enter at URL <code><strong>https://yoursite.com/v6.0/</strong></code> or if you have the script in subdirectory (subdomain) <code><strong>https://yoursite.com/test/v6.0/</strong></code></li>
+               <div class="alert alert-sm alert-warning" role="alert">
+                 <i class="fas fa-exclamation-triangle"></i>
+                 <strong>IMPORTANT:</strong>
+                 You must be logged in as Admin
+               </div>
+               <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+             <br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <strong><code>lang / xx / general.php</code></strong></li>
+<pre><code class="language-php">// Version 6.0
+'delete_old_messages' => 'Delete old messages older than 6 months via Cron Job',
+'service_fee' => 'Service fee',
+'new_transaction_from' => 'New Transaction from @:user',// Not remove :user
+'info_reject' => 'Please write the reason for the rejection.',
+'withdrawal_reject' => 'Your withdrawal request could not be processed',
+'theme_color_pwa' => 'Theme Color PWA',
+'maintenance_mode_alert' => 'IMPORTANT: Close other windows on your website before activating maintenance mode.',
+'alert_maintenance_mode' => 'Important: At the time of activation only have one tab of your website open.',
+'force_https' => 'Force HTTPS',
+'custom_profit_referral' => 'Custom referral profit percentage',
+'copy' => 'Copy',
+'copied' => 'Copied!',
+'command' => 'Command',
+'command_only_cpanel' => 'Command only for cPanel',
+'only_super_admin_command' => 'Only the Super Admin can see the command',
+'account_verification_automatically' => 'Your account will be verified automatically.',
+'create_reel' => 'Create a Reel',
+'create_reel_subtitle' => 'Create a reel and interact with your subscribers.',
+'video_calls' => 'Video Calls',
+'video_call_max_price' => 'Maximum price of video call',
+'video_call_min_price' => 'Minimum price of video call',
+'video_call_max_duration' => 'Maximum duration of video call',
+'video_call_settings' => 'Video Call Settings',
+'subtitle_video_call_settings' => 'Set the price and duration of video calls',
+'price_video_call' => 'Price of video call',
+'unanswered' => 'Unanswered',
+'new_video_call' => 'New video call',
+'is_calling' => 'is calling you...',
+'per_minutes' => 'per :minutes minutes', // Important: Not remove :minutes
+'video_call_notice' => 'If you accept the call, the amount will be deducted from your Wallet.',
+'calling' => 'Calling',
+'please_wait_answer' => 'Please wait for the response.',
+'rejected_video_call' => 'Video call rejected',
+'rejected_video_call_info' => 'Your video call has been rejected',
+'video_call_unanswered' => 'Unanswered video call',
+'video_call_unanswered_info' => 'Your video call has not been answered',
+'video_call_not_found' => 'Video call not found',
+'m' => 'm',// Minutes abbreviation
+'connecting' => 'Connecting...',
+'error_twofa_too_many_attempts' => 'Too many attempts. Please try again later.',
+'allow_reels' => 'Allow Reels',
+'please_select_video' => 'Please select a video',
+'available_only_for_subscribers' => ' Available only for subscribers',
+'available_everyone' => 'Available for everyone',
+'reel_successfully_posted' => 'Your reel is now available!',
+'go_to_my_reels' => 'Go to my reels',
+'reels' => 'Reels',
+'reel' => 'Reel',
+'my_reels' => 'My Reels',
+'my_reels_subtitle' => 'All the reels you\'ve created',
+'error_video_encoding_reel' => 'There was an error encoding the video of your reel',
+'not_reels_created' => 'You have not created any reel so far',
+'stripe_connect_setup_incomplete' => 'Your Stripe Connect account is not fully set up. Please complete the setup process.',
+'error_proportion_video_reel' => 'The video must be in vertical format (9:16 aspect ratio recommended)',
+'liked_your_reel' => 'liked your reel',
+'go_to_reel' => 'Go to reel',
+'commented_your_reel' => 'commented your reel',
+'has_mentioned_you_reel' => 'has mentioned you in a reel',
+'liked_your_comment_reel' => 'liked your comment in a reel',
+'hide_replies' => 'Hide replies',
+'resource_not_found' => 'Resource not found',
+'someone_commented_reel' => 'Someone commented my reel',
+'someone_liked_reel' => 'Someone liked my reel',
+'edit_reel' => 'Edit reel',</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+<i class="fas fa-info-circle mr-1"></i>
+If you have multiple languages on your site you should add to each file.
+</h6>
+<hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong><a href="mailto:support@miguelvasquez.net">support@miguelvasquez.net</a></strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb" class="mr-1"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb" class="mr-1"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

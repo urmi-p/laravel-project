@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v1.8</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v1.8</h1>
+              <p class="lead">Updated:  20, January 2020</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Login and register, multiple reCAPTCHA error</li>
+            <li>Birthdate</li>
+            <li>Navbar expand, not show in Table</li>
+            <li>Safari avatar overlay</li>
+            <li>Color text on footer-tiny and dropdown</li>
+            <li>Favicom on imvoice</li>
+            <li>Removed cal_days_in_month()</li>
+
+            <li class="title-list">New</li>
+            <li>Wallet System</li>
+            <li>Free subscriptions</li>
+            <li>Added Bank transfer in Wallet</li>
+            <li>The user can subscribe or send tips with the balance of their wallet</li>
+            <li>ZIP Upload in posts</li>
+            <li>ZIP Upload in messages</li>
+            <li>Embed Youtube and Vimeo videos</li>
+            <li>Tips in messages</li>
+            <li>Show tip option if the post is free or the user is subscribed</li>
+            <li>Disable account verification requests from admin panel</li>
+            <li>Added watermark with creator url in images</li>
+            <li>Media type in unlock post</li>
+            <li>Added Blog and posts in sitemaps</li>
+            <li>Creator name is now displayed instead of username in account verification in admin panel</li>
+            <li>Added type of transaction in the admin panel (Tip or Subscription)</li>
+            <li>Subscription page, set price and choose free subscription or not.</li>
+            <li>Collapse categories on category and creator page</li>
+            <li>Hide / Show Admin Profile</li>
+            <li>Cancel subscriptions from profile</li>
+            <li>Earnings simulator on homepage</li>
+            <li>Ajax edit post</li>
+            <li>Ajax edit my page</li>
+            <li>Hidden payment methods from non-creators</li>
+            <li>Disable right click, drag and drop on images</li>
+            <li>Image protection, the image will not be accessible from another location if it is not subscribed.</li>
+            <li>Subscription button removed if the creator has no posts</li>
+            <li>Autocomplete when searching for a creator</li>
+            <li>Changed cards "explores creators" with auto reload in ajax</li>
+            <li>Added EXIF validation in installer</li>
+            <li>From the admin panel you can enable / disable (Show earnings simulator on the homepage, Receive verification requests, Hide Admin profile, Watermark on images)</li>
+      		</ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 1.6</em></strong>, or <strong><em>version 1.7</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <li>Upload the file <code>v1.8.zip</code> found inside the <code>Update-v1.8</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v1.8.zip</code> and enter at URL <code>https://yoursite.com/v1.8/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v1.8/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add this new text string in your file <code>resources / lang / en / general.php</code></li>
+             <pre><code class="language-php">// Version 1.8
+'receive_verification_requests' => 'Receive verification requests',
+'info_receive_verification_requests' => 'Sorry, but we are not receiving any new verification requests at this time',
+'photo' => 'Photo',
+'free_subscription' => 'Free Subscription',
+'info_subscription' => 'Set up your subscription',
+'user_gain' => 'You will receive :percentage% for each transaction (Does not include payment processor fees)', // Not remove :percentage
+'how_much_earn' => 'How much do you earn?',
+'valid_formats' => 'Valid formats:',
+'login_continue' => 'Login to continue',
+'upload_file_zip' => 'Upload File ZIP',
+'formats_available_upload_file' => 'Invalid format, only ZIP files are allowed',
+'file' => 'File',
+'files' => 'Files',
+'cancel_subscription_any_time' => 'Cancel your subscription at any time',
+'hide_admin_profile' => 'Hide Admin profile',
+'watermark_on_images' => 'Watermark on images',
+'earnings_simulator' => 'Creators Earnings Simulator',
+'earnings_simulator_subtitle' => 'Calculate how much you can earn based on the number of followers and their rate',
+'number_followers' => 'Number of followers?',
+'monthly_subscription_price' => 'Monthly subscription price?',
+'earnings_simulator_subtitle_2' => 'You could earn an estimated',
+'per_month' => 'per month',
+'earnings_simulator_subtitle_3' => 'Based on an estimate of 5% of your followers who subscribe (Does not include payment processor fees)',
+'include_platform_fee' => 'Includes the :percentage% platform fee', // Not remove :percentage
+'show_earnings_simulator' => 'Show earnings simulator on the homepage',
+'subscribe_for_free' => 'Subscribe for Free',
+'unsubscribe' => 'Unsubscribe',
+'subscribe_free_content' => 'Subscribe for free to the content of',
+'not_applicable' => 'Not applicable',
+'free' => 'Free',
+'please_write_something_2' => 'Please write something else besides the URL',
+'wallet' => 'Wallet',
+'wallet_desc' => 'Add funds to your wallet to use for subscriptions, tips, and more',
+'add_funds' => 'Add funds',
+'funds_available' => 'Funds available in your account',
+'transaction_fee' => 'Transaction Fee',
+'min' => 'Min.',
+'min_deposits_amount' => 'Minimum amount for Deposits',
+'max_deposits_amount' => 'Maximum amount for Deposits',
+'deposits' => 'Deposits',
+'history_deposits' => 'History of funds added',
+'available_balance' => 'Available balance',
+'not_enough_funds' => 'Not enough funds',
+'recharge' => 'Recharge',
+'bank_transfer' => 'Bank transfer',
+'make_payment_bank' => 'Make your payment directly to our bank account',
+'info_bank_transfer' => 'Upload a screenshot of the transfer, make sure the data is visible',
+'no_results' => 'No hay resultados',
+'pending_deposit' => 'We will contact you through your email when your transfer is verified as soon as possible.',
+'approve' => 'Approve',
+'transfer_verified' => 'Your payment has been verified!',
+'info_transfer_verified' => 'Your payment for :amount was verified successfully, you can now use your funds',  // Not remove :amount
+'transfer_not_verified' => 'Your payment of could not be verified',
+'info_transfer_not_verified' => 'We could not verify your payment for :amount, you can contact us through the following link', // Not remove :amount</code></pre>
+
+<li>Add this new text string in your file <code>resources / lang / es / general.php</code></li>
+<pre><code class="language-php">// Version 1.8
+'receive_verification_requests' => 'Recibir solicitudes de verificación',
+'info_receive_verification_requests' => 'Lo sentimos, pero en este momento no estamos recibiendo nuevas solicitudes de verificación.',
+'photo' => 'Foto',
+'free_subscription' => 'Suscripción Gratuita',
+'info_subscription' => 'Configura tu suscripción',
+'user_gain' => 'Usted recibirá :percentage% por cada transacción (No incluye las tarifas del procesador de pago)', // Not remove :percentage
+'how_much_earn' => '¿Cúanto ganas?',
+'valid_formats' => 'Formatos válidos:',
+'login_continue' => 'Inicia sesión para continuar',
+'upload_file_zip' => 'Subir Archivo ZIP',
+'formats_available_upload_file' => 'Formato no válido, solo se permiten archivos ZIP',
+'download' => 'Descargar',
+'file' => 'Archivo',
+'files' => 'Archivos',
+'cancel_subscription_any_time' => 'Cancela tu suscripción en cualquier momento',
+'hide_admin_profile' => 'Ocultar perfil del Administrador',
+'watermark_on_images' => 'Marca de agua en las imágenes',
+'earnings_simulator' => 'Simulador de ganancias de creadores',
+'earnings_simulator_subtitle' => 'Calcule cúanto puede ganar según el número de seguidores y su tarifa',
+'number_followers' => '¿Número de seguidores?',
+'monthly_subscription_price' => '¿Precio de suscripción mensual?',
+'earnings_simulator_subtitle_2' => 'Podrías ganar un estimado de',
+'per_month' => 'por mes',
+'earnings_simulator_subtitle_3' => 'Basado en una estimación del 5% de sus seguidores que se suscriban (No incluye las tarifas del procesador de pago)',
+'include_platform_fee' => 'Incluye la tarifa de la plataforma del :percentage%', // Not remove :percentage
+'show_earnings_simulator' => 'Mostrar el simulador de ganancias en la página de inicio',
+'subscribe_for_free' => 'Suscríbete Gratis',
+'unsubscribe' => 'Cancelar suscripción',
+'subscribe_free_content' => 'Suscríbete gratis al contenido de',
+'free' => 'Gratis',
+'please_write_something_2' => 'Por favor escribe algo más aparte de la URL',
+'wallet' => 'Billetera',
+'wallet_desc' => 'Agregue fondos a su billetera para usar en suscripciones, propinas, entre otros',
+'add_funds' => 'Agregar fondos',
+'funds_available' => 'Fondos disponibles en tu cuenta',
+'transaction_fee' => 'Tarifa de Transacción',
+'min' => 'Min.',
+'min_deposits_amount' => 'Monto mínimo para Depositos',
+'max_deposits_amount' => 'Monto máximo para Depositos',
+'deposits' => 'Depositos',
+'history_deposits' => 'Historial de fondos agregados',
+'available_balance' => 'Saldo disponible',
+'not_enough_funds' => 'No hay suficientes fondos',
+'recharge' => 'Recargar',
+'bank_transfer' => 'Transferencia bancaria',
+'make_payment_bank' => 'Realice su pago directamente a nuestra cuenta bancaria',
+'info_bank_transfer' => 'Sube una captura de pantalla de la transferencia, asegúrese de que los datos estén visibles',
+'no_results' => 'No hay resultados',
+'pending_deposit' => 'Nos comunicaremos con usted a través de su correo cuando su transferencia sea verificada a la brevedad posible.',
+'approve' => 'Aprobar',
+'transfer_verified' => '¡Tu pago ha sido verificado!',
+'info_transfer_verified' => 'Tu pago por :amount fue verificado con éxito, ya puedes usar tus fondos', // Not remove :amount
+'transfer_not_verified' => 'Tu pago no pudo ser verificado',
+'info_transfer_not_verified' => 'No pudimos verificar tu pago por :amount, puedes contactarnos a través del siguiente enlace', // Not remove :amount
+</code></pre>
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  Remember to clear your browser's cache to see the changes.
+</h6>
+
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

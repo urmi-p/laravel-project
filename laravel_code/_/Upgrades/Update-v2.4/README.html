@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v2.4</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v2.4</h1>
+              <p class="lead">Updated:  29, September 2021</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Resend email from Admin</li>
+            <li>Align center text on cards</li>
+            <li>Pop-out suscriptions show wrong percentage custom</li>
+            <li>User country in member verification (Panel Admin)</li>
+            <li>Dates in transactions</li>
+            <li>Hide country in box cards</li>
+            <li>Timestamp error on transactions, deposits, blog and reports</li>
+            <li>Update story non-creators</li>
+            <li>Border cards on explore</li>
+            <li>Subscription paid, showed post blocked (PPV)</li>
+            <li>Back link on chat</li>
+            <li>Percentage subscription in Wallet</li>
+            <li>Download ZIP on Pay Per View</li>
+            <li>Pagination in messages (inbox)</li>
+            <li>Non well formed numeric on payments</li>
+            <li>Remove Postmark</li>
+            <li>Rounded chat button</li>
+            <li>Tips on Message chat with PayPal</li>
+            <li>Pay Per View on Message chat with PayPal</li>
+            <li>Delete cover default</li>
+            <li>Download ZIP file (creator)</li>
+            <li>Size box on creators cards</li>
+            <li>Hide text in inbox message if it is PPV</li>
+            <li>Status subscription incorrect</li>
+            <li>PayPal HTTP interruption modification of amounts</li>
+            <li>Notifications PPV</li>
+            <li>Creating a blog post</li>
+            <li>Last messages (inbox)</li>
+            <li>Deposits from a deleted user</li>
+            <li>Removed "Be a creator" link if verification requests are disabled</li>
+            <li>Language predefined by the user in the emails</li>
+            <li>Static scrolling elements</li>
+            <li>Filtering Featured Creators</li>
+
+
+            <li class="title-list">New</li>
+            <li>Multiple file uploads in one post</li>
+            <li>Multiple file uploads in one message</li>
+            <li>Redesigned message section</li>
+            <li>Creator can send message to all its subscribers at the same time (Mass Messages)</li>
+            <li>Coinpayments payment gateway</li>
+            <li>Premium plugin upload</li>
+            <li>Lightbox GLightbox</li>
+            <li>FFMPEG support to create thumbnails for the videos.</li>
+            <li>Admin can choose the wallet format (Real Money, Credits, Points or Tokens)</li>
+            <li>Admin can choose which payment gateways to use in subscriptions</li>
+            <li>Cron Jobs to delete files and rebill subscriptions that were paid with the wallet</li>
+            <li>Protection of videos and audios, if they share the URL the other person will not be able to see it if they are not subscribed</li>
+            <li>Blocked posts now show an image, or poster of a blurred video</li>
+            <li>Homepage login 3 columns</li>
+            <li>Explore creators section 2 columns</li>
+            <li>Infinite scroll in messages (Inbox)</li>
+            <li>Creator can set more than one category</li>
+            <li>Full url in profile</li>
+            <li>Members section in Admin Panel can be filtered by ID, Creators and Pending Email Verification</li>
+            <li>Explore section, where all free publications are displayed.</li>
+            <li>Bookmarks section changed</li>
+            <li>The admin can create Announcements that will be shown in Homepage login, and can decide who to see: All or Only creators</li>
+            <li>Hide active status (Online)</li>
+            <li>User can set their date of birth only once</li>
+            <li>User age in profile</li>
+            <li>Admin can add balance to user wallet from panel admin</li>
+            <li>Forced download to PDF in user verification</li>
+            <li>Popular and most active filters in Explore Creators</li>
+            <li>Subscription price in cards in Explore creators</li>
+            <li>Admin can set photo limits in a post or message, number of tags that the creator can choose</li>
+            <li>Admin will receive an email when there is a new account verification (creators), pending deposit or new withdrawal</li>
+            <li>Creator will receive an email when you receive a tip or PPV</li>
+            <li>The user will receive an email when a creator who is subscribed creates a post</li>
+            <li>Send email new subscriber to creator in free subscriptions</li>
+            <li>Name of creator in transactions (panel admin)</li>
+            <li>Disable banner cookie policy</li>
+            <li>Link to send a message to a subscriber from the My Subscribers section</li>
+            <li>Increased size cover</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 2.3</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the folder <code>vendor</code>, the files <code>composer.json</code> and <code>composer.lock</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+              or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server.).</li>
+            <br />
+
+            <li>Upload the file <code>v2.4.zip</code> found inside the <code>Update-v2.4</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v2.4.zip</code> and enter at URL <code>https://yoursite.com/v2.4/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v2.4/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">//----- Version 2.4
+'creator' => 'Creator',
+'birthdate_changed_info' => 'Can be edited only once',
+'disable_banner_cookies' => 'Disable cookie policy banner',
+'has_created_new_post' => 'has created a new post',
+'new_post_creators_subscribed' => 'New post of the creators I\'ve subscribed',
+'more_active' => 'More active',
+'more_active_creators' => 'Most active creators',
+'someone_bought_my_content' => 'Someone has bought my content (Post, Message)',
+'sent_you_a_tip_for' => 'sent you a tip for',
+'go_payments_received' => 'Go to payments received',
+'deposit_pending' => 'Deposit pending',
+'view_details_panel_admin' => 'View details in Panel Admin',
+'verification_pending' => 'Verification pending',
+'withdrawal_request' => 'Withdrawal request',
+'note_disable_subs_payment' => 'Note: if you disable, this payment gateway will not be available for subscriptions, tips or Pay Per View, only to recharge the wallet.',
+'active_status_online' => 'Active Status (Online)',
+'wallet_format' => 'Wallet format',
+'credits' => 'Credits',
+'points' => 'Points',
+'tokens' => 'Tokens',
+'real_money' => 'Real money',
+'equivalent_money_format' => '1 credit, point or token equals',
+'credit_equivalent_money' => '1 credit equals',
+'point_equivalent_money' => '1 point equals',
+'token_equivalent_money' => '1 token equals',
+'media_type_upload' => 'Photo, Video or Audio MP3',
+'years' => 'years',
+'price_per_month' => ':price/mo', // Not replace :price
+'maximum_files_post' => 'Maximum files in a Post',
+'maximum_files_msg' => 'Maximum files in a Message',
+'no_binary' => 'Non-binary',
+'ffmpeg_path' => 'FFMPEG path',
+'to_all_my_subscribers' => 'All my subscribers',
+'new_message_all_subscribers' => 'New message all subscribers',
+'great' => 'Great!',
+'msg_success_sent_all_subscribers' => 'The message was successfully sent to all your subscribers',
+'automatically_renewed_wallet' => '* It will be automatically renewed from your wallet balance.',
+'payment_process_wallet' => 'Your payment has been received, if you cannot see it in your account it is being processed.',
+'maximum_selected_categories' => 'You can only select :limit categories', // No remove :limit
+'searching' => 'Searching...',
+'limit_categories' => 'Limit of categories that the user can select',
+'announcements' => 'Announcements',
+'announcement_content' => 'Announcements Content',
+'announcement_info' => 'Accept text, html or javascript. Leave it blank to disable it. (Important: Make sure to close the HTML tags correctly)',
+'show_announcement_to' => 'Show announcement to',
+'all_users' => 'All users',
+'only_creators' => 'Only Creators',
+'no_free_posts' => 'No free posts yet',
+'minimum_photo_width' => 'Minimum photo width',</code></pre>
+
+
+
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+
+<div class="alert alert-sm alert-danger" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+  <strong>IMPORTANT:</strong>
+  The last step is to create a Cron Job, read the documentation.
+</div>
+
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

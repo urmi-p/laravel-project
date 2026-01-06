@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v2.0</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v2.0</h1>
+              <p class="lead">Updated:  14, February 2021</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Removed line break on posts</li>
+            <li>Verify mail on registration message (Modal)</li>
+            <li>Editing Pinterest</li>
+            <li>User report</li>
+            <li>User URL edited in real time when username is changed in Edit my page</li>
+            <li>Deleting subscriptions when Admin deletes user</li>
+            <li>Hidden users that I have no subscription price, in Explore creators</li>
+            <li>Fixed bug in active subscriptions</li>
+            <li>Cancel subscriptions in Stripe</li>
+            <li>Subscription button missing if price is 0.00 with free subscription</li>
+            <li>Removed subscribe button in posts blocked if the creator has not set a price or has a free subscription.</li>
+            <li>Name is displayed instead of username in reports</li>
+            <li>Verification request when a user is deleted</li>
+            <li>Free subscription canceled in Admin Panel, when active.</li>
+            <li>Decimal separator in earnings simulator, now use the one set in the Admin Panel</li>
+            <li>Conflict in tip buttons in the user profile</li>
+            <li>Removing transactions (Canceling)</li>
+            <li>Removing transactions (Wallet Deposits) did not reimburse the user.</li>
+            <li>Creating Plan in Stripe</li>
+            <li>Block filling of paragraphs in the index</li>
+            <li>Removed alert must set price in session not started</li>
+            <li>Changed cancel text in Transactions</li>
+            <li>Logo and Login button aligned in the navigation bar.</li>
+
+            <li class="title-list">New</li>
+            <li>CCBill Payment Gateway</li>
+            <li>Paystack Payment Gateway</li>
+            <li>PayPal recurrent</li>
+            <li>Progressive Web Apps (PWA)</li>
+            <li>Menu style Onlyfans on mobile devices</li>
+            <li>Backblaze B2 Cloud Storage</li>
+            <li>Vultr Cloud Object Storage</li>
+            <li>Improved account verification, now users must complete their profile to submit a request</li>
+            <li>Users must submit form W-9 in account verification if they are US citizens</li>
+            <li>Improved the quality of the images in the posts</li>
+            <li>Custom CSS and JS on Panel Admin</li>
+            <li>Adult content alert (Admin can either enable or disable)</li>
+            <li>Loading bar on mobile devices</li>
+            <li>Redirection to the user's profile when registering</li>
+            <li>Added revenue of the day, of the week and of the month in the creator's dashboard, in addition to the percentage compared to the day, the week or the previous month</li>
+            <li>The number of pending deposits is displayed in the admin panel</li>
+            <li>The total likes of all the posts in the profile are displayed</li>
+            <li>Ajax Load chat</li>
+            <li>Gender and date of birth of the user is displayed in the admin panel</li>
+            <li>Maximum amount in wallet</li>
+            <li>Enable or disable errors from admin panel</li>
+            <li>Alert creator to set a price or free subscription to activate subscriptions</li>
+            <li>Show ZIP file size in blocked post</li>
+            <li>Section "My Cards"</li>
+            <li>Default color in earnings simulator buttons.</li>
+            <li>Increased load limit to 5GB in admin panel</li>
+            <li>Now if the user cancels their subscription, they will have access until its expiration date (except free subscriptions)</li>
+            <li>Updated to Laravel 7.30.4</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 1.9</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <li>Upload the folder <code>vendor</code>, the files <code>composer.json</code> and <code>composer.lock</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+              or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server.).</li>
+            <br />
+
+            <li>Upload the file <code>v2.0.zip</code> found inside the <code>Update-v2.0</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v2.0.zip</code> and enter at URL <code>https://yoursite.com/v2.0/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v2.0/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">//----- Version 2.0
+'show_errors' => 'Show Errors',
+'info_show_errors' => 'Recommended only in local or test mode',
+'alert_not_subscription' => 'You must set a price or enable Free Subscription to activate your subscription',
+'activate' => 'Activate',
+'my_cards' => 'My cards',
+'info_my_cards' => 'Cards available in your account',
+'add' => 'Add',
+'expiry' => 'Expiry',
+'powered_by' => 'Powered by',
+'notice_charge_to_card' => 'We will make a one-time charge of :amount when adding your payment card', // Not remove :amount
+'redirected_to_paypal_website' => 'You will be redirected to the PayPal website',
+'subscription_expire' => 'Your subscription will be active until',
+'subscribed_until' => 'Subscribed until',
+'cancel_subscription_paypal' => 'Cancel your subscription from your PayPal account, it will be active until',
+'confirm_cancel_payment' => 'Are you sure you want to cancel this transaction?',
+'test_smtp' => 'If you are using SMTP, do a test on the following link to verify that your data is correct.',
+'alert_paypal_delay' => '(Important: PayPal may have a delay, reload the page or wait a minute, otherwise, contact us)',
+'error_currency' => 'Currency not supported (Only NGN, USD, ZAR or GHS allowed)',
+'custom_css_js' => 'Custom CSS/JS',
+'custom_css' => 'Custom CSS (without &lt;style&gt; tags)',
+'custom_js' => 'Custom JavaScript (without &lt;script&gt; tags)',
+'show_alert_adult' => 'Show alert that the site has adult content',
+'alert_content_adult' => 'Attention! This site contains adult content, by accessing you acknowledge that you are 18 years of age.',
+'i_am_age' => 'I am of age',
+'leave' => 'Leave',
+'pwa_short_name' => 'App short name (Ex: Sponzy)',
+'alert_pwa_https' => 'You must use HTTPS (SSL) for PWA to work.',
+'error_internet_disconnected_pwa' => 'You are currently not connected to any networks.',
+'error_internet_disconnected_pwa_2' => 'Check your connection and try again',
+'complete_profile_alert' => 'To submit a verification request you must complete your profile.',
+'set_avatar' => 'Upload a profile picture',
+'set_cover' => 'Upload a cover image',
+'set_country' => 'Select your country of origin',
+'set_birthdate' => 'Set your date of birth',
+'form_w9' => 'Form W-9',
+'not_applicable' => 'Not applicable',
+'form_w9_required' => 'As a US citizen, you must submit the Form W-9',
+'upload_form_w9' => 'Upload Form W-9',
+'formats_available_verification_form_w9' => 'Invalid format, only :formats are allowed.', // Not remove/edit :formats</code></pre>
+
+<li><code>resources / lang / xx / validation.php</code></li>
+
+<pre><code class="language-php">//===== v2.0
+'BACKBLAZE_ACCOUNT_ID' => 'Backblaze Account ID', // Not necessary edit
+'BACKBLAZE_APP_KEY' => 'Backblaze Master Application Key', // Not necessary edit
+'BACKBLAZE_BUCKET' => 'Backblaze Bucket Name', // Not necessary edit
+'BACKBLAZE_BUCKET_ID' => 'Backblaze Bucket Endpoint', // Not necessary edit
+
+'VULTR_ACCESS_KEY' => 'Vultr Key', // Not necessary edit
+'VULTR_SECRET_KEY' => 'Vultr Secret', // Not necessary edit
+'VULTR_REGION' => 'Vultr Region', // Not necessary edit
+'VULTR_BUCKET' => 'Vultr Bucket', // Not necessary edit</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v3.4</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v3.4</h1>
+              <p class="lead">Updated:  17, March 2022</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Uploading encoded video on Amazon S3</li>
+            <li>Add funds in Coinpayments</li>
+            <li>Finished in Free Live</li>
+            <li>Apply fees on Pay Per View (PPV)</li>
+            <li>Overflow tables on payments</li>
+            <li>Stripe billing for old subscriptions</li>
+            <li>Save address after send verification</li>
+            <li>CCBill subscriptions</li>
+            <li>Paystack subscriptions</li>
+            <li>Invoices subscriptions for week, 3, 6, 12 months</li>
+            <li>Notifications duplicate on rebill subscriptions PayPal</li>
+            <li>Error when subscription deleted on My subscriptions section</li>
+            <li>Date format on Edit my page</li>
+            <li>Static function on Invoices</li>
+
+            <li class="title-list">New</li>
+            <li>Add Shop</li>
+            <li>Creators can sell Digital content for example: Downloadable products, image packages, videos, etc.</li>
+            <li>Creators can sell Custom content for example: Custom videos, video calls, greeting messages, etc.</li>
+            <li>Add Mercadopago payment gateway</li>
+            <li>Add Flutterwave payment gateway</li>
+            <li>CDN DigitalOcean</li>
+            <li>Pages private</li>
+            <li>Admin can create pages only visible to creators or registered members</li>
+            <li>Referrals in Admin Panel</li>
+            <li>Resolution of Live Streaming</li>
+            <li>Removed section of ZIP files if you don't have any files</li>
+            <li>Hashtag support</li>
+            <li>Stripe Checkout on Add funds (Wallet)</li>
+            <li>Updated to Laravel 8.83.4</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 3.3</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the file <code>v3.4.zip</code> found inside the <code>Update-v3.4</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v3.4.zip</code> and enter at URL <code>https://yoursite.com/v3.4/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v3.4/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+
+             <li>Upload the folder <code>vendor</code>, the files <code>composer.json</code> and <code>composer.lock</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+               or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server.).</li>
+             <br />
+
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               If you are using Stripe you must add the event <strong>checkout.session.completed</strong>
+             </div>
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+<pre><code class="language-php">// Version 3.4
+'access' => 'Access',
+'who_can_access_this_page' => 'Who can access this page?',
+'referred_by' => 'Referred by',
+'shop' => 'Shop',
+'explore_products_creators' => 'Explore products from our creators',
+'type_sale' => 'Type of sale',
+'digital_products' => 'Digital products',
+'custom_content' => 'Custom content',
+'minimum_price_of_sale' => 'Minimum price of sale',
+'maximum_price_of_sale' => 'Maximum price of sale',
+'add_product' => 'Add product',
+'add_custom_content' => 'Add custom content',
+'image_preview_required' => 'Image preview required',
+'file_required' => 'File required',
+'buy_now' => 'Buy Now',
+'purchase' => 'Purchase',
+'purchases' => 'Purchases',
+'purchase_item' => 'Purchase of item',
+'file_to_downloaded' => '* File to be downloaded',
+'download' => 'Download',
+'already_purchased_item' => 'You have already purchased this item',
+'has_bought_your_item' => 'has bought your item',
+'purchased_items' => 'Purchased Items',
+'sales' => 'Sales',
+'sales_your_products' => 'Sales of your products',
+'item' => 'Item',
+'purchased_items_subtitle' => 'Items you have bought in the store',
+'products' => 'Products',
+'other_items_of' => 'Other Items of',
+'oldest' => 'Oldest',
+'lowest_price' => 'Lowest price',
+'highest_price' => 'Highest price',
+'error_type_sale' => 'Please select a type of sale',
+'choose_type_sale' => 'Choose the type of sale',
+'digital_products_desc' => 'Downloadable products, image packages, videos, etc.',
+'custom_content_desc' => 'Custom videos, video calls, greeting messages, etc.',
+'delivery_time' => 'Delivery time',
+'delivery_status' => 'Delivery status',
+'delivered' => 'Delivered',
+'description_custom_content' => 'Details for custom content: Name, for whom, the occasion, details of the occasion.',
+'details_custom_content' => 'Details for custom content',
+'purchase_processed_shortly' => 'Your purchase will be processed shortly, you will be notified by email.',
+'digital_download' => 'Digital Download',
+'custom_content' => 'Custom content',
+'see_details' => 'See details',
+'mark_as_delivered' => 'Mark as delivered',
+'buyer' => 'Buyer',
+'all_products_published' => 'All the products you have published',
+'sell_custom_content' => 'Sell custom content',</code></pre>
+
+
+
+
+             <h6 class="alert alert-sm alert-info" role="alert">
+               <i class="fas fa-info-circle"></i>
+               If you have multiple languages on your site you should add to each file.
+             </h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.4.3.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

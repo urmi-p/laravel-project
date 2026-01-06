@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v4.0</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v4.0</h1>
+              <p class="lead">Updated:  19, August 2022</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Text monthly on weekly subscriptions</li>
+            <li>Youtube videos</li>
+            <li>Country error in invoice user</li>
+            <li>Mercadopago payment processed</li>
+            <li>Layout Mail button error</li>
+            <li>Birthdate user empty</li>
+            <li>Missing currency symbol tax on pay live and purchase</li>
+            <li>Vimeo ID</li>
+            <li>Logout user pending</li>
+            <li>Link Verify missing via Email</li>
+            <li>Set language user on resend email by Admin</li>
+            <li>Report already sent on Post and user reports</li>
+            <li>Notification to users New post via email (Video Encode)</li>
+            <li>Button "Add new" showing on off-session and non-creators</li>
+            <li>Redirection from Google or external website when login</li>
+
+            <li class="title-list">New</li>
+            <li>Redesigned Panel Admin Bootstrap 5</li>
+            <li>RESTful API PayPal</li>
+            <li>Subscription cancel on PayPal</li>
+            <li>PayPal Sale Refund</li>
+            <li>Updated to Laravel v8.83.23</li>
+            <li>Updated Agora SDK v4.13</li>
+            <li>Physical products</li>
+            <li>Creator can add, Shipping Fee, Country Free Shipping, Quantity Available and Box Content of the physical product</li>
+            <li>Categories products</li>
+            <li>Admin can chat with any user through private messages</li>
+            <li>Disable Login/Register via Email</li>
+            <li>Report Item shop.</li>
+            <li>Buyer can send a report if you did not receive the product or service custom</li>
+            <li>Section Likes</li>
+            <li>Changed cents to unit (Dollars) on Payments</li>
+            <li>Share profile via QR</li>
+            <li>Admin can enable/disable share profile via QR</li>
+            <li>Download image QR</li>
+            <li>Mentions suggestions on Post create</li>
+            <li>Mobile money Flutterwave and M-pesa</li>
+            <li>Currency symbol with spaces</li>
+            <li>Type of product on cards</li>
+            <li>Disable contact form from Panel Admin</li>
+            <li>Add currency code on cents (Payments)</li>
+            <li>Removed language select on footer if exists only one.</li>
+            <li>Sorted notifications type</li>
+            <li>Admin can edit balance user.</li>
+            <li>Reddit and Spotify on Edit my page</li>
+            <li>Admin can specify payment day, for example: <em>Day 15 of Each Month</em></li>
+            <li>Admin can disable notification new post via Email</li>
+            <li>Hidden search creators from Panel Admin</li>
+            <li>Show tiny footer on Mobile</li>
+            <li>Post title, only if it is text and is blocked.</li>
+            <li>The withdrawals will be blocked 5 before their payment date to prevent the creator from eliminating it</li>
+            <li>Item Shop moderation</li>
+            <li>Increase limit post length to 50,000 characters</li>
+            <li>Percentage referrals up to 1%</li>
+            <li>Updated jQuery library</li>
+            <li>Removed fields in useless databases</li>
+            <li>Duaration video and quality on posts</li>
+            <li>Duaration video and quality on messages</li>
+            <li>Filter products shop by categories on Profile creator</li>
+            <li>Filter creators by Genders and Age</li>
+            <li>Admin can enable/disable filter creators by Genders and Age</li>
+            <li>Added Reverse identity document and Selfie Image in verifying account (creator)</li>
+            <li>Test SMTP from Panel Admin (Only if SMTP is selected)</li>
+            <li>Slogan multilanguage</li>
+            <li>Revenue percentages today, week and month in the Panel Admin</li>
+            <li>Type of post on Panel Admin (Public or Content locked)</li>
+            <li>Auto-follow Admin new registers (Only if the profile is free)</li>
+            <li>Admin can enable/disable Auto-follow Admin new registers</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 3.9</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the folder <code>vendor</code>, the files <code>composer.json</code> and <code>composer.lock</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+               or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server).</li>
+               <br />
+
+            <li>Upload the file <code>v4.0.zip</code> found inside the <code>Update-v4.0</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v4.0.zip</code> and enter at URL <code>https://yoursite.com/v4.0/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v4.0/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 4.0
+'physical_products' => 'Physical products',
+'add_physical_product' => 'Add physical product',
+'physical_products_desc' => 'T-shirts, mugs, shoes, video games, etc.',
+'country_free_shipping' => 'Country Free Shipping',
+'shipping_fee' => 'Shipping Fee',
+'shipping' => 'Shipping',
+'quantity' => 'Quantity available',
+'box_contents' => 'Box contents',
+'error_price_shipping_fee' => 'Shipping costs cannot be equal to or greater than the price of the item',
+'sold_out' => 'Sold out',
+'out_stock' => 'This item is out of stock',
+'free_shipping' => 'Free shipping',
+'phone' => 'Phone',
+'shipping_information' => 'Shipping information',
+'shop_categories' => 'Shop Categories',
+'all_categories' => 'All Categories',
+'disable_registration_login_email' => 'Disable Registration/Login via Email',
+'report_item' => 'Report item',
+'item_not_received' => 'Item not received',
+'no_likes' => 'No likes yet',
+'qr_code' => 'QR code',
+'left_with_space' => 'Left with space',
+'right_with_space' => 'Right with space',
+'disable_contact' => 'Disable section Contact us',
+'flat_rate' => 'Flat rate',
+'tips' => 'Tips',
+'mentions' => 'Mentions',
+'specific_day_payment_withdrawals' => 'Specific day payment (withdrawals)',
+'day_of_each_month' => 'Day :day of each month',// Not remove :day
+'disable_new_post_email_notification' => 'Disable new post email notification',
+'disable_creators_search' => 'Disable creators search',
+'title_post_block' => 'Set a title if the post is text only and will not be public',
+'title_post_info' => 'Maximum :numbers characters, it will be ignored if the post contains multimedia files, or is public.',// Not remove :numbers
+'in_process' => 'In process...',
+'gender_age' => 'Gender and Age',
+'filter_by_gender_age' => 'Filter by gender and age',
+'all_genders' => 'All genders',
+'min_age' => 'Min age',
+'max_age' => 'Max age',
+'info_verification_user_reverse_id' => 'Upload a photo of the back of your identity document.',
+'info_verification_user_selfie' => 'Upload a photo holding your identity document and a sign that says: ":sitename", your username and today\'s date.',// Not remove :sitename
+'verification_image_id' => 'Photo of your identity document',
+'verification_image_reverse_id' => 'Photo of the back of your identity document',
+'verification_image_selfie' => 'Photo holding your identity document',
+'testing_smtp' => 'Take an SMTP test',
+'subscriptions_the_month' => 'Subscriptions of the month',
+'browse_creators_by_gender_age' => 'Browse creators by gender and age',
+'allow_qr_code_generate' => 'Allow QR code generate',
+'auto_follow_admin' => 'Auto-follow Admin (Only if the profile is free)',</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle mr-1"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+
+<h6 class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle mr-1"></i> <strong>IMPORTANT:</strong>
+  To configure PayPal, how to set the slogan and translate the shop categories please read the documentation.
+</h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong><a href="mailto:support@miguelvasquez.net">support@miguelvasquez.net</a></strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

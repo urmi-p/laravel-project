@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v2.9</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v2.9</h1>
+              <p class="lead">Updated:  30, December 2021</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Embed video Youtube without text</li>
+            <li>Delete account missing button</li>
+            <li>Access to "Announcements" section in Panel Admin</li>
+            <li>Slug url Pages</li>
+            <li>Maintenance mode</li>
+            <li>Message duplicate on chat</li>
+
+            <li class="title-list">New</li>
+            <li>Live Streaming</li>
+            <li>User can select withdrawal amount</li>
+            <li>Tiktok and Snapchat (Creators and Panel Admin)</li>
+            <li>Referrals link in menu dropdown</li>
+            <li>Admin can edit email from Panel Admin</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 2.8</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the file <code>v2.9.zip</code> found inside the <code>Update-v2.9</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v2.9.zip</code> and enter at URL <code>https://yoursite.com/v2.9/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v2.9/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 2.9
+'live' => 'Live',
+'live_streaming' => 'Live Streaming',
+'live_streaming_min_price' => 'Minimum price Live Streaming',
+'live_streaming_max_price' => 'Maximum price Live Streaming',
+'stream_live' => 'Stream Live',
+'create_live_stream' => 'Create Live Stream',
+'create_live_stream_subtitle' => 'Start a live stream and interact with your subscribers.',
+'info_price_live' => 'Price to be paid by free subscribers or non-subscribers.',
+'chat' => 'Chat',
+'welcome_live_room' => 'Welcome to my Live room!',
+'info_offline_live' => 'I am currently not online, when I am online you will receive a notification.',
+'info_offline_live_non_subscribe' => 'I am not currently online, but feel free to subscribe to receive notifications about my upcoming live streams.',
+'end_live' => 'End Live Stream',
+'has_joined' => 'has joined',
+'you_have_joined' => 'you have joined',
+'Join_live_stream' => 'Join Live Stream',
+'already_payment_live_access' => 'You have already paid to access this live',
+'confirm_end_live' => 'Are you sure you want to end the Live Stream?',
+'yes_confirm_end_live' => 'Yes, finalize!',
+'is_streaming_live' => 'is streaming live',
+'go_live_stream' => 'Go to the live stream',
+'tipped' => 'tipped',
+'creators_live' => 'Creators Broadcasting live',
+'join' => 'Join',
+'no_live_streams' => 'There are no live streams at this time',
+'exit_live_stream' => 'Exit Live Stream',
+'withdrawal_pending' => 'You have a pending payment request.',</code></pre>
+
+
+
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

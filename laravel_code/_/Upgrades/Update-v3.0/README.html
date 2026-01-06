@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v3.0</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v3.0</h1>
+              <p class="lead">Updated:  19, January 2022</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Converting large videos (They were not published)</li>
+            <li>Live stream on Iphone (no audio)</li>
+            <li>Subscription ID on CCBill</li>
+            <li>Add funds with Coinpayments</li>
+            <li>Payments with Wallet</li>
+            <li>Maximum rank in birthday date (18 years old)</li>
+            <li>Live stream redirect to home</li>
+            <li>Cancelation transactions on Panel Admin</li>
+            <li>Amount max 999 on wallet recharge</li>
+            <li>Open images lightbox on Pay Per View (Messages)</li>
+            <li>Referral earnings with low amounts and creator custom fee</li>
+            <li>Truncate URL on Profile</li>
+
+
+            <li class="title-list">New</li>
+            <li>Subscriptions Packages (Weekly, 3 months, 6 months and 1 year)</li>
+            <li>Tax Rates by country and state</li>
+            <li>Tax Rates integrate with Stripe</li>
+            <li>Tax rates applied to subscriptions, tips, pay per view, and on live broadcasts</li>
+            <li>Live streaming Free (Admin can disable)</li>
+            <li>Availability of live streaming: Available to everyone (Paid), Free for paying subscribers, Free for everyone</li>
+            <li>Live streaming time limits (Paid and Free)</li>
+            <li>Live streaming block by country</li>
+            <li>Link to the Live stream by clicking on the avatar from the profile</li>
+            <li>Shown in the creators section if a creator is live</li>
+            <li>If the live stream ends the notification changes from "is streaming live" to "streamed live"</li>
+            <li>Added button to activate/deactivate audio in Live, crucial for blocking some browsers and devices</li>
+            <li>Chunk uploads</li>
+            <li>Add/delete country from Panel Admin</li>
+            <li>Add/delete states from Panel Admin</li>
+            <li>New formts upload (.mkv, .avi, .flv, .wmv and .mpg)</li>
+            <li>Updated to Laravel 8.78</li>
+            <li>Updated to Agora 4.8.1</li>
+            <li>Live streaming section full size</li>
+            <li>Admin can set whether to use Digital Ocean CDN</li>
+            <li>Admin decides if the creator can withdraw the entire balance or a custom amount</li>
+            <li>Source HTML in creating pages and blogs in Panel Admin</li>
+            <li>Login Modal on all pages (except Contact)</li>
+            <li>If there are no blogs in the link, it does not appear</li>
+
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 2.9</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the file <code>v3.0.zip</code> found inside the <code>Update-v3.0</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v3.0.zip</code> and enter at URL <code>https://yoursite.com/v3.0/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v3.0/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+             <li>Upload the folder <code>vendor</code>, the files <code>composer.json</code> and <code>composer.lock</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+               or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server.).</li>
+             <br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 3.0
+'streamed_live' => 'streamed live',
+'type_withdrawals' => 'Type of withdrawals',
+'custom_amount' => 'Custom amount',
+'total_balance' => 'Total balance',
+'subscription_price_weekly' => 'Subscription Price (Weekly)',
+'subscription_price_quarterly' => 'Subscription Price (3 months)',
+'subscription_price_biannually' => 'Subscription Price (6 months)',
+'subscription_price_yearly' => 'Subscription Price (12 months)',
+'subscription_bundles' => 'Subscription Bundles',
+'interval' => 'Interval',
+'subscribe_month' => 'Subscribe :price per month', // Not replace :price
+'subscribe_weekly' => 'Subscribe :price per week', // Not replace :price
+'subscribe_quarterly' => 'Subscribe :price for 3 months', // Not replace :price
+'subscribe_biannually' => 'Subscribe :price for 6 months', // Not replace :price
+'subscribe_yearly' => 'Subscribe :price for 12 months', // Not replace :price
+'monthly' => 'Monthly',
+'weekly' => 'Weekly',
+'quarterly' => '3 months',
+'biannually' => '6 months',
+'yearly' => 'Yearly',
+'discount' => 'off',
+'available_everyone_paid' => 'Available to everyone (Paid)',
+'desc_available_everyone_paid' => 'All users must pay to access',
+'available_free_paid_subscribers' => 'Free for paying subscribers',
+'available_everyone_free' => 'Free for everyone',
+'desc_everyone_free' => 'All users can access for free',
+'limit_live_streaming_paid' => 'Limit of paid live streaming',
+'live_streaming_free' => 'Live streaming free',
+'limit_live_streaming_free' => 'Limit live streaming free',
+'limit__minutes_per_transmission_paid' => 'Limit of :min minutes per Paid Streaming',// Not replace :min
+'limit__minutes_per_transmission_free' => 'Limit of :min minutes per Free Streaming',// Not replace :min
+'minutes' => 'min',
+'tax_rates' => 'Tax Rates',
+'percentage' => 'Percentage',
+'countries_states' => 'Countries / States',
+'countries' => 'Countries',
+'state' => 'State',
+'states' => 'States',
+'all_states' => 'All states',
+'create_state' => 'Create a state',
+'success_add_tax' => 'Tax successfully added!',
+'iso_code' => 'ISO Code',
+'iso_code_country' => 'Two-letter country code',
+'iso_code_states' => 'Without country prefix. For example, "NY"',
+'alert_store_state' => 'States will only be used for the Tax Rates section.',
+'applied_price' => 'applied to the price',
+'alert_store_tax' => 'Important: If you will use Stripe you must enable and add the keys, so that the taxes are created in Stripe',
+'confirm_exit_live' => 'Are you sure you want to exit the Live Stream?',
+'yes_confirm_exit_live' => 'Yes, get out!',</code></pre>
+
+
+
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

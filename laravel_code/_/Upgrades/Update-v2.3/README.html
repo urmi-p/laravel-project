@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v2.3</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v2.3</h1>
+              <p class="lead">Updated:  05, March 2021</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Creating plan in Paystack</li>
+            <li>Ajax comments, posts</li>
+            <li>Installer</li>
+            <li>Tips on Wallet with Stripe</li>
+            <li>Delete users, bug in subscriptions</li>
+            <li>Stripe Payments Incomplete</li>
+            <li>Rotate images in blog</li>
+            <li>Bug with ZIP files in Mac OS</li>
+            <li>Single pinned post not showing up</li>
+            <li>Editing post with ZIP file removed the file name and size</li>
+            <li>Avatar default in verify account</li>
+            <li>Removed "My cards" section if Stripe and Paystack are disabled</li>
+
+            <li class="title-list">New</li>
+            <li>Pay Per View on Post and Messages</li>
+            <li>Custom percentage for creators</li>
+            <li>Filters Free subscriptions on Explore page</li>
+            <li>Collapse comments</li>
+            <li>Admin can set percentage to 0% (Platform)</li>
+            <li>Username limit increased to 25</li>
+            <li>Delete comments from other users on posts</li>
+            <li>Show username instead of full name.</li>
+            <li>Disable count subscribers</li>
+            <li>Increased limits to price on database</li>
+            <li>Protected ZIP files not subscribers</li>
+            <li>Cover default from Admin</li>
+            <li>Percentage applied in transactions on the payment page</li>
+            <li>Admin can decide who can see the content, profiles page to explore, only registered users or all</li>
+            <li>Admin can decide if creators can delete / edit their posts if they have subscribers (Protect users)</li>
+            <li>Added link to W-9 Form</li>
+            <li>Delete cards Stripe/Paystack</li>
+            <li>Hide my country on profile</li>
+            <li>Show my Birthdate on profile</li>
+            <li>Disable wallet from admin panel</li>
+            <li>Invoices for deposits</li>
+            <li>Now you can add funds and send tips in Paystack without adding cards</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have already done the 2.3 update, just replace the following files:
+            </div>
+            <code>app/Http/Controllers/UserController.php</code><br>
+            <code>resources/views/layouts/app.blade.php</code><br>
+            <code>resources/views/includes/messages-inbox.blade.php</code><br>
+
+            <strong><em>From folder "Script"</em></strong>
+
+            <div class="alert alert-sm alert-danger mt-3" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 2.2</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <li>Upload the file <code>v2.3.zip</code> found inside the <code>Update-v2.3</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v2.3.zip</code> and enter at URL <code>https://yoursite.com/v2.3/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v2.3/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed. (Maybe the session has been closed due to the change of driver of the sessions).</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+
+             <li>
+               Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code>
+             </li>
+
+<pre><code class="language-php">// Version 2.3
+'complete_form_W9_here' => 'Complete IRS W-9 Form here',
+'info_hide_profile' => '(Search, page explore, explore creators)',
+'hide_count_subscribers' => 'Hide number of subscribers',
+'hide_my_country' => 'Hide my country',
+'show_my_birthdate' => 'Show my birthdate',
+'creators_with_free_subscription' => 'Creators with free subscription',
+'cover_default' => 'Cover default',
+'percentage_applied' => 'Percentage applied:',
+'platform' => 'Platform',
+'custom_fee' => 'Custom fee',
+'who_can_see_content' => 'Who can see content?',
+'users_can_edit_post' => 'Users can edit/delete post?',
+'disable_wallet' => 'Disable wallet',
+'error_delete_post' => 'By policies of our platform, you can not delete this post, if you have active subscribers.',
+'set_price_for_post' => 'Set a price for this post, your non-subscribers or free subscribers will have to pay to view it.',
+'set_price_for_msg' => 'Set a price for this message.',
+'hide_name' => 'Show username instead of your Full name',
+'min_ppv_amount' => 'Minimum Pay Per View (Post/Message Locked)',
+'max_ppv_amount' => 'Maximum Pay Per View (Post/Message Locked)',
+'unlock_post_for' => 'Unlock post for',
+'unlock_for' => 'Unlock for',
+'unlock_content' => 'Unlock content',
+'has_bought_your_content' => 'has bought your post',
+'has_bought_your_message' => 'has bought your message',
+'already_purchased_content' => 'You have already purchased this content',
+'purchased' => 'Purchased',
+'not_purchased_any_content' => 'You have not purchased any content',</code></pre>
+
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

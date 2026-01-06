@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v3.7</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v3.7</h1>
+              <p class="lead">Updated:  29, March 2022</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Validate bank transfers (Admin)</li>
+            <li>End Live Streaming</li>
+            <li>Edit post with video Youtube or Vimeo</li>
+            <li>Tooltip on payments</li>
+            <li>Cancel subscription with Wallet</li>
+            <li>Datepicker on Edit my page</li>
+
+            <li class="title-list">New</li>
+            <li>Stripe Connect on Subscription, Tips and PPV</li>
+            <li>Notifications on mentions</li>
+            <li>Add button "Install Web App" on footer</li>
+            <li>Screenshot disable on Web</li>
+            <li>Shop section on profile with button Add new</li>
+            <li>Filter posts on Explore (Latest, Oldest Unlockable and Free)</li>
+            <li>Filter posts on Creator profile (Latest, Oldest Unlockable and Free)</li>
+            <li>Search posts on Explore section</li>
+            <li>Filter sales creator (Latest, Oldest and Pending)</li>
+            <li>Count sales pending on menu section</li>
+            <li>Enable/Disable notifications Live Streaming</li>
+            <li>Creator can reject custom content and refund money a buyer</li>
+            <li>Admin can send refund in Sales section</li>
+            <li>Add Telegram, Twitch, Discord and Vk on Edit my page</li>
+            <li>Emojis on Comments, Posts, and Messages</li>
+            <li>Add PWA Splash resolutions (828x1792 and 1242x2688)</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 3.6</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the file <code>v3.7.zip</code> found inside the <code>Update-v3.7</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v3.7.zip</code> and enter at URL <code>https://yoursite.com/v3.7/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v3.7/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 3.7
+'unlockable' => 'Unlockable',
+'has_mentioned_you' => 'has mentioned you in',
+'someone_live_streaming' => "Live streams from creators I've subscribed to",
+'someone_mentioned_me' => "Someone mentioned me",
+'separate_with_comma' => 'separate with comma',
+'alert_buy_custom_content' => 'Verify the data entered because you will not be able to change it later.',
+'confirm_reject_order' => 'By rejecting the money will be refunded.',
+'reject_order' => 'Reject order',
+'action_cannot_reversed' => 'This action cannot be reversed',
+'refund' => 'Refund',
+'refund_success' => 'Refund made successfully!',
+'connect_stripe_account' => 'Connect Stripe Account',
+'view_stripe_account' => 'View Stripe account',
+'connected' => 'Connected',
+'not_connected' => 'Not connected',
+'stripe_connect_desc' => 'You will receive payments made with Stripe directly into your account.',
+'stripe_connect_setup_success' => 'Stripe Connect account set up successfully!',
+'stripe_connect_countries' => 'Stripe Connect (Countries)',
+'direct_payment' => 'Direct payment',
+'info_stripe_connect_countries' => 'Countries which you want to send direct payments to your members, configure in',
+'install_web_app' => 'Install Web App',
+</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

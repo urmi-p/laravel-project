@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v5.0</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v5.0</h1>
+              <p class="lead">Updated:  29, November 2023</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Stories posts on Panel Admin</li>
+            <li>Home login error 404 with captcha</li>
+            <li>Cancel subscription on Stripe</li>
+            <li>Cancel subscription on Paystack</li>
+            <li>File captcha config missing</li>
+            <li>Disable sub account from cancellations (CCBill)</li>
+            <li>Amount on tax with CCBill subscriptions</li>
+            <li>Push notification error on Encoding video</li>
+            <li>Cover user on Modal Tips and PPV</li>
+            <li>Deleting media with the cron job</li>
+            <li>Notifications bug URL Generator</li>
+            <li>Deleting transactions in Admin (Paystack)</li>
+            <li>NOWPayements Webhook</li>
+            <li>Post review on pending status</li>
+            <li>Icons on Post create, Messages Chat and Modal</li>
+            <li>Overflow on transactions in Admin</li>
+            <li>Non-numeric value on format price</li>
+            <li>Translations missing on Spanish language</li>
+            <li>Icon video plyr</li>
+            <li>Stripe payment error (Hosted)</li>
+            <li>Buy items with taxes apply</li>
+            <li>Avoid preloading videos and audios</li>
+            <li>PayPal subscription renewal</li>
+            <li>Video encoded in message shown before</li>
+            
+            <li class="title-list">New</li>
+            <li>Added Coconut Video Encoding service</li>
+            <li>Live Streaming private (per minutes)</li>
+            <li>Payment Gateway Cardinity (Adult content allowed)</li>
+            <li>Creators can send welcome messages with video, photo, audio to new subscribers, and set a price</li>
+            <li>Scheduled posts</li>
+            <li>Advertising on feed</li>
+            <li>Alipay payment with Stripe on Wallet</li>
+            <li>Add message to reports on Posts, Users, Shop and Live Streaming</li>
+            <li>Report Live Streaming</li>
+            <li>Time since live streaming started</li>
+            <li>Super Admin can access all Live Streaming</li>
+            <li>Last login date on Panel Admin members</li>
+            <li>Show only browser and platform name on login sessions</li>
+            <li>Transfer money from Balance to Wallet</li>
+            <li>Show buttons Explore Creators and Explore Posts on home with zero posts on Mobile</li>
+            <li>Hidden name by default in new registers</li>
+            <li>See all Comments in Panel Admin</li>
+            <li>See all Replies in Panel Admin</li>
+            <li>See all Messages in Panel Admin</li>
+            <li>Withdrawals with cryptocurrency</li>
+            <li>Dark mode on Panel Admin</li>
+            <li>Bootstrap v5.3.2 on Panel Admin</li>
+            <li>Bootstrap Icons v1.11.1</li>
+            <li>Updated jQuery v3.7.1</li>
+            <li>Validate video duration on Stories without FFMPEG</li>
+            <li>Optimized thumbnails on Stories, Covers, Shop and Blog</li>
+            <li>Total amount of tips shown in Live Streaming (Only Creator can see)</li>
+            <li>Increased Live Streaming limit (Paid and Free) to 300 minutes</li>
+            <li>Changed icon Twitter (X)</li>
+            <li>Added threads on social profiles</li>
+            <li>FFMPEG_BINARIES and FFPROBE_BINARIES from Panel Admin</li>
+            <li>A notification is now sent if there is an error encoding a video and it is removed.</li>
+            <li>Added name buyer on shipping into modal</li>
+            <li>Added alert waiting for payment confirmation in Paystack</li>
+            <li>Added button delete cover on profile</li>
+            <li>Filter "My Posts" by All, Pending, Scheduled or Pay Per View</li>
+            <li>Updated Agora SDK v4.19.3</li>
+            <li>Carousel multiple images on Shop Item</li>
+            <li>Google Tag Manager on Panel Admin</li>
+            <li>Refund sales custom content when expire date (Via Cron Job)</li>
+            <li>Full width in Message Section</li>
+            <li>Improved Show "View more" on profiles user and posts</li>
+            <li>Admin can choose whether to display your company name, address on the site</li>
+            <li>Updated to Laravel v10.34.0</li>
+
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 4.9</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the folder <code><strong>vendor</strong></code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+               or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server).
+              </li>
+               <br />
+
+               <li>Upload the files <code><strong>composer.json</strong></code> and <code><strong>composer.lock</strong></code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+                or where you have the script installed, you must make sure that it is the root directory.
+               </li>
+                <br />
+
+            <li>Upload the file <code>v5.0.zip</code> found inside the <code>Update-v5.0</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v5.0.zip</code> and enter at URL <code>https://yoursite.com/v5.0/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v5.0/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <strong><code>resources / lang / xx / general.php</code></strong></li>
+<pre><code class="language-php">// Version 5.0
+'report_live_stream' => 'Report Live Stream',
+'started' => 'Started',
+'last_login' => 'Last login',
+'on' => 'on',
+'transfer_balance' => 'Transfer Balance',
+'transfer' => 'Transfer',
+'transfer_successful' => 'Transfer successful!',
+'sender' => 'Sender',
+'receiver' => 'Receiver',
+'bitcoin_wallet' => 'Bitcoin Wallet',
+'subscription_for_creator' => 'Subscription for creator',
+'comments_replies' => 'Comments and replies',
+'replies' => 'Replies',
+'watermak_video' => 'Video Watermark',
+'error_video_encoding_post' => 'There was an error encoding the video in your post',
+'error_video_encoding_message' => 'There was an error encoding the video in a private message',
+'error_video_encoding_story' => 'There was an error encoding the video in your story',
+'or_activate_coconut' => 'or activate the Coconut service',
+'encoding_method' => 'Encoding method',
+'allow_payments_alipay' => 'Allow payments with Alipay',
+'only_wallet' => 'Only in wallet',
+'ffprobe_path' => 'FFPROBE path',
+'verify_ffmpeg_path' => 'Verify FFMPEG path',
+'alert_paystack_delay' => '(Important: Your payment is being processed, in a few minutes you will be able to access the content)',
+'action_not_allowed' => 'Action not allowed',
+'allow_scheduled_posts' => 'Allow scheduled posts',
+'schedule' => 'Schedule',
+'scheduled' => 'Scheduled',
+'confirm' => 'Confirm',
+'date_schedule' => 'Will be published on',
+'at' => 'at',
+'error_post_schedule' => 'You can\'t schedule a post to send in the past.',
+'alert_post_schedule' => 'Your publication was successfully scheduled, you can see it in',
+'files_plural' => 'file|files',
+'advertising' => 'Advertising',
+'clicks' => 'Clicks',
+'impressions' => 'Impressions',
+'months' => 'month|months',
+'success_add_ad' => 'Ad successfully created!',
+'url_ad' => 'Url Ad',
+'update_expiration_date' => 'Update expiration date',
+'live_streaming_private' => 'Live streaming private',
+'accepted' => 'Accepted',
+'rejected' => 'Rejected',
+'price_per_minute' => 'Price per minute',
+'limit_live_streaming_private' => 'Maximum duration of private live stream',
+'allow_live_streaming_private' => 'Allow live streaming private',
+'price_live_streaming_private' => 'Price per minute of private live streaming',
+'live_streaming_private_requests' => 'Live Streaming Requests Private',
+'live_stream_private_settings' => 'Live Stream (Private) Settings',
+'subtitle_live_stream_private_settings' => 'Set private live stream price and status',
+'subtitle_live_streaming_private_requests' => 'All your received requests',
+'subtitle_live_streaming_private_requests_sent' => 'All your sent requests',
+'received' => 'Received',
+'sent' => 'Sent',
+'accept_request' => 'Accept request',
+'reject_request' => 'Reject request',
+'accept' => 'Accept',
+'requests_received' => 'Requests received',
+'requests_sent' => 'Requests sent',
+'offline' => 'Offline',
+'info_live_streaming_private_requests' => '* All Pending requests expire within 48 hours',
+'info_live_streaming_private_requests_send' => '* All Pending requests expire within 48 hours (Your money is refunded to your wallet)',
+'user_online_accept_request' => 'User must be online to accept the request',
+'join_private_live_stream_link' => 'Join the private live stream from this link :link',// IMPORTANT: Not remove :link
+'request_not_available' => 'The request is not available',
+'request_private_live_stream' => 'Request private live stream',
+'select_the_minutes' => 'Select the minutes...',
+'send_request' => 'Send request',
+'request_cannot_processed' => 'The request cannot be processed',
+'has_sent_private_live_stream_request' => 'has sent you a private live stream request',
+'go_received_requests' => 'Go to received requests',
+'conversations' => 'Conversations',
+'subtitle_conversations' => 'Setting up your conversations',
+'receive_private_messages' => 'Receive private messages',
+'send_welcome_message_new_subscribers' => 'Send welcome message to new subscribers',
+'price_welcome_message' => 'Welcome message price',
+'welcome_message_new_subs' => 'Welcome message to new subscribers',
+'add_file' => 'Add a file',
+'chat_unavailable' => 'Chat is unavailable',
+'info_video_encode_welcome_msg' => 'Important: If you add a video, activate the function of sending a welcome message when the video is encoded.',
+'error_video_encoding_welcome_msg' => 'There was an error encoding the video of your welcome message',
+'video_processed_successfully_welcome_message' => 'Your video has been processed successfully (Welcome Message)',
+'go_to_conversations' => 'Go to Conversations',
+'show_address_company_name' => 'Show address and company name on site',
+'in_currency' => 'in :currency_code currency',// IMPORTANT: Not remove :currency_code</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+<i class="fas fa-info-circle mr-1"></i>
+If you have multiple languages on your site you should add to each file.
+</h6>
+<hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong><a href="mailto:support@miguelvasquez.net">support@miguelvasquez.net</a></strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

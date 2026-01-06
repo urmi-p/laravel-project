@@ -1,0 +1,139 @@
+@extends('layouts.app')
+
+@section('content')
+    <section class="section section-sm">
+        {{-- for mobile header --}}
+        @include('includes.header-mobile')
+
+
+        <div class="container-fluid pt-lg-5 pt-2">
+
+            <div class="row">
+                <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
+                    @include('includes.menu-sidebar-home')
+                </div>
+
+                <div class="col-lg-6 col-md-6 p-0 second wrap-post">
+                    @if ($updates->count() != 0)
+                        <div class="grid-updates position-relative" id="updatesPaginator">
+                            @include('includes.updates')
+                        </div>
+                    @else
+
+                        <div class="my-5 text-center no-updates main-no-updates">
+                            <div class="sub-no-updates">
+                                <span class="btn-block mb-3">
+                                    <i class="bi bi-ban ico-no-result bg_black"></i>
+                                </span>
+                                <h4 class="font_weight_400 font_size_18">
+                                    {{ trans('general.not_purchased_any_content') }}
+                                </h4>
+                                <div class="no-updates-div">
+                                    <a
+                                        class="nav-link px-2 font_weight_600 font_size_18 no-updates-link {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
+                                        href="{{ url('shop') }}" title="{{ __('general.explore_shop') }}">
+                                        {{ __('general.explore_shop') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-updates position-relative" id="updatesPaginator">
+                            <div class="p-3 d-lg-none">
+		                        @include('includes.explore_creators')
+	                        </div>
+                        </div>
+                        
+                    @endif
+                </div><!-- end col-md-6 -->
+
+                <div class="col-lg-3 col-md-4 @if ($users->count() != 0) mb-4 @endif d-lg-block d-none">
+                    <div class="d-lg-block sticky-top">
+                        @if ($users->count() == 0)
+                            <div class="panel panel-default panel-transparent mb-4 d-lg-block d-none">
+
+                                <div class="panel-body">
+
+                                    <div class="media none-overflow">
+
+                                        <div class="d-flex my-2 align-items-center">
+
+                                            <img class="rounded-circle mr-2"
+                                                src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
+                                                width="60" height="60">
+                                            <div class="d-block">
+
+                                                <strong>{{ auth()->user()->name }}</strong>
+
+                                                <div class="d-block">
+
+                                                    <small class="media-heading text-muted btn-block margin-zero">
+
+                                                        <a href="{{ url('settings/page') }}">
+
+                                                            {{ auth()->user()->verified_id == 'yes' ? trans('general.edit_my_page') : trans('users.edit_profile') }}
+
+                                                            <small class="pl-1"><i
+                                                                    class="fa fa-long-arrow-alt-right"></i></small>
+
+                                                        </a>
+
+                                                    </small>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        @endif
+
+                        @if ($users->count() != 0)
+                            @include('includes.explore_creators')
+                        @endif
+                    </div><!-- sticky-top -->
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@section('javascript')
+    @if (session('noty_error'))
+        <script type="text/javascript">
+            swal({
+
+                title: "{{ trans('general.error_oops') }}",
+
+                text: "{{ trans('general.already_sent_report') }}",
+
+                type: "error",
+
+                confirmButtonText: "{{ trans('users.ok') }}"
+
+            });
+        </script>
+    @endif
+
+
+
+    @if (session('noty_success'))
+        <script type="text/javascript">
+            swal({
+
+                title: "{{ trans('general.thanks') }}",
+
+                text: "{{ trans('general.reported_success') }}",
+
+                type: "success",
+
+                confirmButtonText: "{{ trans('users.ok') }}"
+
+            });
+        </script>
+    @endif
+@endsection

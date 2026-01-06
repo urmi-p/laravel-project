@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v5.5</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v5.5</h1>
+              <p class="lead">Updated:  04, June 2024</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="w-100 d-block text-center">
+            <a href="https://sponzyscript.com/changelog/" target="_blank">
+              <img class="img-fluid mb-5 rounded" src="../assets/images/changelog.png">
+            </a>
+          </div>
+
+          <div class="alert alert-sm alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>IMPORTANT:</strong>
+            Before performing the update you must change your PHP version to <strong>PHP version to 8.2</strong>
+          </div>
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 5.4</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the folder <code><strong>vendor</strong></code> found inside the <strong><code>Script</code></strong> folder, into the <strong><code>public_html</code></strong> or <strong><code>www</code></strong> folder on your server,
+               or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server).
+              </li>
+               <br />
+
+               <li>Upload the files <code><strong>composer.json</strong></code> and <code><strong>composer.lock</strong></code> found inside the <strong><code>Script</code></strong> folder, into the <strong><code>public_html</code></strong> or <strong><code>www</code></strong> folder on your server,
+                or where you have the script installed, you must make sure that it is the root directory.
+               </li>
+                <br />
+
+            <li>Upload the file <strong><code>v5.5.zip</code></strong> found inside the <strong><code>Upgrades > Update-v5.5</code></strong> folder, into the <strong><code>public_html</code></strong> or <strong><code>www</code></strong> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <strong><code>v5.5.zip</code></strong> and enter at URL <strong><code>https://yoursite.com/v5.5/</code></strong> or if you have the script in subdirectory (subdomain) <strong><code>https://yoursite.com/test/v5.5/</code></strong></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+
+             <li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <strong><code>lang / xx / general.php</code></strong></li>
+<pre><code class="language-php">// Version 5.5
+'default_theme' => 'Default theme',
+'deactivate_your_account' => 'Deactivate your account',
+'deactivate_your_account_alert' => 'Your data will not be deleted and will be activated when you log in again.',
+'yes_confirm_deactivate' => 'Yes, deactivate',
+'allow_creators_deactivate_profile' => 'Allow creators to deactivate their profile',
+'profile_deactivated_error' => 'This profile has been deactivated',
+'profile_disabled' => 'Profile disabled',
+'user_unavailable' => 'User unavailable',
+'allow_epub_files' => 'Allow upload EPUB files (Post and Messages)',
+'upload_epub_file' => 'Upload EPUB file',
+'invalid_format' => 'Invalid format, only :formats are allowed.', // Not remove/edit :formats
+'view_online' => 'View online',
+'epub' => 'Epub',
+'allow_sending_gifts' => 'Allow sending Gifts',
+'gifts' => 'Gifts',
+'gift' => 'Gift',
+'send_a_gift' => 'Send a gift',
+'send_gift' => 'Send gift',
+'send_gift_desc_payment' => 'The amount will be deducted from your Wallet',
+'gift_sent_success' => 'Gift sent successfully',
+'has_sent_you_gift' => 'has sent you a gift',
+'sent_a_gift' => 'sent a gift',
+'sent_a_gift_for' => 'Sent a gift for',
+'please_select_gift' => 'Please select a gift',
+'currency' => 'Currency',
+'disable_free_post' => 'Disable free post option',
+'disable_explore_section' => 'Disable Explore section',
+'disable_creators_section' => 'Disable Creators section',
+'gift_for' => 'Gift for',</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+<i class="fas fa-info-circle mr-1"></i>
+If you have multiple languages on your site you should add to each file.
+</h6>
+<hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong><a href="mailto:support@miguelvasquez.net">support@miguelvasquez.net</a></strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb" class="mr-1"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb" class="mr-1"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

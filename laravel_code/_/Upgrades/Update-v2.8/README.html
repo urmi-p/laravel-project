@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v2.8</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v2.8</h1>
+              <p class="lead">Updated:  13, December 2021</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Rebill in Wallet</li>
+            <li>URL user repoted in Panel Admin</li>
+            <li>Pagination in Notifications overflow</li>
+            <li>Delete old code resend 2FA</li>
+            <li>Turn off Maintenance mode</li>
+
+            <li class="title-list">New</li>
+            <li>Updated to Laravel 8</li>
+            <li>Laravel Cashier 13 updated Webhook</li>
+            <li>Limit of transactions by referrals (1 to 100 or unlimited)</li>
+            <li>Enable / Disable video conversion and watermark, can now be used in shared hosting</li>
+            <li>Notify subscribers when creator changes subscription to free or paid</li>
+            <li>If the creator changes the subscription to paid, the free subscriptions are canceled and the subscriber is notified</li>
+            <li>Add 2% and 3% on Percentage of profit for each referral</li>
+            <li>Referrals on Social Login</li>
+            <li>Filter Admins on Panel Admin</li>
+            <li>Notify creator when you receive a subscription renewal payment</li>
+            <li>Set default language</li>
+            <li>Cookies expire 1 year</li>
+
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 2.7</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the file <code>v2.8.zip</code> found inside the <code>Update-v2.8</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v2.8.zip</code> and enter at URL <code>https://yoursite.com/v2.8/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v2.8/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+
+             <li>
+               If you are using Stripe change your API to <code>2020-08-27</code>
+             </li>
+
+             <li>
+               If you have FFMPEG installed and it works without problems you must enable the conversion in <code>Panel Admin> General Settings</code>
+             </li>
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 2.8
+'encode' => 'Encode',
+'your_amount_payment' => 'Your :amount payment', // Not remove :amount
+'payment_processing' => 'Payment Processing',
+'payment_processing_info' => 'This payment is currently processing. Refresh this page from time to time to see its status.',
+'stripe_payment_info' => 'A valid payment method is needed to process your payment. Please confirm your payment by filling out your payment details below.',
+'payment_method' => 'Payment Method',
+'payment_method_info' => 'Please select the payment method which you\'d like to use.',
+'processing' => 'Processing...',
+'stripe_text_info_1' => 'Your payment will be processed by',
+'stripe_text_info_2' => 'Payment details',
+'stripe_text_info_3' => 'Remember payment method for future usage',
+'stripe_text_info_4' => 'Confirm your :amount payment with', // Not remove :amount
+'stripe_text_info_5' => 'Please provide your name and e-mail address.',
+'reject' => 'Reject',
+'resending_code' => 'Resending code...',
+'referral_transaction_limit' => 'Limit of transactions by referrals',
+'referrals_welcome_desc' => 'Welcome to your referral panel. Share your link and earn :percentage% of your referrals, be it a Subscription, Tip or a PPV!',// Not remove :percentage
+'total_transactions_per_referral' => 'You will earn :percentage% for the first transaction of your referral|You will earn :percentage% for the first :total transactions of your referral', // Not remove :percentage and :total
+'total_transactions_referral_unlimited' => 'You will earn :percentage% for each transaction of your referral',
+'error_fee_commission_zero' => 'Your fee commission cannot be 0% if the Referral System is enabled',
+'payment_received_subscription_renewal' => 'payment received for subscription renewal',
+'page_lang' => 'Select the language that you will write this page',
+'default_language' => 'Default language',
+'default_language_info' => 'This language will be taken by default when the user language does not exist.',
+'slug_lang_info' => 'If this page is a translation of an existing page, put the Slug/Url of that page.',
+'video_encoding' => 'Video encoding',
+'video_encoding_alert' => 'You must have FFMPEG installed',
+'alert_disable_free_subscriptions' => 'If you have free subscribers, the subscriptions will be canceled.',
+'alert_disable_paid_subscriptions' => 'If you have paid subscribers, they will be notified that you have switched to free subscription. They will be able to cancel their subscription.',
+'has_changed_subscription_free_subject' => 'has changed their subscription to free.',
+'has_changed_subscription_free' => 'has changed their subscription to free, to cancel your current subscription click on the following button.',
+'has_changed_subscription_paid' => 'has changed your subscription to paid',
+'subscribe_now' => 'Subscribe now!',</code></pre>
+
+
+
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+
+<div class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+  <strong>IMPORTANT:</strong>
+  After you perform the update you must update to Laravel 8, follow these steps <a href="Upgrade Laravel 8.html" class="text-white"><strong>Upgrade Laravel 8</strong></a>
+</div>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

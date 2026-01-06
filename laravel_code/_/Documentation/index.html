@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="assets/images/favicon.png">
+
+    <title>Documentation Sponzy - Support Creators Content Script</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/css/prism.css" rel="stylesheet">
+    <link href="assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg">
+        <div class="container">
+          <div class="position-relative">
+            <p class="lead">Documentation</p>
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script</h1>
+              <p class="lead mb-0" id="tableContent">Created:  03, September 2020 by Miguel Vasquez</p>
+              <small class="mb-0">Last update 08, October 2025</small>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+
+        <div class="col-md-3">
+          <div class="sticky-top">
+            <h5 class="font-weight-bold pt-2 border-0"><i class="far fa-list-alt"></i> Table of Contents</h5>
+
+            <ul class="list-unstyled list-menu pl-0">
+              <li><a href="#Introduction" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Introduction</a></li>
+              <li><a href="#Requirements" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Requirements</a></li>
+              <li><a href="#ConfigurationPHP" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Basic PHP configuration</a></li>
+              <li><a href="#Setting" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Setting MySQL</a></li>
+              <li><a href="#Uploading" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Uploading Files</a></li>
+              <li><a href="#Installation" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Installation</a></li>
+              <li><a href="#CronJob" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Cron Job <small class="badge badge-warning">IMPORTANT</small></a></li>
+              <li><a href="#Mail" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Mail Set Up</a></li>
+              <li><a href="#Storage" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Storage</a></li>
+              <li><a href="#reCAPTCHA" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> reCAPTCHA</a></li>
+              <li><a href="#Stripe" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Payments Gateways</a></li>
+              <li><a href="#LiveStreaming" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Live Streaming / Video and Audio Calls</a></li>
+              <li><a href="#AgeVerification" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Age Verification</a></li>
+              <li><a href="#PushNotifications" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Push Notifications</a></li>
+              <li><a href="#Customize" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Customize</a></li>
+              <li><a href="#Troubleshooting" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Troubleshooting</a></li>
+              <li><a href="#Permissions" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Folders Permissions</a></li>
+              <li><a href="#update" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> How to update</a></li>
+              <li><a href="#Sources" class="scroll-element"><i class="fas fa-angle-right mr-1"></i> Sources and Credits</a></li>
+  					</ul><!-- /.ul list-cgl -->
+          </div>
+        </div>
+
+        <div class="col-md-9">
+
+          <p class="font-italic mt-4 mb-4" id="Introduction">
+            <strong>Sponzy - Support Creators Content Script</strong> is a platform where content creators, writers, designers, developers, photographers or
+            any other branch can monetize their content by receiving subscriptions from their most loyal followers or just anyone who likes their work.
+            They can create free and premium posts for their subscribers.
+          </p>
+
+          <h2 class="title2" id="Requirements">Requirements:</h2>
+          <ul class="list-cgl">
+          <li><strong>PHP 8.2 or Greater</strong></li>
+          <li><strong>MySQL 5.7 or Mariadb 10.3.17</strong></li>
+          <li>Ctype PHP Extension</li>
+          <li>cURL PHP Extension</li>
+          <li>DOM PHP Extension</li>
+          <li>Fileinfo PHP Extension</li>
+          <li>Filter PHP Extension</li>
+          <li>Hash PHP Extension</li>
+          <li>Mbstring PHP Extension</li>
+          <li>OpenSSL PHP Extension</li>
+          <li>PCRE PHP Extension</li>
+          <li>PDO PHP Extension</li>
+          <li>Session PHP Extension</li>
+          <li>Tokenizer PHP Extension</li>
+          <li>XML PHP Extension</li>
+          <li>GD or Imagick</li>
+          <li>EXIF</li>
+          <li>allow_url_fopen (PHP.INI) is ON</li>
+          <li>FFMPEG</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>IMPORTANT:</strong>
+            Make sure your server has <strong>PHP 8.2</strong> or higher and <strong>MySQL 5.7 or Mariadb 10.3.17</strong> as a minimum
+          </div>
+
+          <div class="alert" role="alert">
+            <strong class="text-danger"><i class="fas fa-exclamation-triangle"></i> IMPORTANT:</strong>
+            if you are running <strong>Nginx</strong>, please follow these instructions <a href="https://laravel.com/docs/deployment#nginx" target="_blank"><strong>Nginx Configuration</strong></a> 
+          </div>
+
+          <h2 class="title2" id="ConfigurationPHP">Basic PHP configuration</h2>
+            <li><code>max_execution_time</code> minimum 12000</li>
+            <li><code>memory_limit</code> set to 900M</li>
+        		<li><code>post_max_size</code> set the maximum upload value you want</li>
+            <li><code>upload_max_filesize</code> must be the same maximum value of <code>post_max_size</code></li>
+            <hr />
+
+          <h2 id="Setting" class="title2">Setting MySQL <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li class="title-list">1.) Create a database</li>
+            <img class="img-fluid" src="assets/images/db.jpg">
+
+            <li class="title-list">2.) Create a user for database</li>
+            <img class="img-fluid" src="assets/images/db-user.jpg">
+
+            <li class="title-list">3.) Import the Database </li>
+            <li class="mb-4">Log into your phpMyAdmin and import the <code>sponzy.sql</code> file located in the folder <code>MySQL</code></li>
+            <img class="img-fluid" src="assets/images/db-import.jpg">
+
+          </ul><!-- /.ul list-cgl -->
+
+
+          <h2 id="Uploading" class="title2">Uploading Files <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li>Upload all files inside the folder <code>"Script"</code> to the <code>"public_html"</code> or <code>"www"</code> folder on your server. You can compress the files or use FTP.</li>
+            <img class="img-fluid" src="assets/images/upload-files.jpg">
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 id="Installation" class="title2">Installation <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li class="mb-3">After you have uploaded all files, go to <code>https://yousite.com/install/script</code></li>
+            <img class="img-fluid" src="assets/images/install-1.jpg">
+            <li class="mb-3">
+              This screen will appear, all the boxes must be green to proceed with the installation.
+            </li>
+            <img class="img-fluid" src="assets/images/install-2.jpg">
+            <li class="mb-3">
+              Next, you can put the credentials of your database, your App name, URL and an email. You will be redirected to the Panel Admin after the installation has finished.
+            </li>
+
+    <li class="title-list" id="AdminPanel">Credentials Admin Panel</li>
+    <li>Just enter from <code>https://yousite.com/login</code> and enter the following credentials.</li>
+
+	<pre><code class="language-markup">User: Admin
+Pass: 123456</code></pre>
+
+<li class="title-list">Panel Admin <i class="fa fa-angle-right margin-separator"></i> General Settings</li>
+<img class="img-fluid" src="assets/images/admin-1.jpg">
+
+<li class="title-list">Panel Admin <i class="fa fa-angle-right margin-separator"></i> General Settings <i class="fa fa-angle-right margin-separator"></i> Limits</li>
+<img class="img-fluid" src="assets/images/admin-2.jpg">
+
+<li class="title-list">Panel Admin <i class="fa fa-angle-right margin-separator"></i> Maintenance mode</li>
+<img class="img-fluid" src="assets/images/admin-3.jpg">
+<li>
+  if for some reason your IP changes, go to <code>storage \ framework</code> and delete the file named <code>down</code> and file <code>maintenance.php</code> go back to <code>panel / admin / maintenance / mode</code> put "off" and then "on" again, whenever you want to have your site in mode maintenance.
+</li>
+
+<li class="title-list">Panel Admin <i class="fa fa-angle-right margin-separator"></i> Theme</li>
+<img class="img-fluid" src="assets/images/admin-4.jpg">
+
+    <li class="title-list" id="CronJob">Create Cron Job</li>
+    <h6 class="alert alert-sm alert-warning" role="alert">
+      <i class="fas fa-exclamation-triangle"></i>
+    <strong>IMPORTANT</strong>: 
+    It is very important to create a Cron Job so that automatic renewals with the wallet work, sending emails in queue, video encoding with FFMPEG works among other things.
+    </h6>
+
+    <li>Click on Cron Jobs</li>
+    <img class="img-fluid mb-2" src="assets/images/cronjob-1.jpg">
+
+    <li>Click on <strong>Common Settings</strong> and select <strong>Once Per Minute</strong></li>
+    <img class="img-fluid mb-2" src="assets/images/cronjob-2.jpg">
+
+    <pre><code class="language-markup">/usr/local/bin/ea-php81 /home/username/public_html/artisan schedule:run >> /dev/null 2>&1</code></pre>
+
+    <li class="mb-2">In the image above change <strong><em>ea-php81</em></strong> for your PHP version, <strong><em>username</em></strong> for yours, and put the path where your project is located,
+      in my case it is in <strong><em>public_html</em></strong>, but if it is in another directory you should put <strong><em>public_html/sponzy/</em></strong> like this</li>
+
+      <li>
+        <strong>Domain-specific example:</strong>
+      </li>
+      <pre class="mb-3"><code class="language-markup">/usr/local/bin/ea-php81 /home/username/yourwebsite.com/artisan schedule:run >> /dev/null 2>&1</code></pre>
+  
+    <li>
+      Click on <strong><em>Add New Cron Job</em></strong> and you're done!
+    </li>
+
+    <h6 class="alert alert-sm alert-warning" role="alert">
+      <i class="fas fa-exclamation-triangle"></i>
+    <strong>Important</strong>: if it doesn't work with <span class="text-dark"><em>/usr/local/bin/ea-php81</em></span> or whatever PHP version you have try <span class="text-dark"><em>/usr/local/bin/php</em></span>
+    </h6>
+
+    <li>
+      The cron Job in Plesk should be configured as in the following image.
+    </li>
+    <img class="img-fluid mb-2" src="assets/images/cronjob-plesk.jpg">
+
+
+    <li class="title-list" id="Mail">Mail Set Up</li>
+    <li>Go to <code>https://yousite.com/panel/admin/settings/email</code></li>
+
+    <li class="title-list" id="Storage">Storage</li>
+    <li>Go to <code>https://yousite.com/panel/admin/storage</code></li>
+    <h6 class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+<strong>Important</strong>: If you want to migrate your site to any storage service (Amazon, DigtalOcean or Wasabi), you must upload the following folder located in the <strong><em>public / uploads</em></strong> of your current site.
+</h6>
+
+<h6 class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+<strong>Important</strong>: If your site is new you should upload the folder located in the <strong><em>public / uploads</em></strong>
+</h6>
+
+<li class="title-list" id="reCAPTCHA">reCAPTCHA</li>
+<li>Go to <code>https://yousite.com/panel/admin/google</code></li>
+<li>Get your API keys here <a href="https://www.google.com/recaptcha/admin/create" target="_blank">https://www.google.com/recaptcha/admin/create</a></li>
+
+<div class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+  <strong>IMPORTANT:</strong>
+  choose <strong>reCAPTCHA v2</strong> and <strong>Invisible reCAPTCHA</strong>
+</div>
+
+<li class="title-list" id="Stripe">Stripe Webhook</li>
+<li>
+  Go to the <code>Developers section</code> of the Stripe dashboard and click on <code>Webhooks</code>.
+Click on <code>Add endpoint</code>
+</li>
+<a href="assets/images/stripe.png" target="_blank"><img class="img-fluid" src="assets/images/stripe.png"></a>
+<li><strong>1)</strong> Your webhook url must end in <code>stripe/webhook</code></li>
+<li><strong>2)</strong> Click on <code>Signing secret</code> to reveal the Stripe Webhook Secret that you must place in <code>Dashboard > Payment Settings > Stripe</code></li>
+<li><strong>3)</strong> The events you should add to your webhook</li>
+
+<li>
+  API Version <code>2025-05-28</code>
+</li>
+
+<li class="title-list">Stripe Connect</li>
+<li>Set the countries or the country you want to send direct payments to your members at <a href="https://dashboard.stripe.com/settings/connect/express">https://dashboard.stripe.com/settings/connect/express</a></li>
+
+<li class="title-list">PayPal</li>
+
+<li>
+  Login into your <a href="https://developer.paypal.com/developer/applications" target="_blank" rel="nofollow">PayPal</a> account.
+</li>
+
+<li>Go to the <a href="https://developer.paypal.com/developer/applications" target="_blank" rel="nofollow">My apps &amp; credentials</a> section, click on <strong>Live</strong> button and then on the <strong>Create app</strong> button.</li>
+
+<li>Copy the <code>Client ID</code> and <code>Secret</code> in <code>Panel Admin > Payments Settings > PayPal</code>.</li>
+
+<li>Go to the <a href="https://developer.paypal.com/developer/applications" target="_blank" rel="nofollow">My apps &amp; credentials</a> section, click on <strong>Live</strong> button and then select your app.</li>
+
+<li>Scroll down to <strong>LIVE WEBHOOKS</strong> and click on the <strong>Add webhook</strong> button.</li>
+
+<li>On the <code>Webhook URL</code> field paste your webhook URL <code>https://yourwebsite.com/webhook/paypal</code></li>
+
+<li>Under the <strong>Events types</strong> select <strong>All events</strong> and save your changes.</li>
+
+<li>Go to the <a href="https://developer.paypal.com/developer/applications" target="_blank" rel="nofollow">My apps &amp; credentials</a> section, click on <strong>Live</strong> button and then select your app.</li>
+
+<li>Copy the <code>Webhook ID</code> in <code>Panel Admin > Payments Settings > PayPal</code></li>
+
+<li class="title-list">CCBill (Adult content allowed)</li>
+
+<li class="mb-4">
+  The first thing you need to do is enable <code>DYNAMIC PRICES</code> on your CCBill account - contact their live support <a href="https://support.ccbill.com" target="_blank">https://support.ccbill.com</a>
+</li>
+
+<h5>Creating a FlexForm</h5>
+<li>
+  Select <a href="https://admin.ccbill.com/megamenus/ccbillHome.html#FlexFormsSystems/FlexFormsPaymentLinks(flexFormsNoPromote)">New Form</a>, as you do not have any existing forms.
+  <img class="img-fluid mt-2" src="assets/images/ccbill-1.jpg">
+</li>
+
+<li>
+  Enter the name you want in for the form and select the <code>Allow for dynamic price to be passed to form</code> box and click save.
+  <img class="img-fluid mt-2 mb-2" src="assets/images/ccbill-3.png">
+</li>
+
+<li class="mb-4">
+  Copy Flex Form ID in <code>Panel Admin > Payment Settings > CCBill</code>
+</li>
+
+<h5>Sub Account</h5>
+<img class="img-fluid mt-2 mb-2" src="assets/images/ccbill-2.png">
+<li class="mb-4">If you don't have one, contact CCBill support to get one.</li>
+
+<h5>Setup Webhooks</h5>
+<li>
+  Go to the Subaccount Manager section, select Webhooks from the menu. Fill in the <code>Webhook URL</code> text box with the URL <code>https://yourwebsite.com/webhook/ccbill</code>
+</li>
+
+<li>
+  In <code>Webhook format</code> select <code>URL Encoded</code>
+</li>
+
+<li>
+  Click in <code>Select All</code> and click on update.
+</li>
+<img class="img-fluid mt-2 mb-3" src="assets/images/ccbill-4.png">
+
+<h5>Disabling User Management</h5>
+<ul>
+  <li>
+    On the Account Info megamenu, click Sub Account Admin, then User Management.
+  </li>
+  <li>
+    Select Turn off User Management in the top section.
+  </li>
+  <li>
+    Select <code>Do Not Collect Usernames and Passwords</code> in the <code>Username Settings</code> section.
+  </li>
+</ul>
+<img class="img-fluid mt-2 mb-3" src="assets/images/ccbill-5.png">
+
+<h5>Create Library of URL (Approval)</h5>
+
+<li class="mb-2">
+  Click the URLs Library button in the upper-right to create a new URL. The Saved URLs Editor dialog displays.
+</li>
+
+  1. Use the fields under Add New to create a new URL with the following properties.<br>
+  2. URL Name. Enter a meaningful name for this URL. Forexample: Payment Success<br>
+  3. URL. Under URL, enter the base URL for your Site store. <code>https://yourwebsite.com/ccbill/approved</code>
+
+  <li class="mt-3">
+    Approval redirect to the Site
+  </li>
+
+  1. Click the arrow button to the left of your new flow to view the details. Approval Tile.<br>
+  2. Under the green Approve arrow, click the square to modify the action.<br>
+  3. Approval URL. In the left menu, select A URL. Select Select a Saved URL and select the URL your created earlier (e.g. Payment Success).<br>
+  4. Redirect Time. Select a redirect time of 1 second using the slider at the bottom and save the form. (e.g. 4 seconds)
+
+  <img class="img-fluid mt-2 mb-3" src="assets/images/ccbill-6.jpg">
+
+<h5 class="mt-3">
+  If you have any problems or questions contact CCBill support <a href="https://support.ccbill.com" target="_blank">https://support.ccbill.com</a>
+</h5>
+
+<li class="title-list">Paystack</li>
+<li>Get yourself a free <a href="https://paystack.com/" target="_blank">Paystack account</a></li>
+<li>Get your API key from here <a href="https://dashboard.paystack.com/#/settings/developer" target="_blank">https://dashboard.paystack.com/#/settings/developer</a>
+<li>Copy the API keys to <code>Panel Admin > Payment Settings > Paystack</code></li>
+<li>Don't put anything in <code>Callback URL</code></li>
+<li>In <code>Webhook URL</code> put <code>https://yourwebsite.com/webhook/paystack</code></li>
+  <img class="img-fluid mb-5" src="assets/images/paystack.png">
+</li>
+
+<li class="title-list">Coinpayments</li>
+<li>Get yourself a free <a href="https://www.coinpayments.net/" target="_blank">Coinpayments account</a></li>
+<li>Get your Merchant ID from here <a href="https://www.coinpayments.net/acct-settings" target="_blank">https://www.coinpayments.net/acct-settings</a>
+  <img class="img-fluid mb-5" src="assets/images/coinpayment-1.jpg">
+<li>Get your IPN Secret Key from <code>Account Settings -> Merchant Settings -> IPN</code></li>
+  <img class="img-fluid mb-5" src="assets/images/coinpayment-2.jpg">
+</li>
+<li>Copy the API keys to <code>Panel Admin > Payment Settings > Coinpayments</code></li>
+
+<li class="title-list">Mercadopago</li>
+<li>Get yourself a free <a href="https://www.mercadopago.com/developers" target="_blank">Mercado Pago account</a></li>
+<li>Go to <a href="https://www.mercadopago.com/developers/panel/app">your integrations</a></li>
+<li>Click on <strong>Create Application</strong></li>
+<a href="assets/images/mercadopago-1.png" target="_blank"><img class="img-fluid mb-5" src="assets/images/mercadopago-1.png"></a>
+<li>Choose a name for your app and follow the steps below:
+  <ul>
+    <li>What type of payment solution are you integrating? choose  <code>Online Payments</code></li>
+    <li>Are you using an e-commerce platform?  choose <code>No</code></li>
+    <li>What product are you integrating?  choose <code>CheckoutPro</code></li>
+    <li>Integration model <code>Leave blank</code></li>
+  </ul>
+</li>
+<a href="assets/images/mercadopago-2.png" target="_blank"><img class="img-fluid mb-5" src="assets/images/mercadopago-2.png"></a>
+<li>Get your <code>Access Token</code> from <code>Production credentials</code>
+</li>
+<li>Copy the <code>Access Token</code> to <code>Panel Admin > Payment Settings > Mercadopago</code></li>
+
+<li class="title-list">Flutterwave</li>
+<li>Get yourself a free <a href="https://flutterwave.com/" target="_blank">Flutterwave account</a></li>
+<li>Get your Public Key and Secret Key from here <a href="https://dashboard.flutterwave.com/dashboard/settings/apis" target="_blank">https://dashboard.flutterwave.com/dashboard/settings/apis</a>
+  <img class="img-fluid mb-5" src="assets/images/flutterwave.png">
+<li>Copy the API keys to <code>Panel Admin > Payment Settings > Flutterwave</code></li>
+
+<li class="title-list">Mollie</li>
+<li>
+  Get yourself a free <a href="https://www.mollie.com/signup" target="_blank">Mollie account</a>.
+</li>
+<br/>
+
+<li>
+  Get your API key from here <a href="https://www.mollie.com/dashboard/developers/api-keys" target="_blank">https://www.mollie.com/dashboard/developers/api-keys</a>.
+  <img class="img-fluid mb-5" src="assets/images/mollie-05.png">
+</li>
+
+<li>
+  To activate the test mode is your dashboard mollie
+  <img class="img-fluid mb-5" src="assets/images/mollie-02.png">
+</li>
+
+<li>
+  Enable payment methods: click on <code>settings</code> and then <code>Payment methods</code>
+  <img class="img-fluid mb-5" src="assets/images/mollie-03.png">
+</li>
+
+<li>
+  Then enable what you want, some payment methods work only with certain currencies, USD only accepts Credit Card and PayPal, EUR is accepted by all payment methods.
+  Here you can see more details <a href="https://docs.mollie.com/payments/multicurrency" target="_blank">https://docs.mollie.com/payments/multicurrency</a>
+  <img class="img-fluid mb-5" src="assets/images/mollie-04.png">
+</li>
+<div class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+  <strong>IMPORTANT:</strong>
+  This step is essential, not doing it will not work.
+</div>
+
+<li>Copy the API keys to <code>Panel Admin > Payment Settings > Mollie</code></li>
+
+<li class="title-list">Razorpay</li>
+<li>Get yourself a free <a href="https://razorpay.com" target="_blank">Razorpay account</a></li>
+<li>Get the API Keys from here <a href="https://dashboard.razorpay.com/#/app/keys" target="_blank">https://dashboard.razorpay.com/#/app/keys</a>
+<li>Copy the API keys to <code>Panel Admin > Payment Settings > Razorpay</code></li>
+
+<li class="title-list">Coinbase</li>
+<li>Get yourself Coinbase Commerce account in <a href="https://commerce.coinbase.com/signin" target="_blank">https://commerce.coinbase.com/signin</a></li>
+<li>Go to <a href="https://commerce.coinbase.com/dashboard/settings" target="_blank">https://commerce.coinbase.com/dashboard/settings</a></li>
+<li>Search for <strong>API keys</strong></li>
+<li>Click on <strong>Create an API key</strong>, copy the key and add it into the Panel Admin into <code>Panel Admin > Payment Settings > Coinbase</code></li>
+<li>Search for <strong>Webhook subscriptions</strong></li>
+<li>Click on <strong>Add an endpoint</strong> and add following url <code><strong>https://yourwebsite.com/webhook/coinbase</strong></code></li>
+<li>Click on <strong>Show shared secret</strong> and add that secret into <code>Panel Admin > Payment Settings > Coinbase</code></li>
+
+<li class="title-list">NowPayments (Adult content allowed)</li>
+  <li>Login into your NowPayments account, using <a href="https://account.nowpayments.io/sign-in" target="_blank">https://account.nowpayments.io/sign-in</a></li>
+  <li>Go to <a href="https://account.nowpayments.io/store-settings" target="_blank">https://account.nowpayments.io/store-settings</a></li>
+  <li>Add a new <b>API Key</b></li>
+  <li>Copy the key and add it into the Panel Admin into <code>Panel Admin > Payment Settings > NowPayments</code>.</li>
+  <li>Go back to your NowPayments account over Store settings and generate an <code>IPN secret key</code></li>
+  <li>Add secret into the Panel Admin, over at <code>>Panel Admin > Payment Settings > NowPayments</code></li>
+  <li>The next step is to add crypto wallets into your <a href="https://account.nowpayments.io/store-settings" target="_blank">NowPayments account</a>.</li>
+  <li><strong>Recommendation</strong> adding as many wallets as possible with different crypto currencies so the conversion rate will be lower.</li>
+  <li><strong>Recommendation</strong> adding a <b>payment covering percentage</b> into your <a href="https://account.nowpayments.io/store-settings" target="_blank">NowPayments account</a> representing percentage of the payment that needs to be paid to be considered completed.</li>
+
+  <li class="title-list">Binance</li>
+  <li>Get yourself a free <a href="https://merchant.binance.com/" target="_blank">Binance account</a></li>
+  <li>Get the API Keys from here <a href="https://merchant.binance.com/en/dashboard/developers/api" target="_blank">https://merchant.binance.com/en/dashboard/developers/api</a></li>
+  <li>Copy the API keys to <code>Panel Admin > Payment Settings > Binance</code></li>
+
+  <li class="title-list">OpenPix</li>
+  <li>Create a new API/Plugin from here <a href="https://app.woovi.com/home/applications/add" target="_blank">https://app.woovi.com/home/applications/add</a></li>
+  <li>Copy the AppID on <code>Panel Admin > Payment Settings > OpenPix</code></li>
+  <li>The webhook URL would be the following: <strong>https://your-website.com/webhook/openpix</strong></li>
+
+  <li class="title-list">ATLOS</li>
+  <li>Create a merchant account by logging in to ATLOS <a href="https://merchants.atlos.io/signup" target="_blank">Merchant Panel</a></li>
+  <li>Copy the Merchant ID and API Secret on <code>Panel Admin > Payment Settings > Atlos</code></li>
+  <li>Add your wallet address</li>
+  <li><strong>Postback URL</strong> Enter the URL <strong>https://your-website.com/webhook/atlos</strong></li>
+  <img class="img-fluid mb-5 mt-2" src="assets/images/atlos.png">
+  
+</ul><!-- /.ul list-cgl -->
+
+
+          <h2 id="Social" class="title2">Social Login <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li>Go to <code>https://yousite.com/panel/admin/social-login</code></li>
+
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 id="LiveStreaming" class="title2">Live Streaming / Video and Audio Calls (Agora.io) <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <div class="alert alert-sm alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>IMPORTANT:</strong>
+            Do not use the app that is initially created when you create the Agora account, create a new app to make it work correctly.
+          </div>
+
+          <ul class="list-cgl">
+            <li>Get yourself account <a href="https://agora.io/" target="_blank">Agora.io</a></li>
+            <li>
+              Go to <a href="https://console.agora.io/project-management" target="_blank">https://console.agora.io/project-management</a> and Click on <strong>Create New</strong> and next <strong>Configure</strong> as shown in the following image
+            </li>
+            <img class="img-fluid mb-2" src="assets/images/agora-v2.png">
+
+            <li>
+              In <strong>Use Case</strong> select <strong>Live Stream</strong>
+            </li>
+
+            <li>
+              Go to <em><strong>Panel Admin > Live Streaming</strong></em> or <em><strong>Panel Admin > Video Calls</strong></em> enable and set the APP ID
+            </li>
+            </ul>
+
+            <h2 id="AgeVerification" class="title2">Age Verification <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+            <ul class="list-cgl">
+               <li class="title-list">Yoti Service</li>
+              <li>Get yourself <a href="https://www.yoti.com/" target="_blank">Yoti account</a></li>
+              <li>Guide get API keys <a href="https://developers.yoti.com/age-verification/production-keys" target="_blank">https://developers.yoti.com/age-verification/production-keys</a>
+              <li>Copy the API keys to <code>Panel Admin > Age verification</code></li>
+            </ul>
+           
+
+          </ul><!-- /.ul list-cgl -->
+
+          
+
+          <h2 id="PushNotifications" class="title2">Push Notifications (OneSignal) <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li>Get yourself account <a href="https://onesignal.com" target="_blank">Onesignal</a></li>
+            <li>
+              Step 1: Cick on <strong>New App/Website</strong>
+            </li>
+            <a href="assets/images/push-1.png" target="_blank" rel="noopener noreferrer">
+              <img class="img-fluid mb-2" src="assets/images/push-1.png">
+            </a>
+            <small class="w-100 d-block mb-2">* Click on the image to see it larger</small>
+
+            <li>
+              Step 2: Add <strong>OneSignal App Name</strong>, select <strong>What organization should it belong to?</strong> and select <strong>Set up your first channel</strong>: <strong>Web</strong>
+            </li>
+            <a href="assets/images/push-2.png" target="_blank" rel="noopener noreferrer">
+              <img class="img-fluid mb-2" src="assets/images/push-2.png">
+            </a>
+            <small class="w-100 d-block mb-2">* Click on the image to see it larger</small>
+
+            <li>
+              Step 3: Copy <strong>OneSignal App ID</strong> And click <strong>Add Key</strong> to create <strong>OneSignal Rest API Key</strong>
+            </li>
+            <a href="assets/images/push-3.png" target="_blank" rel="noopener noreferrer">
+              <img class="img-fluid mb-2" src="assets/images/push-3.png">
+            </a>
+            <small class="w-100 d-block mb-2">* Click on the image to see it larger</small>
+
+            <li>
+              Go to <em><strong>Panel Admin > Push Notifications</strong></em> enable and set the <strong>OneSignal App ID</strong> and <strong>OneSignal Rest API Key</strong>
+            </li>
+          </ul><!-- /.ul list-cgl -->
+
+
+          <h2 id="Customize" class="title2">Customize <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li class="title-list">Language files</li>
+            <li class="font-italic">Find this lines in <strong>lang / en /</strong></li>
+            <pre class="line-numbers" data-start="5"><code class="language-php">/*
+|--------------------------------------------------------------------------
+| Admin Language Lines
+|--------------------------------------------------------------------------
+|
+*/
+
+'admin'                     =>      'Panel Admin',
+'role_admin'                =>      'Admin',
+'dashboard'                 =>      'Dashboard',</code></pre>
+
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 id="lang" class="title2">How to add a new language <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <li>Duplicate the folder <strong>lang / en</strong></li>
+      		<li>Rename to your language for example <strong>es</strong></li>
+      		<li>Translate the strings</li>
+      		<li>Duplicate the file <strong>public/ js / jqueryTimeago_en.js</strong> and rename ie: <strong>public/ js / jqueryTimeago_es.js </strong></li>
+      		<li>Translate the strings the new file</li>
+      		<li>Go panel admin <strong>https://yourwebsite.com/panel/admin/languages/create</strong> and add you new lenguage</li>
+          <hr />
+
+          <h2 class="title2 mt-4">Translate Slogan, Description and Keywords (SEO)</h2>
+          <li>Go to <strong>lang / en / seo.php</strong></li>
+
+          <pre class="line-numbers" data-start="5"><code class="language-php">&lt;?php
+
+return array(
+
+/*
+|--------------------------------------------------------------------------
+| SEO Language Lines
+|--------------------------------------------------------------------------
+|
+*/
+"slogan" => "Support Creators Content", // New on v4.0
+"description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut tortor rutrum massa efficitur tincidunt vel nec lacus. Curabitur porta aliquet diam, eu gravida neque lacinia.",
+"keywords" => "donations,support,creators,sponzy,subscription,content",
+);</code></pre>
+<div class="alert alert-sm alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>
+  <strong>IMPORTANT:</strong>
+  You will need to change in <strong>lang/es/seo.php</strong> if you want to use that language or if you have created another one.
+</div>
+
+          <h2 class="title2 mt-4">Translate Categories</h2>
+          <li>Create a file called <strong>categories.php</strong> in the folder of the language to be translated, for example <strong>lang / es</strong></li>
+
+          <pre class="line-numbers" data-start="5"><code class="language-php">&lt;?php
+
+return array(
+
+	/*
+	|--------------------------------------------------------------------------
+	| Categories Language Lines
+	|--------------------------------------------------------------------------
+	|
+	*/
+	"Animals" => "Animales",
+	"Business" => "Negocios",
+	"Charity" => "Caridad",
+);</code></pre>
+
+          <li>The key identifier will be the Slug / URL of the category</li>
+
+          <h2 class="title2 mt-4">Translate Shop Categories</h2>
+          <li>Create a file called <strong>shop-categories.php</strong> in the folder of the language to be translated, for example <strong>lang / es</strong></li>
+
+          <pre class="line-numbers" data-start="5"><code class="language-php">&lt;?php
+
+return array(
+
+/*
+|--------------------------------------------------------------------------
+| Shop Categories Language Lines
+|--------------------------------------------------------------------------
+|
+*/
+"exclusive-content" => "Contenido exclusivo",
+"handmade" => "Hecho a mano",
+"snapchat-sales" => "Ventas Snapchat",
+);</code></pre>
+
+          <li>The key identifier will be the Slug / URL of the category</li>
+
+          <h2 class="title2 mt-4">Path the files</h2>
+          <li>Home page: <code>resources > views > index > home.blade.php</code> </li>
+          <li>Home Login: <code>resources > views > index > home-login.blade.php</code> </li>
+          <li>Home - Logged in user: <code>resources > views > index > home-session.blade.php</code> </li>
+          <li>Creators: <code>resources > views > index > creators.blade.php</code> </li>
+          <li>Profile user: <code>resources > views > users > profile.blade.php</code> </li>
+          <li>Edit my page: <code>resources > views > users > edit_my_page.blade.php</code> </li>
+          <li>Navigation bar: <code>resources > views > includes > navbar.blade.php</code> </li>
+          <li>Navigation bar (Mobile): <code>resources > views > includes > menu-mobile.blade.php</code> </li>          
+          <li>Footer main: <code>resources > views > includes > footer.blade.php</code> </li>         
+          <li>Footer tiny: <code>resources > views > includes > footer-tiny.blade.php</code> </li>         
+
+          <h2 class="title2 mt-4">Translate Pages</h2>
+          <li>Just create a page by selecting the new language, remember that you must put the same Slug / URL</li>
+
+        <hr />
+
+        <h2 class="title2 mt-4">Sitemap</h2>
+        <li class="mb-4"><code><strong>https://yoursite.com/sitemaps.xml</strong></code></li>
+
+        <hr />
+
+        <h2 id="Troubleshooting" class="title2">Troubleshooting </h2>
+        <li><strong>I can't turn off maintenance mode</strong></li>
+        <li class="mb-4">Go to <code>storage / framework</code> and delete the file named <code>down</code> and file <code>maintenance.php</code> go back to <code>Panel Admin > Maintenance mode</code> put "off" and then "on" again, whenever you want to have your site in mode maintenance.</li>
+
+        <li><strong>Error creating an account</strong></li>
+        <li class="mb-4">Make sure you have correctly configured the email in the admin panel (<code>Panel Admin > Email settings</code>)</li>
+
+        <li><strong>Error 404 in the installer</strong></li>
+        <li class="mb-4">Check that your <code>.htaccess</code> file has not been corrupted when uploading to your server.</li>
+
+        <li><strong>Error 500 in the installer or on the home page</strong></li>
+        <li class="mb-4">Check that your <code>.env</code> file has not been corrupted when uploading to your server. It must have a dot before the name, and you must have at least PHP 8.2</li>
+
+        <li><strong>Admin login when Disable registration/Email login is enabled</strong></li>
+        <li class="mb-4">URL: <code>https://yourwebsite.com/login/admin</code></li>
+
+        <li><strong>Twitter Login Error</strong></li>
+        <li class="mb-4">The app must be created using version 2.0</li>
+
+        <li><strong>EPUB files not displaying in Digital Ocean</strong></li>
+        <li class="mb-4">Configure CORS <a href="https://docs.digitalocean.com/products/spaces/how-to/configure-cors/" target="_blank">https://docs.digitalocean.com/products/spaces/how-to/configure-cors/</a> </li>
+
+      <hr />
+
+          <h2 class="title2" id="Permissions">Make sure these folders and files have 0755 permissions <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+            <span><strong><i class="fas fa-file"></i> Files</strong></span>
+            <li class="mb-3">.env</li>
+
+            <span><strong><i class="fas fa-folder-open"></i> Folders</strong></span>
+            <li>bootstrap / cache /</li>
+            <li>public / img-category /</li>
+            <li>public / temp /</li>
+            <li>public / uploads /</li>
+            <li>storage</li>
+            <hr />
+
+            <h2 class="title2" id="update">How to update <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+            <li>Go to the <code><strong>Upgrades</strong></code> folder, select the version you want, click on the <strong>README.html</strong> file and follow the steps.</li>
+
+            <hr />
+
+          <h2 id="Sources" class="title2">Sources and Credits <a href="#tableContent" class="scroll-element" title="Go Top"><i class="fas fa-arrow-up"></i></a></h2>
+
+          <ul class="list-cgl">
+            <li>Laravel - https://laravel.com/</li>
+            <li>jQuery - https://jquery.com/</li>
+            <li>Bootstrap - https://getbootstrap.com/</li>
+            <li>Font Awesome - https://fontawesome.com</li>
+            <li>jquery Form // malsup.com/jquery/form/</li>
+            <li>jqueryTimeago.js // http://timeago.yarp.com/</li>
+            <li>Fonts - https://www.google.com/fonts</li>
+            <li>Tinymce - http://www.tinymce.com/</li>
+            <li>Ckeditor - https://ckeditor.com/</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong><a href="mailto:support@miguelvasquez.net">support@miguelvasquez.net</a></strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+
+          <hr />
+
+          <div class="text-center">
+            <small class="form-text text-muted">Thank you for purchasing my script 😉</small>
+          </div>
+
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/prism.js"></script>
+    <script type="text/javascript" src="assets/js/prism-line-highlight.js"></script>
+
+    <script type="text/javascript">
+
+    function scrollElement(element){
+    	var offset = $(element).offset().top;
+    	$('html, body').animate({scrollTop:offset}, 500);
+    };
+
+    $('.scroll-element').click(function(e) {
+      e.preventDefault();
+      $this = $(this);
+      $value = $this.attr('href');
+      scrollElement($value);
+    });
+    </script>
+
+  </body>
+</html>

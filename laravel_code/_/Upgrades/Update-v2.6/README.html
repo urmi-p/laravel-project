@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v2.6</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v2.6</h1>
+              <p class="lead">Updated:  29, November 2021</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>Hide profile still show in popular section</li>
+            <li>Price PPV on post not change when is edited</li>
+            <li>Subscription show on Panel Admin Dashboard after delete user</li>
+            <li>Calculation of percentage of revenue in the creator's dashboard</li>
+            <li>Protection of url focus in images</li>
+            <li>Ambiguous Categories status</li>
+            <li>Language in PPV Edit post</li>
+            <li>URL resources on Blackblaze B2 in blog</li>
+            <li>Delete user with messages</li>
+            <li>Poster video set private in DigitalOcean</li>
+            <li>Captcha error in Contact us</li>
+            <li>PWA error login</li>
+            <li>PayPal renew subscription</li>
+            <li>Wallet format when send tip</li>
+            <li>Search users by name with hidden name</li>
+            <li>Edit categories with spaces</li>
+            <li>Delete old media messages (Cron Job)</li>
+            <li>Video embed with multiple files</li>
+
+            <li class="title-list">New</li>
+            <li>Role and permissions</li>
+            <li>Encoding video in Post (.mp4)</li>
+            <li>Encoding video in Message (.mp4)</li>
+            <li>Watermark on videos</li>
+            <li>Creators can block countries</li>
+            <li>Approve/Reject Post</li>
+            <li>New section My Posts</li>
+            <li>Type of Announcements (Informative and Important)</li>
+            <li>Enable/Disable notifications Liked your comment (All users)</li>
+            <li>Show link Explore Posts in mobile</li>
+            <li>Amount total in invoice deposits</li>
+            <li>Show minimum amount in tip</li>
+            <li>Search by name adn username</li>
+            <li>VAT number on invoices</li>
+            <li>New gender (Couple)</li>
+            <li>Improved Creator Dashboard</li>
+            <li>Improved Panel Admin</li>
+
+            <li></li>
+
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 2.5</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the folder <code>vendor</code>, the files <code>composer.json</code> and <code>composer.lock</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+              or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server.).</li>
+            <br />
+
+            <li>Upload the file <code>v2.6.zip</code> found inside the <code>Update-v2.6</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v2.6.zip</code> and enter at URL <code>https://yoursite.com/v2.6/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v2.6/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 2.6
+'explore_posts' => 'Explore Posts',
+'transaction_fee_info' => '* Transaction fee is not included in the amount, only on invoice.',
+'type_announcement' => 'Type announcement',
+'informative' => 'Informative',
+'important' => 'Important',
+'compared_yesterday' => 'Compared to yesterday',
+'compared_last_week' => 'Compared to last week',
+'compared_last_month' => 'Compared to last month',
+'auto_approve_post' => 'Auto approve Post',
+'post_pending_review' => 'Post pending review',
+'alert_post_pending_review' => 'Your publication will be available after it is reviewed, you can see in',
+'my_posts' => 'My Posts',
+'yes_confirm_reject_post' => 'Yes, reject post!',
+'yes_confirm_approve_post' => 'Yes, approve post!',
+'delete_confirm_post' => 'An email will be sent to the user notifying that their post was rejected.',
+'approve_confirm_post' => 'An notification will be sent to the user notifying that their post was approved.',
+'rejected_post' => 'Post Rejected',
+'approve_post_success' => 'Post has been approved successfully!',
+'line_rejected_post' => 'Your post ":title" was rejected because it does not meet our terms and conditions.', // Do not remove :title
+'has_approved_your_post' => 'Your post has been approved',
+'all_post_created' => 'All the posts you have created',
+'interactions' => 'Interactions',
+'not_post_created' => 'You have not created any post so far',
+'role_and_permissions' => 'Role and permissions',
+'can_see' => 'Can see (Read only)',
+'can_crud' => 'Can Create, Read, Update, Approve, Delete, etc.',
+'can_see_post_blocked' => 'See blocked posts or premium (PPV)',
+'info_can_see_post_blocked' => 'If you give access to manage posts you must select "Yes"',
+'limited_access' => 'Limited Access',
+'info_limited_access' => 'The user will be able to access all the sections of the Panel Admin, but will not be able to add, edit or delete anything.',
+'give_access_error' => 'To give access to a section you must uncheck the Limited Access option',
+'select_all' => 'Select all',
+'unauthorized_action' => 'You are not authorized to perform this action',
+'unauthorized_section' => 'You do not have permission to view this section, go to the available sections found in the left menu.',
+'block_countries' => 'Block Countries',
+'block_countries_info' => 'Select the countries in which you do not want your profile to be displayed, they will not be able to see your profile in any section of the site.',
+'super_admin' => 'Super Admin',
+'couple' => 'Couple',
+'video_on_way' => 'Video on the way...',
+'video_processed_info' => 'Your video is being processed, you will receive a notification when it is ready.',
+'video_processed_successfully_post' => 'Your video has been processed successfully (Post)',
+'video_processed_successfully_message' => 'Your video has been processed successfully (Message)',</code></pre>
+
+
+
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong>support@miguelvasquez.net</strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>

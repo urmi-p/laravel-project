@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/favicon.png">
+
+    <title>Update Sponzy - Support Creators Content Script v4.2</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="../assets/css/prism.css" rel="stylesheet">
+    <link href="../assets/css/prism-line-highlight.css" rel="stylesheet">
+    <link href="../assets/css/all.min.css" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css' />
+
+  </head>
+
+  <body>
+
+    <main role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron jb-bg text-center">
+        <div class="container">
+          <div class="position-relative">
+            <h1 class="jumbotron-title">Sponzy - Support Creators Content Script v4.2</h1>
+              <p class="lead">Updated:  13, October 2022</p>
+          </div>
+        </div>
+      </div>
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="title2">Changelog</h2>
+
+          <ul class="list-cgl">
+
+            <li class="title-list">Fixed</li>
+            <li>User undefined on withdrawals</li>
+            <li>Icons align messages chat</li>
+            <li>Avoid landscape on PWA</li>
+            <li>Backblaze error on theme section and members</li>
+            <li>Featured option Admin on non-creators</li>
+            <li>Avoid error send email new subscriber</li>
+            <li>JavaScript file JQuery UI</li>
+            <li>Delete product when delete user</li>
+            <li>Set lang subscription via email</li>
+            <li>Single quated on verify user "ZIP"</li>
+            <li>Install App JavaScript error</li>
+            <li>Error 419 explired Login</li>
+            <li>Error install with sessions database</li>
+            <li>Fee cents on Mercadopago</li>
+            <li>PayPal refund</li>
+            <li>Download files ZIP public</li>
+            <li>Cover default not save on Panel Admin</li>
+            <li>Counter verification request</li>
+            <li>Alert report pending</li>
+            <li>Mentions error JavaScript (non-creators)</li>
+            <li>Withdrawals with Payoneer and Zelle</li>
+            <li>Insert Emoji on Ajax request</li>
+            <li>Upload GIF images on Posts and Messages Chat</li>
+            
+            <li class="title-list">New</li>
+            <li>Stories (Image/Video and Text)</li>
+            <li>Creator can see People who have seen the story</li>
+            <li>Section Stories on Panel Admin (Settings, Posts, Background images)</li>
+            <li>Admin can set max videos length on Stories (10, 15, 20, 30, 60 seconds)</li>
+            <li>Push Notifications with OneSignal</li>
+            <li>Video views single video</li>
+            <li>Removed avatar on edit post modal</li>
+            <li>Add URL sitemaps on Docs</li>
+            <li>Blog 3 columns</li>
+            <li>Enable/Disable PWA</li>
+            <li>Catch error on Sign up email not configured</li>
+            <li>Catch error on Verify creator email not configured</li>
+            <li>Enable/Disable ZIP code on verification request</li>
+            <li>Admin can see invoices on Transactions and Deposits</li>
+            <li>Add create Cron Job on Plesk on Docs</li>
+            <li>Improved login sessions</li>
+            <li>Updated to Laravel v8.83.24</li>
+            <li>Updated to JQuery 3.6.1</li>
+            <li>Updated to Glightbox 3.2.0</li>
+            <li>Updated to Plyr 3.7.2</li>
+            <li>Replies comments</li>
+            <li>Admin can set maximum withdrawal amount</li>
+            <li>Filter earnings Creator by: month, last month and year</li>
+            <li>Filter earnings Admin by: month, last month and year</li>
+            <li>Moved likes and comments counter</li>
+            <li>Edit comments</li>
+            <li>Show profession on Autocomplete search</li>
+            <li>Link Explore posts moved to creators page</li>
+            <li>Bookmarks counter on My Posts</li>
+            <li>Clear cache on Panel Admin</li>
+            <li>Show earnings creator dashboard (Subscription, Tips and PPV)</li>
+            <li>Show only free on explore creators card</li>
+            <li>Show Alert if payment withdrawal is disabled by Admin</li>
+            <li>Creator enable/disable unregistered people can see my posts</li>
+            <li>Explorer creators widget moved to Wall (after first post)</li>
+            <li>Improved Laravel routes</li>
+          </ul><!-- /.ul list-cgl -->
+
+          <h2 class="title2">Installation</h2>
+
+          <ul class="list-cgl decimal affected-files">
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              If you have made changes to the script make a backup of the files, because they can be replaced.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              You must update from <strong><em>version 4.1</strong></em>. if you upgrade from another version will throw an error.
+            </div>
+
+            <div class="alert alert-sm alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>IMPORTANT:</strong>
+              Please follow the steps below strictly, otherwise the update will fail.
+            </div>
+
+            <li>Upload the folder <code>vendor</code> found inside the <code>Script</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server,
+               or where you have the script installed, you must make sure that it is the root directory (You can upload the vendor folder from FTP or by compressing and then uploading to the server).</li>
+               <br />
+
+            <li>Upload the file <code>v4.2.zip</code> found inside the <code>Update-v4.2</code> folder, into the <code>public_html</code> or <code>www</code> folder on your server, or where you have the script installed, you must make sure that it is the root directory.</li>
+            <br />
+
+             <li>Unzip the file <code>v4.2.zip</code> and enter at URL <code>https://yoursite.com/v4.2/</code> or if you have the script in subdirectory (subdomain) <code>https://yoursite.com/test/v4.2/</code></li>
+             <div class="alert alert-sm alert-warning" role="alert">
+               <i class="fas fa-exclamation-triangle"></i>
+               <strong>IMPORTANT:</strong>
+               You must be logged in as Admin
+             </div>
+             <br />
+
+             <li>If all goes well, this message will appear, that's it! The new version has already been installed.</li>
+             <img class="img-fluid mb-5" src="../assets/images/01.png">
+<br />
+
+<li>Add these new text strings if you have created a language other than Spanish or English, otherwise you should not do anything because they will be added automatically. <code>resources / lang / xx / general.php</code></li>
+             <pre><code class="language-php">// Version 4.2
+'push_notification_title' => 'Activate Push Notifications to be aware of :app interactions.',// Not remove :app
+'maybe_later' => 'Maybe Later',
+'push_notifications' => 'Push Notifications',
+'notifications_activated_successfully' => 'Notifications activated successfully!',
+'has_mentioned_you_post' => 'he mentioned you in a post',
+'referrals_made_transaction' => 'One of your referrals has made a transaction',
+'has_sent_you_tip' => 'has sent you a tip',
+'like_your_comment' => 'liked your comment',
+'login_session_alert' => 'If you don\'t recognize this session record, change your password immediately.',
+'zip_verification_creator' => 'Request ZIP code to verify creator account',
+'push_notification_warning' => 'Push Notifications will also be affected.',
+'reply' => 'Reply',
+'view_replies' => 'View replies',
+'replying_to' => 'Replying to',
+'payoneer_account' => 'Payoneer Account',
+'zelle_account' => 'Zelle Account',
+'this_month' => 'This month',
+'last_month' => 'Last month',
+'this_year' =>  'This year',
+'amount_max_withdrawal' =>  'Maximum withdrawal amount',
+'info_max_withdrawal' =>  'Leave at zero to set no limits',
+'edit_comment' =>  'Edit comment',
+'like_likes' =>  ':total like|:total likes',// Not remove :total
+'comment_comments' =>  ':total comment|:total comments',// Not remove :total
+'view_views' =>  ':total view|:total views',// Not remove :total
+'clear_cache' => 'Clear cache',
+'successfully_cleaned' => 'Successfully cleaned!',
+'earnings_net_subscriptions' => 'Net earnings from subscriptions',
+'earnings_net_tips' => 'Net earnings from tips',
+'earnings_net_ppv' => 'Net earnings from Pay Per View',
+'show_only_free' => 'Show only free',
+'show_all' => 'Show all',
+'payment_method_configured_disabled' => 'The :payment you have configured was disabled, please select another.',// Not remove :payment
+'posts_privacy' => 'Unregistered people can see my posts',
+'alert_posts_privacy' => 'Only registered people can see posts from :user',// Not remove :user
+'close_all_sessions' => 'Close all sessions',
+'active_now' => 'Active now',
+'stories' => 'Stories',
+'backgrounds' => 'Background images',
+'settings' => 'Settings',
+'story_image' => 'Story with Image/Video',
+'story_text' => 'Story with text',
+'success_removed' => 'Successfully removed',
+'add_story'=> 'Add story',
+'choose_type_story' => 'Choose the type of story',
+'add_story_image_subtitle' => 'Create an story with video or photo',
+'add_story_text_subtitle' => 'Create an story with only text',
+'select_media_story' => 'Please select an image or video',
+'story_max_videos_length' => 'Max videos length',
+'seconds' => 'seconds',
+'error_story_max_videos_length' => 'Videos can not longer than :length seconds.',// Not remove :length
+'story_on_way' => 'Story on way...',
+'story_successfully_posted' => 'Your story is now available!',
+'see_story' => 'See story',
+'my_stories' => 'My stories',
+'my_stories_subtitle' => 'All the stories you\'ve created',
+'start_typing' => 'Start typing',
+'text' => 'Text',
+'touch_unmute' => 'Touch to unmute',
+'ago' => 'ago',
+'hour' => 'hour',
+'hours' => 'hours',
+'minute' => 'minute',
+'minutes' => 'minutes',
+'fromnow' => 'from now',
+'seconds' => 'seconds',
+'yesterday' => 'yesterday',
+'people_seen_story' => 'People who have seen the story',
+'no_one_seen_story_yet' => 'No one has seen your story yet',</code></pre>
+
+<h6 class="alert alert-sm alert-info" role="alert">
+  <i class="fas fa-info-circle mr-1"></i>
+  If you have multiple languages on your site you should add to each file.
+</h6>
+          <hr />
+
+          <div class="text-center">
+            <p class="lead">Any problem or doubt send me an email to <strong><a href="mailto:support@miguelvasquez.net">support@miguelvasquez.net</a></strong> <br/>
+            Do not forget to visit <strong><a href="https://miguelvasquez.net/" target="_blank">miguelvasquez.net</a></strong></p>
+          </div>
+        </div><!-- /.col-md-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    </main><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Miguel Vasquez - Web Design and Development All Rights Reserved.
+          <a href="https://www.facebook.com/MiguelVasquezWeb"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com/MigueVasquezweb"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/miguelvasquezweb"><i class="fab fa-instagram"></i></a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/prism.js"></script>
+    <script type="text/javascript" src="../assets/js/prism-line-highlight.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.scrollTo.min.js"></script>
+  </body>
+</html>
