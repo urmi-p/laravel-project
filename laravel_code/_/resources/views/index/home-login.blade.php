@@ -13,7 +13,8 @@
           </div>
           <div class="" >
             <div class="card-body px-lg-5 py-lg-5 pt-4">
-              <small class="btn-block text-center pb-4 h6">{{ __('general.title_home_login') }}</small>
+              <h4>Welcome Back</h4>
+              <small class="btn-block pb-4 h6 text-lime">{{ __('general.title_login') }}</small>
 
           @if (session('login_required'))
             <div class="alert alert-danger" id="dangerAlert">
@@ -227,6 +228,7 @@
     </div>
     <div class="col-lg-7 right-side">
       <img src="{{url('img', $settings->logo)}}" class="img-center img-fluid d-lg-block d-none">
+      <span class="text-lime h5 mb-5">{{__('general.title_home_login')}}</span>
       <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
     </div>
   </div>
@@ -660,3 +662,4 @@
 </script>
 
 @endsection
+

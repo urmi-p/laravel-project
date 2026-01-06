@@ -9,23 +9,29 @@
 @endsection
 
 @section('content')
-  <div class="jumbotron home m-0 bg-gradient">
+  <div class="jumbotron  m-0 bg-gradient maaa">
     <div class="container pt-lg-md">
       <div class="row justify-content-center">
-        <div class="col-lg-5">
-          <div class="card bg-white shadow border-0 b-radio-custom">
 
-              <h4 class="text-center mb-0 font-weight-bold pt-4 px-4">
+        <div class="col-lg-5 d-flex flex-column justify-content-center">
+          <div class="">
+            <a href="{{ url()->previous() }}" class="text-light">
+              <small><i class="fas fa-arrow-left"></i></small>
+            </a>
+          </div>
+          <div class=" shadow border-0 b-radio-custom">
+
+              <h4 class="text-start mb-0 font-weight-bold pt-4 ">
                 {{__('auth.password_recover')}}
               </h4>
-              <small class="btn-block text-center mt-2 px-4">{{ __('auth.recover_pass_subtitle') }}</small>
+              <small class="btn-block text-start mt-2 ">{{ __('auth.recover_pass_subtitle') }}</small>
 
-            <div class="card-body px-lg-5 py-lg-5">
+            <div class="py-lg-5">
               @if (session('status'))
-                      <div class="alert alert-success">
-                        {{{ session('status') }}}
-                      </div>
-                    @endif
+                <div class="alert alert-success">
+                  {{{ session('status') }}}
+                </div>
+              @endif
 
               @include('errors.errors-forms')
 
@@ -37,7 +43,6 @@
                       <span class="input-group-text"><i class="feather icon-mail"></i></span>
                     </div>
                     <input class="form-control @if (count($errors) > 0) is-invalid @endif" value="{{ old('email')}}" placeholder="{{__('auth.email')}}" name="email" required type="text">
-
                   </div>
                 </div>
 
@@ -47,7 +52,7 @@
 
                   {!! NoCaptcha::renderJs() !!}
                   @else
-                  <button type="submit" class="btn btn-primary my-4 w-100">{{__('auth.send_pass_reset')}}</button>
+                  <button type="submit" class="cls btn btn-primary my-4 w-100 ">{{__('auth.send_pass_reset')}}</button>
                   @endif
                 </div>
               </form>
@@ -58,13 +63,11 @@
 
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-6">
-              <a href="{{ url()->previous() }}" class="text-light">
-                <small><i class="fas fa-arrow-left"></i> {{__('general.go_back')}}</small>
-              </a>
-            </div>
-          </div>
+        </div>
+        
+        <div class="col-lg-7">
+          <img src="{{url('img', $settings->logo)}}" class="img-center img-fluid d-lg-block d-none">
+          <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
         </div>
       </div>
     </div>

@@ -1109,7 +1109,6 @@ a.link-border {
 .bg-success {
     background-color: #2dce89 !important;
 }
-/* remove by  kajal */
 /* .nav-profile {
     /* border-bottom: 3px solid rgba(159, 163, 177, 0.07); 
 } */
@@ -1238,7 +1237,9 @@ a:hover.button-avatar-upload {
     transition: width 0.6s ease;
 }
 .avatar-user-home {
-    background-color: #fff;
+  margin-top: -25px;
+  border: 2px solid #FFF;
+  background-color: #FFF;
 }
 .btn-upload {
   width: 48px;
@@ -2207,3 +2208,24 @@ a.btn-category:focus {
     }
 }
 
+.text-red {
+  color: #E2394C;
+}
+#btnLoginRegister{
+  border-radius: 8px;
+}
+
+.right-side{
+    border-radius: 14px;
+    background: linear-gradient(
+    to left,
+    rgba(120, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.9) 45%,
+    #000 65%
+  );
+}
+
+
+.text-lime{
+  color: #A3A3A3;
+}

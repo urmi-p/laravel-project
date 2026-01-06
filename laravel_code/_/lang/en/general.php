@@ -497,6 +497,7 @@ return array(
 	'language' => 'Language',
 	'home_style' => 'Home page theme',
 	'title_home_login' => 'Join now and start making money with your content!',
+	'title_login' => 'Sign in to your account to continue',
 
 	// Version 1.7
 	'birthdate_desc' => 'Valid formats (month/day/year) or (day-month-year)',

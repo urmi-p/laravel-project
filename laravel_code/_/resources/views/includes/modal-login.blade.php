@@ -80,17 +80,15 @@
 								<span class="input-group-text c-pointer"><i class="feather icon-eye-off"></i></span>
 						</div>
 					</div>
-					<small class="form-text text-muted">
-						<a href="{{url('password/reset')}}" id="forgotPassword">
-							{{__('auth.forgot_password')}}
-						</a>
-					</small>
+					<a href="{{url('password/reset')}}" id="forgotPassword">
+						{{__('auth.forgot_password')}}
+					</a>
 					</div>
 
 					<div class="custom-control custom-control-alternative custom-checkbox" id="remember">
 						<input class="custom-control-input" id=" customCheckLogin" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
 						<label class="custom-control-label" for=" customCheckLogin">
-							<span>{{__('auth.remember_me')}}</span>
+							<span class="d1">{{__('auth.remember_me')}}</span>
 						</label>
 					</div>
 
