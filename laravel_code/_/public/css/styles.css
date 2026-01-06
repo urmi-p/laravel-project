@@ -2229,3 +2229,7 @@ a.btn-category:focus {
 .text-lime{
   color: #A3A3A3;
 }
+
+.inline-padding{
+  padding-inline: 3rem;
+}

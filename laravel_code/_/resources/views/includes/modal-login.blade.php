@@ -134,7 +134,7 @@
 				<div class="row mt-3">
 					<div class="col-12 text-center">
 						<a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}">
-							<strong>{{__('auth.not_have_account')}}</strong>
+							<span>{{__('auth.not_have_account')}}</span>
 						</a>
 					</div>
 				</div>
@@ -144,7 +144,7 @@
 				<div class="row mt-3">
 					<div class="col-12 text-center">
 						<a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}">
-							<strong>{{__('auth.not_have_account')}}</strong>
+							<span>{{__('auth.not_have_account')}}</span>
 						</a>
 					</div>
 				</div>

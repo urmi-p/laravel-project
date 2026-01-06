@@ -3768,15 +3768,18 @@
 
 	$(document).on('click', '#toggleLogin', function (e) {
 
-
+		console.log('toggleLogin>>>>>11');
 
 		e.preventDefault();
 
 		var element = $(this);
+		var nextSpan = element.next('span');
 
 		var notAccount = element.attr('data-not-account');
 
 		var alreadyAccount = element.attr('data-already-account');
+		var signUp = nextSpan.attr('data-text-signup');
+		var signIn = nextSpan.attr('data-text-signin');
 
 		var textLogin = element.attr('data-text-login');
 
@@ -3797,9 +3800,9 @@
 
 
 		if (element.hasClass('register')) {
-
-			element.html('<strong>' + alreadyAccount + '</strong>');
-
+			console.log('register>>>>>');
+			element.html(alreadyAccount);
+			nextSpan.html(signIn)
 			$('#btnLoginRegister').html('<i></i> ' + textRegister);
 
 			$('#full_name, #email, #agree_gdpr').show();
@@ -3815,9 +3818,9 @@
 
 
 		} else {
-
-			element.html('<strong>' + notAccount + '</strong>');
-
+			console.log('not account>>>>>');
+			element.html(notAccount);
+			nextSpan.html(signUp)
 			$('#btnLoginRegister').html('<i></i> ' + textLogin);
 
 			$('#full_name, #email, #agree_gdpr').hide();

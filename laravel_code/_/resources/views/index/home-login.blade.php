@@ -8,7 +8,7 @@
     <div class="container pt-lg-md">
       <div class="row">
         <div class="col-lg-5">
-          <div class="text-center d-block w-100">
+          <div class="d-block px-lg-5 w-100">
             <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" width="50%" class="logo align-baseline mb-1" />
           </div>
           <div class="" >
@@ -215,7 +215,7 @@
 
                 <a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}">
 
-                  <strong>{{__('auth.not_have_account')}}</strong>
+                  <span>{{__('auth.not_have_account')}}</span>
 
                 </a>
 
@@ -227,8 +227,8 @@
       </div>
     </div>
     <div class="col-lg-7 right-side">
-      <img src="{{url('img', $settings->logo)}}" class="img-center img-fluid d-lg-block d-none">
-      <span class="text-lime h5 mb-5">{{__('general.title_home_login')}}</span>
+      <img src="{{url('img/main.png')}}" alt="User" class="w-50 img-fluid d-lg-block d-none">
+      <span class="text-lime h5 mb-5 px-4 ">{{__('general.title_home_login')}}</span>
       <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
     </div>
   </div>

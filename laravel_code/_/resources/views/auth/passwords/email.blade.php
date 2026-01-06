@@ -9,15 +9,18 @@
 @endsection
 
 @section('content')
-  <div class="jumbotron  m-0 bg-gradient maaa">
+  <div class="jumbotron m-0 bg-gradient maaa">
     <div class="container pt-lg-md">
-      <div class="row justify-content-center">
+      <div class="row justify-content-center ">
 
-        <div class="col-lg-5 d-flex flex-column justify-content-center">
-          <div class="">
-            <a href="{{ url()->previous() }}" class="text-light">
+        <div class="col-lg-5 d-flex flex-column justify-content-center inline-padding">
+          <div class="d-flex items-center">
+            <a href="{{ url()->previous() }}" class="text-light d-flex align-items-center">
               <small><i class="fas fa-arrow-left"></i></small>
             </a>
+            <div>
+              <img src="{{ url('img/small-logo.png') }}" class="ml-2 d-block  d-lg-none" width="125" height="42">
+            </div>
           </div>
           <div class=" shadow border-0 b-radio-custom">
 
@@ -65,8 +68,9 @@
           </div>
         </div>
         
-        <div class="col-lg-7">
-          <img src="{{url('img', $settings->logo)}}" class="img-center img-fluid d-lg-block d-none">
+        <div class="col-lg-7 right-side ">
+          <img src="{{url('img', $settings->logo)}}" class="img-center w-50 d-lg-block d-none mt-3">
+          <span class="text-lime h5 mb-5">{{__('general.title_home_login')}}</span>
           <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
         </div>
       </div>
