@@ -69,8 +69,8 @@
         </div>
         
         <div class="col-lg-7 right-side ">
-          <img src="{{url('img', $settings->logo)}}" class="img-center w-50 d-lg-block d-none mt-3">
-          <span class="text-lime h5 mb-5">{{__('general.title_home_login')}}</span>
+          <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block d-none mt-3" width="356" height="120">
+          <span class="text-lime h5 mb-5 d-lg-block d-none">{{__('general.title_home_login')}}</span>
           <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
         </div>
       </div>

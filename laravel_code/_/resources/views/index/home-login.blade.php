@@ -8,8 +8,8 @@
     <div class="container pt-lg-md">
       <div class="row">
         <div class="col-lg-5">
-          <div class="d-block px-lg-5 w-100">
-            <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" width="50%" class="logo align-baseline mb-1" />
+          <div class="d-block px-3 px-lg-5 w-100 px-mobile-1 ">
+            <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}"  class="logo align-baseline mb-1" width="125" height="42" />
           </div>
           <div class="" >
             <div class="card-body px-lg-5 py-lg-5 pt-4">
@@ -227,8 +227,8 @@
       </div>
     </div>
     <div class="col-lg-7 right-side">
-      <img src="{{url('img/main.png')}}" alt="User" class="w-50 img-fluid d-lg-block d-none">
-      <span class="text-lime h5 mb-5 px-4 ">{{__('general.title_home_login')}}</span>
+      <img src="{{url('img/main.png')}}" alt="User" class="img-fluid d-lg-block d-none"  width="356" height="120">
+      <span class="text-lime h5 mb-5 px-4 d-lg-block d-none">{{__('general.title_home_login')}}</span>
       <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
     </div>
   </div>
