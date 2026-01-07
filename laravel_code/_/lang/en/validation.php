@@ -150,7 +150,7 @@ return [
     */
 
     'attributes' => [
-  		'agree_gdpr' => 'box I agree with the processing of personal data',
+  		'agree_gdpr' => 'By creating your account, you agree to our Terms and Conditions and Privacy Policy',
       'agree_terms' => 'box I agree with the Terms and Conditions',
       'agree_terms_privacy' => 'box I agree with the Terms and Conditions and Privacy Policy',
   		'full_name' => 'Full Name',

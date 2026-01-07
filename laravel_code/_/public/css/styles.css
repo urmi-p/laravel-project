@@ -3,7 +3,7 @@
  * *****************
  */
 
- @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,800;0,900;1,800&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
  html, body {
 height: 100%;
 }
@@ -28,7 +28,8 @@ a {
 
 
 body {
-  font-family: 'Barlow', Helvetica, Arial, sans-serif;
+  /*font-family: 'Barlow', Helvetica, Arial, sans-serif;*/
+  font-family: 'Poppins', sans-serif;
   color: #5f5f5f;
 }
 
@@ -2215,16 +2216,112 @@ a.btn-category:focus {
   border-radius: 8px;
 }
 
+@media (min-width: 768px) {
+  .login-form-left {
+   padding: 0 40px;
+  }
+}
+
+.login-form-or {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  /* identical to box height, or 125% */
+  text-align: center;
+  /* neutral/400 */
+  color: #A3A3A3;
+}
+
+.title_home_login{
+  /* Join now and start making money with your content! */
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px !important;
+  line-height: 33px;
+  /* or 138% */
+  display: flex;
+  align-items: center;
+
+  /* neutral/400 */
+  color: #A3A3A3;
+
+}
+
+/* Sign in to your account to continue */
+.title_login{
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 26px;
+/* identical to box height, or 162% */
+display: flex;
+align-items: center;
+
+/* neutral/400 */
+color: #A3A3A3;
+
+}
+/* Label */
+
+#toggleLogin{
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height, or 125% */
+/* white */
+color: #FFFFFF;
+}
+/*
 .right-side{
-    border-radius: 14px;
+    padding:40px;
+    border-radius: 20px;
     background: linear-gradient(
     to left,
     rgba(120, 0, 0, 0.5),
     rgba(0, 0, 0, 0.9) 45%,
     #000 65%
   );
+}*/
+@media (min-width: 768px) {
+.right-side {
+  position: relative;
+  padding: 70px;
+  overflow: hidden;
+  background: #000;
+  border-radius: 20px;
 }
 
+.right-side::after {
+  content: "";
+  position: absolute;
+
+  /* MATCH FIGMA SIZE */
+  width: 1704px;
+  height: 1704px;
+
+  /* MATCH FIGMA POSITION */
+  right: -196px;
+  top: -446px;
+
+  /* MATCH FIGMA GRADIENT */
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(226, 57, 76, 1) 100%
+  );
+
+  /* MATCH FIGMA OPACITY */
+  opacity: 0.5;
+
+  /* MATCH FIGMA FLIP */
+  transform: scaleX(-1);
+
+  pointer-events: none;
+  z-index: 0;
+}
+}
 
 .text-lime{
   color: #A3A3A3;
@@ -2232,4 +2329,18 @@ a.btn-category:focus {
 
 .inline-padding{
   padding-inline: 3rem;
+}
+
+.image-stack {
+    position: relative;
+    margin-top: 40px;
+}
+.stack-img {
+    position: absolute;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    z-index: 3;
+     opacity: 0.5;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
 }

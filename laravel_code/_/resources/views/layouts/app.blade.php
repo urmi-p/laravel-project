@@ -109,13 +109,18 @@
 
   <div class="popout popout-error font-default"></div>
 
-@if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
-    || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
-    || auth()->guest() && request()->path() != '/' && $settings->home_style == 1
-    || auth()->guest() && request()->path() == '/' && $settings->home_style == 2
-    || auth()->guest() && request()->path() != '/' && $settings->home_style == 2
-    || auth()->check()
-    )
+@if (
+      !request()->is('password/reset*') &&
+      (
+        (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
+        || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
+        || auth()->guest() && request()->path() != '/' && $settings->home_style == 1
+        || auth()->guest() && request()->path() == '/' && $settings->home_style == 2
+        || auth()->guest() && request()->path() != '/' && $settings->home_style == 2
+        || auth()->check()
+        )
+      )
+)
   @include('includes.navbar')
   @endif
 
@@ -141,13 +146,18 @@
             'live/*'
             ])          
           )
-
-          @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
-                || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
-                || auth()->guest() && request()->path() != '/' && $settings->home_style == 1
-                || auth()->guest() && request()->path() != '/' && $settings->home_style == 2
-                || auth()->check()
-                  )
+            
+          @if (
+                  !request()->is('password/reset*') &&
+                ( 
+                  (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
+                        || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
+                        || auth()->guest() && request()->path() != '/' && $settings->home_style == 1
+                        || auth()->guest() && request()->path() != '/' && $settings->home_style == 2
+                        || auth()->check()
+                          )
+                )
+          )
 
                   @if (auth()->guest() && $settings->who_can_see_content == 'users')
                     <div class="text-center py-3 px-3">

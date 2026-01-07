@@ -238,7 +238,7 @@ return array(
 	'publish' => 'Publish',
 	'no_posts_posted' => 'No posts yet',
 	'important' => 'Important',
-	'or' => 'or',
+	'or' => 'Or',
 	'confirm_delete_update' => 'Sure you want to delete this post?',
 	'content_locked' => 'Content locked viewable only to subscribers.',
 	'content_locked_user_logged' => 'You must subscribe to view this post.',

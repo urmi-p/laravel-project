@@ -7,14 +7,14 @@
   <div class="jumbotron m-0 bg-gradient">
     <div class="container pt-lg-md">
       <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-6 login-form-left">
           <div class="d-block px-3 px-lg-5 w-100 px-mobile-1 ">
             <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}"  class="logo align-baseline mb-1" width="125" height="42" />
           </div>
           <div class="" >
             <div class="card-body px-lg-5 py-lg-5 pt-4">
               <h4>Welcome Back</h4>
-              <small class="btn-block pb-4 h6 text-lime">{{ __('general.title_login') }}</small>
+              <small class="btn-block pb-4 h6 text-lime title_login">{{ __('general.title_login') }}</small>
 
           @if (session('login_required'))
             <div class="alert alert-danger" id="dangerAlert">
@@ -41,7 +41,7 @@
               @endif
             </div>
             @if (! $settings->disable_login_register_email)
-              <small class="btn-block text-center my-3 text-text-capitalize">{{__('general.or')}}</small>
+              <small class="btn-block text-center my-3 text-text-capitalize login-form-or">{{__('general.or')}}</small>
             @endif
           @endif
           @if (! $settings->disable_login_register_email)
@@ -226,10 +226,12 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-7 right-side">
+    <div class="col-lg-6 right-side">
       <img src="{{url('img/main.png')}}" alt="User" class="img-fluid d-lg-block d-none"  width="356" height="120">
-      <span class="text-lime h5 mb-5 px-4 d-lg-block d-none">{{__('general.title_home_login')}}</span>
-      <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
+      <span class="text-lime h5 mb-5 d-lg-block d-none title_home_login">{{__('general.title_home_login')}}</span>
+      <div class="image-stack">
+        <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none img-login-background stack-img" />
+      </div>
     </div>
   </div>
     </div>

@@ -133,7 +133,7 @@ return array(
 		'link_cookies'            =>      'Link to Cookies Policy',
 		'terms_conditions'         =>      'Terms and Conditions',
 	  'privacy_policy'            =>      'Privacy Policy',
-		'i_agree_gdpr' => 'I agree with the processing of personal data',
+		'i_agree_gdpr' => 'By creating your account, you agree to our ',
 		'method' => 'Method',
 		'currency_position' => 'Currency Position',
 		'right' => 'Right',

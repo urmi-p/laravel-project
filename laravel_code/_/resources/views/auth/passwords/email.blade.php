@@ -13,7 +13,7 @@
     <div class="container pt-lg-md">
       <div class="row justify-content-center ">
 
-        <div class="col-lg-5 d-flex flex-column justify-content-center inline-padding">
+        <div class="col-lg-6 d-flex flex-column justify-content-center inline-padding login-form-left">
           <div class="d-flex items-center">
             <a href="{{ url()->previous() }}" class="text-light d-flex align-items-center">
               <small><i class="fas fa-arrow-left"></i></small>
@@ -68,10 +68,12 @@
           </div>
         </div>
         
-        <div class="col-lg-7 right-side ">
+        <div class="col-lg-6 right-side ">
           <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block d-none mt-3" width="356" height="120">
           <span class="text-lime h5 mb-5 d-lg-block d-none">{{__('general.title_home_login')}}</span>
-          <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none">
+          <div class="image-stack">
+            <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none stack-img">
+          </div>
         </div>
       </div>
     </div>
