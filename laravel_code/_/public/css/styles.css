@@ -26,7 +26,6 @@ a {
   outline: none;
 }
 
-
 body {
   /*font-family: 'Barlow', Helvetica, Arial, sans-serif;*/
   font-family: 'Poppins', sans-serif;
@@ -939,7 +938,8 @@ a.link-border {
 }
 .btn-category:hover,
 .active-category {
-  border-color: #333 !important;
+    background-color: #e2394c !important;
+    border-radius: 8px !important;
 }
 .input-group-text {
     font-size: 1rem;
@@ -2344,3 +2344,80 @@ color: #FFFFFF;
      opacity: 0.5;
     transform: matrix(-1, 0, 0, 1, 0, 0);
 }
+
+
+/* notification page css started  */
+.lead{
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+
+.notify-card {
+    background: linear-gradient(180deg, #0c0c0c, #141414);
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.notify-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.notify-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    color: #ffffff;
+}
+
+.notify-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notify-time {
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+.notify-menu {
+    font-size: 20px;
+    color: #b3b3b3;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.notify-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #d0d0d0;
+    margin: 0;
+}
+.notify-div{
+  background-color: #000000;
+  border-radius: 8px;
+}
+
+/* notification page css ended */
+
+
+/* referrals style  started*/
+.small-text{
+  font-size: 12px;
+  color: #EFEFEF;
+}
+
+.ref-card-body{
+  background-color: #191919;
+  box-shadow: 0px 0px 30px 2px #00000012;
+  border-radius: 8px;
+  padding: 1rem;
+}
+/* referrals style ended*/

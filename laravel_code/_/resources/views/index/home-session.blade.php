@@ -244,7 +244,7 @@
 
                         {{-- <div class="d-lg-block d-none">
 
-                        @include('includes.footer-tiny')
+                        <!-- @include('includes.footer-tiny') -->
 
                         </div> --}}
 

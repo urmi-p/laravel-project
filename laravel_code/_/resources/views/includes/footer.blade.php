@@ -1,8 +1,9 @@
 <!-- FOOTER -->
 
-<div class="py-4 @auth d-none d-lg-block @endauth @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest()) footer_background_color footer_text_color @else bg-white @endif @if (auth()->check() && auth()->user()->dark_mode == 'off' && $settings->footer_background_color == '#ffffff' || auth()->guest() && $settings->footer_background_color == '#ffffff' ) border-top @endif">
+<div class="d-none">
+<!-- <div class="py-4 @auth d-none d-lg-block @endauth @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest()) footer_background_color footer_text_color @else bg-white @endif @if (auth()->check() && auth()->user()->dark_mode == 'off' && $settings->footer_background_color == '#ffffff' || auth()->guest() && $settings->footer_background_color == '#ffffff' ) border-top @endif"> -->
 
-<footer class="container">
+<footer class="container d-none">
 
   <div class="row">
 
@@ -274,7 +275,8 @@
 
     @auth
 
-      <div class="d-lg-none d-block pb-5 mb-2 w-100">
+      <div class="d-none">
+      <!-- <div class="d-lg-none d-block pb-5 mb-2 w-100"> -->
 
         @include('includes.footer-tiny')
 
@@ -282,7 +284,8 @@
 
     @endauth
 
-      <div class="col-md-12 copyright @auth d-none d-lg-block @endauth">
+      <div class="d-none">
+      <!-- <div class="col-md-12 copyright @auth d-none d-lg-block @endauth"> -->
 
         &copy; {{date('Y')}} {{$settings->title}}, {{__('emails.rights_reserved')}}
 
