@@ -110,7 +110,7 @@
   <div class="popout popout-error font-default"></div>
 
 @if (
-      !request()->is('password/reset*') &&
+      !request()->is('password/reset/*') &&
       (
         (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
         || auth()->guest() && request()->path() != '/' && $settings->home_style == 0

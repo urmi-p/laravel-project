@@ -399,7 +399,7 @@ return array(
 	'payment_card_success' => 'Payment card successfully updated!',
 	'payment_card_error' => 'An error has occurred, try again',
 	'default_payment_card' => 'Default payment card:',
-	'not_card_added' => "You don't have any payment card added",
+	'not_card_added' => "You want to add any payment card added",
 	'automatically_renewed' => 'It will be automatically renewed',
 	'please_add_payment_card' => 'Please add a payment card',
 	'go_back' => 'Go back',
