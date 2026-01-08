@@ -17,7 +17,7 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
     'email_sent' 			  => 	  'An email with the password reset has been sent.',
-  	'reset_password'		  =>	  'Reset Password',
+  	'reset_password'		  =>	  'Password & login',
     'send_pass_reset' => 'Send Password Recover Link',
   	'enter_email_pass'		  =>	  'Enter your email and new password',
   	'email_has_been_set'	  =>	  'Sent successfully, check your email',
@@ -68,7 +68,7 @@ return [
     'update_your_password' => 'Update your password',
     'login_welcome' => 'Happy to see you again!',
     'signup_welcome' => 'Join now! It takes only few steps',
-    'recover_pass_subtitle' => 'You will receive an email to reset your password',
-    'reset_pass_subtitle' => 'Last step! enter your email and create a new password',
+    'recover_pass_subtitle' => 'We will send a new password to your account from email',
+    'reset_pass_subtitle' => 'Use a strong. unique password to keep your account safe. You will be signed out from other devices when you change it.',
     'protected_recaptcha' => 'Protected by reCAPTCHA',
 ];

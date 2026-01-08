@@ -965,7 +965,7 @@ align-items: center;
 
   .search-bar, .search-bar:focus {border: none !important; background-color: #474747 !important;}
 
-  .text-notify {color: #8898aa;}
+  .text-notify {color: #E2E8F0;}
 
   .dd-menu-user:before { color: #222222; }
 
@@ -3875,7 +3875,7 @@ a:hover.choose-type-sale {
 
   right: 10px;
 
-  top: 10px;
+  top: 25px;
 
 }
 
