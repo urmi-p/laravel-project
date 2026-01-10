@@ -213,4 +213,5 @@ return array(
 		'text' => 'Text',
 		'blog_deleted' => 'Blog Deleted!',
 		'minimum_width_img_blog' => 'Minimum width 650x430',
+		'commission' => 'Commission',
 );

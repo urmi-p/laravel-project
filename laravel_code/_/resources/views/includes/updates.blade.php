@@ -1098,8 +1098,17 @@ $response->locked == 'no')
 <div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 {{ $textWhite }}"
     style="{{ $backgroundPostLocked }}">
 
-    <span class="btn-block text-center mb-3"><i
-            class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i></span>
+    <span class="btn-block text-center mb-3">
+        <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
+          
+        <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
+            viewBox="0 0 90 120" fill="none">
+            <path
+                d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
+                fill="white" />
+        </svg>
+   
+    </span>
 
 
 

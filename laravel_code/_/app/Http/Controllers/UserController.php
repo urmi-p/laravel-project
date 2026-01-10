@@ -2679,4 +2679,16 @@ class UserController extends Controller
 
     return back()->withStatus(__('admin.success_update'));
   }
+
+  public function myCommission()
+  {
+    $purchases = auth()->user()->payPerView()->orderBy('pay_per_views.id', 'desc')->paginate($this->settings->number_posts_show);
+
+    $users = $this->userExplore();
+
+    return view('users.commission', [
+      'updates' => $purchases,
+      'users' => $users
+    ]);
+  }
 }

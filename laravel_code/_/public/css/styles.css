@@ -2798,14 +2798,20 @@ a.btn-category:focus {
     width: 100%;
     
 }
+.lock_dim {
+    height:80px;
+}
+
 
 @media (min-width: 992px) {
+
     .alert_custom {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 403px;
     }
+
 }
 @media (max-width: 991px) {
     .navbar {
@@ -2827,5 +2833,29 @@ a.btn-category:focus {
     }
     .wallet_inner_text{
         font-size: 58.35px !important;
+    }
+    .lock_dim {
+        height:60px;
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVENESS
+   ========================= */
+@media (max-width: 991.98px) {
+    /* Stack all cards vertically */
+    .row.mobile_div > [class*="col-"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    /* Icons alignment */
+    .calc-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    .commission-card svg {
+        width: 20px;
+        height: 20px;
     }
 }

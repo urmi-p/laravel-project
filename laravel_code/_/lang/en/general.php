@@ -1476,5 +1476,5 @@ return array(
 	'in_progress' => 'In progress',
 
 	'share_thoughts' => 'Share your thoughts!',
-
+	'platform_commission' => 'Commision',
 );

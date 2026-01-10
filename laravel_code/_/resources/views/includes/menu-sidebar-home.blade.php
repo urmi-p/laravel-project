@@ -137,7 +137,12 @@
 			<span class="ml-2">{{ __('admin.subscriptions') }}</span>
 		</a>
 	</li>
-
+	<li>
+		<a href="{{ url('my/commission') }}" @if (request()->is('my/commission')) class="active disabled" @endif>
+			<i class="fas fa-dollar-sign"></i>
+			<span class="ml-2">{{ __('admin.commission') }}</span>
+		</a>
+	</li>
 	<li>
 		<a href="{{ url('my/bookmarks') }}" @if (request()->is('my/bookmarks')) class="active disabled" @endif>
 			<i class="bi-bookmark"></i>
