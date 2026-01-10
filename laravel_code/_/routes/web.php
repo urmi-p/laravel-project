@@ -303,7 +303,8 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
 	// My subscriptions
  	Route::get('my/subscriptions',[UserController::class, 'mySubscriptions']);
 	Route::post('subscription/cancel/{id}',[UserController::class, 'cancelSubscription']);
-
+    //My Commision
+	Route::get('my/commission',[UserController::class, 'myCommission']);
 	// My payments
 	Route::get('my/payments',[UserController::class, 'myPayments']);
 	Route::get('my/payments/received',[UserController::class, 'myPayments']);

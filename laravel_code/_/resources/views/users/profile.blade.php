@@ -73,10 +73,6 @@
 @else
 125px @endif 0; background: #505050 @if ($user->cover != '') url('{{ Helper::getFile(config('path.cover') . $user->cover) }}') no-repeat center center; background-size: cover; @endif">
 
-        
-        
-
-
         @if (auth()->check() && auth()->user()->status == 'active' && auth()->id() == $user->id)
 
             <div class="progress-upload-cover"></div>
@@ -886,22 +882,14 @@
 
                                 @endif
 
-
-
                             </div>
 
                         @endif
 
-
-
                     </div><!-- media-body -->
-
                 </div><!-- media -->
 
-
-
                 @if ($user->verified_id == 'yes')
-
                     <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile" style="width:549px;margin:auto;background-color:{{ auth()->check() && auth()->user()->dark_mode == 'on' ? '#303030' : '#FFF' }};border-radius: 12px;">
                         <li class="nav-link nav_link @if (request()->path() == $user->username) active @endif navbar-user-mobile">
                             <a href="{{ request()->path() == $user->username ? 'javascript:;' : url($user->username) }}"
