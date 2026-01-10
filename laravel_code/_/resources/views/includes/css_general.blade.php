@@ -951,7 +951,7 @@ align-items: center;
 
   .font-montserrat a:hover { color: #FFF; }
 
-  body a:not(.link-footer, .ico-social, .pulse-btn, .text-muted),
+  body a:not(.link-footer, .ico-social, .pulse-btn, .text-muted, .bg_white, .font_mobile_normal),
 
   body a:hover:not(.pulse-btn, .text-muted),
 
@@ -2751,7 +2751,7 @@ input[type=number] {
 
 .category-filter {
 
-  padding: 10px 15px;
+  padding: 10px 2px;
 
   display: block;
 
@@ -3711,7 +3711,7 @@ border-color: #adb5bd !important;
 
 .search-bar {
 
-  border-radius: 60px;
+  border-radius: 12px;
 
   padding: 12px 20px !important;
 
@@ -3851,7 +3851,7 @@ a:hover.choose-type-sale {
 
   color: #fff;
 
-  font-size: 18px;
+  font-size: 19px;
 
   font-weight: bold;
 

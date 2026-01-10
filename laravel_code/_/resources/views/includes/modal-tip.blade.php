@@ -1,23 +1,63 @@
 <div class="modal fade" id="tipForm" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-	<div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content shadow-lg" style="border-radius: 20px; border: none;">
 			<div class="modal-body p-0">
-				<div class="card bg-white shadow border-0">
-					<div class="card-header pb-2 border-0 position-relative" style="height: 100px; background: {{$settings->color_default}} @if (auth()->user()->cover != '')  url('{{Helper::getFile(config('path.cover').auth()->user()->cover)}}') @endif no-repeat center center; background-size: cover; border-top-left-radius: 0.7rem;border-top-right-radius: 0.7rem;">
-
+				<div class="card bg-white shadow border-0" style="border-radius: 20px; overflow: hidden;">
+					<div class="card-header border-0 position-relative text-center" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
 					</div>
-					<div class="card-body px-lg-5 py-lg-5 position-relative">
+					<div class="card-body px-lg-5 position-relative" style="padding-top: 0px;">
 
-						<div class="text-muted text-center mb-3 position-relative modal-offset">
-							<img src="{{Helper::getFile(config('path.avatar').auth()->user()->avatar)}}" width="100" class="avatar-modal rounded-circle mb-1">
-							<h6 class="font_weight_700 fs-32 text_color_white">
+                        <style>
+                            .avatar-wrapper {
+                                margin-top: -100px;
+                                margin-bottom: 20px;
+                                position: relative;
+                                display: inline-block;
+                            }
+                            .avatar-modal-img {
+                                width: 110px;
+                                height: 110px;
+                                border: 6px solid white;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                            }
+                            .payment-radio:checked + .btn-pay-action {
+                                background-color: #ff4b60 !important;
+                                color: white !important;
+                                border-color: #ff4b60 !important;
+                                box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+                            }
+                            .payment-option-row {
+                                transition: all 0.3s ease;
+                                padding: 15px 0;
+                            }
+                            .btn-pay-action {
+                                transition: all 0.2s ease-in-out;
+                                cursor: pointer;
+                                font-weight: 600;
+                            }
+                            .btn-pay-action:hover {
+                                background-color: #ff4b60;
+                                color: white;
+                            }
+                            .payment-selector {
+                                min-width: 60px;
+                            }
+                        </style>
+
+						<div class="text-center">
+                            <div class="avatar-wrapper">
+							    <img src="{{Helper::getFile(config('path.avatar').auth()->user()->avatar)}}" class="avatar-modal-img">
+                            </div>
+							<h5 class="font-weight-bold mb-1">
 								{{__('general.send_tip')}} <span class="userNameTip"></span>
-								<small class="w-100 d-block fs-14">* {{ __('general.in_currency', ['currency_code' => $settings->currency_code]) }}</small>
-							</h6>
+							</h5>
+							<small class="text-muted d-block mb-4">{{ __('general.in_currency', ['currency_code' => $settings->currency_code]) }}</small>
 						</div>
 
 						<form method="post" action="{{url('send/tip')}}" id="formSendTip">
-
+							@csrf
 							<input type="hidden" name="id" class="userIdInput" value="{{auth()->user()->id}}"  />
 
 							@if (request()->is('messages/*'))
@@ -35,88 +75,120 @@
 
 							<input type="hidden" id="cardholder-name" value="{{ auth()->user()->name }}"  />
 							<input type="hidden" id="cardholder-email" value="{{ auth()->user()->email }}"  />
-							<input type="number" min="{{$settings->min_tip_amount}}" max="{{$settings->max_tip_amount}}" required data-min-tip="{{$settings->min_tip_amount}}" data-max-tip="{{$settings->max_tip_amount}}" autocomplete="off" id="onlyNumber" class="form-control mb-1 tipAmount" name="amount" placeholder="{{__('general.tip_amount')}} ({{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->min_tip_amount) }})">
-							<small class="d-block w-100 mb-3">
-								<i class="bi-arrow-up-square mr-1"></i> <i class="bi-arrow-down-square mr-1"></i> {{ __('general.increase_decrease_amount') }}
-							  </small>
+							
+							<div class="form-group mb-4">
+								<input type="number" min="{{$settings->min_tip_amount}}" max="{{$settings->max_tip_amount}}" required data-min-tip="{{$settings->min_tip_amount}}" data-max-tip="{{$settings->max_tip_amount}}" autocomplete="off" id="onlyNumber" class="form-control form-control-lg text-center tipAmount" name="amount" placeholder="{{__('general.tip_amount')}}" style="border-radius: 10px;">
+								<small class="text-muted d-block text-center mt-2">
+									{{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->min_tip_amount) }} -
+									<span class="cursor-pointer" onclick="document.getElementById('onlyNumber').stepUp()">
+										<i class="bi-arrow-up-square"></i>
+									</span>
+									<span class="cursor-pointer" onclick="document.getElementById('onlyNumber').stepDown()">
+										<i class="bi-arrow-down-square"></i>
+									</span>
+								</small>
+							</div>
+
 							@csrf
 
-							@if (!request()->route()->named('live'))
+							<div class="payment-options-list text-left">
+								@if (!request()->route()->named('live'))
 
-							@foreach ($paymentGatewaysSubscription as $payment)
+									@foreach ($paymentGatewaysSubscription as $payment)
+										@php
+											if ($payment->type == 'card' ) {
+												$paymentIcon = '<i class="far fa-credit-card fa-lg"></i>';
+												$paymentLabel = __('general.debit_credit_card');
+												$paymentSubLabel = __('general.powered_by').' '.$payment->name;
+											} else if ($payment->id == 1) {
+												$paymentIcon = '<i class="fab fa-paypal fa-lg"></i>';
+												$paymentLabel = 'PayPal';
+												$paymentSubLabel = __('general.redirected_to_paypal_website');
+											} else {
+												$paymentIcon = '<img src="'.url('img/payments', $payment->logo).'" width="30"/>';
+												$paymentLabel = $payment->name;
+												$paymentSubLabel = '';
+											}
+											$allPayments = $paymentGatewaysSubscription;
+										@endphp
 
-								@php
+										<div class="payment-option-item border-bottom payment-option-row">
+											<div class="d-flex align-items-center justify-content-between">
+												<div class="d-flex align-items-center">
+													<div class="icon-wrapper mr-3 text-muted" style="min-width: 40px; text-align: center;">
+														{!! $paymentIcon !!}
+													</div>
+													<div>
+														<h6 class="mb-0 font-weight-bold">{{ $paymentLabel }}</h6>
+														@if(!empty($paymentSubLabel))
+														<small class="text-muted">{{ $paymentSubLabel }}</small>
+														@endif
+													</div>
+												</div>
+												
+												<div class="payment-selector">
+													<input name="payment_gateway_tip" required value="{{$payment->name}}" id="tip_radio{{$payment->name}}" @if ($allPayments->count() == 1 && Helper::userWallet('balance') == 0) checked @endif class="d-none payment-radio" type="radio">
+													<label for="tip_radio{{$payment->name}}" class="btn btn-sm btn-outline-danger btn-pay-action mb-0 px-3" style="border-radius: 6px;">
+														Pay
+													</label>
+												</div>
+											</div>
 
-								if ($payment->type == 'card' ) {
-									$paymentName = '<i class="far fa-credit-card mr-1"></i> '.__('general.debit_credit_card') .' <small class="w-100 d-block">'.__('general.powered_by').' '.$payment->name.'</small>';
-								} else if ($payment->id == 1) {
-									$paymentName = '<img src="'.url('public/img/payments', auth()->user()->dark_mode == 'off' ? $payment->logo : 'paypal-white.png').'" width="70"/> <small class="w-100 d-block">'.__('general.redirected_to_paypal_website').'</small>';
-								} else {
-									$paymentName = '<img src="'.url('public/img/payments', $payment->logo).'" width="70"/>';
-								}
-
-								$allPayments = $paymentGatewaysSubscription;
-
-								@endphp
-								<div class="custom-control custom-radio mb-3">
-									<input name="payment_gateway_tip" required value="{{$payment->name}}" id="tip_radio{{$payment->name}}" @if ($allPayments->count() == 1 && Helper::userWallet('balance') == 0) checked @endif class="custom-control-input" type="radio">
-									<label class="custom-control-label" for="tip_radio{{$payment->name}}">
-										<span><strong>{!!$paymentName!!}</strong></span>
-									</label>
-								</div>
-								<div class="filter-divider"></div>
-								@if ($payment->name == 'Stripe')
-								<div id="stripeContainerTip" class="@if ($allPayments->count() != 1) display-none @endif">
-									<div id="card-element" class="margin-bottom-10">
-										<!-- A Stripe Element will be inserted here. -->
-									</div>
-									<!-- Used to display form errors. -->
-									<div id="card-errors" class="alert alert-danger display-none" role="alert"></div>
-								</div>
+											@if ($payment->name == 'Stripe')
+												<div id="stripeContainerTip" class="mt-3 @if ($allPayments->count() != 1) display-none @endif">
+													<div id="card-element" class="margin-bottom-10">
+														<!-- A Stripe Element will be inserted here. -->
+													</div>
+													<div id="card-errors" class="alert alert-danger display-none" role="alert"></div>
+												</div>
+											@endif
+										</div>
+									@endforeach
 								@endif
 
-							@endforeach
-
-						@endif {{-- Disable Paymetns on Live streaming --}}
-
-							@if ($settings->disable_wallet == 'on' && Helper::userWallet('balance') != 0 || $settings->disable_wallet == 'off')
-							<div class="custom-control custom-radio mb-3">
-								<input name="payment_gateway_tip" required @if (Helper::userWallet('balance') == 0) disabled @endif value="wallet" id="tip_radio0" class="custom-control-input" type="radio">
-								<label class="custom-control-label" for="tip_radio0">
-									<span>
-										<strong>
-										<i class="fas fa-wallet mr-1 icon-sm-radio"></i> {{ __('general.wallet') }}
-										<span class="w-100 d-block font-weight-light">
-											{{ __('general.available_balance') }}: <span class="font-weight-bold mr-1 balanceWallet">{{Helper::userWallet()}}</span>
-
-										@if (Helper::userWallet('balance') != 0 && $settings->wallet_format != 'real_money')
-											<i class="bi bi-info-circle text-muted" data-toggle="tooltip" data-placement="top" title="{{Helper::equivalentMoney($settings->wallet_format)}}"></i>
-										@endif
-
-											@if (Helper::userWallet('balance') == 0)
-											<a href="{{ url('my/wallet') }}" class="link-border">{{ __('general.recharge') }}</a>
-										@endif
-										</span>
-									</strong>
-									</span>
-								</label>
+								@if ($settings->disable_wallet == 'on' && Helper::userWallet('balance') != 0 || $settings->disable_wallet == 'off')
+									<div class="payment-option-item border-bottom payment-option-row">
+										<div class="d-flex align-items-center justify-content-between">
+											<div class="d-flex align-items-center">
+												<div class="icon-wrapper mr-3 text-muted" style="min-width: 40px; text-align: center;">
+													<i class="fas fa-wallet fa-lg"></i>
+												</div>
+												<div>
+													<h6 class="mb-0 font-weight-bold">{{ __('general.wallet') }}</h6>
+													<small class="text-muted">
+														{{ __('general.available_balance') }}: <span class="font-weight-bold balanceWallet">{{Helper::userWallet()}}</span>
+														@if (Helper::userWallet('balance') == 0)
+															<a href="{{ url('my/wallet') }}" class="ml-1">{{ __('general.recharge') }}</a>
+														@endif
+													</small>
+												</div>
+											</div>
+											
+											<div class="payment-selector">
+												<input name="payment_gateway_tip" required @if (Helper::userWallet('balance') == 0) disabled @endif value="wallet" id="tip_radio0" class="d-none payment-radio" type="radio">
+												<label for="tip_radio0" class="btn btn-sm btn-outline-danger btn-pay-action mb-0 px-3 @if (Helper::userWallet('balance') == 0) disabled @endif" style="border-radius: 6px;">
+													Pay
+												</label>
+											</div>
+										</div>
+									</div>
+								@endif
 							</div>
-						@endif
 
-						@if ($taxRatesCount != 0 && auth()->user()->isTaxable()->count())
-							@include('includes.modal-taxes')
-						@endif
+							@if ($taxRatesCount != 0 && auth()->user()->isTaxable()->count())
+								@include('includes.modal-taxes')
+							@endif
 
 							<div class="alert alert-danger display-none" id="errorTip">
-									<ul class="list-unstyled m-0" id="showErrorsTip"></ul>
-								</div>
-
-							<div class="text-center">
-								<button type="button" class="btn e-none mt-4" data-dismiss="modal">{{__('admin.cancel')}}</button>
-								<button type="submit" id="tipBtn" class="btn btn-primary mt-4 tipBtn"><i></i> {{__('auth.send')}}</button>
+								<ul class="list-unstyled m-0" id="showErrorsTip"></ul>
 							</div>
 
-							@include('includes.site-billing-info')
+							<div class="d-flex justify-content-between mt-4">
+								<button type="button" class="btn btn-outline-danger w-50 mr-2" data-dismiss="modal" style="border-color: #ff4b60; color: #ff4b60; border-radius: 8px;">{{__('admin.cancel')}}</button>
+								<button type="submit" id="tipBtn" class="btn btn-danger w-50 ml-2 tipBtn" style="background-color: #ff4b60; border-color: #ff4b60; border-radius: 8px;"><i></i> {{__('auth.send')}}</button>
+							</div>
+
+							<!-- @include('includes.site-billing-info') -->
 						</form>
 					</div>
 				</div>

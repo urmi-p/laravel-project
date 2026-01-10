@@ -20,7 +20,7 @@
             @endif
 
             @foreach (Categories::where('mode', 'on')->orderBy('name')->get() as $category)
-            <a class="btn btn-sm mb-2 e-none btn-category @if (Request::path() == " category/$category->slug" ||
+            <a class="btn btn-sm mb-2 e-none btn-category @if (Request::path() == "category/$category->slug" ||
                 Request::path() == "category/$category->slug/featured" ||
                 Request::path() == "category/$category->slug/more-active" ||
                 Request::path() == "category/$category->slug/new" ||

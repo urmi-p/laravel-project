@@ -4,14 +4,16 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container container-lg-3 pt-lg-5 pt-2">
+  {{-- for mobile header --}}
+        @include('includes.header-mobile')
+    <div class="container-fluid pt-lg-5 pt-2">
       <div class="row">
 
-        <div class="col-md-2">
+        <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
           @include('includes.menu-sidebar-home')
         </div>
 
-        <div class="col-md-6 p-0 second wrap-post">
+        <div class="col-lg-6 col-md-6 p-0 second wrap-post">
 
           @if($updates->count() != 0)
           <div class="grid-updates position-relative" id="updatesPaginator">
@@ -21,17 +23,23 @@
         @else
           <div class="grid-updates position-relative" id="updatesPaginator"></div>
 
-        <div class="my-5 text-center no-updates">
-          <span class="btn-block mb-3">
-            <i class="far fa-bookmark ico-no-result"></i>
-          </span>
-        <h4 class="font-weight-light">{{trans('general.no_bookmarks')}}</h4>
+        <div class="my-5 text-center no-updates main-no-updates">
+          <div class="sub-no-updates">
+            <span class="btn-block mb-3">
+              <i class="far fa-bookmark ico-no-result bg_black"></i>
+            </span>
+            <h4 class="font_weight_400 font_size_18">{{trans('general.no_bookmarks')}}</h4>
+          </div>
         </div>
-
+        <div class="grid-updates position-relative" id="updatesPaginator">
+          <div class="p-3 d-lg-none">
+            @include('includes.explore_creators')
+          </div>
+        </div>
         @endif
         </div><!-- end col-md-6 -->
 
-        <div class="col-md-4 mb-4 d-lg-block d-none">
+        <div class="col-lg-3 col-md-4 mb-4 d-lg-block d-none">
 
           @if ($users->count() == 0)
           <div class="panel panel-default panel-transparent mb-4 d-lg-block d-none">

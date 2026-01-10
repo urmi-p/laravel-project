@@ -71,42 +71,41 @@
                 <i class="bi-image f-size-20 align-middle mr-2"></i><span> Photo/Video</span>
               </button>
             </div>
-            <div>
-              <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
-                <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
-              </button>
-            </div>
-            @if ($settings->allow_scheduled_posts)
+          @if ($settings->allow_scheduled_posts)
             <div>
               <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.schedule')}}" class="d-flex align-items-center custom_btn btn-tooltip-form e-none btnSchedulePost @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
                 <i class="bi-bar-chart f-size-20 align-middle mr-2"></i><span> Schedule Post</span>
               </button>
               <input type="hidden" name="scheduled_date" id="inputScheduled" value="">
             </div>
-            @endif
+          @endif
 
-
+              <div>
+                <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
+                  <i class="bi-list-ul f-size-20 align-middle mr-2"></i><span> List Item</span>
+                </button>
+              </div>
+            </div>
           </div>
+
+        </div><!-- media -->
+          <input class="custom-control-input d-none" id="customCheckLocked" type="checkbox" {{auth()->user()->post_locked == 'yes' ? 'checked' : ''}} name="locked" value="yes">
+
+          <!-- Alert -->
+
+          <div class="alert alert-danger my-3 display-none" id="errorUdpate">
+
+           <ul class="list-unstyled m-0" id="showErrorsUdpate"></ul>
+
+         </div><!-- Alert -->
+
+
+
         </div>
 
-      </div><!-- media -->
-      <input class="custom-control-input d-none" id="customCheckLocked" type="checkbox" {{auth()->user()->post_locked == 'yes' ? 'checked' : ''}} name="locked" value="yes">
+        <div class="rounded-large">
 
-      <!-- Alert -->
-
-      <div class="alert alert-danger my-3 display-none" id="errorUdpate">
-
-        <ul class="list-unstyled m-0" id="showErrorsUdpate"></ul>
-
-      </div><!-- Alert -->
-
-
-
-    </div>
-
-    <div class="rounded-large">
-
-      <div class="justify-content-between align-items-center">
+          <div class="justify-content-between align-items-center">
 
 
 
@@ -207,7 +206,7 @@
 
         {{-- @if (auth()->user()->free_subscription == 'yes' && $settings->ppv_only_free_accounts || !$settings->ppv_only_free_accounts)
 
-            <button type="button" id="setPrice" class="btn btn-post btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.price_post_ppv')}}">
+        <button type="button" id="setPrice" class="btn btn-post btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.price_post_ppv')}}">
 
         <i class="feather icon-tag f-size-20 align-bottom"></i>
 

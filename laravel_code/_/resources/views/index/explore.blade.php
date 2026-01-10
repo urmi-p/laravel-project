@@ -9,11 +9,11 @@
         <div class="container container-lg-3 pt-lg-5 pt-3">
             <div class="row">
 
-                <div class="col-md-2">
+                <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
                     @include('includes.menu-sidebar-home')
                 </div>
 
-                <div class="col-md-6 p-0 second wrap-post">
+                <div class="col-lg-6 col-md-6 p-0 second wrap-post">
 
                     @if ($updates->isNotEmpty())
 
@@ -78,7 +78,7 @@
                     @endif
                 </div><!-- end col-md-6 -->
 
-                <div class="col-md-4 mb-4 d-lg-block d-none">
+                <div class="col-lg-3 col-md-4 mb-4 d-lg-block d-none">
                     @if ($users->isEmpty() && auth()->check())
                         <div class="panel panel-default panel-transparent mb-4 d-lg-block d-none">
                             <div class="panel-body">

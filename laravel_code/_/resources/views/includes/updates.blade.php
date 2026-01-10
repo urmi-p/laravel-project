@@ -74,7 +74,8 @@ $nth = 0; // nth foreach nth-child(3n-1)
             (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id)) pinned-post @endif"
     data="{{ $response->id }}">
     <div style="background-color: #303030; text-align: center;position: relative;border-top-left-radius:32px;border-top-right-radius:32px;">
-        <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img">
+        <img src="http://127.0.0.1:8000/uploads/cover/lucasmerai-31755968652nq76lbnyb3.png" class="post_img">
+        {{-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> --}}
         <div class="mb-0 font-montserrat" style="position: absolute;top:15px;right:15px">
             @if (auth()->check() && auth()->user()->id == $response->creator->id)
             <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"

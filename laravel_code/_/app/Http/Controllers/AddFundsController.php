@@ -79,7 +79,7 @@ class AddFundsController extends Controller
       'amount' => 'required|integer|min:' . $this->settings->min_deposits_amount . '|max:' . $this->settings->max_deposits_amount,
       'payment_gateway' => 'required|check_payment_gateway',
       'image' => 'required_if:payment_gateway,==,Bank|mimes:jpg,gif,png,jpe,jpeg|max:' . $this->settings->file_size_allowed_verify_account . '',
-      'agree_terms' => 'required',
+      // 'agree_terms' => 'required',
     ], $messages);
 
     if ($validator->fails()) {

@@ -3,10 +3,10 @@
  * *****************
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,800;0,900;1,800&display=swap");
 html,
-body {
-    height: 100%;
+body {height: 100%;
+font-family: "Poppins", sans-serif;
 }
 li {
     list-style: none;
@@ -54,6 +54,13 @@ h4,
 h5,
 h6 {
     font-weight: 800 !important;
+}
+
+.navbar {
+    border: 1px solid #ffffff1a;
+    background-color: #ffffff1a !important;
+    margin: 20px;
+    border-radius: 32px;
 }
 
 .navbar-absolute {
@@ -2205,8 +2212,14 @@ a:hover.button-avatar-upload {
 .fs-18 {
     font-size: 18px !important;
 }
+.fs-20 {
+    font-size: 20px !important;
+}
 .fs-24 {
     font-size: 24px !important;
+}
+.fs-30 {
+    font-size: 30px !important;
 }
 .fs-32 {
     font-size: 32px !important;
@@ -2262,7 +2275,8 @@ a.btn-category:focus {
     gap: 6px !important;
 }
 .post_img {
-    width: fit-content;
+    /* width: fit-content; */
+    width: 80%;
 }
 
 .myhover_btn a.btn {
@@ -2661,3 +2675,82 @@ a.btn-category:focus {
   padding: 1rem;
 }
 /* referrals style ended*/
+
+.icon_wrap {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  z-index: 0;
+  font-size: 115px;
+  color: rgba(0,0,0,0.10);
+}
+
+.alert_custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 403px;
+    border-radius: 16px;
+}
+.wallet_inner_text{
+    font-size: 128px !important;
+}
+.wallet_ac_detail{
+    background-color:#FFF;
+    border-radius:12px;
+    padding:14px 32px !important;
+    color:#475467;
+}
+.wallet_ac_detail p{
+    overflow-wrap:anywhere;
+}
+.amt_input{
+    border-radius: 12px !important;
+    color: #A3A3A3;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+
+}
+
+.subscription-card {
+    background: #1a1a1a;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    width: 100%;
+    
+}
+
+@media (min-width: 992px) {
+    .alert_custom {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 403px;
+    }
+}
+@media (max-width: 991px) {
+    .navbar {
+        border: none !important;
+        background-color: transparent !important;
+        border-radius: 0;
+    }
+
+    .navbar-brand {
+        padding: 0% !important;
+    }
+    .post_img {
+        width: 100%;
+    }
+
+    .alert_custom {
+        width: 350px;
+        height: 255px;
+    }
+    .wallet_inner_text{
+        font-size: 58.35px !important;
+    }
+}

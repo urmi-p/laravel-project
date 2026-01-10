@@ -839,25 +839,20 @@
                             @endif
                         </div>
                         {{-- new flex2 end --}}
-                        @if (auth()->check() && auth()->user()->verified_id == 'no' && auth()->id() == $user->id)
+                        
+                        @if (auth()->check() && auth()->user()->verified_id == 'no' && auth()->id() == $user->id) -->
+                            <div class="d-flex-user justify-content-center mb-2">
+                                <div class="d-block w-100 justify-content-center mt-lg-3 mt-2 font_weight_400 fs-20"
+                                    style="padding: 20px 32px; border-radius: 16px;background: #FFFFFF33;">
+                                    {{ __('custom.alert_profile_verification') }}
+                                    <br>
+                                    <a href="{{ url('settings/page') }}"
+                                        class="link-border" style="color:#E2394C !important;">{{ __('general.become_creator') }}</a>
 
-                            <div class="d-block w-100 justify-content-center mt-lg-3 mt-2"
-                                style="border: 2px solid #ff0000; padding: 20px; border-radius: 3px;">
-
-                                {{ __('custom.alert_profile_verification') }}
-
-
-
-                                <br><br>
-
-                                <a href="{{ url('settings/page') }}"
-                                    class="link-border">{{ __('general.become_creator') }}</a>
-
+                                </div>
                             </div>
-
+                        
                         @endif
-
-
 
                         @if (auth()->check() && auth()->id() != $user->id)
 

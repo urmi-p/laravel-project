@@ -7,52 +7,66 @@
                 <div class="navbar-left d-flex align-items-center">
                     <a class="navbar-brand" href="{{ url('/') }}">
 
-                        @if (auth()->check() && auth()->user()->dark_mode == 'on')
-                        <img src="{{ url('img', $settings->logo) }}" data-logo="{{ $settings->logo }}"
-                            data-logo-2="{{ $settings->logo_2 }}" alt="{{ $settings->title }}"
-                            class="logo align-bottom max-w-100" />
-                        @else
-                        <img src="{{ url('img', auth()->guest() && request()->path() == '/' && $settings->home_style == 0 ? $settings->logo : $settings->logo_2) }}"
-                            data-logo="{{ $settings->logo }}" data-logo-2="{{ $settings->logo_2 }}"
-                            alt="{{ $settings->title }}" class="logo align-bottom max-w-100" />
-                        @endif
-                    </a>
-                </div>
-                @auth
-                <div>
-                    <div class="position-absolute d-flex d-lg-none"
-                        style="top: 9px; right: 35px;gap:6px;margin-right:20px">
-                        <div class="d-lg-none">
-                            <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
-                                aria-expanded="false" role="button">
-                                <i class="bi bi-search icon-navbar"></i>
-                            </a>
-                        </div>
-                        <div class="d-lg-none">
-                            <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
-                                aria-expanded="false" role="button">
-                                <i class="bi bi-currency-dollar icon-navbar"></i>
-                            </a>
-                        </div>
-                        <div class="d-lg-none">
-                            <a href="{{ url('notifications') }}" class="position-relative btn_mobile_nav"
-                                title="{{ trans('general.notifications') }}">
-                                <span
-                                    class="noti_notifications notify @if (auth()->user()->unseenNotifications()) d-block @endif">
-                                    {{ auth()->user()->unseenNotifications() }}
-                                </span>
-                                <i class="far fa-bell icon-navbar"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="buttons-mobile-nav d-lg-none">
-                        <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                            data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
-                            aria-expanded="false" role="button">
-                            <i class="feather icon-menu icon-navbar"></i>
+                            @if (auth()->check() && auth()->user()->dark_mode == 'on')
+                                <img src="{{ url('img', $settings->logo) }}" data-logo="{{ $settings->logo }}"
+                                    data-logo-2="{{ $settings->logo_2 }}" alt="{{ $settings->title }}"
+                                    class="logo align-bottom max-w-100" />
+                            @else
+                                <img src="{{ url('img', auth()->guest() && request()->path() == '/' && $settings->home_style == 0 ? $settings->logo : $settings->logo_2) }}"
+                                    data-logo="{{ $settings->logo }}" data-logo-2="{{ $settings->logo_2 }}"
+                                    alt="{{ $settings->title }}" class="logo align-bottom max-w-100" />
+                            @endif
                         </a>
+                    </div>
+                    <div>
+                        <div class="position-absolute d-flex d-lg-none"
+                            style="top: 9px; right: 35px;gap:6px;margin-right:20px">
+                            <div class="d-lg-none">
+                                <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                    data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                    aria-expanded="false" role="button">
+                                    <svg class="icon-navbar" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.625 15.75C12.56 15.75 15.75 12.56 15.75 8.625C15.75 4.68997 12.56 1.5 8.625 1.5C4.68997 1.5 1.5 4.68997 1.5 8.625C1.5 12.56 4.68997 15.75 8.625 15.75Z" stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16.5 16.5L15 15" stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+
+                                </a>
+                            </div>
+                            <div class="d-lg-none">
+                                <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                    data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                    aria-expanded="false" role="button">
+                                    <svg class="icon-navbar" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#A3A3A3" stroke-width="1.125"/>
+                                        <path d="M11.0297 7.54582C10.9554 6.97383 10.2986 6.04966 9.11767 6.04964C7.74547 6.04962 7.16809 6.80959 7.05093 7.18958C6.86816 7.69785 6.90471 8.74282 8.51309 8.85675C10.5236 8.99925 11.329 9.23655 11.2266 10.467C11.1241 11.6974 10.0033 11.9632 9.11767 11.9347C8.23192 11.9062 6.7828 11.4994 6.72656 10.405M8.97712 5.24854V6.05236M8.97712 11.9273V12.7485" stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="d-lg-none">
+                                <a href="{{ url('notifications') }}" class="position-relative btn_mobile_nav"
+                                    title="{{ trans('general.notifications') }}">
+                                    <span
+                                        class="noti_notifications notify @if (auth()->user()->unseenNotifications()) d-block @endif">
+                                        {{ auth()->user()->unseenNotifications() }}
+                                    </span>
+                                    <svg class="icon-navbar" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.6005 8.24994C14.0362 12.2812 15.75 13.4999 15.75 13.4999H2.25C2.25 13.4999 4.5 11.9002 4.5 6.29994C4.5 5.02719 4.974 3.80619 5.81775 2.90619C6.66225 2.00619 7.8075 1.49994 9 1.49994C9.25275 1.49994 9.504 1.52244 9.75 1.56744M10.2975 15.7499C10.1658 15.9774 9.97659 16.1663 9.74886 16.2976C9.52112 16.4289 9.26287 16.498 9 16.498C8.73713 16.498 8.47888 16.4289 8.25114 16.2976C8.02341 16.1663 7.83421 15.9774 7.7025 15.7499M14.25 5.99994C14.8467 5.99994 15.419 5.76289 15.841 5.34093C16.2629 4.91897 16.5 4.34668 16.5 3.74994C16.5 3.1532 16.2629 2.58091 15.841 2.15895C15.419 1.73699 14.8467 1.49994 14.25 1.49994C13.6533 1.49994 13.081 1.73699 12.659 2.15895C12.2371 2.58091 12 3.1532 12 3.74994C12 4.34668 12.2371 4.91897 12.659 5.34093C13.081 5.76289 13.6533 5.99994 14.25 5.99994Z" stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+
+                                </a>
+                            </div>
+                        </div>
+                        <div class="buttons-mobile-nav d-lg-none">
+                            <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                aria-expanded="false" role="button">
+                            <svg class="icon-navbar" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.42969 4.28571H17.144" stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M3.42969 10.2857H17.144" stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M3.42969 16.2857H17.144" stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round"/>
+                            </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 @endauth

@@ -7,7 +7,7 @@
     <div class="container container-lg-3 pt-lg-5 pt-2">
       <div class="row">
 
-        <div class="col-md-2">
+        <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
           @include('includes.menu-sidebar-home')
         </div>
 
