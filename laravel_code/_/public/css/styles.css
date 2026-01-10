@@ -971,6 +971,12 @@ a.link-border {
     background-color: #fff;
     border-radius: 50%;
 }
+.section{
+          background: radial-gradient(50% 30% at 85% 1%, rgba(226, 57, 76, 0.35) 0%, rgba(226, 57, 76, 0.15) 30%, rgba(0, 0, 0, 0) 70%), #000;
+}
+
+/* background: radial-gradient(50% 50% at 85% 0%, rgba(226, 57, 76, 0.35) 0%, rgba(226, 57, 76, 0.15) 30%, rgba(0, 0, 0, 0) 50%), #000; */
+
 .section-sm {
     padding: 78px 0;
 }
@@ -1265,7 +1271,6 @@ a.link-border {
     text-decoration: none;
 }
 .sm-btn-size {
-    color: #333;
     font-weight: bold;
     font-size: 17px !important;
     line-height: 15px;
@@ -2264,6 +2269,72 @@ a.btn-category:focus {
     color: #000000 !important;
 }
 
+
+.btn_mobile_nav {
+    padding: 6px 10px !important;
+    background-color: #a3a3a31a !important;
+    border-radius: 8px !important;
+}
+.btn_mobile_nav i {
+    font-size: 16px !important;
+    vertical-align: unset;
+    gap: 6px !important;
+}
+.post_img {
+    width: fit-content;
+}
+
+.myhover_btn a.btn{
+    border-radius: 8px !important;
+}
+
+.nav_profile li.active{
+    border-bottom: none !important;
+}
+.nav_profile li.active a{
+    background-color: #000;
+    padding:6px !important;
+    border-radius: 12px;
+    border: 1px solid #E2394C;
+}
+
+.nav_link{
+    padding:12px 24px !important;
+}
+.nav_link a:hover{
+    text-decoration:none !important;
+}
+
+.text_color_white{
+    color: #FFF !important;
+}
+.storiesWrapper{
+    display: flex;
+    gap: 8px;
+    overflow: auto;
+}
+.dashboard_story{
+    border-radius: 16px !important;
+}
+.dashboard_other_story{
+    border-radius: 16px !important;
+    border: 1px solid #E2394C;
+}
+@media (max-width: 991px) {
+    .navbar {
+        border: none !important;
+        background-color: transparent !important;
+        border-radius: 0;
+    }
+
+    .navbar-brand {
+        padding: 0% !important;
+    }
+    .post_img {
+        width: 100%;
+    }
+}
+
 .btn_mobile_nav {
     padding: 6px 10px !important;
     background-color: #a3a3a31a !important;
@@ -2344,6 +2415,7 @@ a.btn-category:focus {
 .text_decor_underline {
     text-decoration: underline !important;
 }
+
 @media (max-width: 991px) {
     .navbar {
         border: none !important;
@@ -2358,14 +2430,12 @@ a.btn-category:focus {
         width: 100%;
     }
 }
-
 .text-red {
     color: #e2394c;
 }
 #btnLoginRegister {
     border-radius: 8px;
 }
-
 @media (min-width: 768px) {
     .login-form-left {
         padding: 0 40px;

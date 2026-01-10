@@ -4,22 +4,86 @@
     {{ trans('general.subscription_price') }} -
 @endsection
 
+@section('css')
+    <style type="text/css">
+        .btn-save-custom {
+            background-color: #fff !important;
+            color: #000 !important;
+            border-radius: 12px !important;
+            border: none !important;
+            padding: 12px 35px !important;
+            font-weight: 600 !important;
+            font-size: 15px !important;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            height: auto !important;
+            line-height: normal !important;
+        }
+
+        .btn-save-custom:hover {
+            background-color: #f8f8f8 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            color: #000 !important;
+        }
+
+        .subscription-card {
+            position: relative;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            transition: background 0.3s ease, border 0.3s ease;
+        }
+        
+        [data-bs-theme="light"] .subscription-card {
+            background: #fff !important;
+            border: 1px solid #e2e2e2 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .subscription-card-label {
+            color: #fff;
+        }
+
+        [data-bs-theme="light"] .subscription-card-label {
+            color: #111 !important;
+        }
+
+        .theme-subtitle {
+            color: #fff;
+        }
+
+        [data-bs-theme="light"] .theme-subtitle {
+            color: #444 !important;
+        }
+
+        .status-dot-pos {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+@endsection
+
 @section('content')
     <section class="section section-sm">
-        <div class="container">
-            <div class="row justify-content-center text-center mb-sm">
-                <div class="col-lg-8 py-5">
-                    <h2 class="mb-0 font-montserrat"><i class="bi bi-cash-stack mr-2"></i>
-                        {{ trans('general.subscription_price') }}</h2>
-                    <p class="lead text-muted mt-0">{{ trans('general.info_subscription') }}</p>
-                </div>
-            </div>
+        <div class="container-fluid pt-lg-5 pt-2">
+           
             <div class="row">
 
                 @include('includes.cards-settings')
 
                 <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-
+                    <div class="row mb-sm">
+                        <div class="col-lg-8 py-5">
+                            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-cash-stack mr-2"></i>
+                                {{ trans('general.subscription_price') }}</h2>
+                            <p class="lead text-muted mt-0 fs-14 font_weight_400 theme-subtitle">{{ trans('general.info_subscription') }}</p>
+                        </div>
+            </div>
                     @if (session('status'))
                         <div class="alert alert-success">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -66,8 +130,8 @@
 
                             <div style="display:flex;justify-content:space-between;gap:10px;">
                                 <div class="subscription-card">
-
-                                    <label><strong>{{ trans('general.subscription_price_weekly') }}</strong></label>
+                                    <span class="status-dot-pos {{ auth()->user()->getPlan('weekly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
+                                    <label class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_week') }}</label>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">{{ $settings->currency_symbol }}</span>
@@ -96,8 +160,8 @@
                                     </div>
                                 </div>
                                 <div class="subscription-card">
-                                    <label class="mt-4"><strong>{{ trans('users.subscription_price') }}
-                                            *</strong></label>
+                                    <span class="status-dot-pos {{ auth()->user()->getPlan('monthly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
+                                    <label class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_month') }}</label>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">{{ $settings->currency_symbol }}</span>
@@ -119,8 +183,9 @@
                             </div>
                             <div style="display:flex;justify-content:space-between;gap:10px;">
                                 <div class="subscription-card">
+                                    <span class="status-dot-pos {{ auth()->user()->getPlan('quarterly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
-                                        class="mt-4"><strong>{{ trans('general.subscription_price_quarterly') }}</strong></label>
+                                        class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_quarter') }}</label>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">{{ $settings->currency_symbol }}</span>
@@ -149,8 +214,9 @@
                                     </div>
                                 </div>
                                 <div class="subscription-card">
+                                    <span class="status-dot-pos {{ auth()->user()->getPlan('biannually', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
-                                        class="mt-4"><strong>{{ trans('general.subscription_price_biannually') }}</strong></label>
+                                        class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_biannual') }}</label>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">{{ $settings->currency_symbol }}</span>
@@ -181,8 +247,9 @@
                             </div>
                             <div style="display:flex;justify-content:space-between;gap:10px;">
                                 <div class="subscription-card">
+                                    <span class="status-dot-pos {{ auth()->user()->getPlan('yearly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
-                                        class="mt-4"><strong>{{ trans('general.subscription_price_yearly') }}</strong></label>
+                                        class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_year') }}</label>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">{{ $settings->currency_symbol }}</span>
@@ -213,7 +280,7 @@
                                 <div></div>
                             </div>
                             <div style="display:flex;justify-content:space-between;">
-                                <div class="text-muted mb-4 mt-4">
+                                <div class="mb-1 mt-1">
                                     <div class="custom-control custom-switch custom-switch-lg">
                                         <input type="checkbox" class="custom-control-input"
                                             @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="free_subscription"
@@ -239,7 +306,7 @@
                                         @endif
                                     @endif
                                 </div>
-                                <button class="btn btn-1 btn-success" @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
+                                <button class="btn btn-1 btn-save-custom mr-3" @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
                                     onClick="this.form.submit(); this.disabled=true; this.innerText='{{ trans('general.please_wait') }}';"
                                     type="submit">
                                     {{ trans('general.save_changes') }}
