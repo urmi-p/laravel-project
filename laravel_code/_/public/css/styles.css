@@ -2207,7 +2207,9 @@ a:hover.button-avatar-upload {
 .font_weight_700 {
     font-weight: 700 !important;
 }
-
+.fs-13{
+    font-size: 13px !important;
+}
 .fs-14 {
     font-size: 14px !important;
 }
@@ -2228,6 +2230,9 @@ a:hover.button-avatar-upload {
 }
 .fs-32 {
     font-size: 32px !important;
+}
+.fs-40{
+    font-size:40px !important;
 }
 .brd-8 {
     border-radius: 8px !important;
@@ -2801,8 +2806,62 @@ a.btn-category:focus {
 .lock_dim {
     height:80px;
 }
-
-
+.tip_modal_main_div{
+    border-radius: 20px; 
+    border: none;
+}
+.tip_modal_card{
+    border-radius: 20px; 
+    overflow: hidden;
+}
+.tip_modal_card_header{
+    height: 150px; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.tip_modal_icon_wrap{
+    min-width: 40px; 
+    text-align: center;
+}
+.tip_modal_input{
+    border-radius: 10px;
+}
+.tip_modal_cancel{
+    border-color: #ff4b60; 
+    color: #ff4b60; 
+    border-radius: 8px;
+}
+.tip_modal_cancel:hover{
+    background-color: #000;
+}
+.tip_modal_send{
+    background-color: #ff4b60; 
+    border-color: #ff4b60; 
+    border-radius: 8px;
+}
+.tip_modal_send:hover{
+    background-color: #ff4b60;
+}
+.side_bar_box_shadow{
+    box-shadow: 0px 4px 25px 0px #2A864214;
+}
+.subscription_card_main_div{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+.subscription_card_main_div_no_gap{
+    display:flex;
+    justify-content:space-between;
+}
+.gap_10px{
+    gap:10px !important;
+}
+.main_head_search{
+    top: 9px; 
+    right: 35px;
+    gap:6px;
+    margin-right:20px
+}
 @media (min-width: 992px) {
 
     .alert_custom {

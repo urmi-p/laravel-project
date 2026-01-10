@@ -107,7 +107,7 @@
         <div class="container-fluid pt-lg-5 pt-2">
 
             <div class="row">
-                <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
+                <div class="col-lg-3 col-md-2 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
                 {{-- @include('includes.cards-settings') --}}

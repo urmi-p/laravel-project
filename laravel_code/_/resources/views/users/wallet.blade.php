@@ -310,7 +310,7 @@
         <div class="row">
 
           {{-- @include('includes.cards-settings') --}}
-          <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
+          <div class="col-lg-3 col-md-2 side_bar_box_shadow">
               @include('includes.menu-sidebar-home')
           </div>
           <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">

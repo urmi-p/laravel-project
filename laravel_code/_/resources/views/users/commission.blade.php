@@ -304,7 +304,7 @@
     <div class="container-fluid pt-lg-5 pt-3">
 
         <div class="row">
-            <div class="col-lg-3 col-md-2" style="box-shadow: 0px 4px 25px 0px #2A864214;">
+            <div class="col-lg-3 col-md-2 side_bar_box_shadow">
                 @include('includes.menu-sidebar-home')
             </div>
             {{-- @include('includes.cards-settings') --}}
@@ -377,7 +377,7 @@
 
                     {{-- REVENUE SPLIT --}}
                     <div class="mb-4">
-                        <div class="d-flex align-items-center gap-2 mb-2" style="gap:10px">
+                        <div class="d-flex align-items-center gap-2 mb-2 gap_10px">
                             <div class="calc-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                                     <path d="M0 10C0 4.47715 4.47715 0 10 0H22C27.5228 0 32 4.47715 32 10V22C32 27.5228 27.5228 32 22 32H10C4.47715 32 0 27.5228 0 22V10Z" fill="#615FFF" fill-opacity="0.1" />
@@ -406,7 +406,7 @@
                             <div class="col-md-4">
                                 <div class="rev-card">
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-2" style="gap:10px">
+                                        <div class="d-flex align-items-center gap_10px">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                 <g clip-path="url(#clip0_6275_2677)">
                                                     <path d="M5.33203 9.33337C7.54117 9.33337 9.33203 7.54251 9.33203 5.33337C9.33203 3.12424 7.54117 1.33337 5.33203 1.33337C3.12289 1.33337 1.33203 3.12424 1.33203 5.33337C1.33203 7.54251 3.12289 9.33337 5.33203 9.33337Z" stroke="#2B7FFF" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
@@ -431,7 +431,7 @@
                             <div class="col-md-4">
                                 <div class="rev-card">
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-2" style="gap:10px">
+                                        <div class="d-flex align-items-center gap_10px">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                 <g clip-path="url(#clip0_6275_2690)">
                                                     <path d="M13.3385 8.66664C13.3385 12 11.0052 13.6666 8.23188 14.6333C8.08665 14.6825 7.9289 14.6802 7.78521 14.6266C5.00521 13.6666 2.67188 12 2.67188 8.66664V3.99997C2.67188 3.82316 2.74211 3.65359 2.86714 3.52857C2.99216 3.40355 3.16173 3.33331 3.33854 3.33331C4.67188 3.33331 6.33854 2.53331 7.49854 1.51997C7.63978 1.39931 7.81944 1.33301 8.00521 1.33301C8.19097 1.33301 8.37064 1.39931 8.51188 1.51997C9.67854 2.53997 11.3385 3.33331 12.6719 3.33331C12.8487 3.33331 13.0183 3.40355 13.1433 3.52857C13.2683 3.65359 13.3385 3.82316 13.3385 3.99997V8.66664Z" stroke="#615FFF" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
@@ -453,7 +453,7 @@
                             <div class="col-md-4">
                                 <div class="rev-card">
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-2" style="gap:10px">
+                                        <div class="d-flex align-items-center gap_10px">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                 <path d="M13.3359 3.33337H2.66927C1.93289 3.33337 1.33594 3.93033 1.33594 4.66671V11.3334C1.33594 12.0698 1.93289 12.6667 2.66927 12.6667H13.3359C14.0723 12.6667 14.6693 12.0698 14.6693 11.3334V4.66671C14.6693 3.93033 14.0723 3.33337 13.3359 3.33337Z" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                                 <path d="M1.33594 6.66663H14.6693" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
@@ -482,7 +482,7 @@
 
                     {{-- EARNINGS CALCULATOR --}}
                     <div class="mb-4">
-                        <div class="d-flex align-items-center gap-2 mb-2" style="gap:10px">
+                        <div class="d-flex align-items-center gap_10px mb-2">
                             <div class="calc-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                                     <path d="M0 10C0 4.47715 4.47715 0 10 0H22C27.5228 0 32 4.47715 32 10V22C32 27.5228 27.5228 32 22 32H10C4.47715 32 0 27.5228 0 22V10Z" fill="#364153" />

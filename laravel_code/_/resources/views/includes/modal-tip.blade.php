@@ -1,9 +1,9 @@
 <div class="modal fade" id="tipForm" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content shadow-lg" style="border-radius: 20px; border: none;">
+		<div class="modal-content shadow-lg tip_modal_main_div">
 			<div class="modal-body p-0">
-				<div class="card bg-white shadow border-0" style="border-radius: 20px; overflow: hidden;">
-					<div class="card-header border-0 position-relative text-center" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+				<div class="card bg-white shadow border-0 tip_modal_card">
+					<div class="card-header border-0 position-relative text-center tip_modal_card_header">
 					</div>
 					<div class="card-body px-lg-5 position-relative" style="padding-top: 0px;">
 
@@ -77,7 +77,7 @@
 							<input type="hidden" id="cardholder-email" value="{{ auth()->user()->email }}"  />
 							
 							<div class="form-group mb-4">
-								<input type="number" min="{{$settings->min_tip_amount}}" max="{{$settings->max_tip_amount}}" required data-min-tip="{{$settings->min_tip_amount}}" data-max-tip="{{$settings->max_tip_amount}}" autocomplete="off" id="onlyNumber" class="form-control form-control-lg text-center tipAmount" name="amount" placeholder="{{__('general.tip_amount')}}" style="border-radius: 10px;">
+								<input type="number" min="{{$settings->min_tip_amount}}" max="{{$settings->max_tip_amount}}" required data-min-tip="{{$settings->min_tip_amount}}" data-max-tip="{{$settings->max_tip_amount}}" autocomplete="off" id="onlyNumber" class="form-control form-control-lg text-center tipAmount tip_modal_input" name="amount" placeholder="{{__('general.tip_amount')}}">
 								<small class="text-muted d-block text-center mt-2">
 									{{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->min_tip_amount) }} -
 									<span class="cursor-pointer" onclick="document.getElementById('onlyNumber').stepUp()">
@@ -115,7 +115,7 @@
 										<div class="payment-option-item border-bottom payment-option-row">
 											<div class="d-flex align-items-center justify-content-between">
 												<div class="d-flex align-items-center">
-													<div class="icon-wrapper mr-3 text-muted" style="min-width: 40px; text-align: center;">
+													<div class="icon-wrapper mr-3 text-muted tip_modal_icon_wrap">
 														{!! $paymentIcon !!}
 													</div>
 													<div>
@@ -150,7 +150,7 @@
 									<div class="payment-option-item border-bottom payment-option-row">
 										<div class="d-flex align-items-center justify-content-between">
 											<div class="d-flex align-items-center">
-												<div class="icon-wrapper mr-3 text-muted" style="min-width: 40px; text-align: center;">
+												<div class="icon-wrapper mr-3 text-muted tip_modal_icon_wrap">
 													<i class="fas fa-wallet fa-lg"></i>
 												</div>
 												<div>
@@ -184,8 +184,8 @@
 							</div>
 
 							<div class="d-flex justify-content-between mt-4">
-								<button type="button" class="btn btn-outline-danger w-50 mr-2" data-dismiss="modal" style="border-color: #ff4b60; color: #ff4b60; border-radius: 8px;">{{__('admin.cancel')}}</button>
-								<button type="submit" id="tipBtn" class="btn btn-danger w-50 ml-2 tipBtn" style="background-color: #ff4b60; border-color: #ff4b60; border-radius: 8px;"><i></i> {{__('auth.send')}}</button>
+								<button type="button" class="btn btn-outline-danger w-50 mr-2 tip_modal_cancel" data-dismiss="modal">{{__('admin.cancel')}}</button>
+								<button type="submit" id="tipBtn" class="btn btn-danger w-50 ml-2 tipBtn tip_modal_send"><i></i> {{__('auth.send')}}</button>
 							</div>
 
 							<!-- @include('includes.site-billing-info') -->

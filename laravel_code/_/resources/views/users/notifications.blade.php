@@ -4,14 +4,12 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
-
+    <div class="container-fluid">
       <div class="row mt-4">
-
-      <div class="d-none d-md-none d-lg-block col-md-12 col-lg-3">
+      <!-- <div class="d-none d-md-none d-lg-block"> -->
         <!-- col-md-{{ request()->routeIs('user.settings') ? '12' : '6' }} col-lg-{{ request()->routeIs('user.settings') ? '12' : '3' }} mb-3 mt-4 -->
         @include('includes.cards-settings')
-      </div>
+      <!-- </div> -->
         <div class="col-lg-9 mb-5 mb-lg-0 mt-2">
           <div class="row mb-sm">
             <div class="col-lg-8 py-4">

@@ -128,7 +128,7 @@
 
                         <div class="form-group">
 
-                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <div class="subscription_card_main_div">
                                 <div class="subscription-card">
                                     <span class="status-dot-pos {{ auth()->user()->getPlan('weekly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_week') }}</label>
@@ -181,7 +181,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <div class="subscription_card_main_div">
                                 <div class="subscription-card">
                                     <span class="status-dot-pos {{ auth()->user()->getPlan('quarterly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
@@ -245,7 +245,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <div class="subscription_card_main_div">
                                 <div class="subscription-card">
                                     <span class="status-dot-pos {{ auth()->user()->getPlan('yearly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
@@ -279,7 +279,7 @@
                                 </div>
                                 <div></div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;">
+                            <div class="subscription_card_main_div_no_gap">
                                 <div class="mb-1 mt-1">
                                     <div class="custom-control custom-switch custom-switch-lg">
                                         <input type="checkbox" class="custom-control-input"

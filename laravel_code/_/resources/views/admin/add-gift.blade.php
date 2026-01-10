@@ -15,7 +15,7 @@
                   <div class="mb-1">
                      <input name="image" required type="file" accept="image/*" class="form-control custom-file rounded-pill">
                    </div>
-                   <small style="font-size: 13px;">
+                   <small class="fs-13">
                      <i class="bi-info-circle me-1"></i> {{ __('general.recommended_size') }} 200x200 px (PNG, SVG, GIF)
                    </small>
                    

@@ -11,7 +11,7 @@
 
         <div class="container-fluid pt-lg-5 pt-2">
             <div class="row ">
-                <div class="col-md-3 mb-4 menu-left-home" style="box-shadow: 0px 4px 25px 0px #2A864214;">
+                <div class="col-md-3 mb-4 menu-left-home side_bar_box_shadow">
                     @if (!$settings->disable_creators_section)
                         @include('includes.menu-filters-creators')
                     @endif

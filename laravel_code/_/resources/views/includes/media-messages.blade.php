@@ -113,7 +113,7 @@
 	 <div class="card">
 		 <div class="row no-gutters">
 			 <div class="col-md-3 text-center bg-primary">
-				 <i class="far fa-file-archive m-2 text-white" style="font-size: 40px;"></i>
+				 <i class="far fa-file-archive m-2 text-white fs-40"></i>
 			 </div>
 			 <div class="col-md-9">
 				 <div class="card-body py-2 px-4">
@@ -135,7 +135,7 @@
 	 <div class="card">
 		 <div class="row no-gutters">
 			 <div class="col-md-3 text-center bg-primary">
-				 <i class="fas fa-book-open m-2 text-white" style="font-size: 40px;"></i>
+				 <i class="fas fa-book-open m-2 text-white fs-40"></i>
 			 </div>
 			 <div class="col-md-9">
 				 <div class="card-body py-2 px-4">

@@ -739,8 +739,8 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                     @if ($settings->giphy_status)
                                     <div class="dropdown">
 
-                                        <span class="triggerGif" role="button"
-                                            style="font-size:20px; position: absolute; right: 70px; cursor: pointer;"
+                                        <span class="triggerGif fs-20" role="button"
+                                            style="position: absolute; right: 70px; cursor: pointer;"
                                             id="dropdownGif{{ $response->id }}"
                                             data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
@@ -762,8 +762,8 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
                                     <div class="dropdown">
 
-                                        <span class="triggerSticker" role="button"
-                                            style="font-size:20px; position: absolute; right: 35px;  cursor: pointer;"
+                                        <span class="triggerSticker fs-20" role="button"
+                                            style="position: absolute; right: 35px;  cursor: pointer;"
                                             id="dropdownSticky{{ $response->id }}"
                                             data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
@@ -979,7 +979,7 @@ $response->locked == 'no')
 
                 <div class="col-md-2 text-center bg-primary rounded-left">
 
-                    <i class="far fa-file-archive m-4 text-white" style="font-size: 40px;"></i>
+                    <i class="far fa-file-archive m-4 text-white fs-40"></i>
 
                 </div>
 
@@ -1022,7 +1022,7 @@ $response->locked == 'no')
 
                 <div class="col-md-2 text-center bg-primary rounded-left">
 
-                    <i class="fas fa-book-open m-4 text-white" style="font-size: 40px;"></i>
+                    <i class="fas fa-book-open m-4 text-white fs-40"></i>
 
                 </div>
 
@@ -1586,8 +1586,8 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
                     @if ($settings->giphy_status)
                     <div class="dropdown">
 
-                        <span class="triggerGif" role="button"
-                            style="font-size:20px; position: absolute; right: 70px; cursor: pointer;"
+                        <span class="triggerGif fs-20" role="button"
+                            style="position: absolute; right: 70px; cursor: pointer;"
                             id="dropdownGif{{ $response->id }}" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
 
@@ -1607,8 +1607,8 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
 
                     <div class="dropdown">
 
-                        <span class="triggerSticker" role="button"
-                            style="font-size:20px; position: absolute; right: 35px;  cursor: pointer;"
+                        <span class="triggerSticker fs-20" role="button"
+                            style="position: absolute; right: 35px;  cursor: pointer;"
                             id="dropdownSticky{{ $response->id }}" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
 

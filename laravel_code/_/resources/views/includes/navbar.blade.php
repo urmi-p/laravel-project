@@ -19,8 +19,7 @@
                         </a>
                     </div>
                     <div>
-                        <div class="position-absolute d-flex d-lg-none"
-                            style="top: 9px; right: 35px;gap:6px;margin-right:20px">
+                        <div class="position-absolute d-flex d-lg-none main_head_search">
                             <div class="d-lg-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -155,7 +154,7 @@
                         </li>
                     @endif
 
-					@guest
+					<!-- @guest
 						@if (!$settings->disable_creators_section)
 
 							<li class="nav-item dropdown d-lg-block d-none">
@@ -176,7 +175,7 @@
 								</a>
 							</li>
 						@endif
-                    @endguest
+                    @endguest -->
                 </ul>
 
                 <ul class="navbar-nav">
@@ -194,9 +193,6 @@
                             </a>
 
                         </li>
-
-
-
                         @if ($settings->registration_active == '1')
                             <li class="nav-item">
 
@@ -207,147 +203,82 @@
                                     {{ __('general.getting_started') }}
 
                                 </a>
-
                             </li>
                         @endif
                     @else
                         <!-- ============ Menu Mobile ============-->
                         @if (auth()->user()->role == 'admin')
                             <li class="nav-item dropdown d-lg-none mt-2 border-bottom">
-
                                 <a href="{{ url('panel/admin') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                     <div>
-
                                         <i class="bi bi-speedometer2 mr-2"></i>
-
                                         <span class="d-lg-none">{{ __('admin.admin') }}</span>
-
                                     </div>
-
                                 </a>
-
                             </li>
                         @endif
 
                         <li class="nav-item dropdown d-lg-none @if (auth()->user()->role != 'admin') mt-2 @endif">
-
                             <a href="{{ url(auth()->user()->username) }}"
                                 class="nav-link px-2 link-menu-mobile py-1 url-user">
-
                                 <div>
-
                                     <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
                                         alt="User" class="rounded-circle avatarUser mr-1" width="20"
                                         height="20">
-
                                     <span
                                         class="d-lg-none">{{ auth()->user()->verified_id == 'yes' ? __('general.my_page') : __('users.my_profile') }}</span>
-
                                 </div>
-
                             </a>
 
                         </li>
-
-
-
                         @if (auth()->user()->verified_id == 'yes')
-
                             <li class="nav-item dropdown d-lg-none">
-
                                 <a href="{{ url('dashboard') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                     <div>
-
                                         <i class="bi bi-speedometer2 mr-2"></i>
-
                                         <span class="d-lg-none">{{ __('admin.dashboard') }}</span>
-
                                     </div>
-
                                 </a>
-
                             </li>
-
-
 
                             <li class="nav-item dropdown d-lg-none">
-
                                 <a href="{{ url('my/posts') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                     <div>
-
                                         <i class="feather icon-feather mr-2"></i>
-
                                         <span class="d-lg-none">{{ __('general.my_posts') }}</span>
-
                                     </div>
-
                                 </a>
-
                             </li>
-
-
 
                             @if ($settings->allow_vault)
                                 <li class="nav-item dropdown d-lg-none">
-
                                     <a href="{{ url('my/vault') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                         <div>
-
                                             <i class="feather icon-archive mr-2"></i>
-
                                             <span class="d-lg-none">{{ __('general.vault') }}</span>
-
                                         </div>
-
                                     </a>
-
                                 </li>
                             @endif
 
                         @endif
 
-
-
                         <li class="nav-item dropdown d-lg-none">
-
                             <a href="{{ url('my/bookmarks') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                 <div>
-
                                     <i class="feather icon-bookmark mr-2"></i>
-
                                     <span class="d-lg-none">{{ __('general.bookmarks') }}</span>
-
                                 </div>
-
                             </a>
-
                         </li>
-
-
-
                         <li class="nav-item dropdown d-lg-none border-bottom">
-
                             <a href="{{ url('my/likes') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                 <div>
-
                                     <i class="feather icon-heart mr-2"></i>
-
                                     <span class="d-lg-none">{{ __('general.likes') }}</span>
-
                                 </div>
-
                             </a>
-
                         </li>
-
-
-
                         <li class="nav-item dropdown d-lg-none border-bottom">
 
                             <a href="{{ route('user.settings') }}" class="nav-link px-2 link-menu-mobile py-1">
@@ -364,149 +295,91 @@
 
                         </li>
 
-
-
                         @if (auth()->user()->verified_id == 'yes')
                             <li class="nav-item dropdown d-lg-none">
-
                                 <a class="nav-link px-2 link-menu-mobile py-1 balance">
-
                                     <div>
-
                                         <i class="iconmoon icon-Dollar mr-2"></i>
-
                                         <span class="d-lg-none balance">{{ __('general.balance') }}:
                                             {{ Helper::amountFormatDecimal(auth()->user()->balance) }}</span>
 
                                     </div>
-
                                 </a>
-
                             </li>
                         @endif
 
-
-
                         @if (($settings->disable_wallet == 'on' && auth()->user()->wallet != 0.0) || $settings->disable_wallet == 'off')
                             <li class="nav-item dropdown d-lg-none border-bottom">
-
                                 <a @if ($settings->disable_wallet == 'off') href="{{ url('my/wallet') }}" @endif
                                     class="nav-link px-2 link-menu-mobile py-1">
 
                                     <div>
-
                                         <i class="iconmoon icon-Wallet mr-2"></i>
 
                                         {{ __('general.wallet') }}: <span
                                             class="balanceWallet">{{ Helper::userWallet() }}</span>
 
                                     </div>
-
                                 </a>
-
                             </li>
                         @endif
-
-
 
                         @if (auth()->user()->verified_id == 'yes')
                             <li class="nav-item dropdown d-lg-none">
-
                                 <a href="{{ url('my/subscribers') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                     <div>
-
                                         <i class="feather icon-users mr-2"></i>
-
                                         <span class="d-lg-none">{{ __('users.my_subscribers') }}</span>
-
                                     </div>
-
                                 </a>
-
                             </li>
                         @endif
 
-
-
                         <li class="nav-item dropdown d-lg-none">
-
                             <a href="{{ url('my/subscriptions') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                 <div>
-
                                     <i class="feather icon-user-check mr-2"></i>
-
                                     <span class="d-lg-none">{{ __('users.my_subscriptions') }}</span>
-
                                 </div>
-
                             </a>
-
                         </li>
-
-
 
                         <li class="nav-item dropdown d-lg-none border-bottom">
-
                             <a href="{{ url('my/purchases') }}" class="nav-link px-2 link-menu-mobile py-1">
-
                                 <div>
-
                                     <i class="bi bi-bag-check mr-2"></i>
-
                                     <span class="d-lg-none">{{ __('general.purchased') }}</span>
-
                                 </div>
-
                             </a>
-
                         </li>
-
-
 
                         @if (auth()->user()->verified_id == 'no' && auth()->user()->verified_id != 'reject')
                             <li class="nav-item dropdown d-lg-none">
-
                                 <a href="{{ url('settings/verify/account') }}"
                                     class="nav-link px-2 link-menu-mobile py-1">
-
                                     <div>
-
                                         <i class="feather icon-star mr-2"></i>
-
                                         <span class="d-lg-none">{{ __('general.become_creator') }}</span>
-
                                     </div>
-
                                 </a>
-
                             </li>
                         @endif
-
 
                         {{-- for mobile menu --}}
                         <li class="nav-item dropdown d-lg-none">
 
                             <a href="{{ auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light') }}"
                                 class="nav-link px-2 link-menu-mobile py-1">
-
                                 <div>
-
                                     <i
                                         class="feather icon-{{ auth()->user()->dark_mode == 'off' ? 'moon' : 'sun' }} mr-2"></i>
-
                                     <span
                                         class="d-lg-none">{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}
                                     </span>
 
                                 </div>
-
                             </a>
-
                         </li>
-
-
 
                         <li class="nav-item dropdown d-lg-none mb-2">
 
