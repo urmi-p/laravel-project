@@ -2459,6 +2459,11 @@ a.btn-category:focus {
     #000 65%
   );
 }*/
+.make_withdraw_btn{
+    border: 1px solid #EAECF0;
+    border-radius: 20px;
+    padding: 8px 12px;
+}
 @media (min-width: 1025px) {
     .my-card-not-card-added {
         /* Content */

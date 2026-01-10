@@ -71,4 +71,6 @@ return [
     'recover_pass_subtitle' => 'We will send a new password to your account from email',
     'reset_pass_subtitle' => 'Use a strong. unique password to keep your account safe. You will be signed out from other devices when you change it.',
     'protected_recaptcha' => 'Protected by reCAPTCHA',
+	'full_name1' => 'Full name',
+	'email' => 'Email',
 ];
