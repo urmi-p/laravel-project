@@ -1860,33 +1860,35 @@ a:hover.button-avatar-upload {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #1a1a1a;
+    background: var(--sidebar-bg);
     border-radius: 14px;
     padding: 12px 14px;
     margin-bottom: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--sidebar-border);
+    color: var(--text-color);
 }
 
 .card-icon {
     width: 36px;
     height: 36px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--icon-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ffffff;
+    color: var(--text-color);
 }
 
 .card-info small {
     display: block;
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--card-info-muted);
 }
 
 .card-info strong {
     color: #ffffff;
     font-size: 14px;
+    color: var(--card-info-title);
 }
 
 /* =========================
@@ -2073,7 +2075,10 @@ a:hover.button-avatar-upload {
     left: 10px;
     flex-wrap: wrap;
 }
-
+.btn_position button{
+    border-radius: 8px !important;
+    padding:4px 6px !important;
+}
 .new_width {
     width: 32px;
     height: 32px;
@@ -2270,7 +2275,7 @@ a.btn-category:focus {
     padding: 6px 12px;
     background-color: #303030;
     color: #fff !important;
-    border-radius: 999px;
+    border-radius: 16px;
     font-size: 14px;
     text-decoration: none;
     flex-wrap: wrap;
@@ -2280,7 +2285,10 @@ a.btn-category:focus {
     color: #000000 !important;
 }
 
-
+[data-bs-theme="light"] .bg_white{
+    color: #344054 !important;
+    background: #5f5f5f7a  !important;
+}
 .btn_mobile_nav {
     padding: 6px 10px !important;
     background-color: #a3a3a31a !important;
@@ -2331,6 +2339,57 @@ a.btn-category:focus {
     border-radius: 16px !important;
     border: 1px solid #E2394C;
 }
+.sidebar_li{
+    padding:4px 8px;
+}
+.sidebar_li a{
+    font-size:18px !important;
+    font-weight:400;
+}
+.sidebar_li a.active{
+    font-weight:600 !important
+}
+[data-bs-theme="dark"] .navbar_mid_link{
+    color: #FFFFFF !important;
+}
+[data-bs-theme="dark"] .sidebar_li a{
+    color: #FFFFFF !important;
+}
+[data-bs-theme="dark"] .menu-left-home{
+    background: #0f0f0f;
+}
+[data-bs-theme="light"] .menu-left-home{
+    background: #f6f6f6;
+}
+[data-bs-theme="light"] .user_info h6 {
+    color: #5f5f5f;
+}
+html[data-bs-theme="light"] {
+    --sidebar-bg: #ffffff;
+    --sidebar-border: rgba(0, 0, 0, 0.08);
+    --icon-bg: rgba(0, 0, 0, 0.06);
+    --text-color: #111111;
+    --card-info-muted: #6b7280;
+    --card-info-title: #111827;
+    --nav_profile_bg:#FFF;
+    --no-updates-main-bg: rgba(0, 0, 0, 0.04);
+    --no-updates-sub-bg: #f9fafb;
+    --no-updates-card-bg: #ffffff;
+    --no-updates-border: rgba(0, 0, 0, 0.08);
+}
+html[data-bs-theme="dark"] {
+    --sidebar-bg: #1a1a1a;
+    --sidebar-border: rgba(255, 255, 255, 0.06);
+    --icon-bg: rgba(255, 255, 255, 0.08);
+    --text-color: #ffffff;
+    --card-info-muted: #9ca3af;
+    --card-info-title: #ffffff;
+    --nav_profile_bg:#303030;
+    --no-updates-main-bg: #ffffff1a;
+    --no-updates-sub-bg: #303030;
+    --no-updates-card-bg: #191919;
+    --no-updates-border: rgba(255, 255, 255, 0.06);
+}
 @media (max-width: 991px) {
     .navbar {
         border: none !important;
@@ -2364,7 +2423,13 @@ a.btn-category:focus {
 .myhover_btn a.btn {
     border-radius: 8px !important;
 }
-
+.nav_profile{
+    border:1px solid #303030;
+    width:549px;
+    margin:auto;
+    border-radius: 12px;
+    background-color: var(--nav_profile_bg);;
+}
 .nav_profile li.active {
     border-bottom: none !important;
 }
@@ -2373,8 +2438,11 @@ a.btn-category:focus {
     padding: 6px !important;
     border-radius: 12px;
     border: 1px solid #e2394c;
+    color: #FFFFFF !important;
 }
-
+.nav_profile li a{
+    color: var(--text-color);
+}
 .nav_link {
     padding: 12px 24px !important;
 }
@@ -2399,24 +2467,24 @@ a.btn-category:focus {
 }
 
 .main-no-updates {
-    background-color: #ffffff1a;
+    background-color: var(--no-updates-main-bg);
     padding: 24px;
 }
 .sub-no-updates {
-    background-color: #303030;
+    background-color: var(--no-updates-sub-bg);
     border-radius: 15px;
     padding: 90px 0;
 }
 .bg_black {
-    background-color: #191919;
-    border: none !important;
+    background-color: var(--no-updates-card-bg);
+    border: 1px solid var(--no-updates-border) !important;
 }
 
 .no-updates-div {
     padding: 12px 8px;
 }
 .no-updates-link {
-    background: #191919;
+    background: var(--no-updates-card-bg);
     border-radius: 15px;
     width: fit-content;
     margin: auto;

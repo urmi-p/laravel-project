@@ -383,7 +383,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                 }
                 @endphp
 
-                <a style="color:#FFF !important" class="action-pill pulse-btn btnLike @if ($likeActive) active @endif {{ $buttonLike }}"
+                <a class="action-pill pulse-btn btnLike @if ($likeActive) active @endif {{ $buttonLike }}"
                     href="javascript:void(0);"
                     @guest data-toggle="modal" data-target="#loginFormModal" @endguest
                     @auth data-id="{{ $response->id }}" @endauth>

@@ -185,14 +185,11 @@
                     </div><!-- avatar-wrap -->
 
                     {{-- start changes here --}}
-
                     <div class="media-body">
 
                         <h4 class="mt-1">
 
                             {{ $user->hide_name == 'yes' ? $user->username : $user->name }}
-
-
 
                             @if ($user->verified_id == 'yes')
 
@@ -205,33 +202,20 @@
 
                             @endif
 
-
-
                             @if ($user->featured == 'yes')
-
                                 <small class="text-featured" title="{{ __('users.creator_featured') }}"
                                     data-toggle="tooltip" data-placement="top">
-
                                     <i class="fas fa fa-award"></i>
-
                                 </small>
-
                             @endif
 
                         </h4>
-
-
-
                         <p>
-
                             <span>
-
                                 @if (!Cache::has('is-online-' . $user->id) && $user->hide_last_seen == 'no')
 
                                 <span class="w-100 d-block">
-
                                     <small>{{ __('general.active') }}</small>
-
                                     <small class="timeAgo"
                                         data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
 
@@ -239,19 +223,13 @@
 
                                 @endif
 
-
-
                                 @if ($user->profession != '' && $user->verified_id == 'yes')
 
                                     {{ $user->profession }}
 
                                 @endif
-
                             </span>
-
                         </p>
-
-
 
                         <div class="d-flex-user justify-content-center mb-2">
 
@@ -276,8 +254,6 @@
                             @if (
                                 ($userPlanMonthlyActive && $user->verified_id == 'yes') ||
                                     ($user->free_subscription == 'yes' && $user->verified_id == 'yes'))
-
-
 
                                 @if (auth()->check() &&
                                         auth()->id() != $user->id &&
@@ -565,7 +541,7 @@
 
                             @if ($user->verified_id == 'yes')
 
-                                <button class="btn btn-profile btn-google bg_white" title="{{ __('general.share') }}"
+                                <button class="btn btn-profile btn-google bg_white shadow-large" title="{{ __('general.share') }}"
                                     id="dropdownUserShare" role="button" data-toggle="modal"
                                     data-target=".share-modal">
 
@@ -715,17 +691,10 @@
                                                         </div>
 
                                                     </div>
-
-
-
                                                 </div>
-
                                             </div>
-
                                         </div>
-
                                     </div>
-
                                 </div>
 
                             @endif
@@ -858,7 +827,7 @@
                 </div><!-- media -->
 
                 @if ($user->verified_id == 'yes')
-                    <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile" style="width:549px;margin:auto;background-color:{{ auth()->check() && auth()->user()->dark_mode == 'on' ? '#303030' : '#FFF' }};border-radius: 12px;">
+                    <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile">
                         <li class="nav-link nav_link @if (request()->path() == $user->username) active @endif navbar-user-mobile">
                             <a href="{{ request()->path() == $user->username ? 'javascript:;' : url($user->username) }}"
                                 title="{{ __('general.posts') }}"><i class="feather icon-file-text"></i> 
@@ -950,7 +919,7 @@
 
     @if ($user->verified_id == 'yes' && !in_array(request('media'), ['shop', 'reels', 'photos', 'videos']))
 
-        <div class="container py-4 pb-5">
+        <div class="container-fluid py-4 pb-5">
             <div class="row">
                 <div class="col-lg-4 mb-3">
                     <button type="button"

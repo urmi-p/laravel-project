@@ -60,33 +60,33 @@
 
             @if ($settings->live_streaming_status == 'on')
             <div>
-              <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.stream_live')}}" class="d-flex align-items-center custom_btn btnCreateLive @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
+              <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.stream_live')}}" class="d-flex align-items-center custom_btn btnCreateLive text-white rounded-pill">
                 <i class="bi-camera-video f-size-20 align-middle mr-2"></i><span> Live Video</span>
               </button>
             </div>
             @endif
 
             <div>
-              <button type="button" class="d-flex align-items-center custom_btn btnMultipleUpload btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
+              <button type="button" class="d-flex align-items-center custom_btn btnMultipleUpload btn-tooltip-form e-none text-white rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
                 <i class="bi-image f-size-20 align-middle mr-2"></i><span> Photo/Video</span>
               </button>
             </div>
-          @if ($settings->allow_scheduled_posts)
+    
             <div>
-              <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.schedule')}}" class="d-flex align-items-center custom_btn btn-tooltip-form e-none btnSchedulePost @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
-                <i class="bi-bar-chart f-size-20 align-middle mr-2"></i><span> Schedule Post</span>
+              <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn text-white rounded-pill">
+                <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
               </button>
-              <input type="hidden" name="scheduled_date" id="inputScheduled" value="">
             </div>
-          @endif
-
+            @if ($settings->allow_scheduled_posts)
               <div>
-                <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
-                  <i class="bi-list-ul f-size-20 align-middle mr-2"></i><span> List Item</span>
+                <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.schedule')}}" class="d-flex align-items-center custom_btn btn-tooltip-form e-none btnSchedulePost text-white rounded-pill">
+                  <i class="bi-bar-chart f-size-20 align-middle mr-2"></i><span> Schedule Post</span>
                 </button>
+                <input type="hidden" name="scheduled_date" id="inputScheduled" value="">
               </div>
-            </div>
+            @endif
           </div>
+        </div>
 
         </div><!-- media -->
           <input class="custom-control-input d-none" id="customCheckLocked" type="checkbox" {{auth()->user()->post_locked == 'yes' ? 'checked' : ''}} name="locked" value="yes">

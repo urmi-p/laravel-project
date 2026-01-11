@@ -128,7 +128,7 @@
 
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown d-lg-block d-none">
-                        <a class="nav-link px-2 {{ request()->is('dashboard') ? 'font_bold' : 'font_normal' }}"
+                        <a class="nav-link navbar_mid_link px-2 {{ request()->is('dashboard') ? 'font_bold' : 'font_normal' }}"
                             href="{{ url('dashboard') }}" title="{{ __('admin.dashboard') }}">
                             {{ __('admin.dashboard') }}
                         </a>
@@ -136,7 +136,7 @@
                     @if (!$settings->disable_creators_section)
 
                         <li class="nav-item dropdown d-lg-block d-none">
-                            <a class="nav-link px-2 {{ request()->is('creators*') ? 'font_bold' : 'font_normal' }}"
+                            <a class="nav-link navbar_mid_link px-2 {{ request()->is('creators*') ? 'font_bold' : 'font_normal' }}"
                                 href="{{ url('creators') }}" title="{{ __('general.explore_creators') }}">
                                 {{ __('general.explore_creators') }}
                             </a>
@@ -147,7 +147,7 @@
                     @if ($settings->shop)
 
                         <li class="nav-item dropdown d-lg-block d-none">
-                            <a class="nav-link px-2 {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
+                            <a class="nav-link navbar_mid_link px-2 {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
                                 href="{{ url('shop') }}" title="{{ __('general.explore_shop') }}">
                                 {{ __('general.explore_shop') }}
                             </a>
@@ -450,7 +450,7 @@
                                 <span class="noti_notifications notify @if (auth()->user()->unseenNotifications()) d-block @endif">
                                     {{ auth()->user()->unseenNotifications() }}
                                 </span>
-                                <i class="far fa-bell icon-navbar"></i>
+                                <i class="bi bi-bell icon-navbar"></i>
                                 <span class="d-lg-none align-middle ml-1">{{ __('general.notifications') }}</span>
                             </a>
                         </li>
