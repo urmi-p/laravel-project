@@ -5,7 +5,7 @@
 @section('content')
 <section class="section section-sm">
   {{-- for mobile header --}}
-        @include('includes.header-mobile')
+  @include('includes.header-mobile')
     <div class="container-fluid pt-lg-5 pt-2">
       <div class="row">
 

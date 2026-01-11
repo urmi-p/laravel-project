@@ -8,19 +8,21 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="bi bi-eye-slash mr-2"></i> {{trans('general.block_countries')}}</h2>
-          <p class="lead text-muted mt-0">{{trans('general.block_countries_info')}}</p>
-        </div>
-      </div>
+  {{-- for mobile header --}}
+  @include('includes.header-mobile')
+    <div class="container-fluid pt-lg-5 pt-2">
+      
       <div class="row">
-
-        @include('includes.cards-settings')
-
+        <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+          @include('includes.cards-settings')
+        </div>
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-
+          <div class="row mb-sm">
+            <div class="col-lg-12">
+              <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24"><i class="bi bi-eye-slash mr-2"></i> {{trans('general.block_countries')}}</h2>
+              <p class="lead mt-0 font_weight_400 fs-14">{{trans('general.block_countries_info')}}</p>
+            </div>
+          </div>
           @if (session('status'))
             <div class="alert alert-success">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -30,23 +32,22 @@
             </div>
           @endif
 
-          <form method="POST" action="{{ url('block/countries') }}">
-
+          <form method="POST" action="{{ url('block/countries') }}" class="my-3">
             @csrf
 
-              <div class="input-group mb-4">
-              <div class="input-group-prepend">
+              <div class="mb-4" style="width: 100%; overflow: hidden;">
+              <!-- <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-globe"></i></span>
-              </div>
-
-              <select name="countries[]" multiple class="form-control" id="select2Countries">
+              </div> -->
+              <label>{{trans('general.block_countries')}}</label>
+              <select name="countries[]" multiple class="form-control light_mode_form" id="select2Countries">
                 @foreach (Countries::orderBy('country_name', 'asc')->get() as $country)
-                      <option @if (in_array($country->country_code, auth()->user()->blockedCountries())) selected="selected" @endif value="{{$country->country_code}}">
-                        {{ $country->country_name }}
-                      </option>
-                      @endforeach
-                    </select>
-                    </div>
+                <option @if (in_array($country->country_code, auth()->user()->blockedCountries())) selected="selected" @endif value="{{$country->country_code}}">
+                  {{ $country->country_name }}
+                </option>
+                @endforeach
+              </select>
+            </div>
 
               <button class="btn btn-1 btn-success btn-block" onClick="this.form.submit(); this.disabled=true; this.innerText='{{trans('general.please_wait')}}';" type="submit">{{trans('general.save_changes')}}</button>
           </form>
