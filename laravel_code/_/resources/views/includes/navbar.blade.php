@@ -19,7 +19,7 @@
                         </a>
                     </div>
                     <div>
-                        <div class="position-absolute d-flex d-lg-none main_head_search">
+                        <div class="position-absolute d-flex d-lg-none main_head_search" style="top: 25px; right: 35px;gap:6px;margin-right:20px">
                             <div class="d-lg-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"

@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row mt-4">
       <!-- <div class="d-none d-md-none d-lg-block"> -->
         <!-- col-md-{{ request()->routeIs('user.settings') ? '12' : '6' }} col-lg-{{ request()->routeIs('user.settings') ? '12' : '3' }} mb-3 mt-4 -->

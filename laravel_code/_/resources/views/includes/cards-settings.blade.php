@@ -1,4 +1,4 @@
-<div class="col-lg-3">
+<div class="">
 
     @if (!request()->routeIs('user.settings'))
         <a href="{{ route('user.settings') }}" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none">

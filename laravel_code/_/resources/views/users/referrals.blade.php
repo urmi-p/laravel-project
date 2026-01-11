@@ -3,146 +3,273 @@
 @section('title') {{__('general.referrals')}} -@endsection
 
 @section('content')
+<style>
+    .transactions-container {
+    background:
+      radial-gradient(
+        90% 140% at 50% -30%,
+        rgba(255, 255, 255, 0.12),
+        transparent 60%
+      ),
+      #000000;
+    border-radius: 14px;
+    padding: 18px 20px 10px;
+    width: 100%;
+  }
+
+  /* HEADER */
+  .transactions-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .transactions-header .title {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* VIEW ALL BUTTON */
+  .view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #000000!important;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  /* TABLE WRAPPER */
+  .transactions-table-wrapper {
+    width: 100%;
+  }
+
+  /* TABLE */
+  .transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* TABLE HEADER */
+  .transactions-table thead th {
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 10px 0;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* TABLE BODY ROWS */
+  .transactions-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .transactions-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  /* TABLE CELLS */
+  .transactions-table td {
+    color: #d1d5db;
+    font-size: 13px;
+    padding: 14px 0;
+  }
+
+  /* RIGHT ALIGN */
+  .text-right {
+    text-align: right;
+    color: #a1a1aa;
+  }
+
+  /* EMPTY STATE */
+  .transactions-table .empty {
+    text-align: center;
+    padding: 24px 0;
+    color: #6b7280;
+    font-size: 13px;
+  }
+</style>
 <section class="section section-sm">
     <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="bi bi-person-plus mr-2"></i> {{__('general.referrals')}}</h2>
-
-          @if ($settings->referral_system == 'on')
-            <p class="lead text-muted mt-0">
-              {{__('general.referrals_welcome_desc', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
-              <small class="d-block">
-                @if ($settings->referral_transaction_limit <> 'unlimited')
-                  * {{ trans_choice('general.total_transactions_per_referral', $settings->referral_transaction_limit, ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred, 'total' => $settings->referral_transaction_limit]) }}
-                @else
-                  * {{__('general.total_transactions_referral_unlimited', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
-                @endif
-
-              </small>
-            </p>
-
-            <button class="d-none copy-url" id="copyLink" data-clipboard-text="{{ url(auth()->user()->username.'?ref='.auth()->user()->id) }}"></button>
-            <span>
-              <span class="text-muted">{{ __('general.your_referral_link') }}</span>
-
-              <span class="text-break"><strong>{{ url(auth()->user()->username.'?ref='.auth()->user()->id) }}</strong></span>
-
-              <button class="btn btn-link e-none p-1 text-decoration-none" data-toggle="tooltip" data-placement="top" title="{{__('general.copy_link')}}" onclick="$('#copyLink').trigger('click')">
-  							<i class="far fa-clone"></i>
-  						</button>
-            </span>
-          @else
-          <div class="alert alert-danger mt-3">
-          <span class="alert-inner--text">
-            <i class="fa fa-exclamation-triangle mr-1"></i> {{ __('general.referral_system_disabled') }}
-          </span>
+      <div class="d-flex">
+        <div class="d-none d-md-none d-lg-block col-md-12 col-lg-3 mt-4">
+          <!-- col-md-{{ request()->routeIs('user.settings') ? '12' : '6' }} col-lg-{{ request()->routeIs('user.settings') ? '12' : '3' }} mb-3 mt-4 -->
+          @include('includes.cards-settings')
         </div>
-          @endif
+        <div class="container">
+          <div class="row mb-sm">
+            <div class="col-lg-12 pt-5">
+              <h2 class="mb-0 font-montserrat">
+                {{__('general.referrals')}}
+              </h2>
 
-        </div>
-      </div>
-      <div class="row">
+              @if ($settings->referral_system == 'on')
+                <p class="lead text-muted mt-0">
+                  {{__('general.referrals_welcome_desc', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
+                </p>
 
-        <div class="col-lg-12 mb-5 mb-lg-0">
+              @else
+              <div class="alert alert-danger mt-3">
+              <span class="alert-inner--text">
+                <i class="fa fa-exclamation-triangle mr-1"></i> {{ __('general.referral_system_disabled') }}
+              </span>
+            </div>
+              @endif
 
-          <div class="content">
-            <div class="row">
-              <div class="col-lg-3 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5>
-                      <i class="fas fa-hand-holding-usd mr-2 text-primary icon-dashboard"></i> {{Helper::amountFormatDecimal(auth()->user()->balance)}}
-                    </h5>
-                    <small>{{ __('general.balance') }}</small>
-                    @if (auth()->user()->balance >= $settings->amount_min_withdrawal)
-                    <a href="{{ url('settings/withdrawals')}}" class="link-border color-link"> {{ __('general.make_withdrawal') }}</a>
+            </div>
+          </div>
+          <div class="row">
 
-                    @else
-                    <a href="javascript:;" class="link-border color-link text-muted" data-toggle="tooltip" title="{{__('general.amount_min_withdrawal')}} {{Helper::amountWithoutFormat($settings->amount_min_withdrawal)}} {{$settings->currency_code}}">
-                       {{ __('general.make_withdrawal') }}
-                      </a>
-                  @endif
-                  </div>
-                </div><!-- card 1 -->
-              </div><!-- col-lg-4 -->
+            <div class="col-lg-12 mb-5 mb-lg-0">
 
-              <div class="col-lg-3 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5><i class="fas fa-users mr-2 text-primary icon-dashboard"></i> {{ number_format(auth()->user()->referrals()->count()) }}</h5>
-                    <small>{{ __('general.total_registered_users') }}</small>
-                  </div>
-                </div><!-- card 1 -->
-              </div><!-- col-lg-4 -->
+              <div class="content ">
+                  <div class="row">
+                    <div class="col-lg-3 mb-2">
+                      <div class="card">
+                        <div class="card-body" style="background: #191919!important; border-radius:8px; min-height:162px;">
+                          <span class="small-text mb-2">{{ __('general.current_balance') }}</span>
+                          <h5 class="my-2 py-2">
+                            {{Helper::amountFormatDecimal(auth()->user()->balance)}}
+                          </h5>
+                          <!-- <small>{{ __('general.balance') }}</small> -->
+                          @if (auth()->user()->balance >= $settings->amount_min_withdrawal)
+                          <a href="{{ url('settings/withdrawals')}}" class="link-border color-link"> {{ __('general.make_withdrawal') }}</a>
 
-              <div class="col-lg-3 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5><i class="fa fa-receipt mr-2 text-primary icon-dashboard"></i> {{ number_format(auth()->user()->referralTransactions()->count()) }}</h5>
-                    <small>{{ __('general.total_transactions') }}</small>
-                  </div>
-                </div><!-- card 1 -->
-              </div><!-- col-lg-4 -->
+                          @else
+                          <a href="javascript:;" class="color-link text-muted" style="color: #FFFFFF !important; font-size: 9px; border: 1px solid white; border-radius:10px; padding: 8px 10px; margin-top:12px" data-toggle="tooltip" title="{{__('general.amount_min_withdrawal')}} {{Helper::amountWithoutFormat($settings->amount_min_withdrawal)}} {{$settings->currency_code}}">
+                            {{ __('general.make_withdrawal') }}
+                            </a>
+                          @endif
+                        </div>
+                      </div>
+                    </div><!-- card 1 -->
+                    
+                    <div class="col-lg-3 mb-2">
+                      <div class="card">
+                        <div class="card-body" style="background: #191919!important; border-radius:8px; min-height:162px;">
+                          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="22" cy="22" r="22" fill="#FFEDE1"/>
+                            <circle cx="22" cy="22" r="12" fill="#FFBF9A"/>
+                            <circle cx="22" cy="19" r="2" stroke="#D96E30" stroke-width="0.75"/>
+                            <ellipse cx="22" cy="24.5" rx="3.5" ry="2" stroke="#D96E30" stroke-width="0.75"/>
+                          </svg>
+                          <div>
+                            <small>{{ __('general.total_registered_users') }}</small>
+                            <h5 class="">
+                              {{ number_format(auth()->user()->referrals()->count()) }}
+                            </h5>
+                          </div>
+                        </div>
+                      </div><!-- card 1 -->
+                    </div><!-- col-lg-4 -->
+  
+                    <div class="col-lg-3 mb-2">
+                      <div class="card">
+                        <div class="card-body" style="background: #191919!important; border-radius:8px; min-height:162px;">
+                          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="22" cy="22" r="22" fill="#EBFFE8"/>
+                            <circle cx="22" cy="22" r="12" fill="#A3ECA7"/>
+                            <circle cx="22" cy="19.4546" r="2" stroke="#17971E" stroke-width="0.75"/>
+                            <ellipse cx="22" cy="24.9546" rx="3.5" ry="2" stroke="#17971E" stroke-width="0.75"/>
+                          </svg>
+                          <div>
+                            <small>{{ __('general.total_transactions') }}</small>
+                            <h5>{{ number_format(auth()->user()->referralTransactions()->count()) }}</h5>
+                          </div>
+                        </div>
+                      </div><!-- card 1 -->
+                    </div><!-- col-lg-4 -->
 
-              <div class="col-lg-3 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5><i class="fas fa-hand-holding-usd mr-2 text-primary icon-dashboard"></i> {{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</h5>
-                    <small>{{ __('general.earnings_total') }}</small>
-                  </div>
-                </div><!-- card 1 -->
-              </div><!-- col-lg-4 -->
-
+                    <div class="col-lg-3 mb-2">
+                      <div class="card">
+                        <div class="card-body" style="background: #191919!important; border-radius:8px; min-height:162px;">
+                          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="22" cy="22" r="22" fill="#FEE4E2"/>
+                            <circle cx="22" cy="22" r="12" fill="#FDA29B"/>
+                            <circle cx="22" cy="19" r="2" stroke="#D92D20" stroke-width="0.75"/>
+                            <ellipse cx="22" cy="24.5" rx="3.5" ry="2" stroke="#D92D20" stroke-width="0.75"/>
+                          </svg>
+                          <div>
+                            <small>{{ __('general.earnings_total') }}</small>
+                            <h5> {{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</h5>
+                          </div>
+                        </div>
+                      </div><!-- card 1 -->
+                    </div><!-- col-lg-4 -->
+                  </div><!-- col-lg-4 -->
+                  
+              </div><!-- end content -->
               <div class="col-lg-12 mt-3 py-4">
-                 <div class="card">
-                   <div class="card-body">
-                     <h4 class="mb-4">{{ __('admin.transactions') }}</h4>
+                <div class="card">
+                  <div class="">
+                    <div class="d-flex justify-content-between"
+                        style=" padding:1rem; background:#191919!important; border-radius:8px 8px 0 0; display:flex; align-items:center; gap:10px;">
+                        <h4 style=" margin:0; color:#ffffff; font-weight:500; white-space:nowrap; font-size:clamp(14px, 2.5vw, 18px);">
+                          {{ __('admin.transactions') }}
+                        </h4>
+                        <a href="#" class="view-all" style=" display:flex; align-items:center; gap:6px; font-size:12px; white-space:nowrap; ">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z"
+                                  stroke="#475467" stroke-width="1.5"/>
+                            <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+                                  stroke="#475467" stroke-width="1.5"/>
+                          </svg>
+                          View All
+                        </a>
+                      </div>
 
-                     <div class="table-responsive">
-                       <table class="table table-striped m-0">
-                         <thead>
-                           <tr>
-                             <th scope="col">{{__('admin.type')}}</th>
-                             <th scope="col">{{__('admin.date')}}</th>
-                             <th scope="col">{{__('general.earnings')}}</th>
-                           </tr>
-                         </thead>
+                    <div class="table-responsive">
+                      <table class="table table-striped m-0">
+                        <thead>
+                          <tr>
+                            <th scope="col">{{__('admin.type')}}</th>
+                            <th scope="col">{{__('admin.date')}}</th>
+                            <th scope="col">{{__('general.earnings')}}</th>
+                          </tr>
+                        </thead>
 
-                         <tbody>
+                        <tbody>
 
                         @if ($transactions->count() != 0)
-                           @foreach ($transactions as $referred)
-                             <tr>
-                               <td>{{ __('general.'.$referred->type) }}</td>
-                               <td>{{ Helper::formatDate($referred->created_at) }}</td>
-                               <td>{{ Helper::amountFormatDecimal($referred->earnings) }}</td>
-                             </tr>
-                           @endforeach
+                          @foreach ($transactions as $referred)
+                            <tr>
+                              <td>{{ __('general.'.$referred->type) }}</td>
+                              <td>{{ Helper::formatDate($referred->created_at) }}</td>
+                              <td>{{ Helper::amountFormatDecimal($referred->earnings) }}</td>
+                            </tr>
+                          @endforeach
 
-                         @else
-                           <tr>
-                             <td colspan="12" class="text-center">{{ __('general.no_transactions_yet') }}</td>
-                           </tr>
+                        @else
+                          <tr>
+                            <td colspan="12" class="text-center">{{ __('general.no_transactions_yet') }}</td>
+                          </tr>
                           @endif
 
-                         </tbody>
-                       </table>
-                     </div>
-                   </div>
-                 </div><!-- card -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div><!-- card -->
 
-                 @if ($transactions->hasPages())
-         			    	{{ $transactions->links() }}
-         			    	@endif
+                @if ($transactions->hasPages())
+                    {{ $transactions->links() }}
+                    @endif
 
               </div><!-- col-lg-12 -->
 
-            </div><!-- end row -->
-          </div><!-- end content -->
+            </div><!-- end col-md-6 -->
 
-        </div><!-- end col-md-6 -->
-
+          </div>
+        </div>
       </div>
     </div>
   </section>

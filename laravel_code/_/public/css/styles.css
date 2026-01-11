@@ -1541,11 +1541,17 @@ a:hover.button-avatar-upload {
 }
 .table thead th {
     vertical-align: bottom;
-    border: none;
+    border-bottom: 1px solid #939393;
     padding-right: 1.5rem;
     padding-left: 1.5rem;
-    color: #afafaf;
-    font-size: 14px;
+    color: #939393;
+    font-size: 12px;
+}
+.table tbody tr{
+    border-bottom: 1px solid #939393;
+}
+.table tbody {
+    background-color: #191919;
 }
 .table td,
 .table th {
