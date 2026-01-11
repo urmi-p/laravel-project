@@ -4,16 +4,16 @@
 
 @section('content')
 <section class="section section-sm">
-  <div class="container">
-     <div class="row">
-      
+  <div class="container-fluid pt-lg-5 pt-2">
+    <div class="row">
+
       @include('includes.cards-settings')
 
-      <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-         <div class="col-lg-8 py-5">
-        <h2 class="mb-0"> {{trans('general.my_cards')}}</h2>
-        <p class="lead text-muted mt-0">{{trans('general.info_my_cards')}}</p>
-      </div>
+      <div class="col-md-6 col-lg-9 mb-5 mb-lg-0  my-card">
+        <div class="col-lg-8 title-div">
+          <h2 class="mb-0 title"> {{trans('general.my_cards')}}</h2>
+          <p class="lead text-muted mt-0 sub-title">{{trans('general.info_my_cards')}}</p>
+        </div>
         @if (session('success_removed'))
         <div class="alert alert-success">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -45,30 +45,71 @@
         @endif
 
         @if ($key_secret)
+        @if (auth()->user()->pm_type != '')
 
+        <div class="card-container">
+          <div class="credit-card">
+            <!-- Chip -->
+            <div class="card-chip"></div>
+
+            <!-- Brand -->
+            <div class="card-brand">{{ auth()->user()->pm_type }}</div>
+
+            <!-- Card Number -->
+            <div class="card-number">
+              **** **** **** {{ auth()->user()->pm_last_four }}
+            </div>
+
+            <!-- Bottom Info -->
+            <div class="card-footer">
+              <div>
+                <span class="label">Card Holder name</span>
+                <span class="value">Noman Manzoor</span>
+              </div>
+              <div>
+                <span class="label">Expiry Date</span>
+                <span class="value">{{ $expiration }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endif
         <div class="card mb-4 my-card-not-card-added">
           <div class="card-body">
-            <p class="card-text">
-              @if (auth()->user()->pm_type != '')
-              <img src="{{ asset('img/payments/brands/'.strtolower(auth()->user()->pm_type).'.svg')}}" class="mr-1">
-              <strong class="text-capitalize">{{ auth()->user()->pm_type }}</strong> <br> •••• •••• •••• {{ auth()->user()->pm_last_four }}
-              <small class="float-right d-block">{{ trans('general.expiry') }}: {{ $expiration }}</small>
 
-              @else
+            <p class="card-text">
+              @if (auth()->user()->pm_type == '')
               {{ trans('general.not_card_added') }}
               @endif
             </p>
-            <div class="add-card">
-              <a href="{{ url('settings/payments/card') }}" class="btn btn-success btn-sm e-none text-muted">{{ auth()->user()->pm_type == '' ? __('general.add') : __('admin.edit') }}</a>
-            </div>
             @if (auth()->user()->pm_type != '')
-            <form method="POST" action="{{ url('stripe/delete/card') }}" class="d-inline" id="formDeleteCardStripe">
-              @csrf
-              <input type="button" class="btn btn-danger btn-sm" id="deleteCardStripe" value="{{ __('admin.delete') }}">
-            </form>
+            <div class="card-actions">
+              @endif
+              <div class="add-card">
+              <a href="{{ url('settings/payments/card') }}"
+                class="btn btn-success btn-sm">
+                {{ auth()->user()->pm_type == '' ? __('general.add') : __('admin.edit') }}
+              </a>
+</div>
+
+              @if (auth()->user()->pm_type != '')
+              <form method="POST"
+                action="{{ url('stripe/delete/card') }}"
+                id="formDeleteCardStripe">
+                @csrf
+                <input type="button"
+                  class="btn btn-danger btn-sm"
+                  id="deleteCardStripe"
+                  value="{{ __('admin.delete') }}">
+              </form>
+              @endif
+              @if (auth()->user()->pm_type != '')
+            </div>
             @endif
+
           </div>
         </div>
+
         @endif
 
         @if ($paystackPayment)
@@ -103,6 +144,9 @@
           </div>
         </div>
         @endif
+        <div class="btn-block mt-2">
+          <small>{{ trans('general.info_payment_card') }}</small>
+        </div>
         @if (! $key_secret && ! $paystackPayment)
 
         <div class="alert alert-primary text-center" role="alert">

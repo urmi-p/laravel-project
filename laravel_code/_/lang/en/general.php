@@ -403,7 +403,7 @@ return array(
 	'not_card_added' => "You want to add any payment card added",
 	'automatically_renewed' => 'It will be automatically renewed',
 	'please_add_payment_card' => 'Please add a payment card',
-	'go_back' => 'Go back',
+	'go_back' => 'Go Back',
 	'subscription_for' => 'Subscription for',
 	'info_payment_card' => 'Your private card number will never touch our servers.',
 	'update_payment_card' => 'Update payment card',

@@ -5,8 +5,9 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,800;0,900;1,800&display=swap");
 html,
-body {height: 100%;
-font-family: "Poppins", sans-serif;
+body {
+    height: 100%;
+    font-family: "Poppins", sans-serif;
 }
 li {
     list-style: none;
@@ -971,8 +972,14 @@ a.link-border {
     background-color: #fff;
     border-radius: 50%;
 }
-.section{
-          background: radial-gradient(50% 30% at 85% 1%, rgba(226, 57, 76, 0.35) 0%, rgba(226, 57, 76, 0.15) 30%, rgba(0, 0, 0, 0) 70%), #000;
+.section {
+    background: radial-gradient(
+            50% 30% at 85% 1%,
+            rgba(226, 57, 76, 0.35) 0%,
+            rgba(226, 57, 76, 0.15) 30%,
+            rgba(0, 0, 0, 0) 70%
+        ),
+        #000;
 }
 
 /* background: radial-gradient(50% 50% at 85% 0%, rgba(226, 57, 76, 0.35) 0%, rgba(226, 57, 76, 0.15) 30%, rgba(0, 0, 0, 0) 50%), #000; */
@@ -1547,7 +1554,7 @@ a:hover.button-avatar-upload {
     color: #939393;
     font-size: 12px;
 }
-.table tbody tr{
+.table tbody tr {
     border-bottom: 1px solid #939393;
 }
 .table tbody {
@@ -2218,7 +2225,7 @@ a:hover.button-avatar-upload {
 .font_weight_700 {
     font-weight: 700 !important;
 }
-.fs-13{
+.fs-13 {
     font-size: 13px !important;
 }
 .fs-14 {
@@ -2242,8 +2249,8 @@ a:hover.button-avatar-upload {
 .fs-32 {
     font-size: 32px !important;
 }
-.fs-40{
-    font-size:40px !important;
+.fs-40 {
+    font-size: 40px !important;
 }
 .brd-8 {
     border-radius: 8px !important;
@@ -2285,10 +2292,6 @@ a.btn-category:focus {
     color: #000000 !important;
 }
 
-[data-bs-theme="light"] .bg_white{
-    color: #344054 !important;
-    background: #5f5f5f7a  !important;
-}
 .btn_mobile_nav {
     padding: 6px 10px !important;
     background-color: #a3a3a31a !important;
@@ -2303,92 +2306,41 @@ a.btn-category:focus {
     width: fit-content;
 }
 
-.myhover_btn a.btn{
+.myhover_btn a.btn {
     border-radius: 8px !important;
 }
 
-.nav_profile li.active{
+.nav_profile li.active {
     border-bottom: none !important;
 }
-.nav_profile li.active a{
+.nav_profile li.active a {
     background-color: #000;
-    padding:6px !important;
+    padding: 6px !important;
     border-radius: 12px;
-    border: 1px solid #E2394C;
+    border: 1px solid #e2394c;
 }
 
-.nav_link{
-    padding:12px 24px !important;
+.nav_link {
+    padding: 12px 24px !important;
 }
-.nav_link a:hover{
-    text-decoration:none !important;
+.nav_link a:hover {
+    text-decoration: none !important;
 }
 
-.text_color_white{
-    color: #FFF !important;
+.text_color_white {
+    color: #fff !important;
 }
-.storiesWrapper{
+.storiesWrapper {
     display: flex;
     gap: 8px;
     overflow: auto;
 }
-.dashboard_story{
+.dashboard_story {
     border-radius: 16px !important;
 }
-.dashboard_other_story{
+.dashboard_other_story {
     border-radius: 16px !important;
     border: 1px solid #E2394C;
-}
-.sidebar_li{
-    padding:4px 8px;
-}
-.sidebar_li a{
-    font-size:18px !important;
-    font-weight:400;
-}
-.sidebar_li a.active{
-    font-weight:600 !important
-}
-[data-bs-theme="dark"] .navbar_mid_link{
-    color: #FFFFFF !important;
-}
-[data-bs-theme="dark"] .sidebar_li a{
-    color: #FFFFFF !important;
-}
-[data-bs-theme="dark"] .menu-left-home{
-    background: #0f0f0f;
-}
-[data-bs-theme="light"] .menu-left-home{
-    background: #f6f6f6;
-}
-[data-bs-theme="light"] .user_info h6 {
-    color: #5f5f5f;
-}
-html[data-bs-theme="light"] {
-    --sidebar-bg: #ffffff;
-    --sidebar-border: rgba(0, 0, 0, 0.08);
-    --icon-bg: rgba(0, 0, 0, 0.06);
-    --text-color: #111111;
-    --card-info-muted: #6b7280;
-    --card-info-title: #111827;
-    --nav_profile_bg:#FFF;
-    --no-updates-main-bg: rgba(0, 0, 0, 0.04);
-    --no-updates-sub-bg: #f9fafb;
-    --no-updates-card-bg: #ffffff;
-    --no-updates-border: rgba(0, 0, 0, 0.08);
-}
-html[data-bs-theme="dark"] {
-    --sidebar-bg: #1a1a1a;
-    --sidebar-border: rgba(255, 255, 255, 0.06);
-    --icon-bg: rgba(255, 255, 255, 0.08);
-    --text-color: #ffffff;
-    --card-info-muted: #9ca3af;
-    --card-info-title: #ffffff;
-    --nav_profile_bg:#303030;
-    --no-updates-main-bg: #ffffff1a;
-    --no-updates-sub-bg: #303030;
-    --no-updates-card-bg: #191919;
-    --no-updates-border: rgba(255, 255, 255, 0.06);
 }
 @media (max-width: 991px) {
     .navbar {
@@ -2608,64 +2560,15 @@ html[data-bs-theme="dark"] {
     #000 65%
   );
 }*/
-.make_withdraw_btn{
-    border: 1px solid #EAECF0;
+.make_withdraw_btn {
+    border: 1px solid #eaecf0;
     border-radius: 20px;
     padding: 8px 12px;
 }
+.btn-success{
+    border-radius: 12px;;
+}
 @media (min-width: 1025px) {
-    .my-card-not-card-added {
-        /* Content */
-
-        /* Auto layout */
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 48px 204px;
-        gap: 10px;
-        background: #191919;
-    }
-    .my-card-not-card-added p.card-text {
-        /* Text */
-        font-family: "Poppins";
-        font-style: normal;
-        font-weight: 400;
-        font-size: 24px;
-        line-height: 36px;
-        display: flex;
-        align-items: flex-end;
-        text-align: center;
-        color: #ffffff;
-    }
-    /* Filter & Export */
-    .my-card-not-card-added .add-card {
-        display: flex;
-
-        justify-content: center;
-    }
-    .my-card-not-card-added a.btn-success {
-        /* Filter */
-
-        box-sizing: border-box;
-
-        /* Auto layout */
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 0px 64px;
-        gap: 16px;
-
-        width: 161px;
-        height: 48px;
-
-        background: #ffffff;
-
-        border: 1px solid #dce4e8;
-        border-radius: 100px;
-        color: #000000 !important;
-    }
-
     .forgotpwd-row {
         margin-top: 12px;
     }
@@ -2729,6 +2632,333 @@ html[data-bs-theme="dark"] {
         pointer-events: none;
         z-index: 0;
     }
+
+    /* My Card */
+    .left-settings-sidebar {
+        /* Frame 1618873641 */
+        box-sizing: border-box;
+        /* Auto layout */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0px 4px 25px rgba(42, 134, 66, 0.08);
+        border-radius: 32px;
+    }
+    .left-settings-sidebar .card {
+        background: none;
+        border: none;
+    }
+
+    .left-settings-sidebar .card > .list-group {
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .left-settings-sidebar .list-group-item {
+        background: none;
+    }
+    .left-settings-sidebar .settings-menu-title {
+        /* Frame 2147226744 */
+
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        /* identical to box height, or 125% */
+        letter-spacing: -0.150391px;
+        padding-left: 4px;
+        color: #ffffff;
+    }
+    .left-settings-sidebar hr.separator {
+        width: 96%;
+        height: 0px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        flex: none;
+        padding-left: 4px;
+    }
+    .left-settings-sidebar .list-group-item i {
+        font-size: 18px;
+    }
+    .left-settings-sidebar .list-group-item span {
+        /* Profile */
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 27px;
+        /* identical to box height */
+        align-items: flex-end;
+        color: #ffffff;
+        /* Line 2 */
+    }
+    .left-settings-sidebar
+        .card-settings
+        > .list-group-flush
+        > .list-group-item {
+        margin: 0 32px 5px 4px !important;
+        width: 100%;
+        padding-left: 4px;
+    }
+    .left-settings-sidebar
+        .card-settings
+        > .list-group-flush
+        > .list-group-item:hover,
+    .left-settings-sidebar .list-group-item + .list-group-item.active {
+        /* Frame 2147226745 */
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        gap: 12px;
+
+        background: #e2394c;
+        border-radius: 8px;
+    }
+    .my-card {
+    }
+    .my-card .title-div {
+        padding-left: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    .my-card .title {
+        /* My cards */
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 36px;
+        /* identical to box height */
+        display: flex;
+        align-items: flex-end;
+        color: #ffffff;
+    }
+    /* Cards available in your account */
+    .my-card .sub-title {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        /* identical to box height, or 114% */
+
+        color: #ffffff;
+    }
+
+    .my-card-not-card-added {
+        /* Content */
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 48px 350px;
+        gap: 10px;
+        background: #191919;
+    }
+    .my-card-not-card-added p.card-text {
+        /* Text */
+        font-family: "Poppins";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 36px;
+        display: flex;
+        align-items: flex-end;
+        text-align: center;
+        color: #ffffff;
+    }
+    /* Filter & Export */
+    .my-card-not-card-added .add-card {
+        display: flex;
+
+        justify-content: center;
+    }
+
+    .my-card-not-card-added a.btn-success {
+        /* Filter */
+
+        box-sizing: border-box;
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0px 64px;
+        gap: 16px;
+
+        width: 161px;
+        height: 48px;
+
+        background: #ffffff;
+
+        border: 1px solid #dce4e8;
+        border-radius: 100px;
+        color: #000000 !important;
+    }
+    .my-card-not-card-added .btn-success:not(:disabled):not(.disabled):active:focus, .my-card-not-card-added .btn-success:not(:disabled):not(.disabled).active:focus, .my-card-not-card-added .show>.btn-success.dropdown-toggle:focus{
+        background: #ffffff;
+    }
+    .card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* space between buttons */
+}
+    /* My Card */
+
+    /* Add Paymen Card */
+    /* Payment Card */
+    .add-card .title {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 36px;
+        /* identical to box height */
+        display: flex;
+        align-items: flex-end;
+
+        color: #ffffff;
+    }
+    /* Add / Edit your payment card */
+    .add-card .sub-title {
+        width: 1023px;
+        height: 16px;
+
+        font-family: "Poppins";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        /* identical to box height, or 114% */
+        color: #ffffff;
+    }
+
+    .add-card .lbl-card {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        /* identical to box height, or 125% */
+        text-transform: capitalize;
+
+        /* white */
+        color: #ffffff;
+    }
+    .add-card .payment-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .add-card .payment-actions .go_back a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: 14px;
+        background: #2b2b2b;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .add-card .payment-actions .save_payment_card {
+        padding: 14px 28px;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    .card-container {
+        width: 100%;
+        max-width: 420px;
+        padding: 16px 0;
+    }
+
+    /* CARD */
+    .credit-card {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1.586;
+        border-radius: 22px;
+        padding: 24px;
+        color: #ffffff;
+        background-image: url("../img/cards/card-bg.png"); /* ← previous generated image */
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+    }
+
+    /* CHIP */
+    .card-chip {
+        width: 52px;
+        height: 40px;
+        border-radius: 8px;
+    }
+
+    /* BRAND */
+    .card-brand {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        font-weight: 700;
+        font-size: 26px;
+        letter-spacing: 1px;
+    }
+
+    /* NUMBER */
+    .card-number {
+        margin-top: 48px;
+        font-size: 22px;
+        letter-spacing: 3px;
+        font-weight: 500;
+    }
+
+    /* FOOTER */
+    .card-footer {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        background:none;
+        border:none;
+    }
+
+    /* LABELS */
+    .label {
+        display: block;
+        font-size: 11px;
+        opacity: 0.8;
+        margin-bottom: 4px;
+    }
+
+    /* VALUES */
+    .value {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    /* RESPONSIVE */
+}
+@media (max-width: 480px) {
+    .credit-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .card-number {
+        font-size: 18px;
+        letter-spacing: 2px;
+    }
+
+    .card-brand {
+        font-size: 22px;
+    }
 }
 
 .text-lime {
@@ -2753,21 +2983,19 @@ html[data-bs-theme="dark"] {
     transform: matrix(-1, 0, 0, 1, 0, 0);
 }
 
-
 /* notification page css started  */
-.lead{
-  font-size: 14px;
-  font-weight: 400;
-  color: #FFFFFF;
+.lead {
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff;
 }
-
 
 .notify-card {
     background: linear-gradient(180deg, #0c0c0c, #141414);
     border-radius: 12px;
     padding: 16px 18px;
     color: #ffffff;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
 .notify-header {
@@ -2808,35 +3036,34 @@ html[data-bs-theme="dark"] {
     color: #d0d0d0;
     margin: 0;
 }
-.notify-div{
-  background-color: #000000;
-  border-radius: 8px;
+.notify-div {
+    background-color: #000000;
+    border-radius: 8px;
 }
 
 /* notification page css ended */
 
-
 /* referrals style  started*/
-.small-text{
-  font-size: 12px;
-  color: #EFEFEF;
+.small-text {
+    font-size: 12px;
+    color: #efefef;
 }
 
-.ref-card-body{
-  background-color: #191919;
-  box-shadow: 0px 0px 30px 2px #00000012;
-  border-radius: 8px;
-  padding: 1rem;
+.ref-card-body {
+    background-color: #191919;
+    box-shadow: 0px 0px 30px 2px #00000012;
+    border-radius: 8px;
+    padding: 1rem;
 }
 /* referrals style ended*/
 
 .icon_wrap {
-  position: absolute;
-  top: -30px;
-  right: 0;
-  z-index: 0;
-  font-size: 115px;
-  color: rgba(0,0,0,0.10);
+    position: absolute;
+    top: -30px;
+    right: 0;
+    z-index: 0;
+    font-size: 115px;
+    color: rgba(0, 0, 0, 0.1);
 }
 
 .alert_custom {
@@ -2847,24 +3074,23 @@ html[data-bs-theme="dark"] {
     height: 403px;
     border-radius: 16px;
 }
-.wallet_inner_text{
+.wallet_inner_text {
     font-size: 128px !important;
 }
-.wallet_ac_detail{
-    background-color:#FFF;
-    border-radius:12px;
-    padding:14px 32px !important;
-    color:#475467;
+.wallet_ac_detail {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 14px 32px !important;
+    color: #475467;
 }
-.wallet_ac_detail p{
-    overflow-wrap:anywhere;
+.wallet_ac_detail p {
+    overflow-wrap: anywhere;
 }
-.amt_input{
+.amt_input {
     border-radius: 12px !important;
-    color: #A3A3A3;
+    color: #a3a3a3;
     font-size: 16px !important;
     font-weight: 400 !important;
-
 }
 
 .subscription-card {
@@ -2875,76 +3101,73 @@ html[data-bs-theme="dark"] {
     border: 1px solid #333;
     transition: all 0.3s ease;
     width: 100%;
-    
 }
 .lock_dim {
-    height:80px;
+    height: 80px;
 }
-.tip_modal_main_div{
-    border-radius: 20px; 
+.tip_modal_main_div {
+    border-radius: 20px;
     border: none;
 }
-.tip_modal_card{
-    border-radius: 20px; 
+.tip_modal_card {
+    border-radius: 20px;
     overflow: hidden;
 }
-.tip_modal_card_header{
-    height: 150px; 
+.tip_modal_card_header {
+    height: 150px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
-.tip_modal_icon_wrap{
-    min-width: 40px; 
+.tip_modal_icon_wrap {
+    min-width: 40px;
     text-align: center;
 }
-.tip_modal_input{
+.tip_modal_input {
     border-radius: 10px;
 }
-.tip_modal_cancel{
-    border-color: #ff4b60; 
-    color: #ff4b60; 
+.tip_modal_cancel {
+    border-color: #ff4b60;
+    color: #ff4b60;
     border-radius: 8px;
 }
-.tip_modal_cancel:hover{
+.tip_modal_cancel:hover {
     background-color: #000;
 }
-.tip_modal_send{
-    background-color: #ff4b60; 
-    border-color: #ff4b60; 
+.tip_modal_send {
+    background-color: #ff4b60;
+    border-color: #ff4b60;
     border-radius: 8px;
 }
-.tip_modal_send:hover{
+.tip_modal_send:hover {
     background-color: #ff4b60;
 }
-.side_bar_box_shadow{
-    box-shadow: 0px 4px 25px 0px #2A864214;
+.side_bar_box_shadow {
+    box-shadow: 0px 4px 25px 0px #2a864214;
 }
-.subscription_card_main_div{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
+.subscription_card_main_div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 }
-.subscription_card_main_div_no_gap{
-    display:flex;
-    justify-content:space-between;
+.subscription_card_main_div_no_gap {
+    display: flex;
+    justify-content: space-between;
 }
-.gap_10px{
-    gap:10px !important;
+.gap_10px {
+    gap: 10px !important;
 }
-.main_head_search{
-    top: 9px; 
+.main_head_search {
+    top: 9px;
     right: 35px;
-    gap:6px;
-    margin-right:20px
+    gap: 6px;
+    margin-right: 20px;
 }
 @media (min-width: 992px) {
-
     .alert_custom {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 403px;
     }
-
 }
 @media (max-width: 991px) {
     .navbar {
@@ -2964,11 +3187,11 @@ html[data-bs-theme="dark"] {
         width: 350px;
         height: 255px;
     }
-    .wallet_inner_text{
+    .wallet_inner_text {
         font-size: 58.35px !important;
     }
     .lock_dim {
-        height:60px;
+        height: 60px;
     }
 }
 

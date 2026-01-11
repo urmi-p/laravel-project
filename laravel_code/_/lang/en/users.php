@@ -15,7 +15,7 @@ return array(
 	'following'					=>		'Following',
 	'notifications'			    =>		'Notifications',
 	'account_settings'			=>		'Account Settings',
-	'my_profile'                =>      'My Profile',
+	'my_profile'                =>      'Profile',
 	'logout'                    =>      'Log out',
 	'stats'                     =>      'Statistics',
 	'edit_profile'              =>      'Edit Profile',

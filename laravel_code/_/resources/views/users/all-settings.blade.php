@@ -4,14 +4,12 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="bi-shield-check mr-2"></i> {{trans('general.settings')}}</h2>
-        </div>
-      </div>
-      <div class="row">
+    <div class="container-fluid pt-lg-5 pt-2">
+      <div class="row mb-sm">
         @include('includes.cards-settings')
+        <div class="col-lg-9">
+          <h2 class="mb-0 font-montserrat">{{trans('general.settings')}}</h2>
+        </div>
       </div>
     </div>
   </section>

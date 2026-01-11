@@ -163,8 +163,8 @@
                     <div class="text-center py-3 px-3">
                       @include('includes.footer-tiny')
                     </div>
-                  <!-- @else
-                    @include('includes.footer') -->
+                  {{-- @else
+                    @include('includes.footer') --}}
                   @endif
 
           @endif
