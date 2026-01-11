@@ -114,7 +114,7 @@
 
                 <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
-                        <div class="col-lg-8 py-5">
+                        <div class="col-lg-8">
                             <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{ __('users.my_subscriptions') }}</h2>
                             <p class="lead mt-0 font_weight_400 fs-14 theme-subtitle">{{ __('users.my_subscriptions_subtitle') }}</p>
                         </div>

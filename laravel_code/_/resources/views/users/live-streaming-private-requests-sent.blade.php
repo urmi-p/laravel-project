@@ -8,13 +8,12 @@
     <div class="container-fluid pt-lg-5 pt-2">
       
       <div class="row">
-<div class="col-lg-3 col-md-2 side_bar_box_shadow">
         @include('includes.cards-settings')
-</div>
+
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
-              <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24"><i class="bi-box-arrow-in-up mr-2"></i> {{__('general.live_streaming_private_requests')}}</h2>
+              <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24">{{__('general.live_streaming_private_requests')}}</h2>
               <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_live_streaming_private_requests_sent')}}</p>
             </div>
           </div>

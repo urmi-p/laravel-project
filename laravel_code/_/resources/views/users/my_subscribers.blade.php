@@ -4,17 +4,15 @@
 
 @section('content')
 <section class="section section-sm">
-    {{-- for mobile header --}}
-    @include('includes.header-mobile')
-    <div class="container-fluid pt-lg-5 pt-2">
-      <div class="row">
-      <div class="col-lg-3 col-md-2 side_bar_box_shadow">
-        @include('includes.cards-settings')
-      </div>
+  {{-- for mobile header --}}
+  @include('includes.header-mobile')
+  <div class="container-fluid pt-lg-5 pt-2">
+    <div class="row">
+      @include('includes.cards-settings')
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
         <div class="row mb-sm">
           <div class="col-lg-8">
-            <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24"><i class="feather icon-users mr-2"></i> {{__('users.my_subscribers')}}</h2>
+            <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24">{{__('users.my_subscribers')}}</h2>
             <p class="lead mt-0 font_weight_400 fs-14">{{__('users.my_subscribers_subtitle')}}</p>
           </div>
         </div>

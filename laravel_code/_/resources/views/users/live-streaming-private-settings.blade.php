@@ -8,13 +8,11 @@
   @include('includes.header-mobile')
   <div class="container-fluid pt-lg-5 pt-2">
     <div class="row">
-      <div class="col-lg-3">
-        @include('includes.cards-settings')
-      </div>
+       @include('includes.cards-settings')
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
         <div class="row mb-sm">
           <div class="col-lg-8">
-            <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24"><i class="bi-gear mr-2"></i> {{__('general.live_stream_private_settings')}}</h2>
+            <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24">{{__('general.live_stream_private_settings')}}</h2>
             <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_live_stream_private_settings')}}</p>
           </div>
         </div>

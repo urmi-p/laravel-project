@@ -9,13 +9,11 @@
     <div class="container-fluid pt-lg-5 pt-2">
       
       <div class="row">
-        <div class="col-lg-3 col-md-2 side_bar_box_shadow">
           @include('includes.cards-settings')
-        </div>
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
-              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi-bag-check mr-2"></i> {{trans('general.purchased_items')}}</h2>
+              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{trans('general.purchased_items')}}</h2>
               <p class="lead mt-0 font_weight_400 fs-14">{{trans('general.purchased_items_subtitle')}}</p>
             </div>
           </div>

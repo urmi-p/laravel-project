@@ -23,9 +23,9 @@
         <div class="container-fluid pt-lg-5 pt-2">
 
             <div class="row">
-                <div class="col-lg-3">
+                
                     @include('includes.cards-settings')
-                </div>
+                
                 <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8 py-3">

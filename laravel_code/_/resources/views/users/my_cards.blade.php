@@ -86,11 +86,11 @@
             <div class="card-actions">
               @endif
               <div class="add-card">
-              <a href="{{ url('settings/payments/card') }}"
-                class="btn btn-success btn-sm">
-                {{ auth()->user()->pm_type == '' ? __('general.add') : __('admin.edit') }}
-              </a>
-</div>
+                <a href="{{ url('settings/payments/card') }}"
+                  class="btn btn-success btn-sm">
+                  {{ auth()->user()->pm_type == '' ? __('general.add') : __('admin.edit') }}
+                </a>
+              </div>
 
               @if (auth()->user()->pm_type != '')
               <form method="POST"
