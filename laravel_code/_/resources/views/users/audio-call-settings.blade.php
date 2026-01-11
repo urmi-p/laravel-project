@@ -4,11 +4,13 @@
 
 @section('content')
 <section class="section section-sm">
+  {{-- for mobile header --}}
+    @include('includes.header-mobile')
     <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
+      <div class="row mb-sm">
+        <div class="col-lg-8">
           <h2 class="mb-0 font-montserrat"><i class="bi-telephone mr-2"></i> {{__('general.audio_call_settings')}}</h2>
-          <p class="lead text-muted mt-0">{{__('general.subtitle_audio_call_settings')}}</p>
+          <p class="lead mt-0">{{__('general.subtitle_audio_call_settings')}}</p>
         </div>
       </div>
       <div class="row">

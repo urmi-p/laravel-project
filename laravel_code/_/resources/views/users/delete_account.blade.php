@@ -5,7 +5,7 @@
 @section('content')
 <section class="section section-sm">
   <div class="container">
-    <div class="row justify-content-center text-center mb-sm">
+    <div class="row mb-sm">
       <div class="col-lg-8 py-5">
         <h2 class="mb-0 font-montserrat"><i class="feather icon-user-x mr-2"></i> {{__('general.delete_account')}}</h2>
         <p class="lead text-muted mt-0">{{__('general.subtitle_delete_account')}}</p>

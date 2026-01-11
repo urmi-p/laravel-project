@@ -1,27 +1,17 @@
 @extends('admin.layout')
 
-
-
 @section('css')
 
 <link href="{{ asset('js/plyr/plyr.css')}}?v={{$settings->version}}" rel="stylesheet" type="text/css" />
 
 @endsection
 
-
-
 @section('content')
-
 	<h5 class="mb-4 fw-light">
-
     <a class="text-reset" href="{{ url('panel/admin') }}">{{ __('admin.dashboard') }}</a>
-
       <i class="bi-chevron-right me-1 fs-6"></i>
-
 	  <span class="text-muted">{{ __('general.stories') }}</span>
-
 	  <i class="bi-chevron-right me-1 fs-6"></i>
-
       <span class="text-muted">{{ __('general.posts') }} ({{$data->total()}})</span>
 
   </h5>
@@ -191,14 +181,9 @@
 									 </div>
 
 									</td>
-
-
-
 									</tr><!-- /.TR -->
 
 									@endforeach
-
-
 
 									@else
 
@@ -206,39 +191,25 @@
 
 									@endif
 
-
-
 								</tbody>
 
 								</table>
 
 							</div><!-- /.box-body -->
-
-
-
 				 </div><!-- card-body -->
 
  			</div><!-- card  -->
-
-
-
 		@if ($data->lastPage() > 1)
 
 			{{ $data->onEachSide(0)->links() }}
 
 		@endif
-
  		</div><!-- col-lg-12 -->
-
-
-
 	</div><!-- end row -->
 
 </div><!-- end content -->
 
 @endsection
-
-
 
 @section('javascript')
 

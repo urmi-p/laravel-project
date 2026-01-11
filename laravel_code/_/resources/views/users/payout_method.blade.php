@@ -46,6 +46,35 @@
           </ul>
         </div>
         @endif
+  {{-- for mobile header --}}
+  @include('includes.header-mobile')
+    <div class="container-fluid pt-lg-5 pt-2">
+      
+      <div class="row">
+        <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+          @include('includes.cards-settings')
+        </div>
+        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+          <div class="row mb-sm">
+            <div class="col-lg-8">
+              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-credit-card mr-2"></i> {{__('users.payout_method')}}</h2>
+              <p class="lead mt-0 font_weight_400 fs-14">{{__('general.default_payout_method')}}:
+                @if(auth()->user()->payment_gateway != '')
+                  <strong class="text-success">
+                  {{auth()->user()->payment_gateway == 'Bank' ? __('users.bank_transfer') : auth()->user()->payment_gateway}}
+                </strong>
+                @else <strong class="text-danger">{{__('general.none')}}</strong> @endif
+                </p>
+            </div>
+          </div>
+          @if (session('status'))
+                  <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                			<span aria-hidden="true">×</span>
+                			</button>
+                    <i class="bi-check2 mr-2"></i> {{ session('status') }}
+                  </div>
+                @endif
 
         @if (auth()->user()->verified_id == 'yes' || auth()->user()->balance != 0.00)
         <div class="alert alert-custom alert-dismissible fade show" role="alert">

@@ -4,19 +4,21 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="bi-box-arrow-in-down mr-2"></i> {{__('general.live_streaming_private_requests')}}</h2>
-          <p class="lead text-muted mt-0">{{__('general.subtitle_live_streaming_private_requests')}}</p>
-        </div>
-      </div>
+  {{-- for mobile header --}}
+        @include('includes.header-mobile')
+    <div class="container-fluid pt-lg-5 pt-2">
+      
       <div class="row">
-
-        @include('includes.cards-settings')
-
+        <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+          @include('includes.cards-settings')
+        </div>
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-
+          <div class="row mb-sm">
+            <div class="col-lg-8">
+              <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24"><i class="bi-box-arrow-in-down mr-2"></i> {{__('general.live_streaming_private_requests')}}</h2>
+              <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_live_streaming_private_requests')}}</p>
+            </div>
+          </div>
           @if ($lives->count() != 0)
             @if (session('message'))
             <div class="alert alert-success mb-3">
@@ -118,11 +120,13 @@
     		@endif
 
         @else
-          <div class="my-5 text-center">
-            <span class="btn-block mb-3">
-              <i class="bi-box-arrow-in-down ico-no-result"></i>
-            </span>
-            <h4 class="font-weight-light">{{__('general.no_results_found')}}</h4>
+          <div class="my-5 text-center no-updates main-no-updates">
+            <div class="sub-no-updates">
+              <span class="btn-block mb-3">
+                <i class="bi-box-arrow-in-down ico-no-result bg_black"></i>
+              </span>
+              <h4 class="font_weight_400 font_size_18">{{__('general.no_results_found')}}</h4>
+            </div>
           </div>
         @endif
 

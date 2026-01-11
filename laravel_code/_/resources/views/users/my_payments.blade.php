@@ -4,23 +4,24 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="bi bi-receipt mr-2"></i> {{trans('general.payments')}}</h2>
-          @if (request()->is('my/payments'))
-          <p class="lead text-muted mt-0">{{trans('general.my_payments_subtitle')}}</p>
-        @else
-          <p class="lead text-muted mt-0">{{trans('general.my_payments_received_subtitle')}}</p>
-        @endif
-        </div>
-      </div>
+    {{-- for mobile header --}}
+    @include('includes.header-mobile')
+    <div class="container-fluid pt-lg-5 pt-2">
       <div class="row">
-
-        @include('includes.cards-settings')
-
+        <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+          @include('includes.cards-settings')
+        </div>
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-
+          <div class="row mb-sm">
+            <div class="col-lg-8">
+              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-receipt mr-2"></i> {{trans('general.payments')}}</h2>
+              @if (request()->is('my/payments'))
+              <p class="lead mt-0 font_weight_400 fs-14">{{trans('general.my_payments_subtitle')}}</p>
+            @else
+              <p class="lead mt-0 font_weight_400 fs-14">{{trans('general.my_payments_received_subtitle')}}</p>
+            @endif
+            </div>
+          </div>
           @if ($transactions->count() != 0 && auth()->user()->verified_id == 'yes')
 
             <div class="btn-block mb-3 text-right">
@@ -140,15 +141,17 @@
   			    	@endif
 
         @else
-          <div class="my-5 text-center">
-            <span class="btn-block mb-3">
-              <i class="bi bi-receipt ico-no-result"></i>
-            </span>
-            @if (request()->is('my/payments'))
-            <h4 class="font-weight-light">{{trans('general.not_payment_made')}}</h4>
-          @else
-            <h4 class="font-weight-light">{{trans('general.not_payment_received')}}</h4>
-          @endif
+          <div class="my-5 text-center no-updates main-no-updates">
+            <div class="sub-no-updates">
+              <span class="btn-block mb-3">
+                <i class="bi bi-receipt ico-no-result bg_black"></i>
+              </span>
+              @if (request()->is('my/payments'))
+                <h4 class="font-weight-light">{{trans('general.not_payment_made')}}</h4>
+              @else
+                <h4 class="font-weight-light">{{trans('general.not_payment_received')}}</h4>
+              @endif
+            </div>
           </div>
         @endif
 
