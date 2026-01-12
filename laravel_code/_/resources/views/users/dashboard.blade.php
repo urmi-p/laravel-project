@@ -4,17 +4,19 @@
 
 @section('content')
 <section class="section section-sm">
+  {{-- for mobile header --}}
+  @include('includes.header-mobile')
     <div class="container-fluid pt-lg-5 pt-2">
-      <div class="row mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat pb-3"><i class="bi bi-speedometer2 mr-2"></i> {{__('admin.dashboard')}}</h2>
-          <p class="lead text-muted mt-0">{{__('general.dashboard_desc')}}</p>
-        </div>
-      </div>
+      
       <div class="row">
-
-        <div class="col-lg-12 mb-5 mb-lg-0">
-
+        @include('includes.cards-settings')
+        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+          <div class="row mb-sm">
+            <div class="col-lg-8 py-5">
+              <h2 class="mb-0 font-montserrat pb-3"><i class="bi bi-speedometer2 mr-2"></i> {{__('admin.dashboard')}}</h2>
+              <p class="lead text-muted mt-0">{{__('general.dashboard_desc')}}</p>
+            </div>
+          </div>
           <div class="content">
             <div class="row">
               <div class="col-lg-4 mb-2">
