@@ -1477,4 +1477,9 @@ return array(
 
 	'share_thoughts' => 'Share your thoughts!',
 	'platform_commission' => 'Commision',
+	'subscription_price_week' => 'Week',
+	'subscription_price_month' => 'Month',
+	'subscription_price_quarter' => '3 Months',
+	'subscription_price_biannual' => '6 Months',
+	'subscription_price_year' => '12 months',
 );
