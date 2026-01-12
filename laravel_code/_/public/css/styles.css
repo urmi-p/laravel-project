@@ -1991,6 +1991,9 @@ a:hover.button-avatar-upload {
     background: transparent !important;
     position: unset !important;
 }
+.card_footer{
+    position: unset !important;
+}
 /* Avatar */
 .post-composer-dark .avatarUser {
     border: 2px solid #2a2a2a;
@@ -2734,7 +2737,7 @@ html[data-bs-theme="dark"] {
         /* identical to box height, or 125% */
         letter-spacing: -0.150391px;
         padding-left: 4px;
-        color: #ffffff;
+        color: var(--text-color);
     }
     .left-settings-sidebar hr.separator {
         width: 96%;
@@ -2753,7 +2756,7 @@ html[data-bs-theme="dark"] {
         line-height: 27px;
         /* identical to box height */
         align-items: flex-end;
-        color: #ffffff;
+        color: var(--text-color);
         /* Line 2 */
     }
     .left-settings-sidebar

@@ -994,14 +994,6 @@ align-items: center;
 
 .border {border-color: #222 !important;}
 
-.btn-category:hover,
-
-.active-category {
-
-    border-color: #fff !important;
-
-}
-
 .custom-switch-pro .custom-control-input:focus ~ .custom-control-label::before {
 
   border-color: #adb5bd !important;

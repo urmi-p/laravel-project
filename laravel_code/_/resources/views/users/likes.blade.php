@@ -35,7 +35,7 @@
         @endif
       </div><!-- end col-md-6 -->
 
-      <div class="col-md-4 mb-4 d-lg-block d-none">
+      <div class="col-lg-3 col-md-4 mb-4 d-lg-block d-none">
 
         @if ($users->count() == 0)
         <div class="panel panel-default panel-transparent mb-4 d-lg-block d-none">

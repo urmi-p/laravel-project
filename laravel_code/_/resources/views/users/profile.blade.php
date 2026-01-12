@@ -1204,7 +1204,7 @@
                             {{-- recent media test --}}
                             {{-- <div class="card recent-media rounded-lg">
 
-                            <!-- Empty top body (same as original) -->
+                            
                             <div class="card-body m-0 pb-0"></div>
 
                             <h6 class="card-title pl-3 mb-0 text-uppercase font-weight-bold">
@@ -1212,10 +1212,8 @@
                             </h6>
 
                             <div class="card-body">
-
                                 <div class="row">
-
-                                    <!-- ================= UNLOCKED MEDIA ================= -->
+                                    
                                     <div class="col-4 p-1">
                                         <a href="#post-101">
                                             <img src="https://picsum.photos/300/300?random=1" class="rounded img-fluid"
@@ -1223,7 +1221,7 @@
                                         </a>
                                     </div>
 
-                                    <!-- ================= PPV LOCKED MEDIA ================= -->
+                                    
                                     <div class="col-4 p-1 position-relative">
 
                                         <a href="javascript:void(0);"
@@ -1252,7 +1250,7 @@
                                         </small>
                                     </div>
 
-                                    <!-- ================= SUBSCRIPTION LOCKED MEDIA ================= -->
+                                    
                                     <div class="col-4 p-1">
                                         <a href="javascript:void(0);" class="locked-thumb d-block rounded"
                                             data-toggle="modal" data-target="#subscriptionForm">
@@ -1279,6 +1277,7 @@
                         </div> --}}
 
                             {{-- recent media test end --}}
+
                             <div class="card recent-media rounded-lg">
 
                                 <div class="card-body m-0 pb-0">
@@ -1288,12 +1287,8 @@
                                 <h6 class="card-title pl-3 mb-0 card-title text-uppercase font-weight-bold">
                                     {{ __('general.recent') }}</h6>
 
-                                <div class="card-body ">
-
-
-
+                                <div class="card-body">
                                     <div class="row">
-
                                         @foreach ($recentMedia as $media)
                                             @php
 
@@ -1305,26 +1300,20 @@
 
                                             @endphp
 
-
-
                                             @if (
                                                 ($media->updates->locked == 'yes' && $checkSubscription && $media->updates->price == 0.0) ||
                                                     $media->updates->locked == 'no' ||
                                                     auth()->user()->isSuperAdmin() ||
                                                     auth()->id() == $media->user_id ||
                                                     ($media->updates->locked == 'yes' && $media->updates->price != 0.0 && $checkPayPerView))
-                                                <div class="col-4 p-1">
-
+                                                <div class="col-4 p-1 position-relative">
                                                     <a href="{{ url($user->username, ['post', $media->updates_id]) }}">
-
                                                         <img src="{{ url('files/storage', [$media->updates_id, $media->image]) }}?w=150&h=150&fit=crop"
-                                                            class="rounded mb-2 mb-md-2 mb-lg-2 mb-xl-0 img-fluid">
-
+                                                            class="rounded img-fluid">
                                                     </a>
-
                                                 </div>
                                             @elseif($media->updates->locked == 'yes' && $media->updates->price != 0.0 && !$checkPayPerView)
-                                                <div class="col-4 p-1">
+                                                <div class="col-4 p-1 position-relative">
 
                                                     <a href="javascript:void(0);"
                                                         class="overflow-hidden position-relative d-block rounded"
@@ -1335,14 +1324,10 @@
                                                         data-pricegross="{{ $media->updates->price }}">
 
                                                         <img src="{{ url('media/storage/blur', $media->image) }}"
-                                                            class="rounded mb-2 mb-md-2 mb-lg-2 mb-xl-0 img-fluid">
-
-
+                                                            class="rounded img-fluid">
 
                                                         <div class="thumbnail-overlay show">
-
                                                             <div class="thumbnail-play">
-
                                                                 {{-- <svg xmlns="http://www.w3.org/2000/svg" width="28"
                                                                     height="28" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -1360,42 +1345,25 @@
                                                                         fill="white" />
                                                                 </svg>
                                                             </div>
-
                                                         </div>
-
                                                     </a>
-
                                                     <small class="d-block w-100 text-center text-truncate"
                                                         style="position: absolute; bottom: 10px; color: #fff; font-size: 11px;">{{ __('general.ppv') }}</small>
 
                                                 </div>
                                             @else
-                                                <div class="col-4 p-1">
+                                                <div class="col-4 p-1 position-relative">
 
                                                     <a href="javascript:void(0);"
-                                                        class="overflow-hidden position-relative d-block rounded"
+                                                        class="locked-thumb overflow-hidden position-relative d-block rounded"
                                                         data-toggle="modal"
                                                         data-target="{{ $user->free_subscription == 'yes' ? '#subscriptionFreeForm' : '#subscriptionForm' }}">
 
                                                         <img src="{{ url('media/storage/blur', $media->image) }}"
-                                                            class="rounded mb-2 mb-md-2 mb-lg-2 mb-xl-0 img-fluid">
+                                                            class="rounded img-fluid">
 
-
-
-                                                        <div class="thumbnail-overlay show">
-
+                                                        <div class="locked-overlay thumbnail-overlay show">
                                                             <div class="thumbnail-play">
-
-                                                                {{-- <svg xmlns="http://www.w3.org/2000/svg" width="28"
-                                                                    height="28" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round">
-
-                                                                    <rect x="3" y="11" width="18" height="11"
-                                                                        rx="2" ry="2"></rect>
-                                                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-
-                                                                </svg> --}}
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="30"
                                                                     height="40" viewBox="0 0 90 120" fill="none">
                                                                     <path
@@ -1403,21 +1371,14 @@
                                                                         fill="white" />
                                                                 </svg>
                                                             </div>
-
                                                         </div>
-
                                                     </a>
-
                                                 </div>
                                             @endif
                                         @endforeach
-
                                     </div>
-
                                 </div>
-
                             </div>
-
                         @endif
 
                         {{-- <div class="d-lg-block d-none">

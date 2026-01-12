@@ -20,8 +20,6 @@
 
 	<div class="card-cover position-relative" style="background: url({{ route('resize', ['path' => 'shop', 'file' => $product->previews[0]->name, 'size' => 480]) }}) #efefef center center; background-size: cover; height:300px;">
 
-
-
 		<span @class(['price-shop', 'bg-danger' => $product->type == 'physical' && $product->quantity == 0])>
 
 			@if ($product->type == 'physical' && $product->quantity == 0)
@@ -50,7 +48,7 @@
 
 
 
-	<div class="card-footer pt-0 bg-transparent border-top-0">
+	<div class="card-footer pt-0 bg-transparent border-top-0 card_footer">
 
 		<div class="d-flex align-items-end justify-content-between">
 
