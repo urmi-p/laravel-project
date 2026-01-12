@@ -119,7 +119,7 @@
 				<div class="row">
 					<div class="col-lg-3 mb-2">
 						<div class="ref-card">
-							<div class="ref-card-body">
+							<div class="ref-card-body current_balance">
 								<span class="small-text mb-2">{{ __('general.current_balance') }}</span>
 								<h5 class="my-2 py-2">
 									{{Helper::amountFormatDecimal(auth()->user()->balance)}}

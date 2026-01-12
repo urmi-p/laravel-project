@@ -1,11 +1,11 @@
 <div class="col-md-3 col-lg-3">
 
     @if (!request()->routeIs('user.settings'))
-    <a href="{{ route('user.settings') }}" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none">
+    <!--<a href="{{ route('user.settings') }}" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none">
 
         <i class="fa fa-cog mr-2"></i> {{ __('general.settings') }}
 
-    </a>
+    </a> -->
     @endif
 
 

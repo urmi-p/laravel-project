@@ -780,7 +780,7 @@ class AdminController extends Controller
 
 				$APP_DEBUG,
 
-				'APP_DE/imgequest->app_debug,
+				'APP_DE/imgequest->app_debug',
 
 				file_get_contents($path)
 
