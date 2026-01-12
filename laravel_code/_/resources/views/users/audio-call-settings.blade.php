@@ -6,19 +6,18 @@
 <section class="section section-sm">
   {{-- for mobile header --}}
     @include('includes.header-mobile')
-    <div class="container">
-      <div class="row mb-sm">
-        <div class="col-lg-8">
-          <h2 class="mb-0 font-montserrat"><i class="bi-telephone mr-2"></i> {{__('general.audio_call_settings')}}</h2>
-          <p class="lead mt-0">{{__('general.subtitle_audio_call_settings')}}</p>
-        </div>
-      </div>
+    <div class="container-fluid pt-lg-5 pt-2">
       <div class="row">
 
         @include('includes.cards-settings')
 
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-
+          <div class="row mb-sm">
+            <div class="col-lg-8">
+              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi-telephone mr-2"></i> {{__('general.audio_call_settings')}}</h2>
+              <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_audio_call_settings')}}</p>
+            </div>
+          </div>
           @if (session('status'))
                   <div class="alert alert-success">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
