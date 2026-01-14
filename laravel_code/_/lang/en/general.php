@@ -628,7 +628,7 @@ return array(
 
 	// Version 2.3
 	'complete_form_W9_here' => 'Complete IRS W-9 Form here',
-	'info_hide_profile' => '(Search, page explore, explore creators)',
+	'info_hide_profile' => '(Search, page explore, Explore Our Creators)',
 	'hide_count_subscribers' => 'Hide number of subscribers',
 	'hide_my_country' => 'Hide my country',
 	'show_my_birthdate' => 'Show my birthdate',

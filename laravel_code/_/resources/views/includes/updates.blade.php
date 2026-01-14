@@ -69,14 +69,13 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 @endphp
 
-<div style="border-radius:32px !important;border:none !important;background-color: transparent !important;" class="card mb-3 mt-5 w-100 card-updates views rounded-large shadow-large card-border-0 @if ($response->status == 'pending') post-pending @endif @if (
+<div class="card mb-3 mt-5 w-100 card-updates views rounded-large shadow-large card-border-0 @if ($response->status == 'pending') post-pending @endif @if (
         ($response->fixed_post == '1' && request()->path() == $response->creator->username) ||
             (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id)) pinned-post @endif"
     data="{{ $response->id }}">
-    <div style="background-color: #303030; text-align: center;position: relative;border-top-left-radius:32px;border-top-right-radius:32px;">
-        <img src="http://127.0.0.1:8000/uploads/cover/lucasmerai-31755968652nq76lbnyb3.png" class="post_img">
-        {{-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> --}}
-        <div class="mb-0 font-montserrat" style="position: absolute;top:15px;right:15px">
+    <div class="card-updates-cover-image">
+        <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img">
+        <div class="mb-0 font-montserrat" class="post-options">
             @if (auth()->check() && auth()->user()->id == $response->creator->id)
             <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -297,7 +296,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
         </div>
         {{-- <img class="" src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}"> --}}
     </div>
-    <div style="background-color: #1a1a1a !important;">
+    <div class="bg-dark-force">
         <div class="action-bar">
             <div class="action-left">
                 <div class="action_avatar">
@@ -321,7 +320,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                         </a></strong>
 
                     @if ($response->creator->verified_id == 'yes')
-                    <small class="verified" title="{{ __('general.verified_account') }}" data-toggle="tooltip"
+                    <small class="verified mt-2" title="{{ __('general.verified_account') }}" data-toggle="tooltip"
                         data-placement="top">
 
                         <i class="bi bi-patch-check-fill"></i>
@@ -329,14 +328,14 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     </small>
                     @endif
                     <span>
-                        <small class="text-muted font-14">{{ '@' . $response->creator->username }}</small>
+                        <small class="text-muted font-14 mt-2">{{ '@' . $response->creator->username }}</small>
                     </span>
                 </div>
             </div>
 
             @if ($response->status == 'active')
 
-            <div class="card-footer action-pill ">
+            <div class="card-footer action-pill mt-2">
                 @php
 
                 $likeActive =
@@ -393,12 +392,11 @@ $nth = 0; // nth foreach nth-child(3n-1)
                 </a>
 
                 @if (!$settings->hide_comments)
-                <span style="color:#FFF !important"
-                    class="action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
                     <i class="bi bi-chat-text"></i><span class="action-count">{{ $totalComments }}</span>
                 </span>
                 @endif
-                <a style="color:#FFF !important" class="action-pill pulse-btn text-decoration-none" href="javascript:void(0);"
+                <a class="text-white-force action-pill pulse-btn text-decoration-none" href="javascript:void(0);"
                     title="{{ __('general.share') }}" data-toggle="modal"
                     data-target="#sharePost{{ $response->id }}">
                     <i class="fas fa-share"></i><span class="action-count">Shares</span>
@@ -500,7 +498,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                 </div>
 
                 <!-- modal share -->
-                <a style="color:#FFF !important" href="javascript:void(0);"
+                <a class="text-white-force" href="javascript:void(0);"
                     @guest data-toggle="modal" data-target="#loginFormModal" @endguest
                     class="action-pill pulse-btn @if ($bookmarkActive) text-primary @else text-muted @endif float-right {{ $buttonBookmark }}"
                     @auth data-id="{{ $response->id }}" @endauth>
@@ -508,7 +506,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     <i class="@if ($bookmarkActive) fas @else far @endif fa-bookmark"></i>
                     <span class="action-count">Bookmarks</span>
                 </a>
-                
+
                 @auth
 
                 @if (
@@ -528,7 +526,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                 $checkPayPerView &&
                 $settings->disable_tips == 'off') ||
                 (auth()->user()->id != $response->creator->id && $response->locked == 'no' && $settings->disable_tips == 'off'))
-                <a class="action-pill" style="color:#FFF !important" href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
+                <a class="action-pill" class="text-white-force" href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
                     data-target="#tipForm" class="pulse-btn text-muted text-decoration-none"
                     @auth data-id="{{ $response->id }}" data-cover="{{ Helper::getFile(config('path.cover') . $response->creator->cover) }}" data-avatar="{{ Helper::getFile(config('path.avatar') . $response->creator->avatar) }}" data-name="{{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}" data-userid="{{ $response->creator->id }}" @endauth>
 
@@ -714,7 +712,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 
                                 <div class="position-absolute"
-                                    style="top: 40%; right: 0; display: block;">
+                                    class="comment-icons">
 
 
 
@@ -792,7 +790,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                     class="form-control comments inputComment emojiArea border-0"
                                     autocomplete="off"
                                     placeholder="{{ __('general.write_comment') }}"
-                                    style="padding-right: 95px;">
+                                    class="comment-input-padding">
 
                         </div>
 
@@ -1082,14 +1080,14 @@ $response->locked == 'no')
 
     <span class="btn-block text-center mb-3">
         <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
-          
+
         <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
             viewBox="0 0 90 120" fill="none">
             <path
                 d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
                 fill="white" />
         </svg>
-   
+
     </span>
 
 
@@ -1561,7 +1559,7 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
 
 
 
-                <div class="position-absolute" style="top: 40%; right: 0; display: block;">
+                <div class="position-absolute" class="comment-icons">
 
 
 
@@ -1635,7 +1633,7 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
                 <input type="text" name="comment"
                     class="form-control comments inputComment emojiArea border-0"
                     autocomplete="off" placeholder="{{ __('general.write_comment') }}"
-                    style="padding-right: 95px;">
+                    class="comment-input-padding">
 
         </div>
 
@@ -1666,7 +1664,7 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
 (request()->is('my/bookmarks') && $loop->first && $users->count() != 0) ||
 (request()->is('my/purchases') && $loop->first && $users->count() != 0) ||
 (request()->is('my/likes') && $loop->first && $users->count() != 0))
-<div class="p-3 d-lg-none">
+<div class="d-lg-none">
 
     @include('includes.explore_creators')
 
