@@ -336,6 +336,7 @@ return array(
 	'show_counter' => 'Show counters on the homepage',
 	'decimal_format' => 'Decimal format',
 	'messages' => 'Messages',
+	'direct_messages' => 'Direct Messages',
 	'contact' => 'Contact us',
 	'subject' => 'Subject',
 	'message' => 'Message',

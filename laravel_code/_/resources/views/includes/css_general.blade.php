@@ -1847,7 +1847,7 @@ input[type=number] {
 
 }
 
-.container-msg {position: relative; overflow: auto; overflow-x: hidden; flex: 2; -webkit-box-flex: 2;}
+
 
 .section-msg {
 
@@ -2634,14 +2634,14 @@ input[type=number] {
 }
 
 @media (max-width: 991px) {
-
+/*
   .wrapper-msg-inbox {
 
     padding-top: 78px !important;
 
     padding-bottom: 60px !important;
 
-  }
+  }*/
 
 }
 

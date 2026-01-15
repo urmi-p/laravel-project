@@ -2324,13 +2324,13 @@ input[type=number] {
 
 @media (max-width: 991px) {
 
-  .wrapper-msg-inbox {
+  /*.wrapper-msg-inbox {
 
     padding-top: 78px !important;
 
     padding-bottom: 60px !important;
 
-  }
+  }*/
 
 }
 

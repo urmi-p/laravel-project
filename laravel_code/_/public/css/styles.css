@@ -1476,14 +1476,14 @@ a:hover.button-avatar-upload {
 .overflow-visible {
     overflow: visible !important;
 }
-.message {
+/*.message {
     padding: 6px 14px 7px !important;
     border-radius: 25px !important;
 }
 .message.media-container {
     padding-left: 0 !important;
     padding-right: 0 !important;
-}
+}*/
 .message.bg-primary > a {
     color: #fff !important;
     text-decoration: underline !important;
@@ -2178,14 +2178,12 @@ a:hover.button-avatar-upload {
     width: auto !important;
 }
 
-
-
 .action_user_info span {
     grid-column: 2;
     grid-row: 2;
     display: inline-flex;
     align-items: center;
-    justify-self: start;   /* 🔑 THIS FIXES THE GAP */
+    justify-self: start; /* 🔑 THIS FIXES THE GAP */
 }
 
 /* RIGHT SIDE */
@@ -2455,7 +2453,7 @@ a.btn-category:focus {
     color: #ffffff !important;
 }
 [data-bs-theme="dark"] .menu-left-home {
-    background: #0f0f0f;
+    background: #191919;
 }
 [data-bs-theme="light"] .menu-left-home {
     background: #f6f6f6;
@@ -3094,7 +3092,8 @@ html[data-bs-theme="dark"] {
     border: none !important;
     background-color: transparent !important;
 }
-.card-updates-cover-image,div.btn-block {
+.card-updates-cover-image,
+div.btn-block {
     background-color: #303030;
     text-align: center;
     position: relative;
@@ -3122,7 +3121,9 @@ html[data-bs-theme="dark"] {
 }
 
 @media (max-width: 480px) {
-    .action-bar .card-footer.action-pill {display:none;}
+    .action-bar .card-footer.action-pill {
+        display: none;
+    }
     .dashboard_story {
         border-radius: 10.24px !important;
         /* Frame 63 */
@@ -3596,6 +3597,7 @@ html[data-bs-theme="dark"] {
 }
 .side_bar_box_shadow {
     box-shadow: 0px 4px 25px 0px #2a864214;
+    padding-left: 0px;
 }
 .subscription_card_main_div {
     display: flex;
@@ -3668,4 +3670,122 @@ html[data-bs-theme="dark"] {
         width: 20px;
         height: 20px;
     }
+}
+
+/* Message */
+.wrapper-msg-inbox {
+    box-sizing: border-box;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    background: #191919 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 4px 25px 0px #2a864214;
+    border-radius: 32px;
+    margin-bottom: 16px;;
+}
+
+/* Direct Messages */
+.wrapper-msg-inbox .direct_message_title {
+    font-size: 18px !important;
+    line-height: 27px;
+    /* identical to box height */
+    display: flex;
+    align-items: flex-end;
+    color: #ffffff;
+}
+.wrapper-msg-inbox .msg-inbox {
+    /* Frame 1618873295 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 8px 0 8px 0;
+    gap: 12px;
+    background: none;
+}
+.wrapper-msg-inbox .msg-inbox .list-group-item {
+    background: none;
+    padding: 8px;
+}
+/* Avatar */
+
+/* Frame 1618873294 */
+.wrapper-msg-inbox .msg-inbox .list-group-item:hover,
+.wrapper-msg-inbox .msg-inbox .list-group-item.active {
+    /* Auto layout */
+    background: rgba(250, 255, 251, 0.1);
+    border-radius: 16px;
+}
+
+/* Frame 1618873318 */
+.section-msg .messageDiv {
+    box-sizing: border-box;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 24px;
+    gap: 32px;
+    isolation: isolate;
+    overflow-y: auto;
+    background: #191919;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    margin-right: 16px;
+    margin-bottom: 16px;;
+}
+
+/* Frame 75 */
+@media (max-width: 480px) {
+    .wrapper-msg-inbox {
+        margin: 84px 20px 20px 20px;
+    }
+}
+
+.section-msg .card-header {
+    background: none;
+}
+
+.section-msg .message {
+    /* Frame 1618873299 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
+    background: #f7fcf8;
+    border-radius: 16px 16px 16px 0px;
+    /* Hey Oliver! How's it going? */
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+
+    align-items: flex-end;
+
+    /* Text 2 */
+    color: #344054;
+}
+
+.section-msg .side_bar_box_shadow {
+    display: flex;
+    flex-direction: column;
+}
+
+.section-msg .side_bar_box_shadow ul {
+    flex: 1;
+}
+.section-msg .sidebar_li {padding:0;}
+.section-msg .card-footer {
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
 }
