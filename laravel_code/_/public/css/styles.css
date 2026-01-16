@@ -3411,6 +3411,12 @@ div.media-post {
     color: #000;
     border-radius: 8px;
 }
+[data-bs-theme="dark"] .notify-border {
+    border-left: 3px solid #E2E8F0;
+}
+[data-bs-theme="light"] .notify-border {
+    border-left: 3px solid #000;
+}
 
 /* notification page css ended */
 
