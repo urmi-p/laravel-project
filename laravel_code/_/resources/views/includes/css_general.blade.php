@@ -71,6 +71,8 @@
 <?php if(request()->path() == '/' && $settings->story_status && $fonts || request()->is('create/story/text') && $settings->story_status && $fonts): ?>
 
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=<?php echo e($fonts, false); ?>">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 
 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
@@ -1130,7 +1132,8 @@ align-items: center;
 
 .link-scroll a.nav-link:not(.btn) {
 
-  color: #969696;
+  color: white;
+  /* color: #969696; */
 
 }
 
@@ -1819,7 +1822,7 @@ a.link-border {text-decoration: none;}
 
 .blocked {left: 0; top: 0;}
 
-.card-settings > .list-group-flush>.list-group-item {border-width: 0 0 0px !important;}
+.card-settings > .list-group-flush>.list-group-item {border-width: 0 0 0px !important; border-radius:8px;}
 
 .btn-active-hover {background-color: #f3f3f3;}
 
@@ -2967,7 +2970,7 @@ border-color: #adb5bd !important;
 
   padding: 12px 11px;
 
-  background-color: <?php if(auth()->user()->dark_mode == 'on'): ?> #414141 !important; <?php else: ?> <?php echo e($settings->color_default, false); ?>2b; <?php endif; ?>
+  /* background-color: <?php if(auth()->user()->dark_mode == 'on'): ?> #414141 !important; <?php else: ?> <?php echo e($settings->color_default, false); ?>2b; <?php endif; ?> */
 
   border-radius: 35%;
 

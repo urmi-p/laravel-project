@@ -485,7 +485,8 @@ button:active.button-search {
     color: #fff;
 }
 .link-scroll a.nav-link:not(.btn) {
-    color: #3a3a3a;
+    color: white;
+    /* color: #3a3a3a; */
 }
 .link-scroll a.nav-link:hover:not(.search):not(.btn),
 .link-scroll a.nav-link:active:not(.search):not(.btn),
@@ -1555,7 +1556,7 @@ a:hover.button-avatar-upload {
     font-size: 19px;
     color: #c3c3c3;
 }
-.table thead th {
+.table thead th, .table tr {
     vertical-align: bottom;
     border-bottom: 1px solid #939393;
     padding-right: 1.5rem;
@@ -1579,6 +1580,32 @@ a:hover.button-avatar-upload {
     background-color: #ffffff;
 }
 
+[data-bs-theme="dark"] .sub-main{
+    background-color: #191919;
+    border-radius: 4px;
+}
+[data-bs-theme="light"] .sub-main{
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+.sub-items{
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #424242;
+
+}
+.sub-items-main{
+    padding: 10px 8px;
+}
+
+.muted-content{
+    font-size: 12px;
+}
+
+.date-span{
+    color: #BABABA;
+}
 .table td,
 .table th {
     padding: 0.75rem;
@@ -3308,7 +3335,7 @@ div.btn-block {
 }
 
 [data-bs-theme="dark"] .notify-card {
-    background: linear-gradient(180deg, #0c0c0c, #141414);
+    background: #FFFFFF1A;
     border-radius: 12px;
     padding: 16px 18px;
     color: #ffffff;
@@ -3373,6 +3400,95 @@ div.btn-block {
 }
 
 /* notification page css ended */
+
+/* dashbaord page css started  */
+.dash-card{
+    min-height: 113px;
+    background: #FFFFFF1A;
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: #ffffff;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075)
+}
+[data-bs-theme="dark"] .large-dash-card{
+    background: #FFFFFF1A;
+    border-radius: 12px;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
+[data-bs-theme="light"] .large-dash-card{
+    background: #FFF;
+    border-radius: 12px;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
+.dash-card-mini{
+    background: #FFFFFF1A;
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: #ffffff;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075)
+}
+.dash-icon-span{
+  padding: 9px 12px;
+  color: #fff;
+}
+
+.icon-dash{
+    border: 1px solid;
+    border-radius: 20px;
+}
+.dash-content h4{
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: bold;
+}
+[data-bs-theme="light"] .dash-content {
+    color: black;
+}
+[data-bs-theme="light"] .dash-card {
+    background: #FFF;
+}
+[data-bs-theme="dark"] .dash-icon-span .text-primary{
+    color: #fff !important;
+}
+.sub-title{
+    font-family: 'Poppins';
+    font-weight: bold;
+}
+.sub-success{
+    background-color: #E5FCDA;
+    color: #239A3C;
+    font-size: 10px;
+}
+.sub-warning{
+    background-color: #fff;
+    color: #d8cb5c;
+    font-size: 10px;
+    
+}
+.sub-danger{
+    background-color: #ad9494;
+    color: #db0808;
+    font-size: 10px;
+
+}
+[data-bs-theme="dark"] .pay-head{
+    background-color: #191919 !important;
+    border-radius: 8px 8px 0 0;
+
+}
+[data-bs-theme="light"] .dash-card-mini{
+    color: black;
+    background: #FFF;
+}
+[data-bs-theme="light"] .pay-head-main{
+    color: black;
+    background: #FFF;
+}
+
+
+[data-bs-theme="light"] .icon-dash {
+    border: 1px solid #1402024d;
+}
+/* dashbaord page css ended */
 
 /* referrals style  started*/
 [data-bs-theme="dark"] .small-text {

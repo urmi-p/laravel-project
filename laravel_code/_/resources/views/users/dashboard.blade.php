@@ -9,89 +9,128 @@
     <div class="container-fluid pt-lg-5 pt-2">
       
       <div class="row">
-        @include('includes.cards-settings')
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+			@include('includes.cards-settings')
+        <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
-            <div class="col-lg-8 py-5">
-              <h2 class="mb-0 font-montserrat pb-3"><i class="bi bi-speedometer2 mr-2"></i> {{__('admin.dashboard')}}</h2>
-              <p class="lead text-muted mt-0">{{__('general.dashboard_desc')}}</p>
+            <div class="col-lg-8 pt-5 pb-2">
+				<h2 class="mb-0 font-montserrat pb-3">
+					{{__('admin.dashboard')}}
+				</h2>
+				<p class="lead mt-0">{{__('general.dashboard_desc')}}</p>
             </div>
           </div>
           <div class="content">
             <div class="row">
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
-                    <h4><i class="fas fa-hand-holding-usd mr-2 text-primary icon-dashboard"></i> {{ Helper::amountFormatDecimal($earningNetUser) }}</h4>
-                    <small>{{ __('admin.earnings_net') }}</small>
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="">
+                  <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center" >
+					<div class="dash-content">
+						<small>{{ __('admin.earnings_net') }}</small>
+						<h4> {{ Helper::amountFormatDecimal($earningNetUser) }}</h4>
+					</div>
+					<div class="icon-dash">
+						<i class="fas fa-hand-holding-usd  text-primary icon-dashboard"></i>
+						<!-- <span class="icon-wrap icon--dashboard"><i class="fas fa-hand-holding-usd"></i></span> -->
+					</div>
 
-                    <span class="icon-wrap icon--dashboard"><i class="fas fa-hand-holding-usd"></i></span>
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
-                    <h4><i class="fas fa-wallet mr-2 text-primary icon-dashboard"></i> {{ Helper::amountFormatDecimal(auth()->user()->balance) }}</h4>
-                    <small>{{ __('general.balance') }}
-                      @if (auth()->user()->balance >= $settings->amount_min_withdrawal)
-                      <a href="{{ url('settings/withdrawals')}}" class="link-border"> {{ __('general.make_withdrawal') }}</a>
-                    @endif
-                    </small>
-
-                    <span class="icon-wrap icon--dashboard"><i class="fas fa-wallet"></i></span>
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="">
+                  <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
+					<div class="dash-content">
+						<small>{{ __('general.balance') }}
+						  @if (auth()->user()->balance >= $settings->amount_min_withdrawal)
+						  <a href="{{ url('settings/withdrawals')}}" class="link-border"> {{ __('general.make_withdrawal') }}</a>
+						@endif
+						</small>
+                    	<h4>{{ Helper::amountFormatDecimal(auth()->user()->balance) }}</h4>
+					</div>
+					<div class="icon-dash">
+						<i class="fas fa-wallet  text-primary icon-dashboard"></i> 
+					</div>
+                    <!-- <span class="icon-wrap icon--dashboard"><i class="fas fa-wallet"></i></span> -->
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
-                    <h4><i class="fas fa-users mr-2 text-primary icon-dashboard"></i> <span title="{{$subscriptionsActive}}">{{ Helper::formatNumber($subscriptionsActive) }}</span></h4>
-                    <small>{{ __('general.subscriptions_active') }}</small>
-
-                    <span class="icon-wrap icon--dashboard"><i class="fas fa-users"></i></span>
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="">
+                  <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
+					<div class="dash-content">
+						<small>{{ __('general.subscriptions_active') }}</small>
+                    	<h4>
+							<span title="{{$subscriptionsActive}}">{{ Helper::formatNumber($subscriptionsActive) }}</span>
+						</h4>
+					</div>
+					<div class="icon-dash">
+						<i class="fas fa-users  text-primary icon-dashboard"></i>
+                    	<span class="icon-wrap icon--dashboard"><i class="fas fa-users"></i></span>
+                  	</div>
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
-                    <h4><i class="bi-arrow-repeat mr-2 text-primary icon-dashboard-2"></i> {{ Helper::amountFormatDecimal($earningNetSubscriptions) }}</h4>
-                    <small>{{ __('general.earnings_net_subscriptions') }}</small>
-
-                    <span class="icon-wrap icon--dashboard"><i class="bi-arrow-repeat"></i></span>
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="">
+                  <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
+					<div class="dash-content">
+						<small>{{ __('general.earnings_net_subscriptions') }}</small>
+						<h4>
+							{{ Helper::amountFormatDecimal($earningNetSubscriptions) }}
+						</h4>
+					</div>
+					<div class="icon-dash">
+						<!-- <span class="icon-wrap icon--dashboard"><i class="bi-arrow-repeat"></i></span> -->
+						<div class="dash-icon-span">
+							<i class="bi-arrow-repeat text-primary"></i> 
+						</div>
+						<!-- <i class="bi-arrow-repeat  text-primary icon-dashboard-2"></i>  -->
+                  	</div>
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
-                    <h4><i class="bi-coin mr-2 text-primary icon-dashboard-2"></i> {{ Helper::amountFormatDecimal($earningNetTips) }}</h4>
-                    <small>{{ __('general.earnings_net_tips') }}</small>
-
-                    <span class="icon-wrap icon--dashboard"><i class="bi-coin"></i></span>
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="">
+                  <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
+					<div class="dash-content">
+						<small>{{ __('general.earnings_net_tips') }}</small>
+                    	<h4>
+							{{ Helper::amountFormatDecimal($earningNetTips) }}
+						</h4>
+					</div>
+					<div class="icon-dash">
+						<div class="dash-icon-span">
+							<i class="bi-coin text-primary"></i>
+							<!-- <span class="icon-wrap icon--dashboard"><i class="bi-coin"></i></span> -->
+						</div>
+                  	</div>
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
-                    <h4><i class="bi-lock mr-2 text-primary icon-dashboard-2"></i> {{ Helper::amountFormatDecimal($earningNetPPV) }}</h4>
-                    <small>{{ __('general.earnings_net_ppv') }}</small>
-
-                    <span class="icon-wrap icon--dashboard"><i class="bi-lock"></i></span>
-                  </div>
+              <div class="col-md-4 col-lg-4 mb-2">
+				<div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
+					<div class="dash-content">
+						<small>{{ __('general.earnings_net_ppv') }}</small>
+                    	<h4>{{ Helper::amountFormatDecimal($earningNetPPV) }}</h4>
+					</div>
+					<div class="icon-dash">
+						<div class="dash-icon-span">
+							<i class="bi-lock text-primary"></i>
+						</div>
+						<!-- <span class="icon-wrap icon--dashboard"></span> -->
+						<!-- <i class="bi-lock mr-2 text-primary icon-dashboard-2"></i> -->
+                  	</div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="dash-card-mini">
+                  <div class="overflow-hidden position-relative">
                     <h6 class="{{$stat_revenue_today > 0 ? 'text-success' : 'text-danger' }} text-revenue">
                       {{ Helper::amountFormatDecimal($stat_revenue_today) }}
                       <small class="float-right ml-2">
@@ -101,14 +140,14 @@
                     </h6>
                     <small>{{ __('general.revenue_today') }}</small>
 
-                    <span class="icon-wrap icon--dashboard"><i class="bi bi-graph-up-arrow"></i></span>
+                    <span class="icon-wrap icon--dashboard"><i class="bi bi-graph-up-arrow "></i></span>
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="dash-card-mini">
+                  <div class="overflow-hidden position-relative">
                     <h6 class="{{$stat_revenue_week > 0 ? 'text-success' : 'text-danger' }} text-revenue">
                       {{ Helper::amountFormatDecimal($stat_revenue_week) }}
                       <small class="float-right ml-2">
@@ -118,14 +157,14 @@
                     </h6>
                     <small>{{ __('general.revenue_week') }}</small>
 
-                    <span class="icon-wrap icon--dashboard"><i class="bi bi-graph-up-arrow"></i></span>
+                    <span class="icon-wrap icon--dashboard "><i class="bi bi-graph-up-arrow"></i></span>
                   </div>
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-lg-4 mb-2">
-                <div class="card">
-                  <div class="card-body overflow-hidden position-relative">
+              <div class="col-md-4 col-lg-4 mb-2">
+                <div class="dash-card-mini">
+                  <div class="overflow-hidden position-relative">
                     <h6 class="{{$stat_revenue_month > 0 ? 'text-success' : 'text-danger' }} text-revenue">
                       {{ Helper::amountFormatDecimal($stat_revenue_month) }}
                       <small class="float-right ml-2">
@@ -141,7 +180,7 @@
               </div><!-- col-lg-4 -->
 
               <div class="col-lg-12 mt-3 py-4">
-                 <div class="card">
+                 <div class="large-dash-card">
                    <div class="card-body">
 
                     <div class="d-lg-flex d-block justify-content-between align-items-center mb-4">
@@ -166,60 +205,66 @@
                  </div>
               </div>
           
-            <div class="col-md-6 mb-5 mb-lg-0">
-              <div class="card shadow-sm">
-                <div class="card-body pb-0">
-                  <h6>{{ __('admin.recent_subscriptions') }}</h6>
+            <div class="col-md-4 mb-5 mb-lg-0">
+              <div class="sub-main shadow-sm">
+                <div class="d-flex py-1 align-items-center justify-content-between px-3">
+                  <span class="px-2 py-3 sub-title">{{ __('admin.recent_subscriptions') }}</span>
+					@if ($subscriptions->isNotEmpty())
+						<div class="">
+							<a href="{{ url('my/subscribers') }}" class="d-flex align-items-center justify-content-center arrow">
+								{{ __('general.view_all') }}
+							</a>
+						</div>
+					@endif
                 </div>
-                <div class="table-responsive">
-                  <table class="table table-striped m-0">
-                    <thead>
-                      <tr>
-                        <th scope="col">{{__('general.subscriber')}}</th>
-                        <th scope="col">{{__('admin.date')}}</th>
-                        <th scope="col">{{__('admin.status')}}</th>
-                      </tr>
-                    </thead>
-            
-                    <tbody>
-            
+                <div class="table-responsive sub-items-main">
                       @foreach ($subscriptions as $subscription)
-                      <tr>
-                        <td>
-                          @if (! isset($subscription->subscriber->username))
-                          {{ __('general.no_available') }}
-                          @else
-                          <a href="{{url($subscription->subscriber->username)}}" class="mr-1">
-                            <img src="{{Helper::getFile(config('path.avatar').$subscription->subscriber->avatar)}}" width="35"
-                              height="35" class="rounded-circle mr-2">
-            
-                            {{$subscription->subscriber->hide_name == 'yes' ? $subscription->subscriber->username :
-                            $subscription->subscriber->name}}
-                          </a>
-            
-                          <a href="{{url('messages/'.$subscription->subscriber->id, $subscription->subscriber->username)}}"
-                            title="{{__('general.message')}}">
-                            <i class="feather icon-send mr-1 mr-lg-0"></i>
-                          </a>
-                          @endif
-                        </td>
-                        <td>{{Helper::formatDate($subscription->created_at)}}</td>
-                        </td>            
-                        <td>
-                          @if ($subscription->stripe_id == ''
-                          && strtotime($subscription->ends_at) > strtotime(now()->format('Y-m-d H:i:s'))
-                          && $subscription->cancelled == 'no'
-                          || $subscription->stripe_id != '' && $subscription->stripe_status == 'active'
-                          || $subscription->stripe_id == '' && $subscription->free == 'yes'
-                          )
-                          <span class="badge badge-pill badge-success text-uppercase">{{__('general.active')}}</span>
-                          @elseif ($subscription->stripe_id != '' && $subscription->stripe_status == 'incomplete')
-                          <span class="badge badge-pill badge-warning text-uppercase">{{__('general.incomplete')}}</span>
-                          @else
-                          <span class="badge badge-pill badge-danger text-uppercase">{{__('general.cancelled')}}</span>
-                          @endif
-                        </td>
-                      </tr>
+        				<div class="sub-items px-4 py-3 mb-2 mx-3">
+							<div >
+								<div class="d-flex justify-content-between align-items-center mb-3">
+									<div>
+										@if (! isset($subscription->subscriber->username))
+											{{ __('general.no_available') }}
+										@else
+											<a href="{{url($subscription->subscriber->username)}}" class="mr-1">
+												<img src="{{Helper::getFile(config('path.avatar').$subscription->subscriber->avatar)}}" width="35"
+												height="35" class="rounded-circle mr-2">
+								
+												{{$subscription->subscriber->hide_name == 'yes' ? $subscription->subscriber->username :
+												$subscription->subscriber->name}}
+											</a>
+								
+											<a href="{{url('messages/'.$subscription->subscriber->id, $subscription->subscriber->username)}}"
+												title="{{__('general.message')}}">
+												<i class="feather icon-send mr-1 mr-lg-0"></i>
+											</a>
+										@endif
+									</div>
+									<div>
+										@if ($subscription->stripe_id == ''
+										&& strtotime($subscription->ends_at) > strtotime(now()->format('Y-m-d H:i:s'))
+										&& $subscription->cancelled == 'no'
+										|| $subscription->stripe_id != '' && $subscription->stripe_status == 'active'
+										|| $subscription->stripe_id == '' && $subscription->free == 'yes'
+										)
+										<span class="badge px-2 py-1 sub-success text-uppercase">{{__('general.active')}}</span>
+										@elseif ($subscription->stripe_id != '' && $subscription->stripe_status == 'incomplete')
+										<span class="badge px-2 py-1 sub-warning text-uppercase">{{__('general.incomplete')}}</span>
+										@else
+										<span class="badge px-2 py-1 sub-danger text-uppercase">{{__('general.cancelled')}}</span>
+										@endif
+									</div>
+								</div>
+								<div class="muted-content d-flex justify-content-between align-items-center">
+									<span>
+										{{Helper::formatDate($subscription->created_at)}}
+									</span>
+									<span class="date-span">
+										Subscribe Date
+									</span>
+								</div>
+							</div>
+						</div>
                       @endforeach
 
                       @if ($subscriptions->isEmpty())
@@ -227,28 +272,26 @@
                         <td colspan="12" class="text-center">{{ __('users.not_subscribers') }}</td>
                       </tr>
                       @endif
-
-                    </tbody>
-                  </table>
                 </div>
 
-                @if ($subscriptions->isNotEmpty())
-                <div class="card-footer">
-                  <a href="{{ url('my/subscribers') }}" class="text-muted font-weight-medium d-flex align-items-center justify-content-center arrow">
-                    {{ __('general.view_all') }}
-                  </a>
-                </div>
-                @endif
+
               </div><!-- card -->
             </div><!-- end col-md-6 -->
 
-            <div class="col-md-6 mb-5 mb-lg-0">
-              <div class="card shadow-sm">
-                <div class="card-body pb-0">
-                  <h6>{{ __('general.payments_received') }}</h6>
+            <div class="col-md-8 mb-5 mb-lg-0">
+              <div class="pay-head-main shadow-sm">
+                <div class="pay-head d-flex py-1 align-items-center justify-content-between px-3">
+                  <span class="px-2 py-2 sub-title">{{ __('general.payments_received') }}</span>
+					@if ($transactions->isNotEmpty())
+					<div class="">
+						<a href="{{ url('my/payments/received') }}" class="d-flex align-items-center justify-content-center arrow">
+							{{ __('general.view_all') }}
+						</a>
+					</div>
+					@endif
                 </div>
                 <div class="table-responsive">
-                  <table class="table table-striped m-0">
+                  <table class="table m-0">
                     <thead>
                       <tr>
                         <th scope="col">{{__('admin.date')}}</th>
@@ -295,14 +338,6 @@
                     </tbody>
                   </table>
                 </div>
-
-                @if ($transactions->isNotEmpty())
-                <div class="card-footer">
-                  <a href="{{ url('my/payments/received') }}" class="text-muted font-weight-medium d-flex align-items-center justify-content-center arrow">
-                    {{ __('general.view_all') }}
-                  </a>
-                </div>
-                @endif
 
               </div><!-- card -->
             </div><!-- end col-md-6 -->

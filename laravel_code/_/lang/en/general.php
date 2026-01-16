@@ -155,6 +155,7 @@ return array(
 	'recent'                    =>      'Recent',
 	'online'                    =>      'Online',
 	'view_all'                  =>      'View all',
+	'subscribe_date'            =>      'Subscribe Date',
 	'add_tag'                   =>      'Add a tag and press Enter or comma',
 	'add_tags_guide'            =>      'Press Enter or comma to add tag',
 	'country'                   =>      'Country',

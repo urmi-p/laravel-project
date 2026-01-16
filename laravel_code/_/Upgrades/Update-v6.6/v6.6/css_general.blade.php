@@ -58,6 +58,7 @@ public/css/bootstrap.min.css') }}" rel="stylesheet">
 @if (request()->path() == '/' && $settings->story_status && $fonts || request()->is('create/story/text') && $settings->story_status && $fonts)
 
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family={{$fonts}}">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 @endif
 
@@ -838,7 +839,8 @@ public/css/bootstrap.min.css') }}" rel="stylesheet">
 
 .link-scroll a.nav-link:not(.btn) {
 
-  color: #969696;
+  color: white;
+  /* color: #969696; */
 
 }
 
@@ -1528,7 +1530,7 @@ a.link-border {text-decoration: none;}
 
 .blocked {left: 0; top: 0;}
 
-.card-settings > .list-group-flush>.list-group-item {border-width: 0 0 0px !important;}
+.card-settings > .list-group-flush>.list-group-item {border-width: 0 0 0px !important; border-radius:8px;}
 
 .btn-active-hover {background-color: #f3f3f3;}
 
@@ -2651,6 +2653,9 @@ border-color: #adb5bd !important;
 
 
 @auth
+.dash-icon-span{
+  padding: 9px 9px;
+}
 
 .icon-dashboard {
 
