@@ -562,14 +562,9 @@
                         <i class="bi bi-credit-card mr-2"></i>
 
                         <span>{{ __('users.payout_method') }}</span>
-
                     </div>
 
-
-
                 </a>
-
-
 
                 <a href="{{ url('settings/withdrawals') }}"
                     class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('settings/withdrawals')) active @endif">
@@ -579,18 +574,19 @@
                         <i class="bi bi-arrow-left-right mr-2"></i>
 
                         <span>{{ __('general.withdrawals') }}</span>
-
                     </div>
+                </a>
 
-
-
+                <a href="{{ url('my/balance') }}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('my/balance')) active @endif">
+                    <div>
+                        <i class="bi bi-credit-card mr-2"></i>
+                        <span>{{ __('general.balance') }}</span>
+                    </div>
                 </a>
                 @endif
 
-
-
             </div>
-
         </div><!-- End Payments -->
 
 

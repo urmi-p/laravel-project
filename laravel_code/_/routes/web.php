@@ -318,7 +318,11 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
  	Route::get('settings/withdrawals',[UserController::class, 'withdrawals']);
 	Route::post('settings/withdrawals',[UserController::class, 'makeWithdrawals']);
 	Route::post('delete/withdrawal/{id}',[UserController::class, 'deleteWithdrawal']);
-
+	
+	//Balance View
+	Route::get('my/balance',[AddFundsController::class, 'myBalanceView']);
+	Route::post('my/balance',[AddFundsController::class, 'myBalancePost']);
+	
  	// Upload Avatar
  	Route::post('upload/avatar',[UserController::class, 'uploadAvatar']);
 

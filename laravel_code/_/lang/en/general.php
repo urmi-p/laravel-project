@@ -1483,4 +1483,5 @@ return array(
 	'subscription_price_quarter' => '3 Months',
 	'subscription_price_biannual' => '6 Months',
 	'subscription_price_year' => '12 months',
+	'balance_desc' => 'Balance History'
 );
