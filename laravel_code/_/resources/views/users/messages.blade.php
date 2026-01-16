@@ -12,7 +12,7 @@
       </div>
 
       <div class="col-md-6  p-0">
-        <div class="card w-100  border-0 d-lg-block d-none messageDiv" >
+        <div class="card   border-0 d-lg-block d-none messageDiv" >
           <div class="content px-4 py-3 d-scrollbars container-msg">
 
             <div class="flex-column d-flex justify-content-center text-center h-100">

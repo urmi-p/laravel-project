@@ -2140,7 +2140,7 @@ a:hover.button-avatar-upload {
     width: 32px;
     height: 32px;
 }
-
+/*
 .action-bar {
     display: flex;
     justify-content: space-between;
@@ -2148,6 +2148,14 @@ a:hover.button-avatar-upload {
     padding: 12px 16px;
     background: #121212;
     border-radius: 12px;
+}*/
+.bg-dark-force .action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #121212;
+    border-radius: 0;
 }
 
 .action-bar .card-footer {
@@ -3120,7 +3128,7 @@ html[data-bs-theme="dark"] {
     background-color: transparent !important;
 }
 .card-updates-cover-image,
-div.btn-block {
+div.media-post {
     background-color: #303030;
     text-align: center;
     position: relative;
@@ -3166,6 +3174,7 @@ div.btn-block {
     }
     .my-card {
         margin-top: 1.5rem !important;
+        padding: 0;
     }
     /* My cards */
     .my-card .title {
@@ -3180,7 +3189,7 @@ div.btn-block {
         color: #ffffff;
     }
     .card-body {
-        padding: 0;
+        /* padding: 0;*/
     }
 
     .credit-card {
@@ -3206,15 +3215,10 @@ div.btn-block {
         padding: 16px;
         gap: 10px;
 
-        width: 350px;
-        height: 178px;
-
         background: #191919;
     }
     /* Text */
     .my-card-not-card-added p.card-text {
-        width: 318px;
-        height: 72px;
         font-style: normal;
         font-weight: 400;
         font-size: 24px;
@@ -3297,6 +3301,15 @@ div.btn-block {
     }
     .item-add-story span {
         font-size: 12px;
+    }
+    .bg-dark-force {
+        background: none;
+    }
+    .bg-dark-force .action-bar {
+        border-radius: 12px;
+    }
+    .post_img {
+        width: 50% !important;
     }
 }
 
@@ -3801,7 +3814,7 @@ div.btn-block {
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0px 4px 25px 0px #2a864214;
     border-radius: 32px;
-    margin-bottom: 16px;;
+    margin-bottom: 16px;
 }
 
 /* Direct Messages */
@@ -3853,12 +3866,15 @@ div.btn-block {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 32px;
     margin-right: 16px;
-    margin-bottom: 16px;;
+    margin-bottom: 16px;
 }
 
 /* Frame 75 */
 @media (max-width: 480px) {
     .wrapper-msg-inbox {
+        margin: 84px 20px 20px 20px;
+    }
+    .section-msg .messageDiv {
         margin: 84px 20px 20px 20px;
     }
 }
@@ -3899,9 +3915,46 @@ div.btn-block {
 .section-msg .side_bar_box_shadow ul {
     flex: 1;
 }
-.section-msg .sidebar_li {padding:0;}
+.section-msg .sidebar_li {
+    padding: 0;
+}
 .section-msg .card-footer {
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
+}
+
+/* Frame 1618873319 */
+.media-message-profile-center {
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    width: 100%;
+    margin-left: 90px;
+}
+.startAudioCall,.startVideoCall, .vertical-ellipsis  {
+    /* Auto Layout Horizontal */
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+
+     background: rgba(255, 255, 255, 0.1);
+    /* Custom/Custom 2 */
+    box-shadow: 0px 0px 50px rgba(90, 108, 234, 0.08);
+    border-radius: 12px;
+}
+
+.startAudioCall .icon-phone:before {
+    content: "\e8aa" !important;
+}
+
+.startVideoCall .icon-video:before {
+    content: "\e8ec" !important;
 }

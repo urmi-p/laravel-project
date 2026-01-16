@@ -920,7 +920,7 @@ $response->price != 0.0 &&
 $checkPayPerView) ||
 (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
 $response->locked == 'no')
-<div class="btn-block">
+<div class="btn-block media-post">
 
 
 

@@ -19,13 +19,13 @@
       }
     }
   </style>
-@endsection
+@endsection`
 
 @section('content')
 <section class="section section-sm pb-0 h-100 section-msg">
     <div class="container-fluid pt-lg-5 pt-2">
       <div class="row justify-content-center h-100">
-        <div class="col-md-3 side_bar_box_shadow h-100">
+        <div class="col-md-3 d-lg-block d-none side_bar_box_shadow h-100">
           @include('includes.menu-sidebar-message')
         </div>
               
@@ -36,49 +36,50 @@
             <div class="card-header border-0 p-0">
               <div class="media">
                 <a href="{{url()->previous()}}" class="mr-3"><i class="fa fa-arrow-left"></i></a>
-                <a href="{{url($user->username)}}" class="mr-3">
-                  <span class="position-relative user-status @if ($user->active_status_online == 'yes') @if (Helper::isOnline($user->id)) user-online @else user-offline @endif @endif d-block">
-                    <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle" width="40" height="40">
-                  </span>
-              </a>
-
-                <div class="media-body">
-                  <h6 class="m-0">
-                    <a href="{{url($user->username)}}">
-                      {{$user->hide_name == 'yes' ? $user->username : $user->name}}
-                    </a>
-
-                    @if ($user->verified_id == 'yes')
-                      <small class="verified">
-                          <i class="bi bi-patch-check-fill"></i>
-                        </small>
-                    @endif
-                  </h6>
-
-                @if ($user->active_status_online == 'yes')
-
-                  @if ($user->hide_last_seen == 'no')
-                  <small>{{ __('general.active') }}</small>
-
-                  <span id="timeAgo">
-                    <small class="timeAgo @if (Helper::isOnline($user->id)) display-none @endif" id="lastSeen" data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
+                <div class="media-message-profile-center">
+                  <a href="{{url($user->username)}}" class="mr-3">
+                    <span class="position-relative user-status @if ($user->active_status_online == 'yes') @if (Helper::isOnline($user->id)) user-online @else user-offline @endif @endif d-block">
+                      <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle" width="40" height="40">
                     </span>
-                  @else
-                    {{'@'.$user->username}}
-                    @endif
+                  </a>
 
-                  @else
-                    {{'@'.$user->username}}
-                    @endif
+                  <div class="media-body">
+                    <h6 class="m-0">
+                      <a href="{{url($user->username)}}">
+                        {{$user->hide_name == 'yes' ? $user->username : $user->name}}
+                      </a>
 
+                      @if ($user->verified_id == 'yes')
+                        <small class="verified">
+                            <i class="bi bi-patch-check-fill"></i>
+                          </small>
+                      @endif
+                    </h6>
+
+                      @if ($user->active_status_online == 'yes')
+
+                        @if ($user->hide_last_seen == 'no')
+                        <small>{{ __('general.active') }}</small>
+
+                        <span id="timeAgo">
+                          <small class="timeAgo @if (Helper::isOnline($user->id)) display-none @endif" id="lastSeen" data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
+                          </span>
+                        @else
+                          {{'@'.$user->username}}
+                          @endif
+
+                        @else
+                          {{'@'.$user->username}}
+                          @endif
+
+                  </div>
                 </div>
-
                 @if (auth()->user()->verified_id == 'yes' 
                     && $settings->audio_call_status
                     && auth()->user()->price_audio_call
                     && !auth()->user()->isRestricted($user->id)
                     )
-                <a href="javascript:void(0);" class="f-size-20 text-white float-right mr-3 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
+                <a href="javascript:void(0);" class="text-white float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
                   <i class="feather icon-phone"></i>
                 </a>
                 @endif
@@ -88,13 +89,13 @@
                     && auth()->user()->price_video_call
                     && !auth()->user()->isRestricted($user->id)
                     )
-                <a href="javascript:void(0);" class="f-size-20 text-white float-right mr-3 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
+                <a href="javascript:void(0);" class="text-white float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
                   <i class="feather icon-video"></i>
                 </a>
                 @endif
 
-                <a href="javascript:void(0);" class="f-size-20 text-white float-right" id="dropdown_options" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-ellipsis-h"></i>
+                <a href="javascript:void(0);" class="text-white float-right vertical-ellipsis " id="dropdown_options" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <i class="fa fa-ellipsis-v"></i>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
