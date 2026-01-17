@@ -6,7 +6,9 @@
 					<div class="card-body px-lg-5 py-lg-5 position-relative">
 						<h6>{{__('general.balance')}}: {{Helper::amountFormatDecimal(auth()->user()->balance)}}</h6>
 						<form method="post" action="{{url('transfer/balance')}}" id="formSendTip">
-							<input type="number" min="1" max="{{auth()->user()->balance}}" required autocomplete="off" id="onlyNumber" class="form-control mb-3" name="amount" placeholder="{{__('admin.amount')}}">
+							<div class="amt-input-container">
+							<input type="number" min="1" max="{{auth()->user()->balance}}" required autocomplete="off" id="onlyNumber" class="form-control" name="amount" placeholder="{{__('admin.amount')}}">
+							</div>
 							@csrf
 
 							<div class="alert alert-danger display-none" id="errorTip">

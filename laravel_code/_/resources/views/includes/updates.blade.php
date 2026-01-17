@@ -69,7 +69,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 @endphp
 
-<div class="card mb-3 mt-5 w-100 card-updates views rounded-large shadow-large card-border-0 @if ($response->status == 'pending') post-pending @endif @if (
+<div class="card mb-3 mt-5 w-100 card-updates views rounded-large shadow-large card-border-0 border-0 @if ($response->status == 'pending') post-pending @endif @if (
         ($response->fixed_post == '1' && request()->path() == $response->creator->username) ||
             (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id)) pinned-post @endif"
     data="{{ $response->id }}">
@@ -920,7 +920,7 @@ $response->price != 0.0 &&
 $checkPayPerView) ||
 (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
 $response->locked == 'no')
-<div class="btn-block media-post">
+<div class="btn-block @if ($mediaImageVideoTotal != 0) media-post  @endif">
 
 
 

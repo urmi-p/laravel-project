@@ -67,16 +67,16 @@
         	</div>
         @endif
 
-          <div class="d-lg-block sticky-top" id="navbarUserHome">
+          <div class="d-lg-block sticky-top" id="">
 
             @if ($users->count() != 0)
                 @include('includes.explore_creators')
             @endif
-
+            {{--
             <div class="d-lg-block d-none">
               @include('includes.footer-tiny')
             </div>
-
+            --}}
          </div><!-- navbarUserHome -->
 
         </div><!-- col-md -->

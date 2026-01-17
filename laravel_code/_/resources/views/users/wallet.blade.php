@@ -223,6 +223,27 @@
     color: #fff;
   }
 
+    .transfer_balance {
+      background-color: #fff;
+      color: #000 !important;
+      border-radius: 18px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 600;
+      width: 100%;
+      border: none;
+      margin-top: 16px;
+      transition: all 0.3s;
+  }
+
+  .transfer_balance:hover, .transfer_balance:active {
+    background-color: #f8f9fa !important;
+    transform: translateY(-1px);
+    color: #000 !important;
+  }
   .bank-box-custom {
     background: #0a0a0a;
     border: 1px solid #222;
@@ -359,14 +380,8 @@
                         <strong>{{ $equivalent_money }}</strong>
                       </span>
                     @endif
-
-                    <span class="w-100 d-block mt-2">
-                      @if (auth()->user()->balance != 0.00)
-                      <a href="#" data-toggle="modal" data-target="#modalTransfer" class="btn btn-1 btn-success mb-2 text-decoration-none">
-                        <i class="bi bi-arrow-left-right mr-2"></i> {{ __('general.transfer_balance') }}
-                      </a>
-                      @endif
-                    </span>
+                    
+                    
                   </span>
                 </div>
 
@@ -546,6 +561,11 @@
                 <button class="btn-recharge-custom" id="addFundsBtn" type="submit">
                   {{__('general.add_funds')}}
                 </button>
+                @if (auth()->user()->balance != 0.00)
+                      <a href="#" data-toggle="modal" data-target="#modalTransfer" class="btn btn-1 btn-success mb-2 text-decoration-none e-none transfer_balance">
+                        {{ __('general.transfer_balance') }}
+                      </a>
+                      @endif
               </form>
             </div>
 

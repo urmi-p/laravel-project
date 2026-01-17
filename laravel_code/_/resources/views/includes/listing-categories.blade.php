@@ -14,7 +14,7 @@
         <div class="text-center">
 
             @if (request()->is('category/*'))
-            <a class="btn btn-sm bg-white border mb-2 e-none btn-category" href="{{ url('creators') }}">
+            <a class="btn btn-sm mb-2 e-none btn-category" href="{{ url('creators') }}">
                 <i class="bi bi-arrow-left mr-2"></i> <strong>{{ __('general.view_all') }}</strong>
             </a>
             @endif

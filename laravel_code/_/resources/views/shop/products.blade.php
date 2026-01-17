@@ -13,7 +13,7 @@
 @section('content')
     <section class="section section-sm">
         @include('includes.header-mobile')
-        <div class="container-fluid pt-lg-5 pt-2">
+        <div class="container-fluid">
             <div class="row mb-sm">
                 <div class="col-lg-12 py-5">
                     <h2 class="mb-0 text-break font_weight_700 fs-24 pb-3 main_heading_shop">

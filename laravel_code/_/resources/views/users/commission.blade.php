@@ -20,6 +20,7 @@
         color: #9aa0a6;
         text-transform: uppercase;
         letter-spacing: .5px;
+        display: inline;
     }
 
     .commission-card h2,
