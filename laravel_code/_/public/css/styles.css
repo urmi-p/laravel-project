@@ -2365,6 +2365,11 @@ a.btn-category:focus {
 }
 
 /* dashboard buttons css */
+.no-content{
+    border-bottom: 1px solid #939393;
+    border-top: 1px solid #939393;
+    color: #939393;
+}
 
 .action-count {
     /* 312 */
@@ -3778,6 +3783,7 @@ div.media-post {
 }
 .side_bar_box_shadow {
     box-shadow: 0px 4px 25px 0px #2a864214;
+    /* padding-left: 0px; */
 }
 .subscription_card_main_div {
     display: flex;
@@ -3863,7 +3869,7 @@ div.media-post {
 /* Message */
 .wrapper-msg-inbox {
     box-sizing: border-box;
-
+    
     /* Auto layout */
     display: flex;
     flex-direction: column;

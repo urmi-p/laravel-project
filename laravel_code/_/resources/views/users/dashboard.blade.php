@@ -265,13 +265,13 @@
 								</div>
 							</div>
 						</div>
-                      @endforeach
+                    @endforeach
 
-                      @if ($subscriptions->isEmpty())
-                      <tr>
-                        <td colspan="12" class="text-center">{{ __('users.not_subscribers') }}</td>
-                      </tr>
-                      @endif
+                    @if ($subscriptions->isEmpty())
+                    <div class="d-flex align-items-center fs-14 no-content">
+                      <span class="text-center">{{ __('users.not_subscribers') }}</span>
+                    </div>
+                    @endif
                 </div>
 
 
