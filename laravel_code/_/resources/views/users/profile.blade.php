@@ -506,7 +506,7 @@
 
                             {{-- for test --}}
                             <a href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
-                                data-target="#tipForm" class="pr-btn btn-google btn-profile mr-1 bg_white"
+                                data-target="#tipForm" class="pr-btn btn-profile mr-1 bg_white"
                                 data-cover="{{ Helper::getFile(config('path.cover') . $user->cover) }}"
                                 data-avatar="{{ Helper::getFile(config('path.avatar') . $user->avatar) }}"
                                 data-name="{{ $user->hide_name == 'yes' ? $user->username : $user->name }}"
@@ -549,7 +549,7 @@
                             <button
                                 @guest data-toggle="modal" data-target="#loginFormModal" @else id="sendMessageUser" @endguest
                                 data-url="{{ url('messages/' . $user->id, $user->username) }}"
-                                title="{{ __('general.message') }}" class="pr-btn btn-google btn-profile mr-1 bg_white">
+                                title="{{ __('general.message') }}" class="pr-btn btn-profile mr-1 bg_white">
 
                                 <i class="bi bi-chat mr-1 mr-lg-0"></i> <span>{{ __('general.message') }}</span>
 
@@ -562,7 +562,7 @@
                                 <button
                                     @guest data-toggle="modal" data-target="#loginFormModal" @else id="sendMessageUser" @endguest
                                     data-url="{{ url('messages/' . $user->id, $user->username) }}"
-                                    title="{{ __('general.message') }}" class="pr-btn btn-google btn-profile mr-1 bg_white">
+                                    title="{{ __('general.message') }}" class="pr-btn btn-profile mr-1 bg_white">
 
                                     <i class="bi bi-chat mr-1 mr-lg-0"></i>
                                     <span>{{ __('general.message') }}</span>
@@ -573,7 +573,7 @@
 
                             @if ($user->verified_id == 'yes')
 
-                                <button class="pr-btn btn-profile btn-google bg_white shadow-large" title="{{ __('general.share') }}"
+                                <button class="pr-btn btn-profile bg_white shadow-large" title="{{ __('general.share') }}"
                                     id="dropdownUserShare" role="button" data-toggle="modal"
                                     data-target=".share-modal">
 

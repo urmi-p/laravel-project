@@ -2558,14 +2558,14 @@ html[data-bs-theme="dark"] {
     border-radius: 8px !important;
 }
 
-[data-bs-theme="dark"] .profile-btns a , .profile-btns button{
+[data-bs-theme="dark"] .profile-btns .pr-btn , .profile-btns .pr-btn{
     border-radius: 100px;
     border: 1px solid #E2394C !important;
     color: #000000;
     font-weight: 500;
 
 }
-[data-bs-theme="light"] .profile-btns button,[data-bs-theme="light"] .profile-btns a{
+[data-bs-theme="light"] .profile-btns .pr-btn,[data-bs-theme="light"] .profile-btns .pr-btn{
     border-radius: 100px;
     border: 1px solid #E2394C !important;
     color: #FFF;
@@ -4015,3 +4015,49 @@ div.media-post {
 .startVideoCall .icon-video:before {
     content: "\e8ec" !important;
 }
+
+/* started Subscription price */
+.btn-save-subs{
+    width: 100%;
+    background: #E2394C;
+    border-radius: 8px;
+    padding: 10px;
+    color: #FFF;
+}
+[data-bs-theme="dark"] .input-group-sub .form-control,
+[data-bs-theme="dark"] .input-group-sub .input-sub-text {
+    border: 0;
+    box-shadow: none;
+    background-color: #161616 !important;
+}
+[data-bs-theme="light"] .input-group-sub .form-control,
+[data-bs-theme="light"] .input-group-sub .input-sub-text {
+    border: 0;
+    box-shadow: none;
+    background-color: #FFF !important;
+}
+.input-sub-text {
+    transition: box-shadow 0.15s ease;
+    border: 0;
+    box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.input-sub-text {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    display: flex;
+    margin-bottom: 0;
+    padding: 0.625rem 0.75rem;
+    text-align: center;
+    white-space: nowrap;
+    color: #adb5bd;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    align-items: center;
+}
+.sub-span-text{
+    color: #A3A3A3;
+    font-size: 12px;
+}
+/* ended Subscription price */

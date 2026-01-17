@@ -38,6 +38,7 @@
 
         .my_subscription_card_content .label {
             color: #aaa;
+            font-size: 14px;
         }
 
         .my_subscription_card_content .value {
@@ -112,7 +113,7 @@
                 </div>
                 {{-- @include('includes.cards-settings') --}}
 
-                <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+                <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8">
                             <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{ __('users.my_subscriptions') }}</h2>

@@ -865,6 +865,7 @@ return array(
 	'custom_amount' => 'Custom amount',
 	'total_balance' => 'Total balance',
 	'subscription_price_weekly' => 'Subscription Price (Weekly)',
+	'subscription_price_monthly' => 'Subscription Price (Per month)',
 	'subscription_price_quarterly' => 'Subscription Price (3 months)',
 	'subscription_price_biannually' => 'Subscription Price (6 months)',
 	'subscription_price_yearly' => 'Subscription Price (12 months)',
