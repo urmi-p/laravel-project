@@ -2557,9 +2557,41 @@ html[data-bs-theme="dark"] {
 .myhover_btn a.btn {
     border-radius: 8px !important;
 }
+
+[data-bs-theme="dark"] .profile-btns a , .profile-btns button{
+    border-radius: 100px;
+    border: 1px solid #E2394C !important;
+    color: #000000;
+    font-weight: 500;
+
+}
+[data-bs-theme="light"] .profile-btns button,[data-bs-theme="light"] .profile-btns a{
+    border-radius: 100px;
+    border: 1px solid #E2394C !important;
+    color: #FFF;
+    font-weight: 500;
+    background: #FFF !important;
+
+}
+.pr-btn{
+    padding: 10px 20px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.sub-btn a{
+    border-radius: 100px;
+    border: 1px solid #E2394C !important;
+    color: #FFF;
+    font-weight: 500;
+    background-color: #E2394C;
+
+}
 .nav_profile {
     border: 1px solid #303030;
-    width: 549px;
+    /* width: 549px; */
     margin: auto;
     border-radius: 12px;
     background-color: var(--nav_profile_bg);
@@ -3136,13 +3168,23 @@ div.media-post {
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
 }
+[data-bs-theme="dark"] .card-updates-cover-image{
+    background-color: #303030;
+}
+[data-bs-theme="light"] .card-updates-cover-image{
+    background-color: #FFF;
+    box-shadow: 0 8px 30px rgba(0,0,0,.05)!important;
+}
 .post-options {
     position: absolute;
     top: 15px;
     right: 15px;
 }
-.bg-dark-force {
+[data-bs-theme="dark"] .bg-dark-force {
     background-color: #1a1a1a !important;
+}
+[data-bs-theme="light"] .bg-dark-force {
+    background-color: #FFF !important;
 }
 .text-white-force {
     color: #fff !important;

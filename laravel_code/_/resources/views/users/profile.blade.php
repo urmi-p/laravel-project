@@ -231,7 +231,7 @@
                             </span>
                         </p>
 
-                        <div class="d-flex-user justify-content-center mb-2">
+                        <div class="d-flex justify-content-center mb-2 sub-btn">
 
                             {{-- @if (auth()->check() && auth()->id() == $user->id)
 
@@ -453,7 +453,7 @@
 
                         {{-- new flex start --}}
 
-                        <div class="d-flex-user justify-content-center mb-2">
+                        <div class="d-flex justify-content-center mb-2 profile-btns">
                             @if (auth()->check() &&
                                     auth()->id() != $user->id &&
                                     $totalPosts != 0 &&
@@ -504,7 +504,30 @@
 
                             @endif
 
-                            
+                            {{-- for test --}}
+                            <a href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
+                                data-target="#tipForm" class="pr-btn btn-google btn-profile mr-1 bg_white"
+                                data-cover="{{ Helper::getFile(config('path.cover') . $user->cover) }}"
+                                data-avatar="{{ Helper::getFile(config('path.avatar') . $user->avatar) }}"
+                                data-name="{{ $user->hide_name == 'yes' ? $user->username : $user->name }}"
+                                data-userid="{{ $user->id }}">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    fill="currentColor" class="bi-coin mr-1" viewBox="0 0 16 16">
+
+                                    <path
+                                        d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
+
+                                    <path fill-rule="evenodd"
+                                        d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+
+                                    <path fill-rule="evenodd"
+                                        d="M8 13.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
+
+                                </svg> {{ __('general.tip') }}
+
+                            </a>
+                            {{-- end for test --}}
                             @if (auth()->check() && auth()->id() != $user->id && $totalPosts != 0 && $settings->gifts && $user->verified_id == 'yes')
 
                                 <a href="javascript:void(0);" data-toggle="modal" title="{{ __('general.gifts') }}"
@@ -522,7 +545,16 @@
                                 </a>
 
                             @endif
-                            
+                            {{-- for test --}}
+                            <button
+                                @guest data-toggle="modal" data-target="#loginFormModal" @else id="sendMessageUser" @endguest
+                                data-url="{{ url('messages/' . $user->id, $user->username) }}"
+                                title="{{ __('general.message') }}" class="pr-btn btn-google btn-profile mr-1 bg_white">
+
+                                <i class="bi bi-chat mr-1 mr-lg-0"></i> <span>{{ __('general.message') }}</span>
+
+                            </button>
+                            {{-- end for test --}}
                             @if (
                                 (auth()->guest() && $user->verified_id == 'yes') ||
                                     (auth()->check() && auth()->id() != $user->id && $user->verified_id == 'yes' && $user->allow_dm))
@@ -530,7 +562,7 @@
                                 <button
                                     @guest data-toggle="modal" data-target="#loginFormModal" @else id="sendMessageUser" @endguest
                                     data-url="{{ url('messages/' . $user->id, $user->username) }}"
-                                    title="{{ __('general.message') }}" class="btn btn-google btn-profile mr-1 bg_white">
+                                    title="{{ __('general.message') }}" class="pr-btn btn-google btn-profile mr-1 bg_white">
 
                                     <i class="bi bi-chat mr-1 mr-lg-0"></i>
                                     <span>{{ __('general.message') }}</span>
@@ -541,7 +573,7 @@
 
                             @if ($user->verified_id == 'yes')
 
-                                <button class="btn btn-profile btn-google bg_white shadow-large" title="{{ __('general.share') }}"
+                                <button class="pr-btn btn-profile btn-google bg_white shadow-large" title="{{ __('general.share') }}"
                                     id="dropdownUserShare" role="button" data-toggle="modal"
                                     data-target=".share-modal">
 
@@ -830,7 +862,13 @@
                     <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile">
                         <li class="nav-link nav_link @if (request()->path() == $user->username) active @endif navbar-user-mobile">
                             <a href="{{ request()->path() == $user->username ? 'javascript:;' : url($user->username) }}"
-                                title="{{ __('general.posts') }}"><i class="feather icon-file-text"></i> 
+                                title="{{ __('general.posts') }}">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.418 0H1.58203C0.709805 0 0 0.709805 0 1.58203V2.28516H18V1.58203C18 0.709805 17.2902 0 16.418 0ZM7.09724 8.32187L8.97595 9.96578L11.7208 7.22088C11.9382 7.00351 12.2889 7.01954 12.4879 7.24342L13.8164 8.73798V5.87109H4.18359V10.3392L6.39527 8.32855C6.59355 8.14823 6.89555 8.14539 7.09724 8.32187Z" fill="currentcolor"/>
+                                    <path d="M13.8164 10.3255L12.0711 8.36209L9.37287 11.0604C9.17652 11.2567 8.86162 11.2672 8.65273 11.0844L6.75668 9.42536L4.18359 11.7645V12.6914H13.8164V10.3255Z" fill="currentcolor"/>
+                                    <path d="M0 16.418C0 17.2902 0.709805 18 1.58203 18H16.418C17.2902 18 18 17.2902 18 16.418V3.33984H0V16.418ZM5.15412 15.8416L4.59162 16.4041C4.38567 16.6101 4.05179 16.6101 3.84585 16.4041L3.28335 15.8416C3.0774 15.6357 3.0774 15.3018 3.28335 15.0958C3.48926 14.8899 3.82317 14.8899 4.02912 15.0958L4.21875 15.2855L4.40838 15.0958C4.61429 14.8899 4.94821 14.8899 5.15415 15.0958C5.36006 15.3018 5.36006 15.6357 5.15412 15.8416ZM8.15625 16.2773H7.03125C6.74002 16.2773 6.50391 16.0412 6.50391 15.75C6.50391 15.4588 6.74002 15.2227 7.03125 15.2227H8.15625C8.44748 15.2227 8.68359 15.4588 8.68359 15.75C8.68359 16.0412 8.44748 16.2773 8.15625 16.2773ZM11.5312 16.2773H10.4062C10.115 16.2773 9.87891 16.0412 9.87891 15.75C9.87891 15.4588 10.115 15.2227 10.4062 15.2227H11.5312C11.8225 15.2227 12.0586 15.4588 12.0586 15.75C12.0586 16.0412 11.8225 16.2773 11.5312 16.2773ZM3.12891 5.34375C3.12891 5.05252 3.36502 4.81641 3.65625 4.81641H14.3438C14.635 4.81641 14.8711 5.05252 14.8711 5.34375V13.2188C14.8711 13.51 14.635 13.7461 14.3438 13.7461H3.65625C3.36502 13.7461 3.12891 13.51 3.12891 13.2188V5.34375Z" fill="currentcolor"/>
+                                </svg>
+ 
                                 <small class="sm-btn-size">{{ $totalPosts }}</small>
                                 <span class="d-lg-inline-block d-none">{{ __('general.posts') }}</span>
                             </a>
@@ -844,7 +882,10 @@
                         </li>
                         <li class="nav-link nav_link @if (request()->path() == $user->username . '/videos') active @endif navbar-user-mobile">
                             <a href="{{ request()->path() == $user->username . '/videos' ? 'javascript:;' : url($user->username, 'videos') }}"
-                                title="{{ __('general.video') }}"><i class="feather icon-video"></i> 
+                                title="{{ __('general.video') }}">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                     <path d="M4.0254 2.35929L6.80897 5.14286H1.98754C2.08593 4.55186 2.32154 3.99217 2.67546 3.50874C3.02938 3.02531 3.49174 2.63162 4.0254 2.35929ZM7.76683 1.92857H5.78683C5.66469 1.92857 5.54254 1.935 5.4204 1.94143L8.62183 5.14286H10.9811L7.76683 1.92857ZM12.2154 1.92857H9.59254L12.8068 5.14286H16.0147C15.8641 4.24419 15.3997 3.42805 14.704 2.83952C14.0084 2.25099 13.1266 1.92821 12.2154 1.92857ZM8.02526 12.6167L11.2395 10.8489C11.3403 10.7934 11.4244 10.7118 11.4829 10.6128C11.5415 10.5137 11.5723 10.4008 11.5723 10.2857C11.5723 10.1707 11.5415 10.0577 11.4829 9.95865C11.4244 9.8596 11.3403 9.77807 11.2395 9.72257L8.02526 7.95472C7.92738 7.90087 7.81716 7.87346 7.70547 7.87519C7.59377 7.87692 7.48445 7.90772 7.38829 7.96456C7.29212 8.0214 7.21243 8.10233 7.15706 8.19935C7.10169 8.29637 7.07256 8.40615 7.07254 8.51786V12.0536C7.07256 12.1653 7.10169 12.2751 7.15706 12.3721C7.21243 12.4691 7.29212 12.55 7.38829 12.6069C7.48445 12.6637 7.59377 12.6945 7.70547 12.6962C7.81716 12.698 7.92738 12.6706 8.02526 12.6167ZM16.0725 6.42857V12.2143C16.0717 13.237 15.665 14.2176 14.9419 14.9408C14.2187 15.6639 13.2381 16.0706 12.2154 16.0714H5.78683C4.76411 16.0706 3.78353 15.6639 3.06036 14.9408C2.33719 14.2176 1.93054 13.237 1.92969 12.2143V6.42857H16.0725Z" fill="currentcolor"/>
+                                    </svg>
                                 <small class="sm-btn-size">{{ $totalVideos }}</small>
                                 <span class="d-lg-inline-block d-none">{{ __('general.videos') }}</span>
                             </a>
@@ -882,7 +923,17 @@
                         @if ($settings->shop || (!$settings->shop && $userProducts->count() != 0))
                             <li class="nav-link nav_link @if (request()->path() == $user->username . '/shop') active @endif navbar-user-mobile">
                                 <a href="{{ request()->path() == $user->username . '/shop' ? 'javascript:;' : url($user->username, 'shop') }}"
-                                    title="{{ __('general.shop') }}"><i class="feather icon-shopping-bag"></i> 
+                                    title="{{ __('general.shop') }}">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_6264_1901)">
+                                            <path d="M17.9968 6H0V6.75C0 7.14782 0.158035 7.52936 0.43934 7.81066C0.720644 8.09196 1.10218 8.25 1.5 8.25H3.75C4.14782 8.25 4.52936 8.09196 4.81066 7.81066C5.09196 7.52936 5.25 7.14782 5.25 6.75C5.25 7.14782 5.40804 7.52936 5.68934 7.81066C5.97064 8.09196 6.35218 8.25 6.75 8.25H11.25C11.6478 8.25 12.0294 8.09196 12.3107 7.81066C12.592 7.52936 12.75 7.14782 12.75 6.75C12.75 7.14782 12.908 7.52936 13.1893 7.81066C13.4706 8.09196 13.8522 8.25 14.25 8.25H16.5C16.8978 8.25 17.2794 8.09196 17.5607 7.81066C17.842 7.52936 18 7.14782 18 6.75V6H17.9968ZM17.8157 5.25L16.4711 0.54375C16.4263 0.38708 16.3317 0.249267 16.2016 0.15116C16.0715 0.0530536 15.913 -9.08725e-06 15.75 1.16728e-09H12.3148L13.3648 5.25H17.8157ZM5.68519 1.16728e-09H2.25C2.08705 -9.08725e-06 1.92852 0.0530536 1.79842 0.15116C1.66831 0.249267 1.57369 0.38708 1.52888 0.54375L0.184312 5.25H4.63519L5.68519 1.16728e-09ZM10.7852 1.16728e-09H7.21481L6.16481 5.25H11.8352L10.7852 1.16728e-09ZM14.25 9C13.6962 9.00046 13.1619 8.79587 12.75 8.42569C12.3381 8.79587 11.8038 9.00046 11.25 9H6.75C6.19622 9.00046 5.66187 8.79587 5.25 8.42569C4.83813 8.79587 4.30378 9.00046 3.75 9H1.5C1.24433 8.99946 0.990655 8.95507 0.75 8.86875V17.25C0.75 17.4489 0.829018 17.6397 0.96967 17.7803C1.11032 17.921 1.30109 18 1.5 18H3V11.25C3 11.0511 3.07902 10.8603 3.21967 10.7197C3.36032 10.579 3.55109 10.5 3.75 10.5H7.5C7.69891 10.5 7.88968 10.579 8.03033 10.7197C8.17098 10.8603 8.25 11.0511 8.25 11.25V18H16.5C16.6989 18 16.8897 17.921 17.0303 17.7803C17.171 17.6397 17.25 17.4489 17.25 17.25V8.86875C17.0093 8.95507 16.7557 8.99946 16.5 9H14.25ZM15 13.5C15 13.6989 14.921 13.8897 14.7803 14.0303C14.6397 14.171 14.4489 14.25 14.25 14.25H10.5C10.3011 14.25 10.1103 14.171 9.96967 14.0303C9.82902 13.8897 9.75 13.6989 9.75 13.5V11.25C9.75 11.0511 9.82902 10.8603 9.96967 10.7197C10.1103 10.579 10.3011 10.5 10.5 10.5H14.25C14.4489 10.5 14.6397 10.579 14.7803 10.7197C14.921 10.8603 15 11.0511 15 11.25V13.5Z" fill="currentcolor"/>
+                                            </g>
+                                            <defs>
+                                            <clipPath id="clip0_6264_1901">
+                                            <rect width="18" height="18" fill="currentcolor"/>
+                                            </clipPath>
+                                            </defs>
+                                        </svg>
                                     <small class="sm-btn-size">{{ $user->products()->whereStatus('1')->count() }}</small>
                                     <span class="d-lg-inline-block d-none">{{ __('general.shop') }}</span>
                                 </a>
@@ -1204,7 +1255,7 @@
                             {{-- recent media test --}}
                             {{-- <div class="card recent-media rounded-lg">
 
-                            
+                            <!-- Empty top body (same as original) -->
                             <div class="card-body m-0 pb-0"></div>
 
                             <h6 class="card-title pl-3 mb-0 text-uppercase font-weight-bold">
@@ -1213,7 +1264,8 @@
 
                             <div class="card-body">
                                 <div class="row">
-                                    
+
+                                    <!-- ================= UNLOCKED MEDIA ================= -->
                                     <div class="col-4 p-1">
                                         <a href="#post-101">
                                             <img src="https://picsum.photos/300/300?random=1" class="rounded img-fluid"
@@ -1221,7 +1273,7 @@
                                         </a>
                                     </div>
 
-                                    
+                                    <!-- ================= PPV LOCKED MEDIA ================= -->
                                     <div class="col-4 p-1 position-relative">
 
                                         <a href="javascript:void(0);"
@@ -1250,7 +1302,7 @@
                                         </small>
                                     </div>
 
-                                    
+                                    <!-- ================= SUBSCRIPTION LOCKED MEDIA ================= -->
                                     <div class="col-4 p-1">
                                         <a href="javascript:void(0);" class="locked-thumb d-block rounded"
                                             data-toggle="modal" data-target="#subscriptionForm">
@@ -1364,6 +1416,16 @@
 
                                                         <div class="locked-overlay thumbnail-overlay show">
                                                             <div class="thumbnail-play">
+                                                                {{-- <svg xmlns="http://www.w3.org/2000/svg" width="28"
+                                                                    height="28" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+
+                                                                    <rect x="3" y="11" width="18" height="11"
+                                                                        rx="2" ry="2"></rect>
+                                                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+
+                                                                </svg> --}}
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="30"
                                                                     height="40" viewBox="0 0 90 120" fill="none">
                                                                     <path

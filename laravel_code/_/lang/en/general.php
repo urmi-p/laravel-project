@@ -511,7 +511,7 @@ return array(
 	'info_receive_verification_requests' => 'Sorry, but we are not receiving any new verification requests at this time',
 	'photo' => 'Photo',
 	'free_subscription' => 'Free Subscription',
-	'info_subscription' => 'Set up your subscription',
+	'info_subscription' => 'Set private live stream price and status',
 	'user_gain' => 'You will receive :percentage% for each transaction (Does not include payment processor fees)', // Not remove :percentage
 	'how_much_earn' => 'How much do you earn?',
 	'valid_formats' => 'Valid formats:',
