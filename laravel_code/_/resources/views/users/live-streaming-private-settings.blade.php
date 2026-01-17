@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@section('css')
+<style type="text/css">
+  @media (max-width: 576px) {
+  .form-control::placeholder {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+}
+</style>
+
+@endsection
+
 @section('title') {{__('general.live_stream_private_settings')}} -@endsection
 
 @section('content')
@@ -34,21 +46,21 @@
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="allow_live_streaming_private" value="on" @if (auth()->user()->allow_live_streaming_private == 'on') checked @endif id="allow_live_streaming_private">
-                <label class="custom-control-label switch" for="allow_live_streaming_private">{{ __('general.allow_live_streaming_private') }}</label>
+                <label class="custom-control-label switch fs-16" for="allow_live_streaming_private">{{ __('general.allow_live_streaming_private') }}</label>
               </div>
             </div>
           </div>
 
           <div class="form-group mb-4">
-            <label class="w-100 ">{{__('general.price_live_streaming_private')}} *</label>
+            <label class="w-100 fs-16">{{__('general.price_live_streaming_private')}} *</label>
             <div class="input-group mb-2">
 
-              <div class="input-group-prepend">
+              <!-- <div class="input-group-prepend">
                 <span class="input-group-text">{{$settings->currency_symbol}}</span>
-              </div>
-              <input value="{{ auth()->user()->price_live_streaming_private }}" class="form-control form-control-lg isNumber" required name="price_live_streaming_private" autocomplete="off" placeholder="{{__('general.price_live_streaming_private')}}" type="text">
+              </div> -->
+              <input value="{{ auth()->user()->price_live_streaming_private }}" class="form-control form-control-lg isNumber brd-12" required name="price_live_streaming_private" autocomplete="off" placeholder="{{$settings->currency_symbol}} {{__('general.price_live_streaming_private')}}" type="text">
             </div>
-            <small class="btn-block">
+            <small class="btn-block font_weight_400 fs-16 text-lime">
               * {{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->live_streaming_minimum_price_private) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat($settings->live_streaming_max_price_private) }}
 
               @if ($settings->wallet_format != 'real_money')

@@ -15,7 +15,7 @@
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
-              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi-camera-video mr-2"></i> {{__('general.video_call_settings')}}</h2>
+              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{__('general.video_call_settings')}}</h2>
               <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_video_call_settings')}}</p>
             </div>
           </div>
@@ -34,7 +34,7 @@
           <form method="POST" action="{{ url()->current() }}">
             @csrf
                 <div class="form-group mb-4">
-                  <label class="w-100 ">{{__('general.price_video_call')}} *</label>
+                  <label class="w-100 fs-16">{{__('general.price_video_call')}} *</label>
                   <div class="input-group mb-2">
                     
                     <!-- <div class="input-group-prepend">
@@ -42,7 +42,7 @@
                     </div> -->
                         <input value="{{ auth()->user()->price_video_call }}" class="form-control form-control-lg isNumber brd-12" required name="price_video_call" autocomplete="off" placeholder="{{ $settings->currency_symbol }} {{__('general.price_video_call')}}" type="text">
                     </div>
-                    <small class="btn-block text-lime">
+                    <small class="btn-block text-lime fs-16">
                       * {{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->video_call_min_price) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat($settings->video_call_max_price) }}
 
                       @if ($settings->wallet_format != 'real_money')
@@ -52,8 +52,8 @@
                 </div>
 
                 <div class="form-group mb-4">
-                    <label class="w-100 ">{{__('general.duration')}} </label>
-                <div class="w-100">
+                  <label class="w-100 fs-16">{{__('general.duration')}} </label>
+                  <div class="w-100">
                     <div class="input-group mb-2">
                         <!-- <div class="input-group-prepend">
                         <span class="input-group-text currency_span"><i class="bi-clock"></i></span>
@@ -64,7 +64,7 @@
                         @endfor
                         </select>
                     </div>
-                    <small class="btn-block text-lime">
+                    <small class="btn-block text-lime fs-16">
                       * {{ __('general.minimum') }} 5 - {{ __('general.maximum') }} {{ $settings->video_call_max_duration }}
 
                     </small>

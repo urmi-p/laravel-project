@@ -8,8 +8,39 @@
     padding: 20px;
     gap: 32px;
   }
+  [data-bs-theme="light"] .privacy_card{
+    background: #ffffff;
+  }
   .border_bottom{
     border-bottom: 1px solid #FFFFFF;
+  }
+
+  [data-bs-theme="light"] .border_bottom{
+    border-bottom: 1px solid #5f5f5f;
+  }
+  .main_session_div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .session_left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .badge-active-now {
+    background: transparent;
+    color: #00FF43;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 0;
+  }
+  .close_all_btn{
+    border-radius: 100px;
+  }
+
+  .close_all_btn:hover, .delete_account_btn:hover{
+    background-color: #E2394C;
   }
 </style>
 @endsection
@@ -40,27 +71,32 @@
 
         @include('errors.errors-forms')
 
-        <h5>{{ __('general.login_sessions') }}</h5>
+        <!-- <h5>{{ __('general.login_sessions') }}</h5> -->
         <div class="card mb-4 privacy_card mt-2">
           <div class="card-body">
 
             @if ($agents->count() || $currentSession)
-            <small class="w-100 d-block font_weight_700 fs-24 "><strong>{{ __('general.last_login_record') }}</strong></small>
+            <small class="w-100 d-block font_weight_700 fs-24 pb-3"><strong>{{ __('general.last_login_record') }}</strong></small>
 
             @if ($currentSession)
-            <p class="card-text mb-4 border_bottom pb-3">
-              <i class="bi-{{ $currentSession->device_type == 'phone' ? 'phone' : 'display' }} mr-1"></i>
-              <strong>{{ $currentSession->getNameBrowser() }} {{ __('general.on') }} {{ $currentSession->getNamePlatform() }}{{ $currentSession->device_type == 'phone' ? ', '.$currentSession->device : null }}</strong>
-              <span class="badge badge-pill badge-success">{{ __('general.active_now') }}</span>
-
+            <div class="card-text mb-4 border_bottom pb-3 font_weight_400 fs-14">
+              <div class="main_session_div">
+                <div class="session_left">
+                  <i class="bi-{{ $currentSession->device_type == 'phone' ? 'phone' : 'display' }} mr-1"></i>
+                  {{ $currentSession->getNameBrowser() }} {{ __('general.on') }} {{ $currentSession->getNamePlatform() }}{{ $currentSession->device_type == 'phone' ? ', '.$currentSession->device : null }}
+                  
+                </div>
+                <span class="badge badge-active-now">{{ __('general.active_now') }}</span>
+              </div>
+                
               <small class="w-100 d-block mt-2 mb-0 font_weight_400 fs-14">
                 {{ $currentSession->ip }} - {{ $currentSession->country ? $currentSession->country.' - ' : null }} <span class="timeAgo" data="{{date('c', strtotime($currentSession->updated_at))}}"></span>
               </small>
-            </p>
+            </div>
             @endif
 
             @foreach ($agents as $agent)
-            <p class="card-text mb-1">
+            <p class="card-text mb-1 font_weight_600 fs-18 pt-3">
               <i class="bi-{{ $agent->device_type == 'phone' ? 'phone' : 'display' }} mr-1"></i>
               <strong>{{ $agent->getNameBrowser() }} {{ __('general.on') }} {{ $agent->getNamePlatform() }} {{ $agent->device_type == 'phone' ? ', '.$agent->device : null }}</strong>
             </p>
@@ -69,11 +105,11 @@
             </small>
             @endforeach
 
-            <small class="w-100 d-block my-3 font-weight-bold"> <i class="bi-exclamation-triangle mr-1"></i> {{ __('general.login_session_alert') }}</small>
+            <small class="w-100 d-block my-3 font_weight_400 fs-12"> <i class="bi-exclamation-triangle mr-1"></i> {{ __('general.login_session_alert') }}</small>
 
             @if ($agents->count() != 0)
-            <a href="#" class="btn btn-sm btn-danger mt-2" data-toggle="modal" data-target="#logoutDevices">
-              <i class="bi-x-circle mr-1"></i> {{ __('general.close_all_sessions') }}
+            <a href="#" class="btn btn-sm btn-danger mt-2 close_all_btn" data-toggle="modal" data-target="#logoutDevices">
+              {{ __('general.close_all_sessions') }}
             </a>
 
             @include('includes.modal-logout-devices')
@@ -87,75 +123,75 @@
         </div>
 
         @if (auth()->user()->verified_id == 'yes')
-        <h5>{{ __('general.privacy') }}</h5>
+        <p class="font_weight_700 fs-24">{{ __('general.privacy') }}</p>
 
         <form method="POST" action="{{ url('privacy/security') }}">
 
           @csrf
 
-          <div class="form-group">
+          <div class="form-group font_weight_500">
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="hide_profile" value="yes" @if (auth()->user()->hide_profile == 'yes') checked @endif id="customSwitch1">
-                <label class="custom-control-label switch" for="customSwitch1">{{ __('general.hide_profile') }} {{ __('general.info_hide_profile') }}</label>
+                <label class="custom-control-label switch fs-16" for="customSwitch1">{{ __('general.hide_profile') }} {{ __('general.info_hide_profile') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="hide_last_seen" value="yes" @if (auth()->user()->hide_last_seen == 'yes') checked @endif id="customSwitch2">
-                <label class="custom-control-label switch" for="customSwitch2">{{ __('general.hide_last_seen') }}</label>
+                <label class="custom-control-label switch fs-16" for="customSwitch2">{{ __('general.hide_last_seen') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="active_status_online" value="yes" @if (auth()->user()->active_status_online == 'yes') checked @endif id="customSwitch6">
-                <label class="custom-control-label switch" for="customSwitch6">{{ __('general.active_status_online') }}</label>
+                <label class="custom-control-label switch fs-16" for="customSwitch6">{{ __('general.active_status_online') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="hide_count_subscribers" value="yes" @if (auth()->user()->hide_count_subscribers == 'yes') checked @endif id="customSwitch3">
-                <label class="custom-control-label switch" for="customSwitch3">{{ __('general.hide_count_subscribers') }}</label>
+                <label class="custom-control-label switch fs-16" for="customSwitch3">{{ __('general.hide_count_subscribers') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="hide_my_country" value="yes" @if (auth()->user()->hide_my_country == 'yes') checked @endif id="customSwitch4">
-                <label class="custom-control-label switch" for="customSwitch4">{{ __('general.hide_my_country') }}</label>
+                <label class="custom-control-label switch fs-16" for="customSwitch4">{{ __('general.hide_my_country') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="show_my_birthdate" value="yes" @if (auth()->user()->show_my_birthdate == 'yes') checked @endif id="customSwitch5">
-                <label class="custom-control-label switch" for="customSwitch5">{{ __('general.show_my_birthdate') }}</label>
+                <label class="custom-control-label switch fs-16" for="customSwitch5">{{ __('general.show_my_birthdate') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="posts_privacy" value="1" @if (auth()->user()->posts_privacy) checked @endif id="posts_privacy">
-                <label class="custom-control-label switch" for="posts_privacy">{{ __('general.posts_privacy') }}</label>
+                <label class="custom-control-label switch fs-16" for="posts_privacy">{{ __('general.posts_privacy') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="allow_comments" value="1" @checked(auth()->user()->allow_comments) id="allow_comments">
-                <label class="custom-control-label switch" for="allow_comments">{{ __('general.allow_comments') }}</label>
+                <label class="custom-control-label switch fs-16" for="allow_comments">{{ __('general.allow_comments') }}</label>
               </div>
             </div>
 
-            <h5 class="mt-5">{{ __('general.security') }}</h5>
+            <p class="mt-5 font_weight_700 fs-24">{{ __('general.security') }}</p>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="two_factor_auth" value="yes" @if (auth()->user()->two_factor_auth == 'yes') checked @endif id="customSwitch7">
-                <label class="custom-control-label switch" for="customSwitch7">
+                <label class="custom-control-label switch fs-16 font_weight_500" for="customSwitch7">
                   {{ __('general.two_step_auth') }}
                   <i class="bi bi-info-circle text-muted" data-toggle="tooltip" data-placement="top" title="{{trans('general.two_step_auth_info')}}"></i>
                 </label>
@@ -169,12 +205,12 @@
         @endif
 
         @if (! auth()->user()->isSuperAdmin())
-        <h5 class="mt-5">{{ __('general.delete_account') }}</h5>
-        <small class="w-100">{{ __('general.delete_account_alert') }}</small>
+        <p class="mt-5 font_weight_700 fs-24">{{ __('general.delete_account') }}</p>
+        <small class="w-100 font_weight_400 fs-14">{{ __('general.delete_account_alert') }}</small>
 
-        <div class="w-100 d-block mt-2 mb-5">
-          <a class="btn btn-main btn-danger pr-3 pl-3" href="{{ url('account/delete') }}">
-            <i class="feather icon-user-x mr-1"></i> {{ __('general.delete_account') }}</small>
+        <div class="w-100 d-block mt-3 mb-5 ">
+          <a class="btn btn-main btn-danger pr-3 pl-3 delete_account_btn" href="{{ url('account/delete') }}">
+            {{ __('general.delete_account') }}</small>
           </a>
         </div>
 
@@ -185,7 +221,7 @@
         <div class="w-100 d-block mt-2 mb-5">
           <form action="{{ route('deactivate.account') }}" method="POST">
             @csrf
-            <button class="btn btn-main btn-warning pr-3 pl-3" id="actionDeactivate">
+            <button class="btn btn-main btn-warning pr-3 pl-3 brd-12 delete_account_btn" id="actionDeactivate">
               <i class="bi-person-slash mr-1"></i> {{ __('general.deactivate_your_account') }}</small>
             </button>
           </form>
