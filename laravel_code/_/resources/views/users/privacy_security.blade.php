@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+@section('css')
+<style type="text/css">
+  .privacy_card{
+    background: #303030;
+    border-radius: 15px;
+    padding: 20px;
+    gap: 32px;
+  }
+  .border_bottom{
+    border-bottom: 1px solid #FFFFFF;
+  }
+</style>
+@endsection
 @section('title') {{trans('general.privacy_security')}} -@endsection
 
 @section('content')
@@ -13,8 +26,8 @@
       @include('includes.cards-settings')
 
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-        <h2 class="mb-0 font-montserrat">{{trans('general.privacy_security')}}</h2>
-        <p class="lead text-muted mt-0">{{trans('general.desc_privacy')}}</p>
+        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{trans('general.privacy_security')}}</h2>
+        <p class="lead font_weight_400 fs-14 mt-0">{{trans('general.desc_privacy')}}</p>
         @if (session('status'))
         <div class="alert alert-success">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -28,19 +41,19 @@
         @include('errors.errors-forms')
 
         <h5>{{ __('general.login_sessions') }}</h5>
-        <div class="card mb-4">
+        <div class="card mb-4 privacy_card mt-2">
           <div class="card-body">
 
             @if ($agents->count() || $currentSession)
-            <small class="w-100 d-block"><strong>{{ __('general.last_login_record') }}</strong></small>
+            <small class="w-100 d-block font_weight_700 fs-24 "><strong>{{ __('general.last_login_record') }}</strong></small>
 
             @if ($currentSession)
-            <p class="card-text mb-4 border-bottom pb-2">
+            <p class="card-text mb-4 border_bottom pb-3">
               <i class="bi-{{ $currentSession->device_type == 'phone' ? 'phone' : 'display' }} mr-1"></i>
               <strong>{{ $currentSession->getNameBrowser() }} {{ __('general.on') }} {{ $currentSession->getNamePlatform() }}{{ $currentSession->device_type == 'phone' ? ', '.$currentSession->device : null }}</strong>
               <span class="badge badge-pill badge-success">{{ __('general.active_now') }}</span>
 
-              <small class="text-muted w-100 d-block mt-2 mb-0">
+              <small class="w-100 d-block mt-2 mb-0 font_weight_400 fs-14">
                 {{ $currentSession->ip }} - {{ $currentSession->country ? $currentSession->country.' - ' : null }} <span class="timeAgo" data="{{date('c', strtotime($currentSession->updated_at))}}"></span>
               </small>
             </p>
@@ -51,12 +64,12 @@
               <i class="bi-{{ $agent->device_type == 'phone' ? 'phone' : 'display' }} mr-1"></i>
               <strong>{{ $agent->getNameBrowser() }} {{ __('general.on') }} {{ $agent->getNamePlatform() }} {{ $agent->device_type == 'phone' ? ', '.$agent->device : null }}</strong>
             </p>
-            <small class="text-muted w-100 d-block mb-2">
+            <small class="w-100 d-block mb-2 font_weight_400 fs-14">
               {{ $agent->ip }} - {{ $agent->country ? $agent->country.' - ' : null }} <span class="timeAgo" data="{{date('c', strtotime($agent->updated_at))}}"></span>
             </small>
             @endforeach
 
-            <small class="text-muted w-100 d-block my-3 font-weight-bold"> <i class="bi-exclamation-triangle mr-1"></i> {{ __('general.login_session_alert') }}</small>
+            <small class="w-100 d-block my-3 font-weight-bold"> <i class="bi-exclamation-triangle mr-1"></i> {{ __('general.login_session_alert') }}</small>
 
             @if ($agents->count() != 0)
             <a href="#" class="btn btn-sm btn-danger mt-2" data-toggle="modal" data-target="#logoutDevices">

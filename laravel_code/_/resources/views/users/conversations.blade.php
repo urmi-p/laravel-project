@@ -13,14 +13,26 @@
     margin: 10px 0 0 0;
   }
 
-  .fileuploader-theme-dragdrop .fileuploader-input {
-    background: {
-        {
-        auth()->user()->dark_mode=='on' ? '#222': '#fff'
-      }
-    }
-
-    ;
+  .fileuploader-theme-dragdrop .fileuploader-input p {
+    color: #A4A8AB !important;
+    font-weight:400;
+    font-size: 10px;
+  }
+  .fileuploader-theme-dragdrop .fileuploader-input h3 {
+    color: #FFFFFF !important;
+    font-weight:500;
+    font-size: 10px;
+  }
+  .browse-link {
+    color: #E2394C;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .fileuploader-icon-main{
+    color:#E2394C !important;
+  }
+  [data-bs-theme="dark"] .fileuploader-theme-dragdrop .fileuploader-input{
+      background: #222 !important;
   }
 </style>
 @endsection
@@ -35,7 +47,10 @@
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
         <div class="row mb-sm">
           <div class="col-lg-8">
-            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-send mr-2"></i> {{__('general.conversations')}}</h2>
+            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+              <!-- <i class="feather icon-send mr-2"></i>  -->
+              {{__('general.conversations')}}
+            </h2>
             <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_conversations')}}</p>
           </div>
         </div>
@@ -57,27 +72,27 @@
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="allow_dm" value="1" @checked(auth()->user()->allow_dm) id="allow_dm">
-                <label class="custom-control-label switch" for="allow_dm">{{ __('general.receive_private_messages') }}</label>
+                <label class="custom-control-label switch fs-16 font_weight_500" for="allow_dm">{{ __('general.receive_private_messages') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="send_welcome_message" value="1" @checked(auth()->user()->send_welcome_message) id="send_welcome_message">
-                <label class="custom-control-label switch" for="send_welcome_message">{{ __('general.send_welcome_message_new_subscribers') }}</label>
+                <label class="custom-control-label switch fs-16 font_weight_500" for="send_welcome_message">{{ __('general.send_welcome_message_new_subscribers') }}</label>
               </div>
             </div>
           </div>
 
           <div class="form-group mb-4">
-            <label class="w-100 ">{{__('general.price_welcome_message')}} ({{ __('general.optional') }})</label>
+            <label class="w-100 fs-16 font_weight_500">{{__('general.price_welcome_message')}} ({{ __('general.optional') }})</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <span class="input-group-text">{{$settings->currency_symbol}}</span>
-              </div>
-              <input value="{{ auth()->user()->price_welcome_message }}" class="form-control form-control-lg isNumber" name="price_welcome_message" autocomplete="off" placeholder="0.00" type="text">
+              <!-- <div class="input-group-prepend">
+                <span class="input-group-text currency_span">{{$settings->currency_symbol}}</span>
+              </div> -->
+              <input value="{{ auth()->user()->price_welcome_message }}" class="form-control form-control-lg isNumber brd-12" name="price_welcome_message" autocomplete="off" placeholder="{{$settings->currency_symbol}} 0.00" type="text">
             </div>
-            <small class="btn-block">
+            <small class="btn-block text-lime">
               * {{ __('general.minimum') }} {{ Helper::priceWithoutFormat(config('settings.min_ppv_amount')) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat(config('settings.max_ppv_amount')) }}
 
               @if ($settings->wallet_format != 'real_money')
@@ -87,7 +102,7 @@
           </div>
 
           <div class="form-group">
-            <label class="w-100 ">{{ __('general.add_file') }} ({{ __('general.optional') }})</label>
+            <label class="w-100 font_weight_500 fs-20">{{ __('general.add_file') }} ({{ __('general.optional') }})</label>
 
             @if ($settings->video_encoding == 'on')
             <div class="alert alert-primary m-0 alert-dismissible fade show" role="alert">
@@ -100,8 +115,8 @@
           </div>
 
           <div class="form-group">
-            <label class="w-100">{{__('general.welcome_message_new_subs')}}</label>
-            <textarea name="message" rows="5" cols="40" class="form-control textareaAutoSize">{{auth()->user()->welcome_message_new_subs ? auth()->user()->welcome_message_new_subs : old('welcome_message_new_subs') }}</textarea>
+            <label class="w-100 font_weight_500 fs-20 ">{{__('general.welcome_message_new_subs')}}</label>
+            <textarea name="message" rows="5" cols="40" class="form-control textareaAutoSize brd-8">{{auth()->user()->welcome_message_new_subs ? auth()->user()->welcome_message_new_subs : old('welcome_message_new_subs') }}</textarea>
           </div>
 
           <button class="btn btn-1 btn-success btn-block buttonActionSubmit" type="submit">{{__('general.save_changes')}}</button>

@@ -1484,5 +1484,8 @@ return array(
 	'subscription_price_quarter' => '3 Months',
 	'subscription_price_biannual' => '6 Months',
 	'subscription_price_year' => '12 months',
-	'balance_desc' => 'Balance History'
+	'balance_desc' => 'Balance History',
+	'password' => 'Password',
+	'enter_your_old_password' => 'enter your old password',
+	'enter_your_new_password' => 'enter your new password',
 );
