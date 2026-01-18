@@ -38,15 +38,12 @@ $mediaImageVideo = $response
 if ($getFirstFile && $getFirstFile->type == 'image' && $getFirstFile->img_type != 'gif') {
 $urlMedia = url('media/storage/focus/photo', $getFirstFile->id);
 
-$backgroundPostLocked =
-'background: url(' . $urlMedia . ') no-repeat center center #b9b9b9; background-size: cover;';
-
+$backgroundPostLocked = '--bg: url('.$urlMedia.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
 $textWhite = 'text-white';
 } elseif ($getFirstFile && $getFirstFile->type == 'video' && $getFirstFile->video_poster) {
 $videoPoster = url('media/storage/focus/video', $getFirstFile->video_poster);
 
-$backgroundPostLocked =
-'background: url(' . $videoPoster . ') no-repeat center center #b9b9b9; background-size: cover;';
+$backgroundPostLocked = '--bg: url('.$videoPoster.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
 
 $textWhite = 'text-white';
 } else {
@@ -548,10 +545,10 @@ $nth = 0; // nth foreach nth-child(3n-1)
                 @endif
                 @endauth
 
-                <div class="w-100 mb-3 containerLikeComment">
+                <div class="w-100 mb-3 containerLikeComment ">
 
                     @if (!$settings->hide_total_likes)
-                    <span class="countLikes text-muted dot-item">
+                    <span class="countLikes text-muted dot-item action-pill">
 
                         {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
 
@@ -559,7 +556,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     @endif
 
                     @if ($response->video_views)
-                    <span class="text-muted dot-item">
+                    <span class="text-muted dot-item action-pill">
 
                         <i class="bi-play mr-1"></i> {{ Helper::formatNumber($response->video_views) }}
 
@@ -1421,7 +1418,7 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
 
 
     @if (!$settings->hide_total_likes)
-    <span class="countLikes text-muted dot-item">
+    <span class="countLikes text-muted dot-item action-pill">
 
         {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
 
@@ -1429,7 +1426,7 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
     @endif
 
     @if ($response->video_views)
-    <span class="text-muted dot-item">
+    <span class="text-muted dot-item action-pill"  >
 
         <i class="bi-play mr-1"></i> {{ Helper::formatNumber($response->video_views) }}
 

@@ -136,7 +136,7 @@
 
                 @if ($settings->story_status && auth()->user()->verified_id == 'yes')
                 <a href="{{ url('my/stories') }}"
-                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('my/stories')) active @endif">
+                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('my/stories') || request()->is('create/story')) active @endif">
 
                     <div>
 

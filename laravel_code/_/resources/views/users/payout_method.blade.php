@@ -3,7 +3,12 @@
 @section('title') {{__('users.payout_method')}} -@endsection
 
 @section('content')
-<section class="section section-sm">
+
+<style>
+
+</style>
+
+<section class="section section-sm payout-method">
   {{-- for mobile header --}}
   @include('includes.header-mobile')
   <div class="container-fluid pt-lg-5 pt-2">
@@ -76,20 +81,97 @@
               * {{ __('users.date_paid') }} {{ Helper::formatDate(Helper::paymentDateOfEachMonth($settings->specific_day_payment_withdrawals)) }}
               @endif
             </small>
+            <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
           </span>
         </div>
-
-        @if( $settings->payout_method_paypal == 'on' )
-        <!--============ START PAYPAL ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3">
+        <div class="payment-card-group">
+          @if( $settings->payout_method_paypal == 'on' )
+          <!--============ START PAYPAL ============-->
+          <label class="payment-card @if (auth()->user()->payment_gateway == 'PayPal') checked @endif">
             <input name="payment_gateway" value="PayPal" id="radio1" class="custom-control-input" @if (auth()->user()->payment_gateway == 'PayPal') checked @endif type="radio">
-            <label class="custom-control-label" for="radio1">
-              <span><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'paypal.png' : 'paypal-white.png')}}" width="70" /></span>
-              <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
-            </label>
-          </div>
+            <div class="payment-card-ui">
+              <div class="payment-icon">
+                <img src="{{ url('img/payments', auth()->user()->dark_mode == 'off' ? 'paypal.png' : 'paypal-white.png') }}" alt="PayPal" />
+              </div>
+              <div class="payment-text">Paypal</div>
+            </div>
+          </label>
+          <!--============ END PAYPAL ============-->
+          @endif
+          @if( $settings->payout_method_payoneer == 'on' )
+          <!--============ START PAYONEER ============-->
+          <label class="payment-card">
+            <input name="payment_gateway" value="Payoneer" id="radio2" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Payoneer') checked @endif type="radio">
+            <div class="payment-card-ui">
+              <div class="payment-icon">
+                <img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'payoneer.png' : 'payoneer-white.png')}}" width="110" />
+              </div>
+              <div class="payment-text">Payoneer</div>
+            </div>
+          </label>
+          <!--============ END PAYONEER ============-->
+          @endif
+          @if ($settings->payout_method_zelle == 'on')
+          <!--============ START ZELLE ============-->
+          <label class="payment-card">
+            <input name="payment_gateway" value="Zelle" id="radio3" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Zelle') checked @endif type="radio">
+            <div class="payment-card-ui">
+              <div class="payment-icon"><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'zelle.png' : 'zelle-white.png')}}" width="50" />
+              </div>
+              <div class="payment-text">Zelle</div>
+            </div>
+          </label>
+          <!--============ END ZELLE ============-->
+          @endif
+          @if ($settings->payout_method_western_union == 'on')
+          <!--============ START WESTERN ============-->
+          <label class="payment-card">
 
+            <input name="payment_gateway" value="Western" id="radioWestern" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Western Union') checked @endif type="radio">
+            <div class="payment-card-ui">
+              <div class="payment-icon"><img src="{{url('img/payments/western.png')}}" width="150" />
+              </div>
+              <div class="payment-text">Western</div>
+            </div>
+          </label>
+          <!--============ END WESTERN ============-->
+          @endif
+          @if ($settings->payout_method_crypto == 'on')
+          <!--============ START BITCOIN ============-->
+          <label class="payment-card">
+            <input name="payment_gateway" value="Bitcoin" id="BitcoinInput" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Bitcoin') checked @endif type="radio">
+            <div class="payment-card-ui">
+              <div class="payment-icon"><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'bitcoin.png' : 'bitcoin-white.png')}}" width="100" /> </div>
+              <div class="payment-text">Bitcoin</div>
+            </div>
+          </label> <!--============ END BITCOIN ============-->
+          @endif
+          @if ($settings->payout_method_mercadopago == 'on')
+          <!--============ START Mercadopago ============-->
+          <label class="payment-card">
+            <input name="payment_gateway" value="Mercadopago" id="radioMP" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Mercado Pago') checked @endif type="radio">
+            <div class="payment-card-ui">
+              <div class="payment-icon"><img src="{{ auth()->user()->dark_mode == 'off' ? url('img/payments/mercadopago.png') : url('img/payments/mercadopago-white.png') }}" width="150" /> </div>
+              <div class="payment-text">Mercadopago</div>
+            </div>
+          </label>
+          <!--============ END Mercadopago ============-->
+          @endif
+          @if( $settings->payout_method_bank == 'on' )
+          <!--============ START BANK TRANSFER ============-->
+          <label class="payment-card">
+            <input name="payment_gateway" value="Bank" id="radio4" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Bank') checked @endif type="radio">
+            <div class="payment-card-ui">
+              <div class="payment-icon"><i class="fa fa-university mr-1 icon-sm-radio"></i></div>
+              <div class="payment-text"> {{__('users.bank_transfer')}}</div>
+            </div>
+          </label>
+          <!--============ END BANK TRANSFER ============-->
+          @endif
+        </div>
+        <div class="payment-forms">
+          <!--============ START PAYPAL ============-->
+          @if( $settings->payout_method_paypal == 'on' )
           <form method="POST" action="{{ url('settings/payout/method/paypal') }}" id="PayPal" @if (auth()->user()->payment_gateway != 'PayPal') class="display-none" @endif>
             @csrf
 
@@ -112,21 +194,10 @@
             </div>
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
-        </div>
-        <!--============ END PAYPAL ============-->
-        @endif
-
-        @if( $settings->payout_method_payoneer == 'on' )
-        <!--============ START PAYONEER ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3 mt-3">
-            <input name="payment_gateway" value="Payoneer" id="radio2" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Payoneer') checked @endif type="radio">
-            <label class="custom-control-label" for="radio2">
-              <span><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'payoneer.png' : 'payoneer-white.png')}}" width="110" /></span>
-              <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
-            </label>
-          </div>
-
+          @endif
+          <!--============ END PAYPAL ============-->
+          <!--============ START PAYONEER ============-->
+          @if( $settings->payout_method_payoneer == 'on' )
           <form method="POST" action="{{ url('settings/payout/method/payoneer') }}" id="Payoneer" @if (auth()->user()->payment_gateway != 'Payoneer') class="display-none" @endif>
             @csrf
 
@@ -149,21 +220,10 @@
             </div>
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
-        </div>
-        <!--============ END PAYONEER ============-->
-        @endif
-
-        @if ($settings->payout_method_zelle == 'on')
-        <!--============ START ZELLE ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3 mt-3">
-            <input name="payment_gateway" value="Zelle" id="radio3" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Zelle') checked @endif type="radio">
-            <label class="custom-control-label" for="radio3">
-              <span><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'zelle.png' : 'zelle-white.png')}}" width="50" /></span>
-              <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
-            </label>
-          </div>
-
+          @endif
+          <!--============ END PAYONEER ============-->
+          <!--============ START ZELLE ============-->
+          @if ($settings->payout_method_zelle == 'on')
           <form method="POST" action="{{ url('settings/payout/method/zelle') }}" id="Zelle" @if (auth()->user()->payment_gateway != 'Zelle') class="display-none" @endif>
             @csrf
 
@@ -186,21 +246,10 @@
             </div>
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
-        </div>
-        <!--============ END ZELLE ============-->
-        @endif
-
-        @if ($settings->payout_method_western_union == 'on')
-        <!--============ START WESTERN ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3 mt-3">
-            <input name="payment_gateway" value="Western" id="radioWestern" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Western Union') checked @endif type="radio">
-            <label class="custom-control-label" for="radioWestern">
-              <span><img src="{{url('img/payments/western.png')}}" width="150" /></span>
-              <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
-            </label>
-          </div>
-
+          @endif
+          <!--============ END ZELLE ============-->
+          <!--============ START WESTERN ============-->
+          @if ($settings->payout_method_western_union == 'on')
           <form method="POST" action="{{ url('settings/payout/method/western') }}" id="Western" @if (auth()->user()->payment_gateway != 'Western Union') class="display-none" @endif>
             @csrf
 
@@ -223,21 +272,10 @@
             </div>
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
-        </div>
-        <!--============ END WESTERN ============-->
-        @endif
-
-        @if ($settings->payout_method_crypto == 'on')
-        <!--============ START BITCOIN ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3 mt-3">
-            <input name="payment_gateway" value="Bitcoin" id="BitcoinInput" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Bitcoin') checked @endif type="radio">
-            <label class="custom-control-label" for="BitcoinInput">
-              <span><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'bitcoin.png' : 'bitcoin-white.png')}}" width="100" /></span>
-              <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
-            </label>
-          </div>
-
+          @endif
+          <!--============ END WESTERN ============-->
+          <!--============ START BITCOIN ============-->
+          @if ($settings->payout_method_crypto == 'on')
           <form method="POST" action="{{ url('settings/payout/method/bitcoin') }}" id="Bitcoin" @if (auth()->user()->payment_gateway != 'Bitcoin') class="display-none" @endif>
             @csrf
 
@@ -251,21 +289,10 @@
             </div>
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
-        </div>
-        <!--============ END BITCOIN ============-->
-        @endif
-
-        @if ($settings->payout_method_mercadopago == 'on')
-        <!--============ START WESTERN ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3 mt-3">
-            <input name="payment_gateway" value="Mercadopago" id="radioMP" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Mercado Pago') checked @endif type="radio">
-            <label class="custom-control-label" for="radioMP">
-              <span><img src="{{ auth()->user()->dark_mode == 'off' ? url('img/payments/mercadopago.png') : url('img/payments/mercadopago-white.png') }}" width="150" /></span>
-              <small class="w-100 d-block">* {{__('general.only_payments_for_argentina')}}</small>
-            </label>
-          </div>
-
+          @endif
+          <!--============ END BITCOIN ============-->
+          <!--============ START mercadopago ============-->
+          @if ($settings->payout_method_mercadopago == 'on')
           <form method="POST" action="{{ url('settings/payout/method/mercadopago') }}" id="MercadoPago" @if (auth()->user()->payment_gateway != 'Mercado Pago') class="display-none" @endif>
             @csrf
 
@@ -288,21 +315,10 @@
             </div>
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
-        </div>
-        <!--============ END WESTERN ============-->
-        @endif
-
-        @if( $settings->payout_method_bank == 'on' )
-        <!--============ START BANK TRANSFER ============-->
-        <div class="p-5 border">
-          <div class="custom-control custom-radio mb-3 mt-3">
-            <input name="payment_gateway" value="Bank" id="radio4" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Bank') checked @endif type="radio">
-            <label class="custom-control-label" for="radio4">
-              <span><strong><i class="fa fa-university mr-1 icon-sm-radio"></i> {{__('users.bank_transfer')}}</strong></span>
-              <small class="w-100 d-block">* {{__('general.processor_fees_may_apply')}}</small>
-            </label>
-          </div>
-
+          @endif
+          <!--============ END mercadopago ============-->
+          <!--============ START BANK TRANSFER ============-->
+          @if( $settings->payout_method_bank == 'on' )
           <form method="POST" action="{{ url('settings/payout/method/bank') }}" id="Bank" @if (auth()->user()->payment_gateway != 'Bank') class="display-none" @endif>
 
             @csrf
@@ -317,9 +333,17 @@
 
             <button class="btn btn-1 btn-success btn-block" type="submit">{{__('general.save_payout_method')}}</button>
           </form>
+          @endif
+          <!--============ END BANK TRANSFER ============-->
         </div>
-        <!--============ END BANK TRANSFER ============-->
-        @endif
+
+
+
+
+
+
+
+
 
         @endif
 
@@ -357,9 +381,12 @@
 @section('javascript')
 <script type="text/javascript">
   $('input[name=payment_gateway]').on('click', function() {
-
+    $('.payment-card').removeClass('checked');
+    // add to current card
+    $(this).closest('.payment-card').addClass('checked');
     if ($(this).val() == 'PayPal') {
       $('#PayPal').slideDown();
+      
     } else {
       $('#PayPal').slideUp();
     }

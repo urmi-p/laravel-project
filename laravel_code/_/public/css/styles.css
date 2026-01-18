@@ -230,9 +230,54 @@ img.imageFull {
     top: 0;
     background: #252525a6;
 }
-.content-locked {
+/*.content-locked {
     background: #ececec;
+}*/
+
+.content-locked {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  min-height: 300px;
 }
+
+/* TRUE blur layer */
+.content-locked::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+
+  filter: blur(22px);
+  transform: scale(1.25);
+
+  z-index: 1;
+}
+
+/* Dark vignette */
+.content-locked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,0,0,0.15) 0%,
+      rgba(0,0,0,0.55) 45%,
+      rgba(0,0,0,0.9) 100%
+    );
+  z-index: 2;
+}
+
+/* Foreground */
+.content-locked > * {
+  position: relative;
+  z-index: 3;
+}
+
 .showBanner {
     position: fixed;
     z-index: 9999;
@@ -1134,9 +1179,10 @@ a.link-border {
     box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
 }
 .form-control {
-    border: 0;
+    border: 1px solid #222;
     height: calc(2.75rem + 2px);
     padding: 0.625rem 0.75rem;
+    border-radius: 12px;
 }
 .custom-control-input:not(:disabled):focus ~ .custom-control-label::before {
     box-shadow: none;
@@ -1188,6 +1234,12 @@ a.link-border {
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075),
         0 0 0 0 rgba(50, 151, 211, 0.5);
 }
+
+.select2-container--open .select2-selection--multiple,.select2-container--focus .select2-selection--multiple{
+    border-color: #f1415d  !important;
+    border-radius: 12px;;
+}
+
 .btn-facebook,
 .btn-facebook:hover,
 .btn-facebook:active,
@@ -4103,3 +4155,127 @@ div.media-post {
 #navbarFilters a, #navbarUserHome a{
     padding: 5px 12px;
 }
+
+/* Payout Method */
+  .payout-method .payment-card-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .payout-method .payment-card-wrapper {
+    position: relative;
+  }
+
+  /* Hide radio */
+  .payout-method .payment-radio {
+    position: absolute;
+    opacity: 0;
+  }
+
+  /* Card UI */
+  .payout-method .payment-card {
+    background: #ffffff;
+    border-radius: 20px;
+    height: 120px;
+    padding: 26px 28px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+
+    cursor: pointer;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    transition: all 0.25s ease;
+  }
+
+  .payout-method .payment-card.checked {
+    background: #e85a6a;
+  }
+
+  /* Rectangle 34625336 */
+
+
+  .payout-method .payment-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f3f4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .payout-method .payment-card.checked .payment-icon {
+    background: #F4F3FF;
+  }
+
+  .payout-method .payment-icon img {
+    width: 26px;
+    background: #E2394c;
+  }
+
+   .payout-method .payment-icon .icon-sm-radio {
+    
+    background:  #E2394c;
+  }
+
+
+  .payout-method .payment-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 125%;
+    /* identical to box height, or 20px */
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+
+
+  }
+
+
+  .payout-method .payment-card.checked .payment-text {
+
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 125%;
+    /* identical to box height, or 20px */
+    display: flex;
+    align-items: center;
+
+    color: #FFFFFF;
+
+
+  }
+
+  /* SELECTED */
+  .payout-method .payment-radio:checked+.payment-card {
+    background: #e85a6a;
+  }
+
+  .payout-method .payment-radio:checked+.payment-card .payment-text {
+    color: #fff;
+  }
+
+  .payout-method .payment-radio:checked+.payment-card .payment-icon {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  /* Hover */
+  .payout-method .payment-card:hover {
+    transform: translateY(-4px);
+  }
+
+   .payout-method .text-success{
+    color: #E2394c!important
+   }
+
+  @media (max-width: 991px) {
+    .payout-method .payment-card-group {
+      grid-template-columns: 1fr;
+    }
+  }
+  /* Payout Method */

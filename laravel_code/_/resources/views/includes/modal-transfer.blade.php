@@ -16,7 +16,7 @@
 								</div>
 
 							<div class="text-center">
-								<button type="button" class="btn e-none mt-4" data-dismiss="modal">{{__('admin.cancel')}}</button>
+								<button type="button" class="btn btn-outline-danger w-50 mt-4 mr-2 tip_modal_cancel mt-4" data-dismiss="modal">{{__('admin.cancel')}}</button>
 								<button type="submit" class="btn btn-primary mt-4 submitForm">
 									{{__('general.transfer')}}
 								</button>
