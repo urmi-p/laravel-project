@@ -28,14 +28,14 @@
 
                                         </div>
 
-                                        <div class="d-flex justify-content-between py-2 ">
-                                            <span>
+                                        <div class="d-flex align-items-center justify-content-between py-2">
+                                            <span class="my_flash_main">
 
                                                 My Flash
                                             </span>
-
-                                            <strong class="name text-white" style="text-shadow: none;"><i
-                                                    class="bi-plus bg-primary" style="border-radius: 50%"></i></strong>
+                                            <span class="plus_icon">
+                                                <i class="bi-plus bg-primary" style="border-radius: 50%"></i>
+                                            </span>
 
                                         </div>
 
@@ -84,7 +84,7 @@
                                 <img lazy="eager" class="dashboard_other_story" width="100"
                                     src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
                             </div>
-                             {{-- end dummy stories --}}
+                            {{-- end dummy stories --}}
                         </div>
                     @endif
 
