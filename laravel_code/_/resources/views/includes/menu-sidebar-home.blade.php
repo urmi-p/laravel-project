@@ -127,6 +127,15 @@
 		</a>
 	</li>
 	<li class="sidebar_li">
+		<a href="{{ url('my/balance') }}"
+			class="@if (request()->is('my/balance')) active @endif">
+			<div>
+				<i class="bi bi-credit-card mr-2"></i>
+				<span>{{ __('general.balance') }}</span>
+			</div>
+		</a>
+	</li>
+	<li class="sidebar_li">
 		<a href="{{ url('my/bookmarks') }}" @if (request()->is('my/bookmarks')) class="active disabled" @endif>
 			<i class="bi-bookmark"></i>
 			<span class="ml-2">{{ __('general.bookmarks') }}</span>
