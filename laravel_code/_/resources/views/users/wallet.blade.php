@@ -3,17 +3,19 @@
 @section('css')
 <style type="text/css">
   .payment-card-custom {
-    background-color: #000;
-    color: #fff;
+    padding: 12px;
     border-radius: 24px;
     margin-bottom: 30px;
     transition: all 0.3s ease;
   }
   
+  [data-bs-theme="dark"] .payment-card-custom {
+    background-color: #000;
+    color: #fff;
+  }
   [data-bs-theme="light"] .payment-card-custom {
-    background-color: #f8f9fa !important;
     color: #111 !important;
-    border: 1px solid #e9ecef;
+    /* border: 1px solid #e9ecef; */
   }
 
   .payment-label {

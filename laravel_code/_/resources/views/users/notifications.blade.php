@@ -344,11 +344,13 @@
 				</div>
 				@endif
 				@if ($notifications->isEmpty())
-				<div class="my-5 text-center">
-					<span class="btn-block mb-3">
-						<i class="far fa-bell-slash ico-no-result"></i>
-					</span>
-					<h4 class="font-weight-light">{{__('general.no_notifications')}}</h4>
+				<div class="my-5 text-center no-notification-main">
+					<div class="notify-sub py-6">
+						<span class="btn-block mb-3">
+							<i class="far fa-bell-slash ico-no-result"></i>
+						</span>
+						<h4 class="font-weight-light">{{__('general.no_notifications')}}</h4>
+					</div>
 				</div>
 				@endif
 

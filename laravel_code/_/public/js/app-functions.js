@@ -3773,13 +3773,13 @@
 		e.preventDefault();
 
 		var element = $(this);
-		var nextSpan = element.next('span');
+		var loginSpan = element.prev('span');
 
 		var notAccount = element.attr('data-not-account');
 
 		var alreadyAccount = element.attr('data-already-account');
-		var signUp = nextSpan.attr('data-text-signup');
-		var signIn = nextSpan.attr('data-text-signin');
+		var signUp = element.attr('data-text-signup');
+		var signIn = element.attr('data-text-signin');
 
 		var textLogin = element.attr('data-text-login');
 
@@ -3800,9 +3800,8 @@
 
 
 		if (element.hasClass('register')) {
-			console.log('register>>>>>');
-			element.html(alreadyAccount);
-			nextSpan.html(signIn)
+			loginSpan.html(alreadyAccount);
+			element.html(signIn)
 			$('#btnLoginRegister').html('<i></i> ' + textRegister);
 
 			$('#full_name, #email, #agree_gdpr').show();
@@ -3818,9 +3817,8 @@
 
 
 		} else {
-			console.log('not account>>>>>');
-			element.html(notAccount);
-			nextSpan.html(signUp)
+			loginSpan.html(notAccount);
+			element.html(signUp)
 			$('#btnLoginRegister').html('<i></i> ' + textLogin);
 
 			$('#full_name, #email, #agree_gdpr').hide();

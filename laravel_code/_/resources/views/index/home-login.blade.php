@@ -193,12 +193,10 @@
 
                 <div class="col-12 text-center">
 
-                  <a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}">
 
-                    <span>{{__('auth.not_have_account')}}</span>
+                  <span id="loginSpan" >{{__('auth.not_have_account')}}</span>
 
-                  </a>
-                  <span id="sign_up_span" class="text-red text-capitalize" data-text-signin="{{__('auth.sign_in')}}" data-text-signup="{{__('auth.register')}}">{{__('auth.register')}}</span>
+                  <a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}"  class="text-red text-capitalize" data-text-signin="{{__('auth.sign_in')}}" data-text-signup="{{__('auth.register')}}">{{__('auth.register')}}</a>
 
                 </div>
 

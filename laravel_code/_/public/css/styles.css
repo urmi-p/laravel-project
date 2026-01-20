@@ -345,6 +345,25 @@ a.active > i.fas.fa-heart {
     border-bottom: 1px solid #dadada;
     font-size: 11px;
 }
+[data-bs-theme="dark"] .no-notification-main{
+    background-color: #FFFFFF1A;
+    padding: 15px;
+}
+[data-bs-theme="dark"] .notify-sub{
+    background-color: #303030;
+    padding: 25px;
+    border-radius: 8px;
+}
+[data-bs-theme="light"] .no-notification-main{
+    background-color: #7973731a;
+    padding: 15px;
+}
+[data-bs-theme="light"] .notify-sub{
+    background-color: #dddada;
+    padding: 25px;
+    border-radius: 8px;
+}
+
 #noti_notifications,
 #noti_msg {
     display: none;
@@ -1189,7 +1208,8 @@ a.link-border {
     border: 1px solid #222;
     height: calc(2.75rem + 2px);
     padding: 0.625rem 0.75rem;
-    border-radius: 12px;
+    border-radius: 8px;
+    background-color: #FFFFFF1A!important;
 }
 .custom-control-input:not(:disabled):focus ~ .custom-control-label::before {
     box-shadow: none;
@@ -1916,7 +1936,7 @@ a:hover.button-avatar-upload {
     border-radius: 4px;
 }
 .text-red {
-    color: #e2394c;
+    color: #e2394c !important;
 }
 /* kajal css */
 
@@ -2838,14 +2858,11 @@ html[data-bs-theme="dark"] {
 }
 /* Label */
 
-#toggleLogin {
+#loginSpan {
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
-    /* identical to box height, or 125% */
-    /* white */
-    color: #ffffff;
 }
 /*
 .right-side{
@@ -3471,7 +3488,7 @@ div.media-post {
 
 /* notification page css started  */
 [data-bs-theme="dark"] .lead {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     color: #ffffff;
 }
@@ -3674,7 +3691,7 @@ div.media-post {
         display: flex;
         align-items: center;
 
-        color: #efefef;
+        /* color: #efefef; */
     }
     .ref-card-body h5 {
         /* Amount */
@@ -3689,7 +3706,7 @@ div.media-post {
         /* identical to box height, or 38px */
         display: flex;
         align-items: center;
-        color: #ffffff;
+        /* color: #ffffff; */
     }
 
     /* KPI cards ONLY — balance card untouched */
@@ -3742,7 +3759,7 @@ div.media-post {
 
 .color-link {
     font-size: 9px;
-    border-radius: 10px;
+    border-radius: 30px;
     padding: 8px 10px;
     margin-top: 12px;
 }

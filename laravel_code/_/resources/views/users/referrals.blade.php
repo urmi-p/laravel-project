@@ -96,6 +96,8 @@
 	}
 </style>
 <section class="section section-sm">
+  {{-- for mobile header --}}
+  @include('includes.header-mobile')
 	<div class="container-fluid pt-lg-5 pt-2">
 		<div class="row mb-sm">
 			@include('includes.cards-settings')
@@ -105,7 +107,7 @@
 				</h2>
 
 				@if ($settings->referral_system == 'on')
-				<p class="lead text-muted mt-0">
+				<p class="lead  mt-1">
 					{{__('general.referrals_welcome_desc', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
 				</p>
 
@@ -146,9 +148,9 @@
 									<circle cx="22" cy="19" r="2" stroke="#D96E30" stroke-width="0.75" />
 									<ellipse cx="22" cy="24.5" rx="3.5" ry="2" stroke="#D96E30" stroke-width="0.75" />
 								</svg>
-								<div>
-									<small>{{ __('general.total_registered_users') }}</small>
-									<h5 class="">
+								<div class="mt-2 d-flex flex-column gap-4">
+									<span class="mt-2">{{ __('general.total_registered_users') }}</span>
+									<h5 class="mt-2">
 										{{ number_format(auth()->user()->referrals()->count()) }}
 									</h5>
 								</div>
@@ -165,9 +167,9 @@
 									<circle cx="22" cy="19.4546" r="2" stroke="#17971E" stroke-width="0.75" />
 									<ellipse cx="22" cy="24.9546" rx="3.5" ry="2" stroke="#17971E" stroke-width="0.75" />
 								</svg>
-								<div>
-									<small>{{ __('general.total_transactions') }}</small>
-									<h5>{{ number_format(auth()->user()->referralTransactions()->count()) }}</h5>
+								<div class="mt-2 d-flex flex-column gap-4">
+									<span class="mt-2">{{ __('general.total_transactions') }}</span>
+									<h5 class="mt-2">{{ number_format(auth()->user()->referralTransactions()->count()) }}</h5>
 								</div>
 							</div>
 						</div><!-- card 1 -->
@@ -182,15 +184,15 @@
 									<circle cx="22" cy="19" r="2" stroke="#D92D20" stroke-width="0.75" />
 									<ellipse cx="22" cy="24.5" rx="3.5" ry="2" stroke="#D92D20" stroke-width="0.75" />
 								</svg>
-								<div>
-									<small>{{ __('general.earnings_total') }}</small>
-									<h5> {{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</h5>
+								<div class="mt-2 d-flex flex-column gap-4">
+									<span class="mt-2">{{ __('general.earnings_total') }}</span>
+									<h5 class="mt-2"> {{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</h5>
 								</div>
 							</div>
 						</div><!-- card 1 -->
 					</div><!-- col-lg-4 -->
 				</div><!-- col-lg-4 -->
-				<div class="ref-card">
+				<div class="ref-card mt-3">
 					<div class="">
 						<div class="d-flex justify-content-between v-div">
 							<h4>

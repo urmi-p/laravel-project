@@ -1060,7 +1060,7 @@ align-items: center;
 
 .custom-select:focus {
 
-  border-color: #f1415d !important;
+  border-color: #222 !important;
 
 
 

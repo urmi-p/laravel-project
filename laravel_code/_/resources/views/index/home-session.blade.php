@@ -158,32 +158,33 @@
                         </div>
                     @else
                         <div class="grid-updates position-relative" id="updatesPaginator"></div>
-                        <div class="my-5 text-center no-updates">
+                        <div class="my-5 text-center main-no-updates">
+                            <div class="sub-no-updates no-updates">
+                                <span class="btn-block mb-3">
 
-                            <span class="btn-block mb-3">
+                                    <i class="fa fa-photo-video ico-no-result"></i>
 
-                                <i class="fa fa-photo-video ico-no-result"></i>
+                                </span>
 
-                            </span>
+                                <h4 class="font-weight-light">{{ __('general.no_posts_posted') }}</h4>
 
-                            <h4 class="font-weight-light">{{ __('general.no_posts_posted') }}</h4>
+                                @if (!$settings->disable_creators_section)
+                                    <a href="{{ url('creators') }}" class="btn btn-primary mb-3 mt-2 px-5 d-lg-none">
 
-                            @if (!$settings->disable_creators_section)
-                                <a href="{{ url('creators') }}" class="btn btn-primary mb-3 mt-2 px-5 d-lg-none">
+                                        {{ __('general.explore_creators') }}
 
-                                    {{ __('general.explore_creators') }}
+                                    </a>
+                                @endif
 
-                                </a>
-                            @endif
+                                @if (!$settings->disable_explore_section)
+                                    <a href="{{ url('explore') }}" class="btn btn-primary px-5 d-lg-none">
 
-                            @if (!$settings->disable_explore_section)
-                                <a href="{{ url('explore') }}" class="btn btn-primary px-5 d-lg-none">
+                                        {{ __('general.explore_posts') }}
 
-                                    {{ __('general.explore_posts') }}
+                                    </a>
+                                @endif
 
-                                </a>
-                            @endif
-
+                            </div>
                         </div>
                     @endif
 
