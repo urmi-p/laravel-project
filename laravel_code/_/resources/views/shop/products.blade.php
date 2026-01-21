@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('css')
   <style type="text/css">
-    [data-bs-theme="light"] .main_heading_shop {
+    [data-bs-theme="dark"] .main_heading_shop {
       color: #FFFFFF !important;
     }
   </style>
