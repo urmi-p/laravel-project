@@ -345,20 +345,20 @@ a.active > i.fas.fa-heart {
     border-bottom: 1px solid #dadada;
     font-size: 11px;
 }
-[data-bs-theme="dark"] .no-notification-main{
-    background-color: #FFFFFF1A;
+[data-bs-theme="dark"] .no-notification-main {
+    background-color: #ffffff1a;
     padding: 15px;
 }
-[data-bs-theme="dark"] .notify-sub{
+[data-bs-theme="dark"] .notify-sub {
     background-color: #303030;
     padding: 25px;
     border-radius: 8px;
 }
-[data-bs-theme="light"] .no-notification-main{
+[data-bs-theme="light"] .no-notification-main {
     background-color: #7973731a;
     padding: 15px;
 }
-[data-bs-theme="light"] .notify-sub{
+[data-bs-theme="light"] .notify-sub {
     background-color: #dddada;
     padding: 25px;
     border-radius: 8px;
@@ -1064,7 +1064,7 @@ a.link-border {
 /* background: radial-gradient(50% 50% at 85% 0%, rgba(226, 57, 76, 0.35) 0%, rgba(226, 57, 76, 0.15) 30%, rgba(0, 0, 0, 0) 50%), #000; */
 
 .section-sm {
-    padding: 78px 10px;
+    padding: 78px 21px;
 }
 .section-sm.creator {
     padding: 78px 20px;
@@ -1209,7 +1209,7 @@ a.link-border {
     height: calc(2.75rem + 2px);
     padding: 0.625rem 0.75rem;
     border-radius: 8px;
-    background-color: #FFFFFF1A!important;
+    background-color: #ffffff1a !important;
 }
 .custom-control-input:not(:disabled):focus ~ .custom-control-label::before {
     box-shadow: none;
@@ -2762,7 +2762,7 @@ html[data-bs-theme="dark"] {
     justify-content: center;
     align-items: center;
 }
-.item-add-story:hover{
+.item-add-story:hover {
     text-decoration: none !important;
 }
 @media (max-width: 991px) {
@@ -3062,7 +3062,13 @@ html[data-bs-theme="dark"] {
         align-items: flex-start;
         padding: 48px 350px;
         gap: 10px;
+    }
+    [data-bs-theme="dark"] .my-card-not-card-added {
         background: #191919;
+    }
+
+    [data-bs-theme="light"] .my-card-not-card-added {
+        background: #f6f6f6;
     }
     .my-card-not-card-added p.card-text {
         /* Text */
@@ -3093,14 +3099,10 @@ html[data-bs-theme="dark"] {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 0px 64px;
+        padding: 0.5rem 2.4rem;
         gap: 16px;
 
-        width: 161px;
-        height: 48px;
-
         background: #ffffff;
-
         border: 1px solid #dce4e8;
         border-radius: 100px;
         color: #000000 !important;
@@ -3362,12 +3364,19 @@ div.media-post {
         /* Auto layout */
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         padding: 16px;
         gap: 10px;
+    }
 
+    [data-bs-theme="dark"] .my-card-not-card-added {
         background: #191919;
     }
+
+    [data-bs-theme="light"] .my-card-not-card-added {
+        background: #f6f6f6;
+    }
+
     /* Text */
     .my-card-not-card-added p.card-text {
         font-style: normal;
@@ -3397,11 +3406,10 @@ div.media-post {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 0px 64px;
+        padding: 0.5rem 2.4rem;
         gap: 16px;
 
-        width: 161px;
-        height: 48px;
+      
 
         background: #ffffff;
 
@@ -3746,16 +3754,16 @@ div.media-post {
         line-height: 1.3;
     }
 
-    .mobi_full_btn{
+    .mobi_full_btn {
         width: 100%;
     }
 
-    .navbar-user-mobile{
+    .navbar-user-mobile {
         font-size: 16px !important;
     }
 
-    .nav_link{
-        padding:8px 1px !important;
+    .nav_link {
+        padding: 8px 1px !important;
     }
 }
 
@@ -3977,17 +3985,23 @@ div.media-post {
 /* Message */
 .wrapper-msg-inbox {
     box-sizing: border-box;
-    
+
     /* Auto layout */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 16px;
-    background: #191919 !important;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0px 4px 25px 0px #2a864214;
     border-radius: 32px;
     margin-bottom: 16px;
+}
+[data-bs-theme="dark"] .wrapper-msg-inbox {
+    background: #191919 !important;
+}
+
+[data-bs-theme="light"] .wrapper-msg-inbox {
+    background: #f6f6f6 !important;
 }
 
 /* Direct Messages */
@@ -3997,8 +4011,8 @@ div.media-post {
     /* identical to box height */
     display: flex;
     align-items: flex-end;
-    color: #ffffff;
 }
+
 .wrapper-msg-inbox .msg-inbox {
     /* Frame 1618873295 */
 
@@ -4035,11 +4049,18 @@ div.media-post {
     gap: 32px;
     isolation: isolate;
     overflow-y: auto;
-    background: #191919;
+
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 32px;
     margin-right: 16px;
     margin-bottom: 16px;
+}
+[data-bs-theme="dark"] .section-msg .messageDiv {
+    background: #191919;
+}
+
+[data-bs-theme="light"] .section-msg .messageDiv {
+    background: #f6f6f6;
 }
 
 /* Frame 75 */
@@ -4062,7 +4083,6 @@ div.media-post {
         gap: 24px;
 
         position: absolute;
-
     }
 
     /* 0.00EUR */
@@ -4134,7 +4154,7 @@ div.media-post {
     padding: 0px;
     gap: 16px;
     width: 100%;
-    margin-left: 90px;
+    margin-left: 2rem;
 }
 .startAudioCall,
 .startVideoCall,
@@ -4330,8 +4350,267 @@ div.media-post {
 }
 /* Payout Method */
 
-
-.bg_prime_e3{
+.bg_prime_e3 {
     background-color: #e2394c !important;
     border-color: #e2394c !important;
 }
+
+/* ===== SweetAlert2 Dark Theme (CloseOnly) ===== */
+
+.swal2-popup {
+    background: #2b2b2b !important;
+    color: #ffffff !important;
+    border-radius: 16px !important;
+    padding: 28px 24px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Title */
+.swal2-title {
+    color: #ffffff !important;
+    font-size: 26px !important;
+    font-weight: 600 !important;
+    margin-bottom: 10px !important;
+}
+
+/* Text */
+.swal2-html-container {
+    color: #b0b0b0 !important;
+    font-size: 15px !important;
+}
+
+/* Icon */
+.swal2-icon.swal2-error {
+    border-color: #e35a5a !important;
+}
+
+.swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
+    background-color: #e35a5a !important;
+}
+
+/* Buttons wrapper */
+.swal2-actions {
+    margin-top: 24px !important;
+    gap: 12px !important;
+}
+
+/* Confirm (Delete) button */
+.swal2-confirm {
+    background: #e35a5a !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.swal2-confirm:hover {
+    background: #d94b4b !important;
+}
+
+/* Cancel button */
+.swal2-cancel {
+    background: #bdbdbd !important;
+    color: #1e1e1e !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.swal2-cancel:hover {
+    background: #a8a8a8 !important;
+}
+
+/* Remove default focus outline */
+.swal2-confirm:focus,
+.swal2-cancel:focus {
+    box-shadow: none !important;
+}
+
+/* Animation smoothness */
+.swal2-popup {
+    animation: swalFadeIn 0.25s ease-out;
+}
+
+@keyframes swalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ==========================
+   SweetAlert v1 – DARK THEME
+========================== */
+
+/* ==============================
+   SweetAlert v1 – Dark Theme
+   (Black / Charcoal UI)
+============================== */
+
+[data-bs-theme="dark"] .sweet-alert {
+    background-color: #2b2b2b; /* charcoal panel */
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+/* Title */
+[data-bs-theme="dark"] .sweet-alert h2 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Description */
+[data-bs-theme="dark"] .sweet-alert p {
+    color: #b0b0b0;
+    font-size: 14.5px;
+    line-height: 1.5;
+}
+
+/* ==============================
+   Error Icon
+============================== */
+
+[data-bs-theme="dark"] .sweet-alert .sa-icon.sa-error {
+    border-color: #e35a5a; /* coral red */
+}
+
+[data-bs-theme="dark"] .sweet-alert .sa-icon.sa-error .sa-line {
+    background-color: #e35a5a;
+}
+
+/* ==============================
+   Buttons
+============================== */
+
+[data-bs-theme="dark"] .sweet-alert button {
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+}
+
+/* Confirm (Primary / Delete) */
+[data-bs-theme="dark"] .sweet-alert button.confirm {
+    background-color: #e35a5a !important; /* coral */
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .sweet-alert button.confirm:hover {
+    background-color: #d94b4b !important;
+}
+
+/* Cancel (Secondary) */
+[data-bs-theme="dark"] .sweet-alert button.cancel {
+    background-color: #3a3a3a !important; /* dark neutral */
+    color: #d0d0d0;
+}
+
+[data-bs-theme="dark"] .sweet-alert button.cancel:hover {
+    background-color: #444444 !important;
+}
+
+/* Focus cleanup */
+[data-bs-theme="dark"] .sweet-alert button:focus {
+    outline: none;
+}
+
+/* ==============================
+   SweetAlert v1 – LIGHT THEME
+   (White / Soft Gray + Coral)
+============================== */
+
+[data-bs-theme="light"] .sweet-alert {
+    background-color: #ffffff !important;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+}
+
+/* Title */
+[data-bs-theme="light"] .sweet-alert h2 {
+    color: #1e1e1e !important;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Description */
+[data-bs-theme="light"] .sweet-alert p {
+    color: #5f5f5f !important;
+    font-size: 14.5px;
+    line-height: 1.5;
+}
+
+/* ==============================
+   Error Icon
+============================== */
+
+[data-bs-theme="light"] .sweet-alert .sa-icon.sa-error {
+    border-color: #e35a5a !important; /* coral red */
+}
+
+[data-bs-theme="light"] .sweet-alert .sa-icon.sa-error .sa-line {
+    background-color: #e35a5a !important;
+}
+
+/* ==============================
+   Buttons
+============================== */
+
+[data-bs-theme="light"] .sweet-alert button {
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+}
+
+/* Confirm (Primary / Delete) */
+[data-bs-theme="light"] .sweet-alert button.confirm {
+    background-color: #e35a5a !important;
+    color: #ffffff !important;
+}
+
+[data-bs-theme="light"] .sweet-alert button.confirm:hover {
+    background-color: #d94b4b !important;
+}
+
+/* Cancel (Secondary) */
+[data-bs-theme="light"] .sweet-alert button.cancel {
+    background-color: #f0f0f0 !important;
+    color: #333333 !important;
+}
+
+[data-bs-theme="light"] .sweet-alert button.cancel:hover {
+    background-color: #e4e4e4 !important;
+}
+
+/* Focus cleanup */
+[data-bs-theme="light"] .sweet-alert button:focus {
+    outline: none;
+}
+
+/* Footer */
+[data-bs-theme="dark"] .footer-bg {
+    background: #171717 !important;
+    /* neutral/900 */
+    border-top: 1px solid #171717 !important;
+}   
+div.footer-bg{padding-top:0px !important;}
+footer.footer-bg{padding-bottom:0px !important;}
+/* Footer */

@@ -1,103 +1,129 @@
 <!-- FOOTER -->
 
-<div class="d-none">
-	<!-- <div class="py-4 @auth d-none d-lg-block @endauth @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest()) footer_background_color footer_text_color @else bg-white @endif @if (auth()->check() && auth()->user()->dark_mode == 'off' && $settings->footer_background_color == '#ffffff' || auth()->guest() && $settings->footer_background_color == '#ffffff' ) border-top @endif"> -->
-	<footer class="container d-none">
-		<div class="row">
+<footer class="py-3 link-footer  footer-bg @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest() ) footer_background_color @endif text-center">
+	<div class="container">
+		<div class="col-md-12 text-center">
 
-			<div class="col-md-12 text-center">
+				<a href="{{url('/')}}">
 
-			<a href="{{url('/')}}">
+					@if (auth()->check() && auth()->user()->dark_mode == 'on')
 
-				@if (auth()->check() && auth()->user()->dark_mode == 'on')
+					<img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="max-w-125">
 
-				<img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="max-w-125">
+					@else
 
-				@else
+					<img src="{{url('img', $settings->logo_2)}}" alt="{{$settings->title}}" class="max-w-125">
 
-				<img src="{{url('img', $settings->logo_2)}}" alt="{{$settings->title}}" class="max-w-125">
+					@endif
 
-			@endif
-
-			</a>
+				</a>
 
 
 
 			</div>
+		<div class="row">
+
+			@auth
+
+			<div class="d-lg-none d-block pb-5 mb-2 w-100">
+				@include('includes.footer-tiny')
+			</div>
+			@endauth
+
+
+			<div class="col-md-12 copyright @auth d-none d-lg-block @endauth">
+
+				&copy; {{date('Y')}} {{$settings->title}}, {{__('emails.rights_reserved')}}
+				@if ($settings->show_address_company_footer)
+				<small class="ml-2">
+					{{ $settings->company }} - {{ __('general.address') }}: {{ $settings->address }} {{ $settings->city }} {{ $settings->country }}
+				</small>
+				@endif
+
+			</div>
+
+		</div>
+	</div>
+</footer>
+<div class="py-4 footer-bg @auth d-none d-lg-block @endauth @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest()) footer_background_color footer_text_color @else bg-white @endif @if (auth()->check() && auth()->user()->dark_mode == 'off' && $settings->footer_background_color == '#ffffff' || auth()->guest() && $settings->footer_background_color == '#ffffff' ) border-top @endif">
+	<footer class="container">
+		<div class="row">
+
+			
 
 			<div class="col-md-12 text-center mt-2">
 
-			<ul class="list-inline">
+				<ul class="list-inline">
 
-				@foreach (Helper::pages() as $page)
-
-
-
-			@if ($page->access == 'all')
-
-				<li class="list-inline-item">
-
-					<a class="link-footer" href="{{ url('/p', $page->slug) }}">
-
-					{{ $page->title }}
-
-					</a>
-
-				</li>
+					@foreach (Helper::pages() as $page)
 
 
 
-			@elseif ($page->access == 'creators' && auth()->check() && auth()->user()->verified_id == 'yes')
+					@if ($page->access == 'all')
 
-				<li class="list-inline-item">
+					<li class="list-inline-item">
 
-					<a class="link-footer" href="{{ url('/p', $page->slug) }}">
+						<a class="link-footer" href="{{ url('/p', $page->slug) }}">
 
-					{{ $page->title }}
+							{{ $page->title }}
 
-					</a>
+						</a>
 
-				</li>
-
-
-
-			@elseif ($page->access == 'members' && auth()->check())
-
-				<li class="list-inline-item">
-
-					<a class="link-footer" href="{{ url('/p', $page->slug) }}">
-
-					{{ $page->title }}
-
-					</a>
-
-				</li>
-
-			@endif
+					</li>
 
 
 
-			@endforeach
+					@elseif ($page->access == 'creators' && auth()->check() && auth()->user()->verified_id == 'yes')
+
+					<li class="list-inline-item">
+
+						<a class="link-footer" href="{{ url('/p', $page->slug) }}">
+
+							{{ $page->title }}
+
+						</a>
+
+					</li>
 
 
 
-			@if (! $settings->disable_contact)
+					@elseif ($page->access == 'members' && auth()->check())
 
-				<li class="list-inline-item"><a class="link-footer" href="{{ url('contact') }}">{{ trans('general.contact') }}</a></li>
+					<li class="list-inline-item">
 
-			@endif
+						<a class="link-footer" href="{{ url('/p', $page->slug) }}">
+
+							{{ $page->title }}
+
+						</a>
+
+					</li>
+
+					@endif
+
+
+
+					@endforeach
+
+
+
+					@if (! $settings->disable_contact)
+
+					<li class="list-inline-item"><a class="link-footer" href="{{ url('contact') }}">{{ trans('general.contact') }}</a></li>
+
+					@endif
 
 
 
 
 
-				@if ($blogsCount != 0)
+					@if ($blogsCount != 0)
 
-				<li class="list-inline-item"><a class="link-footer" href="{{ url('blog') }}">{{ trans('general.blog') }}</a></li>
+					<li class="list-inline-item"><a class="link-footer" href="{{ url('blog') }}">{{ trans('general.blog') }}</a></li>
 
-				@endif
+					@endif
 
-			</ul>
+				</ul>
 
 			</div>
 
@@ -108,131 +134,104 @@
 
 	@if ($settings->facebook != ''
 
-			|| $settings->twitter != ''
+	|| $settings->twitter != ''
 
-			|| $settings->instagram != ''
+	|| $settings->instagram != ''
 
-			|| $settings->pinterest != ''
+	|| $settings->pinterest != ''
 
-			|| $settings->youtube != ''
+	|| $settings->youtube != ''
 
-			|| $settings->github != ''
+	|| $settings->github != ''
 
-			|| $settings->tiktok != ''
+	|| $settings->tiktok != ''
 
-			|| $settings->snapchat != ''
+	|| $settings->snapchat != ''
 
-			|| $settings->telegram != ''
+	|| $settings->telegram != ''
 
-			|| $settings->reddit != ''
+	|| $settings->reddit != ''
 
-			|| $settings->linkedin != ''
+	|| $settings->linkedin != ''
 
-			|| $settings->threads != ''
+	|| $settings->threads != ''
 
-			)
+	)
 
-     
 
-    	<div class="col-md-12 text-center">
-			<div class="w-100">
-				<ul class="list-inline list-social m-0">
-					@if ($settings->twitter != '')
-						<li class="list-inline-item"><a href="{{$settings->twitter}}" target="_blank" class="ico-social"><i class="bi-twitter-x"></i></a></li>
-					@endif
 
-					@if ($settings->facebook != '')
-						<li class="list-inline-item"><a href="{{$settings->facebook}}" target="_blank" class="ico-social"><i class="fab fa-facebook"></i></a></li>
-					@endif
+	<div class="col-md-12 text-center">
+		<div class="w-100">
+			<ul class="list-inline list-social m-0">
+				@if ($settings->twitter != '')
+				<li class="list-inline-item"><a href="{{$settings->twitter}}" target="_blank" class="ico-social"><i class="bi-twitter-x"></i></a></li>
+				@endif
 
-					@if ($settings->instagram != '')
-						<li class="list-inline-item"><a href="{{$settings->instagram}}" target="_blank" class="ico-social"><i class="fab fa-instagram"></i></a></li>
-					@endif
+				@if ($settings->facebook != '')
+				<li class="list-inline-item"><a href="{{$settings->facebook}}" target="_blank" class="ico-social"><i class="fab fa-facebook"></i></a></li>
+				@endif
 
-					@if ($settings->pinterest != '')
-						<li class="list-inline-item"><a href="{{$settings->pinterest}}" target="_blank" class="ico-social"><i class="fab fa-pinterest"></i></a></li>
-					@endif
+				@if ($settings->instagram != '')
+				<li class="list-inline-item"><a href="{{$settings->instagram}}" target="_blank" class="ico-social"><i class="fab fa-instagram"></i></a></li>
+				@endif
 
-					@if ($settings->youtube != '')
-						<li class="list-inline-item"><a href="{{$settings->youtube}}" target="_blank" class="ico-social"><i class="fab fa-youtube"></i></a></li>
-					@endif
+				@if ($settings->pinterest != '')
+				<li class="list-inline-item"><a href="{{$settings->pinterest}}" target="_blank" class="ico-social"><i class="fab fa-pinterest"></i></a></li>
+				@endif
 
-					@if ($settings->github != '')
-						<li class="list-inline-item"><a href="{{$settings->github}}" target="_blank" class="ico-social"><i class="fab fa-github"></i></a></li>
-					@endif
+				@if ($settings->youtube != '')
+				<li class="list-inline-item"><a href="{{$settings->youtube}}" target="_blank" class="ico-social"><i class="fab fa-youtube"></i></a></li>
+				@endif
 
-					@if ($settings->tiktok != '')
-						<li class="list-inline-item"><a href="{{$settings->tiktok}}" target="_blank" class="ico-social"><i class="bi-tiktok"></i></a></li>
-					@endif
+				@if ($settings->github != '')
+				<li class="list-inline-item"><a href="{{$settings->github}}" target="_blank" class="ico-social"><i class="fab fa-github"></i></a></li>
+				@endif
 
-					@if ($settings->snapchat != '')
-						<li class="list-inline-item"><a href="{{$settings->snapchat}}" target="_blank" class="ico-social"><i class="bi-snapchat"></i></a></li>
-					@endif
+				@if ($settings->tiktok != '')
+				<li class="list-inline-item"><a href="{{$settings->tiktok}}" target="_blank" class="ico-social"><i class="bi-tiktok"></i></a></li>
+				@endif
 
-					@if ($settings->telegram != '')
-						<li class="list-inline-item"><a href="{{$settings->telegram}}" target="_blank" class="ico-social"><i class="bi-telegram"></i></a></li>
-					@endif
+				@if ($settings->snapchat != '')
+				<li class="list-inline-item"><a href="{{$settings->snapchat}}" target="_blank" class="ico-social"><i class="bi-snapchat"></i></a></li>
+				@endif
 
-					@if ($settings->reddit != '')
-						<li class="list-inline-item"><a href="{{$settings->reddit}}" target="_blank" class="ico-social"><i class="bi-reddit"></i></a></li>
-					@endif
+				@if ($settings->telegram != '')
+				<li class="list-inline-item"><a href="{{$settings->telegram}}" target="_blank" class="ico-social"><i class="bi-telegram"></i></a></li>
+				@endif
 
-					@if ($settings->linkedin != '')
-						<li class="list-inline-item"><a href="{{$settings->linkedin}}" target="_blank" class="ico-social"><i class="bi-linkedin"></i></a></li>
-					@endif
+				@if ($settings->reddit != '')
+				<li class="list-inline-item"><a href="{{$settings->reddit}}" target="_blank" class="ico-social"><i class="bi-reddit"></i></a></li>
+				@endif
 
-					@if ($settings->threads != '')
-						<li class="list-inline-item"><a href="{{$settings->threads}}" target="_blank" class="ico-social"><i class="bi-threads"></i></a></li>
-					@endif
+				@if ($settings->linkedin != '')
+				<li class="list-inline-item"><a href="{{$settings->linkedin}}" target="_blank" class="ico-social"><i class="bi-linkedin"></i></a></li>
+				@endif
 
-				</ul>
+				@if ($settings->threads != '')
+				<li class="list-inline-item"><a href="{{$settings->threads}}" target="_blank" class="ico-social"><i class="bi-threads"></i></a></li>
+				@endif
+
+			</ul>
+
+		</div>
+
+@endif
+
+
+
+		<li>
+			<div id="installContainer" class="display-none">
+				<button class="btn btn-primary w-50 rounded-pill mb-2 mt-3" id="butInstall" type="button">
+					<i class="bi-phone mr-1"></i> {{ __('general.install_web_app') }}
+				</button>
 			</div>
-		</div>
+		</li>
 
-    @endif
+	</div>
 
 
-
-	<li>
-		<div id="installContainer" class="display-none">
-			<button class="btn btn-primary w-50 rounded-pill mb-2 mt-3" id="butInstall" type="button">
-				<i class="bi-phone mr-1"></i> {{ __('general.install_web_app') }}
-			</button>
-		</div>
-    </li>
 
 </div>
 
 
-
-<!-- </div> -->
-
-
-
-<footer class="d-none py-3 @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest() ) footer_background_color @endif text-center">
-	<div class="container">
-		<div class="row">
-
-			@auth
-				<div class="d-none">
-					<!-- <div class="d-lg-none d-block pb-5 mb-2 w-100"> -->
-						@include('includes.footer-tiny')
-				</div>
-			@endauth
-
-			<div class="d-none">
-				<!-- <div class="col-md-12 copyright @auth d-none d-lg-block @endauth"> -->
-
-				<!-- &copy; {{date('Y')}} {{$settings->title}}, {{__('emails.rights_reserved')}} -->
-				@if ($settings->show_address_company_footer)
-					<small class="ml-2">
-						{{ $settings->company }} - {{ __('general.address') }}: {{ $settings->address }} {{ $settings->city }} {{ $settings->country }}
-					</small>
-				@endif
-
-			</div>
-
-		</div>
-	</div>
-</footer>
 

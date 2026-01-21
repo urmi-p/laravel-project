@@ -55,9 +55,9 @@
   <div id="mobileMenuOverlay" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"></div>
 
   @auth
-    @if (! request()->is('messages/*') && ! request()->is('live/*'))
-    @include('includes.menu-mobile')
-  @endif
+    {{-- @if (! request()->is('messages/*') && ! request()->is('live/*')) --}}
+      @include('includes.menu-mobile')
+    {{-- @endif --}}
   @endauth
 
   @if (auth()->guest() && $settings->alert_adult == 'on' && !$settings->age_verification_status)
@@ -164,8 +164,8 @@
                     <div class="text-center py-3 px-3">
                       @include('includes.footer-tiny')
                     </div>
-                  {{-- @else
-                    @include('includes.footer') --}}
+                  @else
+                    @include('includes.footer')
                   @endif
 
           @endif

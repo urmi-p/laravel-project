@@ -2,7 +2,7 @@
 
   <div class="card-body p-0">
 
-    <small class="text-muted">
+    <small class="">
 
       &copy; {{date('Y')}} {{$settings->title}}, {{__('emails.rights_reserved')}}
 
