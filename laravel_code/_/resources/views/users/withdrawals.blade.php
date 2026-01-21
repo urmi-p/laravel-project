@@ -105,7 +105,7 @@
                    </div><!-- End form-group -->
                  @endif
 
-                 <input type="submit" value="{{ trans('general.make_withdrawal') }}" class="btn btn-1 btn-success mb-2 saveChanges">
+                 <input type="submit" value="{{ trans('general.make_withdrawal') }}" class="btn btn-1 btn-success mb-2 saveChanges bg_prime_e3 mobi_full_btn">
                   </form>
                 @else
                   <button class="btn btn-1 btn-success mb-2 disabled e-none">{{trans('general.make_withdrawal')}}</button>

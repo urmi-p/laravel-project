@@ -209,7 +209,7 @@
         <small class="w-100 font_weight_400 fs-14">{{ __('general.delete_account_alert') }}</small>
 
         <div class="w-100 d-block mt-3 mb-5 ">
-          <a class="btn btn-main btn-danger pr-3 pl-3 delete_account_btn" href="{{ url('account/delete') }}">
+          <a class="btn btn-main pr-3 pl-3 delete_account_btn mobi_full_btn bg_prime_e3 brd-12" href="{{ url('account/delete') }}">
             {{ __('general.delete_account') }}</small>
           </a>
         </div>

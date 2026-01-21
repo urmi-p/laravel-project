@@ -872,14 +872,14 @@
                                 </svg>
  
                                 <small class="sm-btn-size">{{ $totalPosts }}</small>
-                                <span class="d-lg-inline-block d-none">{{ __('general.posts') }}</span>
+                                <span class="d-lg-inline-block">{{ __('general.posts') }}</span>
                             </a>
                         </li>
                         <li class="nav-link nav_link @if (request()->path() == $user->username . '/photos') active @endif navbar-user-mobile">
                             <a href="{{ request()->path() == $user->username . '/photos' ? 'javascript:;' : url($user->username, 'photos') }}"
                                 title="{{ __('general.photos') }}"><i class="feather icon-image"></i>
                                 <small class="sm-btn-size">{{ $totalPhotos }}</small>
-                                <span class="d-lg-inline-block d-none">{{ __('general.photos') }}</span>
+                                <span class="d-lg-inline-block">{{ __('general.photos') }}</span>
                             </a>
                         </li>
                         <li class="nav-link nav_link @if (request()->path() == $user->username . '/videos') active @endif navbar-user-mobile">
@@ -889,7 +889,7 @@
                                      <path d="M4.0254 2.35929L6.80897 5.14286H1.98754C2.08593 4.55186 2.32154 3.99217 2.67546 3.50874C3.02938 3.02531 3.49174 2.63162 4.0254 2.35929ZM7.76683 1.92857H5.78683C5.66469 1.92857 5.54254 1.935 5.4204 1.94143L8.62183 5.14286H10.9811L7.76683 1.92857ZM12.2154 1.92857H9.59254L12.8068 5.14286H16.0147C15.8641 4.24419 15.3997 3.42805 14.704 2.83952C14.0084 2.25099 13.1266 1.92821 12.2154 1.92857ZM8.02526 12.6167L11.2395 10.8489C11.3403 10.7934 11.4244 10.7118 11.4829 10.6128C11.5415 10.5137 11.5723 10.4008 11.5723 10.2857C11.5723 10.1707 11.5415 10.0577 11.4829 9.95865C11.4244 9.8596 11.3403 9.77807 11.2395 9.72257L8.02526 7.95472C7.92738 7.90087 7.81716 7.87346 7.70547 7.87519C7.59377 7.87692 7.48445 7.90772 7.38829 7.96456C7.29212 8.0214 7.21243 8.10233 7.15706 8.19935C7.10169 8.29637 7.07256 8.40615 7.07254 8.51786V12.0536C7.07256 12.1653 7.10169 12.2751 7.15706 12.3721C7.21243 12.4691 7.29212 12.55 7.38829 12.6069C7.48445 12.6637 7.59377 12.6945 7.70547 12.6962C7.81716 12.698 7.92738 12.6706 8.02526 12.6167ZM16.0725 6.42857V12.2143C16.0717 13.237 15.665 14.2176 14.9419 14.9408C14.2187 15.6639 13.2381 16.0706 12.2154 16.0714H5.78683C4.76411 16.0706 3.78353 15.6639 3.06036 14.9408C2.33719 14.2176 1.93054 13.237 1.92969 12.2143V6.42857H16.0725Z" fill="currentcolor"/>
                                     </svg>
                                 <small class="sm-btn-size">{{ $totalVideos }}</small>
-                                <span class="d-lg-inline-block d-none">{{ __('general.videos') }}</span>
+                                <span class="d-lg-inline-block">{{ __('general.videos') }}</span>
                             </a>
                         </li>
 
@@ -907,7 +907,7 @@
 
                                     </svg>
                                     <small class="sm-btn-size">{{ $totalReels }}</small>
-                                    <span class="d-lg-inline-block d-none">{{ __('general.reels') }}</span>
+                                    <span class="d-lg-inline-block">{{ __('general.reels') }}</span>
                                 </a>
                             </li>
                         @endif
@@ -917,7 +917,7 @@
                                 <a href="{{ request()->path() == $user->username . '/audio' ? 'javascript:;' : url($user->username, 'audio') }}"
                                     title="{{ __('general.audio') }}"><i class="feather icon-mic"></i> 
                                     <small class="sm-btn-size">{{ $totalMusic }}</small>
-                                    <span class="d-lg-inline-block d-none">{{ __('general.audio') }}</span>
+                                    <span class="d-lg-inline-block">{{ __('general.audio') }}</span>
                                 </a>
                             </li>
                         @endif
@@ -937,7 +937,7 @@
                                             </defs>
                                         </svg>
                                     <small class="sm-btn-size">{{ $user->products()->whereStatus('1')->count() }}</small>
-                                    <span class="d-lg-inline-block d-none">{{ __('general.shop') }}</span>
+                                    <span class="d-lg-inline-block">{{ __('general.shop') }}</span>
                                 </a>
                             </li>
                         @endif
