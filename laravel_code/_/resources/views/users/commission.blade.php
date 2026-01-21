@@ -313,7 +313,7 @@
             <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
 
                 <div class="commission-wrapper">
-                    <h4 class="mb-4 fw-bold text-white font_weight_700 fs-24 pb-3">Subscription fees</h4>
+                    <h4 class=" fw-bold text_white font_weight_700 fs-24">Subscription fees</h4>
                     <p class="mb-4 font_weight_400 fs-14">
                         See how each subscription payment is split between the platform, payment processors, and your earnings.
                     </p>

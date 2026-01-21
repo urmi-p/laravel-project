@@ -1,6 +1,6 @@
 <a href="{{ url('shop/product', $product->id) }}" class="link-shop">
 
-	<div class="card card-updates h-100 card-user-profile shadow-sm">
+	<div class="shop-card card card-updates h-100 card-user-profile shadow-sm">
 
 		<span class="badge type-item p-2 badge-pill">
 

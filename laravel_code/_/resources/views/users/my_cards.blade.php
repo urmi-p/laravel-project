@@ -12,7 +12,7 @@
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0  my-card">
         <div class="col-lg-8 title-div">
           <h2 class="mb-0 title"> {{trans('general.my_cards')}}</h2>
-          <p class="lead text-muted mt-0 sub-title">{{trans('general.info_my_cards')}}</p>
+          <p class="lead text-muted mt-2 sub-title ">{{trans('general.info_my_cards')}}</p>
         </div>
         @if (session('success_removed'))
         <div class="alert alert-success">

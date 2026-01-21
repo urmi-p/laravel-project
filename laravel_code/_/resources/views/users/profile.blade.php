@@ -807,10 +807,10 @@
                         </div>
                         {{-- new flex2 end --}}
                         
-                        @if (auth()->check() && auth()->user()->verified_id == 'no' && auth()->id() == $user->id) -->
+                        @if (auth()->check() && auth()->user()->verified_id == 'no' && auth()->id() == $user->id)
                             <div class="d-flex-user justify-content-center mb-2">
                                 <div class="d-block w-100 justify-content-center mt-lg-3 mt-2 font_weight_400 fs-20"
-                                    style="padding: 20px 32px; border-radius: 16px;background: #FFFFFF33;">
+                                    style="padding: 20px 32px; border-radius: 16px;background: #FFFFFF33; ">
                                     {{ __('custom.alert_profile_verification') }}
                                     <br>
                                     <a href="{{ url('settings/page') }}"
@@ -857,8 +857,8 @@
 
                         @endif
 
-                    </div><!-- media-body -->
-                </div><!-- media -->
+                    </div> <!-- media-body -->
+                </div> <!-- media -->
 
                 @if ($user->verified_id == 'yes')
                     <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile">
