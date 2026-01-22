@@ -504,7 +504,7 @@
                 ($settings->shop && auth()->user()->verified_id == 'yes') ||
                 (auth()->user()->products()->count() != 0 && auth()->user()->verified_id == 'yes'))
                 <a href="{{ url('my/products') }}"
-                    class="list-group-item list-group-item-action d-flex justify-content-between">
+                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('my/products')) active @endif">
 
                     <div>
                         {{-- <i class="bi-tag mr-2"></i> --}}

@@ -4,11 +4,17 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-sm">
-        <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="bi-tag mr-2"></i> {{trans('general.products')}}</h2>
-          <p class="lead text-muted m-0">{{trans('general.all_products_published')}}</p>
+    {{-- for mobile header --}}
+  @include('includes.header-mobile')
+    <div class="container-fluid pt-lg-5 pt-2">
+      
+      <div class="row">
+        @include('includes.cards-settings')
+        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+          <div class="row mb-sm">
+        <div class="col-lg-8 py-4">
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi-tag mr-2"></i> {{trans('general.products')}}</h2>
+          <p class="lead m-0 font_weight_400 fs-14">{{trans('general.all_products_published')}}</p>
 
           <div class="mt-2">
             @if ($settings->digital_product_sale && ! $settings->custom_content && ! $settings->physical_products)
@@ -35,10 +41,6 @@
 
         </div>
       </div>
-      <div class="row">
-
-        <div class="col-md-12 mb-5 mb-lg-0">
-
           @if ($products->count() != 0)
           <div class="card shadow-sm">
           <div class="table-responsive">

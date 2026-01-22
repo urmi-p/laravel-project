@@ -45,7 +45,7 @@
                             @endif
 
                             {{-- dummy stories --}}
-                            <div>
+                            {{-- <div>
 
                                 <img lazy="eager" class="dashboard_other_story" width="100"
                                     src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
@@ -83,7 +83,7 @@
                             <div>
                                 <img lazy="eager" class="dashboard_other_story" width="100"
                                     src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-                            </div>
+                            </div> --}}
                             {{-- end dummy stories --}}
                         </div>
                     @endif
