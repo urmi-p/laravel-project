@@ -20,6 +20,8 @@ use App\Http\Controllers\Traits\Functions;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Notifications\WelcomeMessageRegistered;
 
+use Illuminate\Validation\Rules\Password;
+
 class RegisterController extends Controller
 {
   /*
@@ -86,7 +88,14 @@ class RegisterController extends Controller
     return Validator::make($data, [
       'name' => 'required|string|max:100|regex:/^([^0-9]*)$/',
       'email' => 'required|email:rfc,dns|temp_email|max:255|unique:users',
-      'password' => 'required|min:6',
+      //'password' => 'required|min:6',
+      'password' => [
+        'required',
+        Password::min(8)
+          ->mixedCase()
+          ->numbers()
+          ->symbols(),
+      ],
       'agree_gdpr' => 'required',
       'g-recaptcha-response' => 'required_if:_captcha,==,on|captcha'
     ], $messages);

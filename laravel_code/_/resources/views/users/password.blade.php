@@ -55,11 +55,22 @@
             <label class="font_weight_500 fs-16">{{ __('general.new_password') }}</label>
             <div class="input-group mb-4" id="showHidePassword">
               
-              <input class="form-control brd-12" name="new_password" placeholder="{{__('general.enter_your_new_password')}}" type="password" required>
+              <input class="form-control brd-12" name="new_password" placeholder="{{__('general.enter_your_new_password')}}" type="password" required oninput="checkStrength(this.value)">
               <div class="input-group-append">
                 <span class="input-group-text c-pointer"><i class="feather icon-eye-off"></i></span>
               </div>
             </div>
+            
+                  <div class="strength-bar">
+                    <div id="strengthFill" class="strength-fill"></div>
+                  </div>
+
+                  <div id="strengthText" class="strength-text">Very Weak</div>
+
+                  <div id="strengthHint" class="strength-hint">
+                    Please enter strong password include Capital Letters, Numbers and signs
+                  </div>
+                
           </div>
           <div class="form-group">
             <label class="font_weight_500 fs-16">{{ __('auth.confirm_password') }}</label>
