@@ -44,47 +44,7 @@
                                 </div>
                             @endif
 
-                            {{-- dummy stories --}}
-                            {{-- <div>
-
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-
-                            </div>
-
-                            <div>
-
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-
-                            </div>
-                            <div>
-
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-
-                            </div>
-                            <div>
-
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-
-                            </div>
-                            <div>
-
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-
-                            </div>
-                            <div>
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-                            </div>
-                            <div>
-                                <img lazy="eager" class="dashboard_other_story" width="100"
-                                    src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
-                            </div> --}}
-                            {{-- end dummy stories --}}
+                            
                         </div>
                     @endif
 

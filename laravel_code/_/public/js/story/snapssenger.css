@@ -1,13 +1,15 @@
-.stories.snapssenger.list .story > .item-link {
+.stories.snapssenger.list .story>.item-link {
   text-decoration: none;
   color: #333;
 }
-.stories.snapssenger.list .story > .item-link > .item-preview {
+
+.stories.snapssenger.list .story>.item-link>.item-preview {
   border-radius: 50%;
   padding: 2px;
   background: #0084ff;
 }
-.stories.snapssenger.list .story > .item-link > .item-preview img {
+
+.stories.snapssenger.list .story>.item-link>.item-preview img {
   border-radius: 50%;
   border: 3px solid #fff;
 }
@@ -15,11 +17,13 @@
 .stories.snapssenger.list .story.seen {
   opacity: 0.75;
 }
-.stories.snapssenger.list .story.seen > a > span {
+
+.stories.snapssenger.list .story.seen>a>span {
   background: #999;
   color: #999;
 }
-.stories.snapssenger.list .story.seen > a {
+
+.stories.snapssenger.list .story.seen>a {
   color: #999 !important;
 }
 
@@ -28,18 +32,23 @@
   max-width: 110px;
   width: 25vw;
 }
-.stories.snapssenger.carousel .story > .item-link {
+
+.stories.snapssenger.carousel .story>.item-link {
   text-decoration: none;
   text-align: left;
   color: #fff;
   position: relative;
-  max-height: 160px;
+  /* max-height: 160px; */
+  width: 100px;
+  height: 100px;
 }
-.stories.snapssenger.carousel .story > .item-link > .item-preview img {
+
+.stories.snapssenger.carousel .story>.item-link>.item-preview img {
   border-radius: 5px;
   position: absolute;
 }
-.stories.snapssenger.carousel .story > .item-link > .info {
+
+.stories.snapssenger.carousel .story>.item-link>.info {
   top: auto;
   height: auto;
   box-sizing: border-box;
@@ -52,10 +61,12 @@
   font-size: 12px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35), 1px 0 1px rgba(0, 0, 0, 0.35);
 }
-.stories.snapssenger.carousel .story > .item-link > .info .name {
+
+.stories.snapssenger.carousel .story>.item-link>.info .name {
   font-weight: bold;
 }
-.stories.snapssenger.carousel .story > .item-link > .info .time {
+
+.stories.snapssenger.carousel .story>.item-link>.info .time {
   display: block;
   font-weight: 100;
   font-size: 11px;
