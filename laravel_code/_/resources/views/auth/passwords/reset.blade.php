@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-lg-6 d-flex flex-column justify-content-center inline-padding resetpwd-form-left">
         <div class="d-block px-3 px-lg-5 w-100 px-mobile-1 ">
-            <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}"  class="logo align-baseline mb-1" width="125" height="42" />
+          <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="logo align-baseline mb-1" width="125" height="42" />
         </div>
         <div class="card bg-white shadow border-0 b-radio-custom">
 
@@ -51,10 +51,20 @@
                   <span class="">New Password</span>
                 </div>
                 <div class="input-group input-group-alternative" id="showHidePassword">
-                  <input name="password" type="password" class="form-control" required placeholder="{{__('auth.password')}}">
+                  <input name="password" type="password" class="form-control" required placeholder="{{__('auth.password')}}" oninput="checkStrength(this.value)">
                   <div class="input-group-append">
                     <span class="input-group-text c-pointer"><i class="feather icon-eye-off"></i></span>
                   </div>
+
+                </div>
+                <div class="strength-bar">
+                  <div id="strengthFill" class="strength-fill"></div>
+                </div>
+
+                <div id="strengthText" class="strength-text">Very Weak</div>
+
+                <div id="strengthHint" class="strength-hint">
+                  Please enter strong password include Capital Letters, Numbers and signs
                 </div>
               </div>
 
@@ -86,12 +96,12 @@
         </div>
       </div>
       <div class="col-lg-6 right-side">
-          <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block d-none mt-3" width="356" height="120">
-          <span class="text-lime h5 mb-5 d-lg-block d-none title_home_login">{{__('general.title_home_login')}}</span>
-          <div class="image-stack">
-            <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none stack-img">
-          </div>
+        <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block d-none mt-3" width="356" height="120">
+        <span class="text-lime h5 mb-5 d-lg-block d-none title_home_login">{{__('general.title_home_login')}}</span>
+        <div class="image-stack">
+          <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none stack-img">
         </div>
+      </div>
     </div>
   </div>
 </div>

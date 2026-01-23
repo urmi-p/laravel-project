@@ -3804,7 +3804,7 @@
 			element.html(signIn)
 			$('#btnLoginRegister').html('<i></i> ' + textRegister);
 
-			$('#full_name, #email, #agree_gdpr').show();
+			$('#full_name, #email, #agree_gdpr,#strong').show();
 
 			$('#username_email, #remember, #forgotPassword').hide();
 
@@ -3821,7 +3821,7 @@
 			element.html(signUp)
 			$('#btnLoginRegister').html('<i></i> ' + textLogin);
 
-			$('#full_name, #email, #agree_gdpr').hide();
+			$('#full_name, #email, #agree_gdpr,#strong').hide();
 
 			$('#username_email, #remember, #forgotPassword').show();
 
@@ -7181,3 +7181,51 @@
 
 })(jQuery);
 
+function checkStrength(password) {
+  let strength = 0;
+
+  if (password.length >= 8) strength++;
+  if (/[A-Z]/.test(password)) strength++;
+  if (/[0-9]/.test(password)) strength++;
+  if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+  const fill = document.getElementById("strengthFill");
+  const text = document.getElementById("strengthText");
+
+  if (password.length === 0) {
+    fill.style.width = "0%";
+    text.innerText = "Very Weak";
+    return;
+  }
+
+  switch (strength) {
+    case 1:
+      fill.style.width = "20%";
+      fill.style.background = "#ff3b3b"; // red
+      text.innerText = "Very Weak";
+      break;
+
+    case 2:
+      fill.style.width = "45%";
+      fill.style.background = "#ff9f1c"; // orange
+      text.innerText = "Weak";
+      break;
+
+    case 3:
+      fill.style.width = "70%";
+      fill.style.background = "#f1c40f"; // yellow
+      text.innerText = "Medium";
+      break;
+
+    case 4:
+      fill.style.width = "100%";
+      fill.style.background = "#2ecc71"; // green
+      text.innerText = "Strong";
+      break;
+
+    default:
+      fill.style.width = "20%";
+      fill.style.background = "#ff3b3b";
+      text.innerText = "Very Weak";
+  }
+}

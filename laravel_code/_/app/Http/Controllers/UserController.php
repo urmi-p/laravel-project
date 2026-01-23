@@ -45,6 +45,8 @@ use App\Notifications\AdminWithdrawalPending;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Notifications\AdminVerificationPending;
 
+use Illuminate\Validation\Rules\Password;
+
 class UserController extends Controller
 {
   use Traits\UserDelete, Traits\Functions;
@@ -652,7 +654,14 @@ class UserController extends Controller
 
     $validator = Validator::make($input, [
       'old_password' => $passwordRequired . 'min:6',
-      'new_password' => 'required|min:6',
+      //'new_password' => 'required|min:6',
+      'new_password' => [
+        'required',
+        Password::min(8)
+          ->mixedCase()
+          ->numbers()
+          ->symbols(),
+      ],
       'confirm_password' => 'required|same:new_password',
     ], [
         'confirm_password.same' => __('general.password_not_match'),
