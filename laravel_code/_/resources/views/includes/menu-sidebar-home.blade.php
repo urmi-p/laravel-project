@@ -19,6 +19,7 @@
 			</a>
 		</div>
 	</li>
+	@if (auth()->user()->verified_id == 'yes')
 	<li class="sidebar-card">
 		<div class="card-icon">
 			<i class="fas fa-dollar-sign"></i>
@@ -28,6 +29,7 @@
 			<strong>{{ Helper::amountFormatDecimal(auth()->user()->balance) }}</strong>
 		</div>
 	</li>
+	@endif
 
 	{{-- WALLET BALANCE --}}
 	<li class="sidebar-card">
@@ -117,9 +119,11 @@
 			<span class="ml-2">{{ __('admin.subscriptions') }}</span>
 		</a>
 	</li>
+	
+	@if (auth()->user()->verified_id == 'yes')
 	<li class="sidebar_li">
 		<a href="{{ url('settings/subscription') }}" @if (request()->is('settings/subscription')) class="active disabled" @endif>
-			<i class="bi bi-cash-stack mr-2"></i>
+			<i class="bi bi-cash-stack"></i>
 			<span class="ml-2">{{ __('general.subscription_price') }}</span>
 		</a>
 	</li>
@@ -133,6 +137,7 @@
 			<span class="ml-2">{{ __('admin.commission') }}</span>
 		</a>
 	</li>
+	@endif
 	<li class="sidebar_li">
 		<a href="{{ url('my/balance') }}"
 			class="@if (request()->is('my/balance')) active @endif">
@@ -151,7 +156,7 @@
 	</li>
 	<li class="sidebar_li">
 		<a href="{{auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light')}}">
-			<i class="feather icon-{{ auth()->user()->dark_mode == 'off' ? 'moon' : 'sun'  }} mr-2"></i>
+			<i class="feather icon-{{ auth()->user()->dark_mode == 'off' ? 'moon' : 'sun'  }}"></i>
 			<span class="ml-2">{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }} </span>
 		</a>
 	</li>
@@ -163,7 +168,7 @@
 	</li>
 	<li class="sidebar_li">
 		<a href="{{ url('logout') }}">
-			<i class="feather icon-log-out mr-2"></i>
+			<i class="feather icon-log-out"></i>
 			<span class="ml-2">{{ __('auth.logout') }}</span>
 		</a>
 	</li>

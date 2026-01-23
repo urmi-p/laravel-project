@@ -27,8 +27,24 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.fileuploader-icon-main:before {
+/* .fileuploader-icon-main:before {
 	content: "\e900";
+} */
+ .fileuploader-icon-main::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+
+    background: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'>\
+<path d='M17.3346 2.6665H12.0013C5.33464 2.6665 2.66797 5.33317 2.66797 11.9998V19.9998C2.66797 26.6665 5.33464 29.3332 12.0013 29.3332H20.0013C26.668 29.3332 29.3346 26.6665 29.3346 19.9998V13.3332' stroke='%23E2394C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>\
+<g opacity='0.4'>\
+<path d='M24 10.6665V2.6665L26.6667 5.33317' stroke='%23E2394C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>\
+<path d='M23.9987 2.6665L21.332 5.33317' stroke='%23E2394C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>\
+</g>\
+<path opacity='0.4' d='M3.55859 25.2666L10.1319 20.8532C11.1853 20.1466 12.7053 20.2266 13.6519 21.0399L14.0919 21.4266C15.1319 22.3199 16.8119 22.3199 17.8519 21.4266L23.3986 16.6666C24.4386 15.7732 26.1186 15.7732 27.1586 16.6666L29.3319 18.5332' stroke='%23E2394C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>\
+</svg>") no-repeat center / contain;
 }
 .fileuploader-icon-alert:before {
 	content: "\e901";

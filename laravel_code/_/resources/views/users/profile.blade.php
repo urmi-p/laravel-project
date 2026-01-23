@@ -242,13 +242,13 @@
                             @endif --}}
 
                             {{-- for test --}}
-                            <a href="javascript:void(0);" data-toggle="modal" data-target="#subscriptionForm"
+                            <!-- <a href="javascript:void(0);" data-toggle="modal" data-target="#subscriptionForm"
                                 class="btn btn-primary btn-profile mr-1">
 
                                 <i class="feather icon-unlock mr-1"></i>
                                 {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'))]) }}
 
-                            </a>
+                            </a> -->
                             {{-- end for test --}}
 
                             @if (
@@ -1454,13 +1454,26 @@
 
                 </div><!-- col-lg-4 -->
                 <div class="col-lg-8 wrap-post">
+                    <!-- for testing top alert message of subscription -->
+                    <!-- <div class="alert alert-danger mb-3 no_sub_msg">
 
+                        <ul class="list-unstyled m-0">
+
+                            <li><i class="fa fa-exclamation-triangle"></i> {{ __('general.alert_not_subscription') }}
+                                <a href="{{ url('settings/subscription') }}"
+                                    class="text-white link-border">{{ __('general.activate') }}</a>
+                            </li>
+
+                        </ul>
+
+                    </div> -->
+                     <!-- end for testing top alert message of subscription -->
                     @if (auth()->check() &&
                             auth()->id() == $user->id &&
                             !$userPlanMonthlyActive &&
                             auth()->user()->free_subscription == 'no')
 
-                        <div class="alert alert-danger mb-3">
+                        <div class="alert alert-danger mb-3 no_sub_msg">
 
                             <ul class="list-unstyled m-0">
 
@@ -1480,24 +1493,33 @@
 
                     @endif --}}
 
+                        <!-- for test start -->
+                        <!-- <div class="my-5 text-center no-updates main-no-updates">
+                            <div class="sub-no-updates">
+                                <span class="btn-block mb-3">
 
+                                    <i class="fa fa-photo-video ico-no-result bg_black"></i>
 
+                                </span>
+
+                                <h4 class="font_weight_400 font_size_18">{{ __('general.no_posts_posted') }}</h4>
+                            </div>
+                        </div> -->
+                        <!-- for test end -->
                     @if ($updates->count() == 0 || ($updates->count() == 0 && $media))
 
                         <div class="grid-updates"></div>
 
+                        <div class="my-5 text-center no-updates main-no-updates">
+                            <div class="sub-no-updates">
+                                <span class="btn-block mb-3">
 
+                                    <i class="fa fa-photo-video ico-no-result bg_black"></i>
 
-                        <div class="my-5 text-center no-updates">
+                                </span>
 
-                            <span class="btn-block mb-3">
-
-                                <i class="fa fa-photo-video ico-no-result"></i>
-
-                            </span>
-
-                            <h4 class="font-weight-light">{{ __('general.no_posts_posted') }}</h4>
-
+                                <h4 class="font_weight_400 font_size_18">{{ __('general.no_posts_posted') }}</h4>
+                            </div>
                         </div>
                     @else
                         @if ((!request()->get('sort') && $totalPosts > $settings->number_posts_show) || request()->get('sort'))
@@ -1550,16 +1572,15 @@
 
                         @if (auth()->guest() && !$user->posts_privacy)
 
-                            <div class="my-5 text-center no-updates">
+                            <div class="my-5 text-center no-updates main-no-updates">
 
-                                <span class="btn-block mb-3">
-
-                                    <i class="fa fa-lock ico-no-result"></i>
-
-                                </span>
-
-                                <h4 class="font-weight-light">
-                                    {{ __('general.alert_posts_privacy', ['user' => '@' . $user->username]) }}</h4>
+                                <div class="sub-no-updates">
+                                    <span class="btn-block mb-3">
+                                        <i class="fa fa-lock ico-no-result bg_black"></i>
+                                    </span>
+                                    <h4 class="font_weight_400 font_size_18">
+                                        {{ __('general.alert_posts_privacy', ['user' => '@' . $user->username]) }}</h4>
+                                </div>
 
                             </div>
                         @else
@@ -1891,7 +1912,7 @@
 
                             </span>
 
-                            <h4 class="font-weight-light">{{ __('general.no_results_found') }}</h4>
+                            <h4 class="font_weight_400 font_size_18">{{ __('general.no_results_found') }}</h4>
 
 
 
@@ -2090,9 +2111,7 @@
 
                         </span>
 
-                        <h4 class="font-weight-light">{{ __('general.no_results_found') }}</h4>
-
-
+                        <h4 class="font_weight_400 font_size_18">{{ __('general.no_results_found') }}</h4>
 
                         @if (auth()->check() && auth()->user()->verified_id == 'yes' && auth()->id() == $user->id)
 

@@ -150,12 +150,13 @@
                 @else
                     <div class="col-md-12">
 
-                        <div class="my-5 text-center no-updates">
-
-                            <span class="btn-block mb-3">
-                                <i class="feather icon-shopping-bag ico-no-result"></i>
-                            </span>
-                            <h4 class="font-weight-light">{{ trans('general.no_results_found') }}</h4>
+                        <div class="my-5 text-center no-updates main-no-updates">
+                            <div class="sub-no-updates">
+                                <span class="btn-block mb-3">
+                                    <i class="feather icon-shopping-bag ico-no-result bg_black"></i>
+                                </span>
+                                <h4 class="font_weight_400 font_size_18">{{ trans('general.no_results_found') }}</h4>
+                            </div>
                         </div>
                     </div>
                 @endif

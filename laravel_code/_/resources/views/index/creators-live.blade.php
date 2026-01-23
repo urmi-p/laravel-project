@@ -92,16 +92,16 @@
             </p>
           </div>
         </div>
-        <div class="my-5 text-center no-updates">
-
+        <div class="my-5 text-center no-updates main-no-updates">
+          <div class="sub-no-updates">
           <span class="btn-block mb-3">
 
-            <i class="bi bi-broadcast ico-no-result"></i>
+            <i class="bi bi-broadcast ico-no-result bg_black"></i>
 
           </span>
 
-          <h4 class="font-weight-light">{{trans('general.no_live_streams')}}</h4>
-
+          <h4 class="font_weight_400 font_size_18">{{trans('general.no_live_streams')}}</h4>
+          </div>
         </div>
 
       </div>

@@ -53,11 +53,13 @@
                     @else
                         <div class="grid-updates position-relative" id="updatesPaginator"></div>
 
-                        <div class="my-5 text-center no-updates">
-                            <span class="btn-block mb-3">
-                                <i class="fa fa-photo-video ico-no-result"></i>
-                            </span>
-                            <h4 class="font-weight-light">{{ __('general.no_posts_posted') }}</h4>
+                        <div class="my-5 text-center no-updates main-no-updates">
+                            <div class="sub-no-updates">
+                                <span class="btn-block mb-3">
+                                    <i class="fa fa-photo-video ico-no-result bg_black"></i>
+                                </span>
+                                <h4 class="font_weight_400 font_size_18">{{ __('general.no_posts_posted') }}</h4>
+                            </div>
                         </div>
 
                         @if (request()->is('/') && auth()->guest())

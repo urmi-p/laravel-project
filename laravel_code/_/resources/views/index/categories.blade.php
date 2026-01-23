@@ -42,11 +42,13 @@
                         <p class="lead text-muted mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
                     </div>
                 </div>
-                <div class="my-5 text-center no-updates">
+                <div class="my-5 text-center no-updates main-no-updates">
+                    <div class="sub-no-updates">
                     <span class="btn-block mb-3">
-                        <i class="fa fa-user-slash ico-no-result"></i>
+                        <i class="fa fa-user-slash ico-no-result bg_black"></i>
                     </span>
-                    <h4 class="font-weight-light">{{trans('general.not_found_creators_category')}}</h4>
+                    <h4 class="font_weight_400 font_size_18">{{trans('general.not_found_creators_category')}}</h4>
+                    </div>
                 </div>
             </div>
             @endif
