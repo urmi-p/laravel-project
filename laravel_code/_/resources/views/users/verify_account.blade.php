@@ -132,7 +132,7 @@
 
         @else
 
-          <div class="alert alert-danger">
+          <div class="alert alert-danger no_sub_msg">
           <span class="alert-inner--text"><i class="fa fa-exclamation-triangle mr-1"></i> {{__('general.complete_profile_alert')}}</span>
 
           <ul class="list-unstyled">
