@@ -1812,104 +1812,56 @@
 
 	$(document).on('keypress', '.comments', function (e) {
 
-
-
 		if (e.which == 13) {
 
-
-
 			var element = $(this);
+			const card = element.closest('.card');
+			var isReplyTo = card.find('.container-comments .isReplyTo');
 
-			var isReplyTo = element.parents('.container-comments ').find('.isReplyTo');
-
-			var inputIsReply = element.parents('.container-comments ').find('.isReply');
+			var inputIsReply = card.find('.container-comments .isReply');
 
 			e.preventDefault();
 
 			element.blur();
 
-
-
-			element.parents('.card-footer').find('.blocked').show();
-
-
+			card.find('.comment_show_or_hide .blocked').show();
 
 			$.ajax({
-
 				headers: {
-
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
 				},
-
 				type: "POST",
-
 				url: URL_BASE + "/comment/store",
-
 				dataType: 'json',
-
-				data: element.parents('.card-footer').find(".comments-form").serialize(),
-
+				data: card.find(".comment_show_or_hide .comments-form").serialize(),
 				success: function (result) {
-
-
-
 					if (result.success) {
-
-						element.parents('.card-footer').find('.comments').val('');
-
-						element.parents('.card-footer').find('.dangerAlertComments').fadeOut(1);
-
-
+						card.find('.comment_show_or_hide .comments').val('');
+                        card.find('.comment_show_or_hide .dangerAlertComments').fadeOut(1);
 
 						if (result.isReply) {
-
-							element.parents('.card-footer').find('.wrap-comments' + result.idComment).append(result.data);
-
-							jQuery(".timeAgo").timeago();
-
+							card.find('.wrap-comments' + result.idComment).append(result.data);
 						} else {
-
-							element.parents('.card-footer').find('.container-media').append(result.data);
-
-							jQuery(".timeAgo").timeago();
-
+							card.find('.container-media').append(result.data);
 						}
-
-
-
-						element.parents('.card-footer').find('.totalComments').html(result.total);
-
-						element.parents('.card-footer').find('.blocked').hide();
-
+						jQuery(".timeAgo").timeago();
+						card.find('.totalComments').html(result.total);
+						card.find('.comment_show_or_hide .blocked').hide();
 						isReplyTo.slideUp(50);
 
 						inputIsReply.val('');
-
-
-
 					} else {
-
 						var error = '';
-
 						var $key = '';
-
-
 
 						for ($key in result.errors) {
 
 							error += '<li><i class="fa fa-times-circle"></i> ' + result.errors[$key] + '</li>';
 
 						}
-
-
-
-						element.parents('.card-footer').find('.showErrorsComments').html(error);
-
-						element.parents('.card-footer').find('.dangerAlertComments').fadeIn(500);
-
-						element.parents('.card-footer').find('.blocked').hide();
-
+						card.find('.showErrorsComments').html(error);
+						card.find('.dangerAlertComments').fadeIn(500);
+						card.find('.comment_show_or_hide .blocked').hide();
 					}
 
 				}//<-- RESULT
@@ -1928,57 +1880,36 @@
 
 	});//<----- CLICK
 
-
-
 	// Comment Btn Focus
-
 	$(document).on('click', '.comment-btn-focus', function (e) {
-
-
-
 		var element = $(this);
+		const card = element.closest('.card');
 
+    	const $value = card.find('.card-footer .comments');
 
-
-		$value = element.parents('.card-footer').find('.comments');
-
-		scrollElement($value);
-
+    	scrollElement($value);
 		$value.focus();
-
 	});//<----- CLICK
-
 
 
 	//<----- DELETE REPLY
 
 	$(document).on('click', '.delete-replies', function (e) {
 
-
-
 		e.preventDefault();
 
-
-
 		var element = $(this);
-
+		const card = element.closest('.card');
+		const media = element.closest('.media');
 		var id = element.attr("data");
 
 		element.blur();
 
-
-
 		$.ajaxSetup({
-
 			headers: {
-
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
 			}
-
 		});
-
-
 
 		swal(
 
@@ -2011,14 +1942,17 @@
 					$.post(URL_BASE + "/reply/delete/" + id, function (data) {
 
 						if (data.success) {
-
-							element.parents('.media').fadeOut(400, function () {
-
-								element.parents('.card-footer').find('.totalComments').html(data.total);
-
-								element.parents('.media').remove();
-
+							media.fadeOut(400, function () {
+								card.find('.totalComments').html(data.total);
+								media.remove();
 							});
+							// element.parents('.media').fadeOut(400, function () {
+
+							// 	element.parents('.card-footer').find('.totalComments').html(data.total);
+
+							// 	element.parents('.media').remove();
+
+							// });
 
 						} else {
 
@@ -2039,19 +1973,11 @@
 	});//<----- DELETE REPLY
 
 
-
-
-
 	// Maximum length Update Edit Post
 
 	$('.updateDescription').on('keyup', function () {
 
-
-
 		var element = $(this).val();
-
-
-
 		if (trim(element).length >= 1) {
 
 			$(this).parents('form').find('.btnEditUpdate, .btnEditComment').removeAttr('disabled').removeClass('e-none');
@@ -2061,17 +1987,11 @@
 		} else {
 
 			$(this).parents('form').find('.btnEditUpdate, .btnEditComment').attr({ 'disabled': 'true' }).addClass('e-none');
-
 			return false;
-
 		}
-
 	});
 
-
-
 	// Maximum length Update
-
 	$(document).on('keyup', '#updateDescription', function () {
 
 		var element = $(this).val();
@@ -2099,12 +2019,8 @@
 	});
 
 
-
 	// Maximum length Post
-
 	$('#updateDescription').on('keyup', function () {
-
-
 
 		var characterCount = $(this).val().length,
 
@@ -2345,8 +2261,6 @@
 								element.parents('.card-footer').find('.totalComments').html(data.total);
 
 								element.parents('.wrapComments').remove();
-
-
 
 								if (inputIsReply.val() === id && type === 'isComment') {
 
@@ -4823,17 +4737,13 @@
 
 	//======= END FILE FORM W-9
 
-
-
 	// Toogle Comments
-
 	$(document).on('click', '.toggleComments', function () {
-
-		$(this).parents('.card-footer').find('.container-comments').toggleClass('display-none');
+		const element = $(this);
+		const card = element.closest('.card');
+		card.find('.container-comments').toggleClass('display-none');
 
 	});
-
-
 
 	// Hide Tooltip
 

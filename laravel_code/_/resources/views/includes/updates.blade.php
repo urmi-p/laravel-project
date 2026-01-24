@@ -72,6 +72,8 @@ $nth = 0; // nth foreach nth-child(3n-1)
     data="{{ $response->id }}">
     <div class="card-updates-cover-image">
         <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img">
+
+        <!-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> -->
         <div class="mb-0 font-montserrat" class="post-options">
             @if (auth()->check() && auth()->user()->id == $response->creator->id)
             <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
@@ -332,157 +334,159 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
             @if ($response->status == 'active')
 
-            <div class="card-footer action-pill mt-2">
-                @php
+                <div class="card-footer action-pill mt-2">
+                    @php
 
-                $likeActive =
-                auth()->check() &&
-                auth()
-                ->user()
-                ->likes()
-                ->where('updates_id', $response->id)
-                ->where('status', '1')
-                ->first();
+                    $likeActive =
+                    auth()->check() &&
+                    auth()
+                    ->user()
+                    ->likes()
+                    ->where('updates_id', $response->id)
+                    ->where('status', '1')
+                    ->first();
 
-                $bookmarkActive =
-                auth()->check() &&
-                auth()->user()->bookmarks()->where('updates_id', $response->id)->first();
+                    $bookmarkActive =
+                    auth()->check() &&
+                    auth()->user()->bookmarks()->where('updates_id', $response->id)->first();
 
-                if (
-                (auth()->check() && auth()->user()->id == $response->creator->id) ||
-                (auth()->check() &&
-                $response->locked == 'yes' &&
-                $checkUserSubscription &&
-                $response->price == 0.0) ||
-                (auth()->check() &&
-                $response->locked == 'yes' &&
-                $checkUserSubscription &&
-                $response->price != 0.0 &&
-                $checkPayPerView) ||
-                (auth()->check() &&
-                $response->locked == 'yes' &&
-                $response->price != 0.0 &&
-                !$checkUserSubscription &&
-                $checkPayPerView) ||
-                (auth()->check() &&
-                auth()->user()->role == 'admin' &&
-                auth()->user()->permission == 'all') ||
-                (auth()->check() && $response->locked == 'no')
-                ) {
-                $buttonLike = 'likeButton';
+                    if (
+                    (auth()->check() && auth()->user()->id == $response->creator->id) ||
+                    (auth()->check() &&
+                    $response->locked == 'yes' &&
+                    $checkUserSubscription &&
+                    $response->price == 0.0) ||
+                    (auth()->check() &&
+                    $response->locked == 'yes' &&
+                    $checkUserSubscription &&
+                    $response->price != 0.0 &&
+                    $checkPayPerView) ||
+                    (auth()->check() &&
+                    $response->locked == 'yes' &&
+                    $response->price != 0.0 &&
+                    !$checkUserSubscription &&
+                    $checkPayPerView) ||
+                    (auth()->check() &&
+                    auth()->user()->role == 'admin' &&
+                    auth()->user()->permission == 'all') ||
+                    (auth()->check() && $response->locked == 'no')
+                    ) {
+                    $buttonLike = 'likeButton';
 
-                $buttonBookmark = 'btnBookmark';
-                } else {
-                $buttonLike = null;
+                    $buttonBookmark = 'btnBookmark';
+                    } else {
+                    $buttonLike = null;
 
-                $buttonBookmark = null;
-                }
-                @endphp
+                    $buttonBookmark = null;
+                    }
+                    @endphp
 
-                <a class="action-pill pulse-btn btnLike @if ($likeActive) active @endif {{ $buttonLike }}"
-                    href="javascript:void(0);"
-                    @guest data-toggle="modal" data-target="#loginFormModal" @endguest
-                    @auth data-id="{{ $response->id }}" @endauth>
+                    <a class="action-pill pulse-btn btnLike @if ($likeActive) active @endif {{ $buttonLike }}"
+                        href="javascript:void(0);"
+                        @guest data-toggle="modal" data-target="#loginFormModal" @endguest
+                        @auth data-id="{{ $response->id }}" @endauth>
 
-                    <i class="@if ($likeActive) bi @else bi @endif bi-hand-thumbs-up-fill"></i>
-                    <span class="action-count">{{ $totalLikes }}</span>
-                </a>
+                        <i class="@if ($likeActive) bi @else bi @endif bi-hand-thumbs-up-fill"></i>
+                        <span class="action-count">{{ $totalLikes }}</span>
+                    </a>
 
-                @if (!$settings->hide_comments)
-                <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
-                    <i class="bi bi-chat-text"></i><span class="action-count">{{ $totalComments }}</span>
-                </span>
-                @endif
-                <a class="text-white-force action-pill pulse-btn text-decoration-none" href="javascript:void(0);"
-                    title="{{ __('general.share') }}" data-toggle="modal"
-                    data-target="#sharePost{{ $response->id }}">
-                    <i class="fas fa-share"></i><span class="action-count">Shares</span>
-                </a>
-                <!-- Share modal -->
-                <div class="modal fade" id="sharePost{{ $response->id }}" tabindex="-1" role="dialog"
-                    aria-hidden="true">
+                    @if (!$settings->hide_comments)
+                    <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                        <i class="bi bi-chat-text"></i><span class="action-count">{{ $totalComments }}</span>
+                    </span>
+                    @endif
+                    <a class="text-white-force action-pill pulse-btn text-decoration-none" href="javascript:void(0);"
+                        title="{{ __('general.share') }}" data-toggle="modal"
+                        data-target="#sharePost{{ $response->id }}">
+                        <i class="fas fa-share"></i><span class="action-count">Shares</span>
+                    </a>
+                    <!-- Share modal -->
+                    <div class="modal fade" id="sharePost{{ $response->id }}" tabindex="-1" role="dialog"
+                        aria-hidden="true">
 
-                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-dialog modal-dialog-centered">
 
-                        <div class="modal-content">
+                            <div class="modal-content">
 
-                            <div class="modal-header border-bottom-0">
+                                <div class="modal-header border-bottom-0">
 
-                                <button type="button" class="close close-inherit" data-dismiss="modal"
-                                    aria-label="Close">
+                                    <button type="button" class="close close-inherit" data-dismiss="modal"
+                                        aria-label="Close">
 
-                                    <span aria-hidden="true"><i class="bi bi-x-lg"></i></span>
+                                        <span aria-hidden="true"><i class="bi bi-x-lg"></i></span>
 
-                                </button>
+                                    </button>
 
-                            </div>
+                                </div>
 
-                            <div class="modal-body">
+                                <div class="modal-body">
 
-                                <div class="container-fluid">
+                                    <div class="container-fluid">
 
-                                    <div class="row">
+                                        <div class="row">
 
-                                        <div class="col-md-3 col-6 mb-3">
+                                            <div class="col-md-3 col-6 mb-3">
 
-                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
-                                                title="Facebook" target="_blank"
-                                                class="social-share text-muted d-block text-center h6">
+                                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
+                                                    title="Facebook" target="_blank"
+                                                    class="social-share text-muted d-block text-center h6">
 
-                                                <i class="fab fa-facebook-square facebook-btn"></i>
+                                                    <i class="fab fa-facebook-square facebook-btn"></i>
 
-                                                <span class="btn-block mt-3">Facebook</span>
+                                                    <span class="btn-block mt-3">Facebook</span>
 
-                                            </a>
+                                                </a>
+
+                                            </div>
+
+                                            <div class="col-md-3 col-6 mb-3">
+
+                                                <a href="https://twitter.com/intent/tweet?url={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}&text={{ e($response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name) }}"
+                                                    data-url="{{ url($response->creator->username . '/post', $response->id) }}"
+                                                    class="social-share text-muted d-block text-center h6"
+                                                    target="_blank" title="Twitter">
+
+                                                    <i class="bi-twitter-x text-dark"></i> <span
+                                                        class="btn-block mt-3">Twitter</span>
+
+                                                </a>
+
+                                            </div>
+
+                                            <div class="col-md-3 col-6 mb-3">
+
+                                                <a href="whatsapp://send?text={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
+                                                    data-action="share/whatsapp/share"
+                                                    class="social-share text-muted d-block text-center h6"
+                                                    title="WhatsApp">
+
+                                                    <i class="fab fa-whatsapp btn-whatsapp"></i> <span
+                                                        class="btn-block mt-3">WhatsApp</span>
+
+                                                </a>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-3 col-6 mb-3">
+
+                                                <a href="sms:?&body={{ __('general.check_this') }} {{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
+                                                    class="social-share text-muted d-block text-center h6"
+                                                    title="{{ __('general.sms') }}">
+
+                                                    <i class="fa fa-sms"></i> <span
+                                                        class="btn-block mt-3">{{ __('general.sms') }}</span>
+
+                                                </a>
+
+                                            </div>
 
                                         </div>
 
-                                        <div class="col-md-3 col-6 mb-3">
 
-                                            <a href="https://twitter.com/intent/tweet?url={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}&text={{ e($response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name) }}"
-                                                data-url="{{ url($response->creator->username . '/post', $response->id) }}"
-                                                class="social-share text-muted d-block text-center h6"
-                                                target="_blank" title="Twitter">
-
-                                                <i class="bi-twitter-x text-dark"></i> <span
-                                                    class="btn-block mt-3">Twitter</span>
-
-                                            </a>
-
-                                        </div>
-
-                                        <div class="col-md-3 col-6 mb-3">
-
-                                            <a href="whatsapp://send?text={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
-                                                data-action="share/whatsapp/share"
-                                                class="social-share text-muted d-block text-center h6"
-                                                title="WhatsApp">
-
-                                                <i class="fab fa-whatsapp btn-whatsapp"></i> <span
-                                                    class="btn-block mt-3">WhatsApp</span>
-
-                                            </a>
-
-                                        </div>
-
-
-
-                                        <div class="col-md-3 col-6 mb-3">
-
-                                            <a href="sms:?&body={{ __('general.check_this') }} {{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
-                                                class="social-share text-muted d-block text-center h6"
-                                                title="{{ __('general.sms') }}">
-
-                                                <i class="fa fa-sms"></i> <span
-                                                    class="btn-block mt-3">{{ __('general.sms') }}</span>
-
-                                            </a>
-
-                                        </div>
 
                                     </div>
-
-
 
                                 </div>
 
@@ -492,121 +496,129 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
                     </div>
 
-                </div>
+                    <!-- modal share -->
+                    <a href="javascript:void(0);"
+                        @guest data-toggle="modal" data-target="#loginFormModal" @endguest
+                        class="text-white-force action-pill pulse-btn @if ($bookmarkActive) text-primary @else text-muted @endif float-right {{ $buttonBookmark }}"
+                        @auth data-id="{{ $response->id }}" @endauth>
 
-                <!-- modal share -->
-                <a class="text-white-force" href="javascript:void(0);"
-                    @guest data-toggle="modal" data-target="#loginFormModal" @endguest
-                    class="action-pill pulse-btn @if ($bookmarkActive) text-primary @else text-muted @endif float-right {{ $buttonBookmark }}"
-                    @auth data-id="{{ $response->id }}" @endauth>
+                        <i class="@if ($bookmarkActive) fas @else far @endif fa-bookmark"></i>
+                        <span class="action-count">Bookmarks</span>
+                    </a>
 
-                    <i class="@if ($bookmarkActive) fas @else far @endif fa-bookmark"></i>
-                    <span class="action-count">Bookmarks</span>
-                </a>
+                    @auth
 
-                @auth
+                    @if (
+                    (auth()->user()->id != $response->creator->id &&
+                    $checkUserSubscription &&
+                    $response->price == 0.0 &&
+                    $settings->disable_tips == 'off') ||
+                    (auth()->user()->id != $response->creator->id &&
+                    $checkUserSubscription &&
+                    $response->price != 0.0 &&
+                    $checkPayPerView &&
+                    $settings->disable_tips == 'off') ||
+                    (auth()->check() &&
+                    $response->locked == 'yes' &&
+                    $response->price != 0.0 &&
+                    !$checkUserSubscription &&
+                    $checkPayPerView &&
+                    $settings->disable_tips == 'off') ||
+                    (auth()->user()->id != $response->creator->id && $response->locked == 'no' && $settings->disable_tips == 'off'))
+                    <a class="action-pill text-white-force pulse-btn text-muted text-decoration-none" href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
+                        data-target="#tipForm" 
+                        @auth data-id="{{ $response->id }}" data-cover="{{ Helper::getFile(config('path.cover') . $response->creator->cover) }}" data-avatar="{{ Helper::getFile(config('path.avatar') . $response->creator->avatar) }}" data-name="{{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}" data-userid="{{ $response->creator->id }}" @endauth>
 
-                @if (
-                (auth()->user()->id != $response->creator->id &&
-                $checkUserSubscription &&
-                $response->price == 0.0 &&
-                $settings->disable_tips == 'off') ||
-                (auth()->user()->id != $response->creator->id &&
-                $checkUserSubscription &&
-                $response->price != 0.0 &&
-                $checkPayPerView &&
-                $settings->disable_tips == 'off') ||
-                (auth()->check() &&
-                $response->locked == 'yes' &&
-                $response->price != 0.0 &&
-                !$checkUserSubscription &&
-                $checkPayPerView &&
-                $settings->disable_tips == 'off') ||
-                (auth()->user()->id != $response->creator->id && $response->locked == 'no' && $settings->disable_tips == 'off'))
-                <a class="action-pill" class="text-white-force" href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
-                    data-target="#tipForm" class="pulse-btn text-muted text-decoration-none"
-                    @auth data-id="{{ $response->id }}" data-cover="{{ Helper::getFile(config('path.cover') . $response->creator->cover) }}" data-avatar="{{ Helper::getFile(config('path.avatar') . $response->creator->avatar) }}" data-name="{{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}" data-userid="{{ $response->creator->id }}" @endauth>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                        fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
 
-                        <path
-                            d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
+                            <path fill-rule="evenodd"
+                                d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
 
-                        <path fill-rule="evenodd"
-                            d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path fill-rule="evenodd"
+                                d="M8 13.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
 
-                        <path fill-rule="evenodd"
-                            d="M8 13.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-
-                    </svg>
-                    <span class="action-count">@lang('general.tip')</span>
-                </a>
-                @endif
-                @endauth
-
-                <div class="w-100 mb-3 containerLikeComment ">
-
-                    @if (!$settings->hide_total_likes)
-                    <span class="countLikes text-muted dot-item action-pill">
-
-                        {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
-
-                    </span>
+                        </svg>
+                        <span class="action-count">@lang('general.tip')</span>
+                    </a>
                     @endif
+                    @endauth
 
-                    @if ($response->video_views)
-                    <span class="text-muted dot-item action-pill">
+                    <div class="w-100 mb-3 containerLikeComment ">
 
-                        <i class="bi-play mr-1"></i> {{ Helper::formatNumber($response->video_views) }}
+                        @if (!$settings->hide_total_likes)
+                        <span class="countLikes text-muted dot-item action-pill">
 
-                    </span>
-                    @endif
+                            {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
 
-                </div>
+                        </span>
+                        @endif
 
+                        @if ($response->video_views)
+                        <span class="text-muted dot-item action-pill">
 
+                            <i class="bi-play mr-1"></i> {{ Helper::formatNumber($response->video_views) }}
 
-                @auth
-                @if (!auth()->user()->checkRestriction($response->creator->id) && !$settings->hide_comments)
-                <div class="container-comments @if (!isset($inPostDetail)) display-none @endif">
+                        </span>
+                        @endif
 
+                    </div>
+                </div><!-- card-footer -->
 
-                    <div class="container-media">
+            @endif
+        </div>
 
-                        @if ($response->comments->count() != 0)
-                        @php
-
-                        $comments = $response
-                        ->comments()
-
-                        ->with([
-                        'user:id,name,username,avatar,hide_name,verified_id',
-                        'replies',
-                        'likes',
-                        ])
-
-                        ->take($settings->number_comments_show)
-
-                        ->orderBy('id', 'DESC')
-                        ->get();
-
-                        $data = [];
-
-                        if ($comments->count()) {
-                        $data['reverse'] = collect($comments->values())->reverse();
-                        } else {
-                        $data['reverse'] = $comments;
-                        }
-
-                        $dataComments = $data['reverse'];
-
-                        $counter =
-                        $response->comments()->count() - $settings->number_comments_show;
-
-                        @endphp
+        <!-- for comment test start -->
+         <div class="comment_show_or_hide">
+            @auth
+                    @if (!auth()->user()->checkRestriction($response->creator->id) && !$settings->hide_comments)
+                    <div class="container-comments @if (!isset($inPostDetail)) display-none @endif">
 
 
+                        <div class="container-media">
+
+                            @if ($response->comments->count() != 0)
+                            @php
+
+                            $comments = $response->comments()->with([
+                            'user:id,name,username,avatar,hide_name,verified_id',
+                            'replies',
+                            'likes',
+                            ])->take($settings->number_comments_show)->orderBy('id', 'DESC')->get();
+
+                            $data = [];
+
+                            if ($comments->count()) {
+                            $data['reverse'] = collect($comments->values())->reverse();
+                            } else {
+                            $data['reverse'] = $comments;
+                            }
+
+                            $dataComments = $data['reverse'];
+
+                            $counter =
+                            $response->comments()->count() - $settings->number_comments_show;
+
+                            @endphp
+
+                            @if (auth()->user()->id == $response->creator->id ||
+                            ($response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
+                            ($response->locked == 'yes' && $checkUserSubscription && $response->price != 0.0 && $checkPayPerView) ||
+                            (auth()->check() &&
+                            $response->locked == 'yes' &&
+                            $response->price != 0.0 &&
+                            !$checkUserSubscription &&
+                            $checkPayPerView) ||
+                            (auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
+                            $response->locked == 'no')
+                            @include('includes.comments')
+                            @endif
+                            @endif
+
+                        </div><!-- container-media -->
 
                         @if (auth()->user()->id == $response->creator->id ||
                         ($response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
@@ -618,197 +630,142 @@ $nth = 0; // nth foreach nth-child(3n-1)
                         $checkPayPerView) ||
                         (auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
                         $response->locked == 'no')
-                        @include('includes.comments')
-                        @endif
-                        @endif
+                        <div class="alert alert-danger alert-small dangerAlertComments display-none">
 
-                    </div><!-- container-media -->
+                            <ul class="list-unstyled m-0 showErrorsComments"></ul>
 
+                        </div><!-- Alert -->
+                        <div class="isReplyTo display-none w-100 bg-light py-2 px-3 mb-3 rounded">
 
+                            {{ __('general.replying_to') }} <span class="username-reply"></span>
 
-                    @if (auth()->user()->id == $response->creator->id ||
-                    ($response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
-                    ($response->locked == 'yes' && $checkUserSubscription && $response->price != 0.0 && $checkPayPerView) ||
-                    (auth()->check() &&
-                    $response->locked == 'yes' &&
-                    $response->price != 0.0 &&
-                    !$checkUserSubscription &&
-                    $checkPayPerView) ||
-                    (auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
-                    $response->locked == 'no')
-                    <div class="alert alert-danger alert-small dangerAlertComments display-none">
+                            <span class="float-right c-pointer cancelReply"
+                                title="{{ __('admin.cancel') }}">
 
-                        <ul class="list-unstyled m-0 showErrorsComments"></ul>
+                                <i class="bi-x-lg"></i>
 
-                    </div><!-- Alert -->
-
-
-
-                    <div class="isReplyTo display-none w-100 bg-light py-2 px-3 mb-3 rounded">
-
-                        {{ __('general.replying_to') }} <span class="username-reply"></span>
-
-
-
-                        <span class="float-right c-pointer cancelReply"
-                            title="{{ __('admin.cancel') }}">
-
-                            <i class="bi-x-lg"></i>
-
-                        </span>
-
-                    </div>
-
-
-
-                    <div class="media position-relative pt-3 border-top">
-
-                        <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,
-                            ])></div>
-
-                        <span href="#" @class([ 'float-left' , 'd-none'=> !$response->creator->allow_comments,
-                            ])>
-
-                            <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
-                                class="rounded-circle mr-1 avatarUser" width="40">
-
-                        </span>
-
-                        <div class="media-body">
-
-
-
-                            @if (!$response->creator->allow_comments)
-                            <div class="p-2 text-center">
-
-                                {{ __('general.comments_disabled') }}
-
-                            </div>
-                            @endif
-
-
-
-                            <form action="{{ url('comment/store') }}" method="post"
-                                @class([ 'comments-form' , 'd-none'=> !$response->creator->allow_comments,
-                                ])>
-
-                                @csrf
-
-                                <input type="hidden" name="update_id"
-                                    value="{{ $response->id }}" />
-
-                                <input class="isReply" type="hidden" name="isReply"
-                                    value="" />
-
-                                <input class="sticker" type="hidden" name="sticker"
-                                    value="" />
-
-                                <input class="gif_image" type="hidden" name="gif_image"
-                                    value="" />
-
-
-
-                                <div class="position-absolute"
-                                    class="comment-icons">
-
-
-
-                                    @if ($settings->giphy_status)
-                                    <div class="dropdown">
-
-                                        <span class="triggerGif fs-20" role="button"
-                                            style="position: absolute; right: 70px; cursor: pointer;"
-                                            id="dropdownGif{{ $response->id }}"
-                                            data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-
-                                            <i class="bi-filetype-gif"></i>
-
-                                        </span>
-
-
-
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-emoji dropdown-gifs custom-scrollbar"
-                                            aria-labelledby="dropdownGif{{ $response->id }}">
-                                        </div>
-
-                                    </div>
-                                    @endif
-
-
-
-                                    <div class="dropdown">
-
-                                        <span class="triggerSticker fs-20" role="button"
-                                            style="position: absolute; right: 35px;  cursor: pointer;"
-                                            id="dropdownSticky{{ $response->id }}"
-                                            data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-
-                                            <i class="bi-sticky"></i>
-
-                                        </span>
-
-
-
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-emoji dropdown-stickers custom-scrollbar"
-                                            aria-labelledby="dropdownSticky{{ $response->id }}"></div>
-
-                                    </div>
-
-
-
-                                    <div class="dropdown">
-
-                                        <span class="triggerEmoji" data-toggle="dropdown">
-
-                                            <i class="bi-emoji-smile"></i>
-
-                                        </span>
-
-
-
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-emoji custom-scrollbar"
-                                            aria-labelledby="dropdownMenuButton">
-
-                                            @include('includes.emojis')
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                </div>
-
-
-
-                                <input type="text" name="comment"
-                                    class="form-control comments inputComment emojiArea border-0"
-                                    autocomplete="off"
-                                    placeholder="{{ __('general.write_comment') }}"
-                                    class="comment-input-padding">
+                            </span>
 
                         </div>
+                        <div class="media position-relative pt-3 border-top">
 
-                        </form>
+                            <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,])></div>
 
-                    </div>
+                            <span href="#" @class([ 'float-left' , 'd-none'=> !$response->creator->allow_comments,])>
+
+                                <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
+                                    class="rounded-circle mr-1 avatarUser" width="40">
+
+                            </span>
+
+                            <div class="media-body">
+
+                                @if (!$response->creator->allow_comments)
+                                <div class="p-2 text-center">
+
+                                    {{ __('general.comments_disabled') }}
+
+                                </div>
+                                @endif
+
+                                <form action="{{ url('comment/store') }}" method="post"
+                                    @class([ 'comments-form' , 'd-none'=> !$response->creator->allow_comments,])>
+
+                                    @csrf
+
+                                    <input type="hidden" name="update_id"
+                                        value="{{ $response->id }}" />
+
+                                    <input class="isReply" type="hidden" name="isReply"
+                                        value="" />
+
+                                    <input class="sticker" type="hidden" name="sticker"
+                                        value="" />
+
+                                    <input class="gif_image" type="hidden" name="gif_image"
+                                        value="" />
+
+                                    <div class="position-absolute comment-icons">
+
+                                        @if ($settings->giphy_status)
+                                        <div class="dropdown">
+
+                                            <span class="triggerGif fs-20" role="button"
+                                                style="position: absolute; right: 70px; cursor: pointer;"
+                                                id="dropdownGif{{ $response->id }}"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+
+                                                <i class="bi-filetype-gif"></i>
+
+                                            </span>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-emoji dropdown-gifs custom-scrollbar"
+                                                aria-labelledby="dropdownGif{{ $response->id }}">
+                                            </div>
+
+                                        </div>
+                                        @endif
+
+                                        <div class="dropdown">
+
+                                            <span class="triggerSticker fs-20" role="button"
+                                                style="position: absolute; right: 35px;  cursor: pointer;"
+                                                id="dropdownSticky{{ $response->id }}"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+
+                                                <i class="bi-sticky"></i>
+
+                                            </span>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-emoji dropdown-stickers custom-scrollbar"
+                                                aria-labelledby="dropdownSticky{{ $response->id }}"></div>
+
+                                        </div>
+                                        <div class="dropdown">
+
+                                            <span class="triggerEmoji" data-toggle="dropdown">
+
+                                                <i class="bi-emoji-smile"></i>
+
+                                            </span>
+
+
+
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-emoji custom-scrollbar"
+                                                aria-labelledby="dropdownMenuButton">
+
+                                                @include('includes.emojis')
+
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+
+
+
+                                    <input type="text" name="comment"
+                                        class="form-control comments inputComment emojiArea border-0 comment-input-padding"
+                                        autocomplete="off"
+                                        placeholder="{{ __('general.write_comment') }}"
+                                        >
+
+                            </div>
+
+                            </form>
+
+                        </div>
+                        @endif
+
+
+
+                    </div><!-- container-comments -->
                     @endif
-
-
-
-                </div><!-- container-comments -->
-                @endif
-
-
-
-                @endauth
-
-            </div><!-- card-footer -->
-
-            @endif
-        </div>
+                    @endauth
+         </div>
+        <!-- for comment test end -->
     </div>
     <div class="card-body">
 
@@ -1162,22 +1119,16 @@ $response->locked == 'no')
         </li>
         @endif
 
-
-
         @if ($media->type == 'music')
         <li class="list-inline-item"><i class="feather icon-mic"></i> {{ $countFilesAudio }}
         </li>
         @endif
-
-
 
         @if ($media->type == 'file')
         <li class="list-inline-item"><i class="far fa-file-archive"></i>
             {{ $media->file_size }}
         </li>
         @endif
-
-
 
         @if ($media->type == 'epub')
         <li class="list-inline-item"><i class="bi-book"></i> {{ $media->file_size }}</li>
@@ -1194,7 +1145,7 @@ $response->locked == 'no')
 
 
 
-{{-- @if ($response->status == 'active')
+        {{-- @if ($response->status == 'active')
             <div class="card-footer bg-white border-top-0 rounded-large">
 
                 <h4 class="mb-2">
@@ -1239,36 +1190,28 @@ $response->locked == 'no')
                         }
                     @endphp
 
-
-
                     <a class="pulse-btn btnLike @if ($likeActive) active @endif {{ $buttonLike }} text-muted"
-href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormModal" @endguest
-@auth data-id="{{ $response->id }}" @endauth>
+                    href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormModal" @endguest
+                    @auth data-id="{{ $response->id }}" @endauth>
+                        <i class="@if ($likeActive) bi @else bi @endif bi-hand-thumbs-up-fill"></i>
+                    </a>
 
-<i class="@if ($likeActive) fas @else far @endif fa-heart"></i>
+                    @if (!$settings->hide_comments)
+                    <span
+                        class="@auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled mr-14px @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
 
-</a>
+                        <i class="far fa-comment"></i>
 
+                    </span>
+                    @endif
 
+                    <a class="pulse-btn text-muted text-decoration-none mr-14px" href="javascript:void(0);"
+                        title="{{ __('general.share') }}" data-toggle="modal"
+                        data-target="#sharePost{{ $response->id }}">
 
-@if (!$settings->hide_comments)
-<span
-    class="@auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled mr-14px @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                        <i class="feather icon-share"></i>
 
-    <i class="far fa-comment"></i>
-
-</span>
-@endif
-
-
-
-<a class="pulse-btn text-muted text-decoration-none mr-14px" href="javascript:void(0);"
-    title="{{ __('general.share') }}" data-toggle="modal"
-    data-target="#sharePost{{ $response->id }}">
-
-    <i class="feather icon-share"></i>
-
-</a>
+                    </a>
 
 
 
@@ -1556,7 +1499,7 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
 
 
 
-                <div class="position-absolute" class="comment-icons">
+                <div class="position-absolute comment-icons">
 
 
 
@@ -1628,9 +1571,8 @@ href="javascript:void(0);" @guest data-toggle="modal" data-target="#loginFormMod
 
 
                 <input type="text" name="comment"
-                    class="form-control comments inputComment emojiArea border-0"
-                    autocomplete="off" placeholder="{{ __('general.write_comment') }}"
-                    class="comment-input-padding">
+                    class="form-control comments inputComment emojiArea border-0 comment-input-padding"
+                    autocomplete="off" placeholder="{{ __('general.write_comment') }}">
 
         </div>
 

@@ -4679,3 +4679,11 @@ footer.footer-bg{padding-bottom:0px !important;}
     color: #ff3b3b;
   }
   /* Password Strength Meter */
+
+[data-bs-theme="light"] .my_flash_main {
+    color: black !important;
+}
+
+[data-bs-theme="dark"] .my_flash_main {
+    color: white !important;
+}
