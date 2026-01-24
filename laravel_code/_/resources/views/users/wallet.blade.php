@@ -331,11 +331,13 @@
   @include('includes.header-mobile')
     <div class="container-fluid pt-lg-5 pt-2">
         <div class="row">
-
-          {{-- @include('includes.cards-settings') --}}
-          <div class="col-lg-3 col-md-2 side_bar_box_shadow">
-              @include('includes.menu-sidebar-home')
-          </div>
+          @if (auth()->user()->verified_id == 'yes')
+            @include('includes.cards-settings')
+          @else
+            <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+                @include('includes.menu-sidebar-home')
+            </div>
+          @endif
           <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
             <div class="row mb-sm">
               <div class="col-lg-8">

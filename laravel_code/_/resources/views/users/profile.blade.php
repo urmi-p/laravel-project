@@ -529,7 +529,7 @@
                             @endif
 
                           
-                            @if (auth()->check() && auth()->id() != $user->id && $totalPosts != 0 && $settings->gifts && $user->verified_id == 'yes')
+                            <!-- @if (auth()->check() && auth()->id() != $user->id && $totalPosts != 0 && $settings->gifts && $user->verified_id == 'yes')
 
                                 <a href="javascript:void(0);" data-toggle="modal" title="{{ __('general.gifts') }}"
                                     data-target="#giftsForm" class="btn btn-google btn-profile mr-1 bg_white">
@@ -545,7 +545,7 @@
 
                                 </a>
 
-                            @endif
+                            @endif -->
                             
                             @if (
                                 (auth()->guest() && $user->verified_id == 'yes') ||
@@ -556,7 +556,7 @@
                                             data-url="{{ url('messages/' . $user->id, $user->username) }}"
                                             title="{{ __('general.message') }}" class="pr-btn btn-profile mr-1 bg_white">
 
-                                            <i class="bi bi-chat mr-1 mr-lg-0"></i> <span>{{ __('general.message') }}</span>
+                                            <i class="bi bi-chat mr-1"></i> <span>{{ __('general.message') }}</span>
 
                                         </button>
                                     {{-- end for test --}}
@@ -566,7 +566,7 @@
                                     data-url="{{ url('messages/' . $user->id, $user->username) }}"
                                     title="{{ __('general.message') }}" class="pr-btn btn-profile mr-1 bg_white">
 
-                                    <i class="bi bi-chat mr-1 mr-lg-0"></i>
+                                    <i class="bi bi-chat mr-1"></i>
                                     <span>{{ __('general.message') }}</span>
 
                                 </button>  --}}
@@ -579,8 +579,7 @@
                                     id="dropdownUserShare" role="button" data-toggle="modal"
                                     data-target=".share-modal">
 
-                                    <i class="fas fa-share mr-1 mr-lg-0"></i> <span
-                                        class="d-lg-none">{{ __('general.share') }}</span>
+                                    <i class="fas fa-share mr-1"></i> <span>{{ __('general.share') }}</span>
 
                                 </button>
                                 <!-- Share modal -->

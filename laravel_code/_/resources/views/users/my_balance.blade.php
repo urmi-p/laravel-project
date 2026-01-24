@@ -32,20 +32,6 @@
             margin-top: 15px;
             
         }
-
-        /* .payment-select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-
-            padding-right: 40px;
-            background-image: url("data:image/svg+xml,%3Csvg fill='whi' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            
-            background-size: 18px;
-        } */
-
         .btn-back {
             background: #191919;
             padding: 14px 64px;
@@ -59,6 +45,17 @@
             padding: 14px 64px;
             border-radius: 12px;
             color: #FCFCFC;
+        }
+        [data-bs-theme="light"] .payment-method-container  {
+            background: #ffffff !important;
+        }
+        [data-bs-theme="light"] .payment-select {
+            background: #ffffff !important;
+        }
+        [data-bs-theme="light"] .btn-back {
+            background: #ffffff !important;
+            color:black;
+            border: 1px solid #1e1e1e2e;
         }
     </style>
 @endsection
@@ -93,8 +90,8 @@
                                         class="h1">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null }}</small>
                                 </h2>
 
-                                <span class="w-100 d-block font_weight_400 fs-24 text_color_white">
-                                    Amount minimum withdrawal <p class="font_weight_900 fs-32 d-inline">20€ EUR</p>
+                                <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_small_fs">
+                                    Amount minimum withdrawal <p class="font_weight_900 fs-32 d-inline mobile_small_fs">20€ EUR</p>
                                 </span>
 
                                 @if ($equivalent_money)
@@ -104,7 +101,7 @@
                                 @endif
 
                                 <span class="w-100 d-block mt-2">
-                                    <p class="fs-24 font_weight_400">your payment would be avaliable in 4 business day’s</p>
+                                    <p class="fs-24 font_weight_400 mobile_small_fs">your payment would be avaliable in 4 business day’s</p>
                                     {{-- @if (auth()->user()->balance != 0.0)
                                         <a href="#" data-toggle="modal" data-target="#modalTransfer"
                                             class="btn btn-1 btn-success mb-2 text-decoration-none">
@@ -133,7 +130,7 @@
                         </div>
 
                         <div class="payment-footer">
-                            <button class="btn-back">Go Back</button>
+                            <!-- <button class="btn-back">Go Back</button> -->
                             <button class="btn-transfer">Transfer Funds</button>
                         </div>
                     </div>

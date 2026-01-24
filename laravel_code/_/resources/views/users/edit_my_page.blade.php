@@ -10,6 +10,10 @@
     <style type="text/css">
     [data-bs-theme="light"] .light_mode_form {
       border: 1px solid #1e1e1e2e;
+      
+    }
+    [data-bs-theme="dark"] .light_mode_form {
+      background-color: #111 !important;
     }
     [data-bs-theme="light"] .sub_desc_edit_page {
       color: #5f5f5f;

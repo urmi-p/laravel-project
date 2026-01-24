@@ -80,7 +80,7 @@
 
 			</p>
 
-			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm" style="border-radius:8px !important;background: #FFFFFF;color:#E2394C !important;">{{trans('general.go_to_page')}}</a>
+			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
 
 			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
 
