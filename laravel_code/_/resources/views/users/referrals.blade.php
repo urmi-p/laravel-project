@@ -44,6 +44,10 @@
 		line-height: 1;
 	}
 
+	[data-bs-theme="light"] .view-all  {
+		border: 1px solid #6c757d;
+	}
+
 	/* TABLE WRAPPER */
 	.transactions-table-wrapper {
 		width: 100%;

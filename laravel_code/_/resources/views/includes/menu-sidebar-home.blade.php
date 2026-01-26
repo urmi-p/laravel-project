@@ -26,7 +26,7 @@
 		</div>
 		<div class="card-info">
 			<small>Earnings</small>
-			<strong>{{ Helper::amountFormatDecimal(auth()->user()->balance) }}</strong>
+			<strong>{{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</strong>
 		</div>
 	</li>
 	@endif

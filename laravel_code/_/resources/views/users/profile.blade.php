@@ -808,8 +808,7 @@
                         
                         @if (auth()->check() && auth()->user()->verified_id == 'no' && auth()->id() == $user->id)
                             <div class="d-flex-user justify-content-center mb-2">
-                                <div class="d-block w-100 justify-content-center mt-lg-3 mt-2 font_weight_400 fs-20"
-                                    style="padding: 20px 32px; border-radius: 16px;background: #FFFFFF33; ">
+                                <div class="d-block w-100 justify-content-center mt-lg-3 mt-2 font_weight_400 fs-20 not_creator_alert">
                                     {{ __('custom.alert_profile_verification') }}
                                     <br>
                                     <a href="{{ url('settings/page') }}"

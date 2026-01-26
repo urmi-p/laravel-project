@@ -23,6 +23,10 @@
     font-weight:500;
     font-size: 10px;
   }
+
+  [data-bs-theme="light"] .fileuploader-theme-dragdrop .fileuploader-input h3  {
+		color: #5B5B7B !important;
+	}
   .browse-link {
     color: #E2394C;
     text-decoration: underline;
