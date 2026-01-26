@@ -29,7 +29,7 @@
                                 </form><!-- form -->
 
                                 <div class="w-lg-100">
-                                    <select class="form-control custom-select w-100 pr-4" id="filter">
+                                    <select class="form-control custom-select w-100 pr-4 dark_all_dropdown" id="filter">
                                         <option @if (!request()->get('sort')) selected @endif
                                             value="{{ url()->current() }}{{ request()->get('q') ? '?q=' . str_replace('#', '%23', request()->get('q')) : null }}">
                                             {{ __('general.latest') }}</option>

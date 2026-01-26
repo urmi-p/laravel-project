@@ -80,7 +80,7 @@
 
                 <div class="form-group">
 
-                  <select name="delivery_time" class="form-control custom-select">
+                  <select name="delivery_time" class="form-control custom-select dark_all_dropdown">
 
                     <option disabled value="" selected>{{ __('general.delivery_time') }}</option>
 
@@ -98,7 +98,7 @@
 
                 <div class="form-group">
 
-                  <select name="category" class="form-control custom-select">
+                  <select name="category" class="form-control custom-select dark_all_dropdown">
 
                     <option disabled value="" selected>{{ __('general.category') }}</option>
 

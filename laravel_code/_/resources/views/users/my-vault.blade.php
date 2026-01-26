@@ -75,7 +75,7 @@
                     </form>
 
                     <div class="w-lg-100">
-                        <select class="form-control custom-select w-100 pr-4 filter">
+                        <select class="form-control custom-select w-100 pr-4 filter dark_all_dropdown">
                             <option @selected(!request('sort')) value="{{ url('my/vault') }}">{{ __('general.all') }}
                             </option>
 

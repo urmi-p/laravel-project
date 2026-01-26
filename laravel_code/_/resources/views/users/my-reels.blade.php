@@ -57,7 +57,7 @@
           </form>
 
             <div class="w-lg-100">
-              <select class="form-control custom-select w-100 pr-4 filter">
+              <select class="form-control custom-select w-100 pr-4 filter dark_all_dropdown">
                 <option @selected(! request()->get('sort')) value="{{url('my/reels')}}">{{__('general.latest')}}</option>
                 <option @selected(request()->get('sort') == 'oldest') value="{{url('my/reels').'?sort=oldest'}}">{{__('general.oldest')}}</option>
                 <option @selected(request()->get('sort') == 'popular') value="{{url('my/reels').'?sort=popular'}}">{{__('general.popular')}}</option>
