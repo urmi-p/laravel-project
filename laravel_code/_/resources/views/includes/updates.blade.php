@@ -74,227 +74,10 @@ $nth = 0; // nth foreach nth-child(3n-1)
         <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img">
 
         <!-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> -->
-        <div class="mb-0 font-montserrat" class="post-options">
-            @if (auth()->check() && auth()->user()->id == $response->creator->id)
-            <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-h"></i>
-            </a>
-            <!-- Target -->
 
-            <button class="d-none copy-url" id="url{{ $response->id }}"
-                data-clipboard-text="{{ url($response->creator->username . '/post', $response->id) }}">{{ __('general.copy_link') }}</button>
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
-
-                @if (request()->path() != $response->creator->username . '/post/' . $response->id)
-                <a class="dropdown-item mb-1"
-                    href="{{ url($response->creator->username . '/post', $response->id) }}"><i
-                        class="bi bi-box-arrow-in-up-right mr-2"></i>
-                    {{ __('general.go_to_post') }}</a>
-                @endif
-
-                @if ($response->status == 'active')
-                <a class="dropdown-item mb-1 pin-post" href="javascript:void(0);"
-                    data-id="{{ $response->id }}">
-
-                    <i class="bi bi-pin mr-2"></i>
-                    {{ $response->fixed_post == '0' ? __('general.pin_to_your_profile') : __('general.unpin_from_profile') }}
-
-                </a>
-                @endif
-
-                <button class="dropdown-item mb-1" onclick="$('#url{{ $response->id }}').trigger('click')"><i
-                        class="feather icon-link mr-2"></i> {{ __('general.copy_link') }}</button>
-
-                <a href="{{ route('post.edit', ['id' => $response->id]) }}" class="dropdown-item mb-1">
-
-                    <i class="bi bi-pencil mr-2"></i> {{ __('general.edit_post') }}
-
-                </a>
-
-                <form method="POST" action="{{ url('update/delete', $response->id) }}" class="d-inline">
-
-                    @csrf
-
-                    @if (isset($inPostDetail))
-                    <input type="hidden" name="inPostDetail" value="true">
-                    @endif
-
-                    <button type="submit" class="dropdown-item mb-1 actionDelete">
-
-                        <i class="feather icon-trash-2 mr-2"></i> {{ __('general.delete_post') }}
-
-                    </button>
-
-                </form>
-
-            </div>
-            @endif
-
-            @if (
-            (auth()->check() &&
-            auth()->user()->id != $response->creator->id &&
-            $response->locked == 'yes' &&
-            $checkUserSubscription &&
-            $response->price == 0.0) ||
-            (auth()->check() &&
-            auth()->user()->id != $response->creator->id &&
-            $response->locked == 'yes' &&
-            $checkUserSubscription &&
-            $response->price != 0.0 &&
-            $checkPayPerView) ||
-            (auth()->check() &&
-            auth()->user()->id != $response->creator->id &&
-            $response->price != 0.0 &&
-            !$checkUserSubscription &&
-            $checkPayPerView) ||
-            (auth()->check() &&
-            auth()->user()->id != $response->creator->id &&
-            auth()->user()->role == 'admin' &&
-            auth()->user()->permission == 'all') ||
-            (auth()->check() && auth()->user()->id != $response->creator->id && $response->locked == 'no'))
-            <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-
-                <i class="fa fa-ellipsis-h"></i>
-
-            </a>
-
-
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
-
-
-
-                <!-- Target -->
-
-                <button class="d-none copy-url" id="url{{ $response->id }}"
-                    data-clipboard-text="{{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}">
-
-                    {{ __('general.copy_link') }}
-
-                </button>
-
-
-
-                @if (request()->path() != $response->creator->username . '/post/' . $response->id)
-                <a class="dropdown-item"
-                    href="{{ url($response->creator->username . '/post', $response->id) }}">
-
-                    <i class="bi bi-box-arrow-in-up-right mr-2"></i>
-                    {{ __('general.go_to_post') }}
-
-                </a>
-                @endif
-
-
-
-                <button class="dropdown-item" onclick="$('#url{{ $response->id }}').trigger('click')">
-
-                    <i class="feather icon-link mr-2"></i> {{ __('general.copy_link') }}
-
-                </button>
-
-
-
-                <button type="button" class="dropdown-item" data-toggle="modal"
-                    data-target="#reportUpdate{{ $response->id }}">
-
-                    <i class="bi bi-flag mr-2"></i> {{ __('admin.report') }}
-
-                </button>
-            </div>
-
-
-
-            <div class="modal fade modalReport" id="reportUpdate{{ $response->id }}" tabindex="-1"
-                role="dialog" aria-hidden="true">
-
-                <div class="modal-dialog modal-danger modal-sm">
-
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-
-                            <h6 class="modal-title font-weight-light" id="modal-title-default">
-
-                                <i class="fas fa-flag mr-1"></i> {{ __('admin.report_update') }}
-
-                            </h6>
-
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                                <i class="fa fa-times"></i>
-
-                            </button>
-
-                        </div>
-
-
-
-                        <!-- form start -->
-
-                        <form method="POST" action="{{ url('report/update', $response->id) }}"
-                            enctype="multipart/form-data">
-
-                            <div class="modal-body">
-
-                                @csrf
-
-                                <!-- Start Form Group -->
-
-                                <div class="form-group">
-
-                                    <label>{{ __('admin.please_reason') }}</label>
-
-                                    <select name="reason" class="form-control custom-select">
-
-                                        <option value="copyright">{{ __('admin.copyright') }}</option>
-
-                                        <option value="privacy_issue">{{ __('admin.privacy_issue') }}
-                                        </option>
-
-                                        <option value="violent_sexual">
-                                            {{ __('admin.violent_sexual_content') }}
-                                        </option>
-
-                                    </select>
-
-
-
-                                    <textarea name="message" rows="" cols="40" maxlength="200"
-                                        placeholder="{{ __('general.message') }} ({{ __('general.optional') }})"
-                                        class="form-control mt-2 textareaAutoSize"></textarea>
-
-                                </div><!-- /.form-group-->
-
-                            </div><!-- Modal body -->
-
-
-
-                            <div class="modal-footer">
-
-                                <button type="button" class="btn border text-white"
-                                    data-dismiss="modal">{{ __('admin.cancel') }}</button>
-
-                                <button type="submit" class="btn btn-xs btn-white sendReport ml-auto"><i></i>
-                                    {{ __('admin.report_update') }}</button>
-
-                            </div>
-
-                        </form>
-
-                    </div><!-- Modal content -->
-
-                </div><!-- Modal dialog -->
-
-            </div><!-- Modal -->
-            @endif
-
-        </div>
         {{-- <img class="" src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}"> --}}
     </div>
+
     <div class="bg-dark-force">
         <div class="action-bar">
             <div class="action-left">
@@ -507,45 +290,260 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     </a>
 
                     @auth
+                        @if (
+                            (auth()->user()->id != $response->creator->id &&
+                            $checkUserSubscription &&
+                            $response->price == 0.0 &&
+                            $settings->disable_tips == 'off') ||
+                            (auth()->user()->id != $response->creator->id &&
+                            $checkUserSubscription &&
+                            $response->price != 0.0 &&
+                            $checkPayPerView &&
+                            $settings->disable_tips == 'off') ||
+                            (auth()->check() &&
+                            $response->locked == 'yes' &&
+                            $response->price != 0.0 &&
+                            !$checkUserSubscription &&
+                            $checkPayPerView &&
+                            $settings->disable_tips == 'off') ||
+                            (auth()->user()->id != $response->creator->id && $response->locked == 'no' && $settings->disable_tips == 'off'))
+                        <a class="action-pill text-white-force pulse-btn text-muted text-decoration-none" href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
+                            data-target="#tipForm" 
+                            @auth data-id="{{ $response->id }}" data-cover="{{ Helper::getFile(config('path.cover') . $response->creator->cover) }}" data-avatar="{{ Helper::getFile(config('path.avatar') . $response->creator->avatar) }}" data-name="{{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}" data-userid="{{ $response->creator->id }}" @endauth>
 
-                    @if (
-                    (auth()->user()->id != $response->creator->id &&
-                    $checkUserSubscription &&
-                    $response->price == 0.0 &&
-                    $settings->disable_tips == 'off') ||
-                    (auth()->user()->id != $response->creator->id &&
-                    $checkUserSubscription &&
-                    $response->price != 0.0 &&
-                    $checkPayPerView &&
-                    $settings->disable_tips == 'off') ||
-                    (auth()->check() &&
-                    $response->locked == 'yes' &&
-                    $response->price != 0.0 &&
-                    !$checkUserSubscription &&
-                    $checkPayPerView &&
-                    $settings->disable_tips == 'off') ||
-                    (auth()->user()->id != $response->creator->id && $response->locked == 'no' && $settings->disable_tips == 'off'))
-                    <a class="action-pill text-white-force pulse-btn text-muted text-decoration-none" href="javascript:void(0);" data-toggle="modal" title="{{ __('general.tip') }}"
-                        data-target="#tipForm" 
-                        @auth data-id="{{ $response->id }}" data-cover="{{ Helper::getFile(config('path.cover') . $response->creator->cover) }}" data-avatar="{{ Helper::getFile(config('path.avatar') . $response->creator->avatar) }}" data-name="{{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}" data-userid="{{ $response->creator->id }}" @endauth>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                            fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
 
-                            <path
-                                d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
+                                <path fill-rule="evenodd"
+                                    d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
 
-                            <path fill-rule="evenodd"
-                                d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path fill-rule="evenodd"
+                                    d="M8 13.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
 
-                            <path fill-rule="evenodd"
-                                d="M8 13.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-
-                        </svg>
-                        <span class="action-count">@lang('general.tip')</span>
-                    </a>
-                    @endif
+                            </svg>
+                            <span class="action-count">@lang('general.tip')</span>
+                        </a>
+                        @endif
                     @endauth
+
+                    <div class="mb-0 font-montserrat" class="post-options">
+                        @if (auth()->check() && auth()->user()->id == $response->creator->id)
+                        <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <!-- Target -->
+
+                        <button class="d-none copy-url" id="url{{ $response->id }}"
+                            data-clipboard-text="{{ url($response->creator->username . '/post', $response->id) }}">{{ __('general.copy_link') }}</button>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
+
+                            @if (request()->path() != $response->creator->username . '/post/' . $response->id)
+                            <a class="dropdown-item mb-1"
+                                href="{{ url($response->creator->username . '/post', $response->id) }}"><i
+                                    class="bi bi-box-arrow-in-up-right mr-2"></i>
+                                {{ __('general.go_to_post') }}</a>
+                            @endif
+
+                            @if ($response->status == 'active')
+                            <a class="dropdown-item mb-1 pin-post" href="javascript:void(0);"
+                                data-id="{{ $response->id }}">
+
+                                <i class="bi bi-pin mr-2"></i>
+                                {{ $response->fixed_post == '0' ? __('general.pin_to_your_profile') : __('general.unpin_from_profile') }}
+
+                            </a>
+                            @endif
+
+                            <button class="dropdown-item mb-1" onclick="$('#url{{ $response->id }}').trigger('click')"><i
+                                    class="feather icon-link mr-2"></i> {{ __('general.copy_link') }}</button>
+
+                            <a href="{{ route('post.edit', ['id' => $response->id]) }}" class="dropdown-item mb-1">
+
+                                <i class="bi bi-pencil mr-2"></i> {{ __('general.edit_post') }}
+
+                            </a>
+
+                            <form method="POST" action="{{ url('update/delete', $response->id) }}" class="d-inline">
+
+                                @csrf
+
+                                @if (isset($inPostDetail))
+                                <input type="hidden" name="inPostDetail" value="true">
+                                @endif
+
+                                <button type="submit" class="dropdown-item mb-1 actionDelete">
+
+                                    <i class="feather icon-trash-2 mr-2"></i> {{ __('general.delete_post') }}
+
+                                </button>
+
+                            </form>
+
+                        </div>
+                        @endif
+
+                        @if (
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        $response->locked == 'yes' &&
+                        $checkUserSubscription &&
+                        $response->price == 0.0) ||
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        $response->locked == 'yes' &&
+                        $checkUserSubscription &&
+                        $response->price != 0.0 &&
+                        $checkPayPerView) ||
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        $response->price != 0.0 &&
+                        !$checkUserSubscription &&
+                        $checkPayPerView) ||
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        auth()->user()->role == 'admin' &&
+                        auth()->user()->permission == 'all') ||
+                        (auth()->check() && auth()->user()->id != $response->creator->id && $response->locked == 'no'))
+                        <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+
+                            <i class="fa fa-ellipsis-h"></i>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
+
+
+
+                            <!-- Target -->
+
+                            <button class="d-none copy-url" id="url{{ $response->id }}"
+                                data-clipboard-text="{{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}">
+
+                                {{ __('general.copy_link') }}
+
+                            </button>
+
+
+
+                            @if (request()->path() != $response->creator->username . '/post/' . $response->id)
+                            <a class="dropdown-item"
+                                href="{{ url($response->creator->username . '/post', $response->id) }}">
+
+                                <i class="bi bi-box-arrow-in-up-right mr-2"></i>
+                                {{ __('general.go_to_post') }}
+
+                            </a>
+                            @endif
+
+
+
+                            <button class="dropdown-item" onclick="$('#url{{ $response->id }}').trigger('click')">
+
+                                <i class="feather icon-link mr-2"></i> {{ __('general.copy_link') }}
+
+                            </button>
+
+
+
+                            <button type="button" class="dropdown-item" data-toggle="modal"
+                                data-target="#reportUpdate{{ $response->id }}">
+
+                                <i class="bi bi-flag mr-2"></i> {{ __('admin.report') }}
+
+                            </button>
+                        </div>
+
+                        <div class="modal fade modalReport" id="reportUpdate{{ $response->id }}" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+
+                            <div class="modal-dialog modal-danger modal-sm">
+
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+
+                                        <h6 class="modal-title font-weight-light" id="modal-title-default">
+
+                                            <i class="fas fa-flag mr-1"></i> {{ __('admin.report_update') }}
+
+                                        </h6>
+
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                                            <i class="fa fa-times"></i>
+
+                                        </button>
+
+                                    </div>
+
+
+
+                                    <!-- form start -->
+
+                                    <form method="POST" action="{{ url('report/update', $response->id) }}"
+                                        enctype="multipart/form-data">
+
+                                        <div class="modal-body">
+
+                                            @csrf
+
+                                            <!-- Start Form Group -->
+
+                                            <div class="form-group">
+
+                                                <label>{{ __('admin.please_reason') }}</label>
+
+                                                <select name="reason" class="form-control custom-select">
+
+                                                    <option value="copyright">{{ __('admin.copyright') }}</option>
+
+                                                    <option value="privacy_issue">{{ __('admin.privacy_issue') }}
+                                                    </option>
+
+                                                    <option value="violent_sexual">
+                                                        {{ __('admin.violent_sexual_content') }}
+                                                    </option>
+
+                                                </select>
+
+
+
+                                                <textarea name="message" rows="" cols="40" maxlength="200"
+                                                    placeholder="{{ __('general.message') }} ({{ __('general.optional') }})"
+                                                    class="form-control mt-2 textareaAutoSize"></textarea>
+
+                                            </div><!-- /.form-group-->
+
+                                        </div><!-- Modal body -->
+
+
+
+                                        <div class="modal-footer">
+
+                                            <button type="button" class="btn border text-white"
+                                                data-dismiss="modal">{{ __('admin.cancel') }}</button>
+
+                                            <button type="submit" class="btn btn-xs btn-white sendReport ml-auto"><i></i>
+                                                {{ __('admin.report_update') }}</button>
+
+                                        </div>
+
+                                    </form>
+
+                                </div><!-- Modal content -->
+
+                            </div><!-- Modal dialog -->
+
+                        </div><!-- Modal -->
+                        @endif
+
+                    </div>
 
                     <div class="w-100 mb-3 containerLikeComment ">
 
@@ -578,7 +576,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     <div class="container-comments @if (!isset($inPostDetail)) display-none @endif">
 
 
-                        <div class="container-media">
+                        <div class="container-media px-4">
 
                             @if ($response->comments->count() != 0)
                             @php
@@ -647,7 +645,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                             </span>
 
                         </div>
-                        <div class="media position-relative pt-3 border-top">
+                        <div class="media position-relative px-3 py-3 border-top">
 
                             <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,])></div>
 
@@ -709,7 +707,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                         <div class="dropdown">
 
                                             <span class="triggerSticker fs-20" role="button"
-                                                style="position: absolute; right: 35px;  cursor: pointer;"
+                                                style="position: absolute; right: 50px;  cursor: pointer;"
                                                 id="dropdownSticky{{ $response->id }}"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">
@@ -723,7 +721,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                         </div>
                                         <div class="dropdown">
 
-                                            <span class="triggerEmoji" data-toggle="dropdown">
+                                            <span class="triggerEmoji" data-toggle="dropdown" style="right: 25px;">
 
                                                 <i class="bi-emoji-smile"></i>
 
@@ -859,289 +857,289 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 
 
-@if (
-(auth()->check() && auth()->user()->id == $response->creator->id) ||
-(auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
-(auth()->check() &&
-$response->locked == 'yes' &&
-$checkUserSubscription &&
-$response->price != 0.0 &&
-$checkPayPerView) ||
-(auth()->check() &&
-$response->locked == 'yes' &&
-$response->price != 0.0 &&
-!$checkUserSubscription &&
-$checkPayPerView) ||
-(auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
-$response->locked == 'no')
-<div class="btn-block @if ($mediaImageVideoTotal != 0) media-post  @endif">
+ {{-- @if (
+    (auth()->check() && auth()->user()->id == $response->creator->id) ||
+    (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
+    (auth()->check() &&
+    $response->locked == 'yes' &&
+    $checkUserSubscription &&
+    $response->price != 0.0 &&
+    $checkPayPerView) ||
+    (auth()->check() &&
+    $response->locked == 'yes' &&
+    $response->price != 0.0 &&
+    !$checkUserSubscription &&
+    $checkPayPerView) ||
+    (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
+    $response->locked == 'no')
+    <div class="btn-block @if ($mediaImageVideoTotal != 0) media-post  @endif">
 
 
 
-    @if ($mediaImageVideoTotal != 0)
-    @include('includes.media-post')
-    @endif
+        @if ($mediaImageVideoTotal != 0)
+        @include('includes.media-post')
+        @endif
 
 
 
-    @foreach ($response->media as $media)
-    @if ($media->music != '')
-    <div class="mx-3 border rounded @if ($mediaCount > 1) mt-3 @endif">
+        @foreach ($response->media as $media)
+        @if ($media->music != '')
+        <div class="mx-3 border rounded @if ($mediaCount > 1) mt-3 @endif">
 
-        <audio id="music-{{ $media->id }}" preload="metadata"
-            class="js-player w-100 @if (!request()->ajax()) invisible @endif" controls>
+            <audio id="music-{{ $media->id }}" preload="metadata"
+                class="js-player w-100 @if (!request()->ajax()) invisible @endif" controls>
 
-            <source src="{{ Helper::getFile(config('path.music') . $media->music) }}"
-                type="audio/mp3">
+                <source src="{{ Helper::getFile(config('path.music') . $media->music) }}"
+                    type="audio/mp3">
 
-            Your browser does not support the audio tag.
+                Your browser does not support the audio tag.
 
-        </audio>
-
-    </div>
-    @endif
-
-
-
-    @if ($media->type == 'file')
-    <a href="{{ url('download/file', $response->id) }}"
-        class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
-
-        <div class="card mb-3 mx-3">
-
-            <div class="row no-gutters">
-
-                <div class="col-md-2 text-center bg-primary rounded-left">
-
-                    <i class="far fa-file-archive m-4 text-white fs-40"></i>
-
-                </div>
-
-                <div class="col-md-10">
-
-                    <div class="card-body">
-
-                        <h5 class="card-title text-primary text-truncate mb-0">
-
-                            {{ $media->file_name }}.zip
-
-                        </h5>
-
-                        <p class="card-text">
-
-                            <small class="text-muted">{{ $media->file_size }}</small>
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </audio>
 
         </div>
-
-    </a>
-    @endif
-
-
-
-    @if ($media->type == 'epub')
-    <a href="{{ url('viewer/epub', $media->id) }}" target="_blank"
-        class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
-
-        <div class="card mb-3 mx-3">
-
-            <div class="row no-gutters">
-
-                <div class="col-md-2 text-center bg-primary rounded-left">
-
-                    <i class="fas fa-book-open m-4 text-white fs-40"></i>
-
-                </div>
-
-                <div class="col-md-10">
-
-                    <div class="card-body">
-
-                        <h5 class="card-title text-primary text-truncate mb-1">
-
-                            {{ $media->file_name }}.epub
-
-                        </h5>
-
-                        <p class="card-text">
-
-                            <small class="text-muted">
-
-                                <strong>{{ __('general.view_online') }}</strong> <i
-                                    class="bi-arrow-up-right ml-1"></i>
-
-                            </small>
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </a>
-    @endif
-    @endforeach
-
-
-
-    @if ($isVideoEmbed)
-    @if (in_array(Helper::videoUrl($isVideoEmbed), [
-    'youtube.com',
-    'www.youtube.com',
-    'youtu.be',
-    'www.youtu.be',
-    'm.youtube.com',
-    ]))
-    <div class="embed-responsive embed-responsive-16by9 mb-2">
-
-        <iframe class="embed-responsive-item" height="360"
-            src="https://www.youtube.com/embed/{{ Helper::getYoutubeId($isVideoEmbed) }}"
-            allowfullscreen></iframe>
-
-    </div>
-    @endif
-
-
-
-    @if (in_array(Helper::videoUrl($isVideoEmbed), ['vimeo.com', 'player.vimeo.com']))
-    <div class="embed-responsive embed-responsive-16by9">
-
-        <iframe class="embed-responsive-item"
-            src="https://player.vimeo.com/video/{{ Helper::getVimeoId($isVideoEmbed) }}"
-            allowfullscreen></iframe>
-
-    </div>
-    @endif
-    @endif
-
-
-
-</div><!-- btn-block -->
-@else
-<div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 {{ $textWhite }}"
-    style="{{ $backgroundPostLocked }}">
-
-    <span class="btn-block text-center mb-3">
-        <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
-
-        <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
-            viewBox="0 0 90 120" fill="none">
-            <path
-                d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
-                fill="white" />
-        </svg>
-
-    </span>
-
-
-
-    @if (
-    ($response->creator->planActive() && $response->price == 0.0) ||
-    ($response->creator->free_subscription == 'yes' && $response->price == 0.0))
-    <a href="{{ request()->route()->named('profile') ? 'javascript:void(0);' : url($response->creator->username) }}"
-        @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($response->creator->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest
-        class="btn btn-primary w-100">
-
-        {{ __('general.content_locked_user_logged') }}
-
-    </a>
-    @elseif (
-    ($response->creator->planActive() && $response->price != 0.0) ||
-    ($response->creator->free_subscription == 'yes' && $response->price != 0.0))
-    <a href="javascript:void(0);"
-        @guest data-toggle="modal" data-target="#loginFormModal" @else @if ($response->status == 'active') data-toggle="modal" data-target="#payPerViewForm" data-mediaid="{{ $response->id }}" data-price="{{ Helper::formatPrice($response->price, true) }}" data-subtotalprice="{{ Helper::formatPrice($response->price) }}" data-pricegross="{{ $response->price }}" @endif @endguest
-        class="btn btn-primary w-100">
-
-        @guest
-
-        {{ __('general.content_locked_user_logged') }}
-        @else
-        @if ($response->status == 'active')
-        <i class="feather icon-unlock mr-1"></i> {{ __('general.unlock_post_for') }}
-        {{ Helper::formatPrice($response->price) }}
-        @else
-        {{ __('general.post_pending_review') }}
-        @endif
-
-        @endguest
-
-    </a>
-    @else
-    <a href="javascript:void(0);" class="btn btn-primary disabled w-100">
-
-        {{ __('general.subscription_not_available') }}
-
-    </a>
-    @endif
-
-
-
-    <ul class="list-inline mt-3">
-
-
-
-        @if ($mediaCount == 0)
-        <li class="list-inline-item"><i class="bi bi-file-font"></i> {{ __('admin.text') }}</li>
         @endif
 
 
-
-        @if ($mediaCount != 0)
-        @foreach ($allFiles as $media)
-        @if ($media->type == 'image')
-        <li class="list-inline-item"><i class="feather icon-image"></i>
-            {{ $countFilesImage }}
-        </li>
-        @endif
-
-
-
-        @if ($media->type == 'video')
-        <li class="list-inline-item"><i class="feather icon-video"></i>
-            {{ $countFilesVideo }} @if (($media->duration_video && $countFilesVideo == 1) || ($media->quality_video && $countFilesVideo == 1))
-            <small class="ml-1">
-                @if ($media->quality_video)
-                <span class="quality-video">{{ $media->quality_video }}</span>
-                @endif {{ $media->duration_video }}
-            </small>
-            @endif
-        </li>
-        @endif
-
-        @if ($media->type == 'music')
-        <li class="list-inline-item"><i class="feather icon-mic"></i> {{ $countFilesAudio }}
-        </li>
-        @endif
 
         @if ($media->type == 'file')
-        <li class="list-inline-item"><i class="far fa-file-archive"></i>
-            {{ $media->file_size }}
-        </li>
+        <a href="{{ url('download/file', $response->id) }}"
+            class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
+
+            <div class="card mb-3 mx-3">
+
+                <div class="row no-gutters">
+
+                    <div class="col-md-2 text-center bg-primary rounded-left">
+
+                        <i class="far fa-file-archive m-4 text-white fs-40"></i>
+
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title text-primary text-truncate mb-0">
+
+                                {{ $media->file_name }}.zip
+
+                            </h5>
+
+                            <p class="card-text">
+
+                                <small class="text-muted">{{ $media->file_size }}</small>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
         @endif
+
+
 
         @if ($media->type == 'epub')
-        <li class="list-inline-item"><i class="bi-book"></i> {{ $media->file_size }}</li>
+        <a href="{{ url('viewer/epub', $media->id) }}" target="_blank"
+            class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
+
+            <div class="card mb-3 mx-3">
+
+                <div class="row no-gutters">
+
+                    <div class="col-md-2 text-center bg-primary rounded-left">
+
+                        <i class="fas fa-book-open m-4 text-white fs-40"></i>
+
+                    </div>
+
+                    <div class="col-md-10">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title text-primary text-truncate mb-1">
+
+                                {{ $media->file_name }}.epub
+
+                            </h5>
+
+                            <p class="card-text">
+
+                                <small class="text-muted">
+
+                                    <strong>{{ __('general.view_online') }}</strong> <i
+                                        class="bi-arrow-up-right ml-1"></i>
+
+                                </small>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
         @endif
         @endforeach
+
+
+
+        @if ($isVideoEmbed)
+        @if (in_array(Helper::videoUrl($isVideoEmbed), [
+        'youtube.com',
+        'www.youtube.com',
+        'youtu.be',
+        'www.youtu.be',
+        'm.youtube.com',
+        ]))
+        <div class="embed-responsive embed-responsive-16by9 mb-2">
+
+            <iframe class="embed-responsive-item" height="360"
+                src="https://www.youtube.com/embed/{{ Helper::getYoutubeId($isVideoEmbed) }}"
+                allowfullscreen></iframe>
+
+        </div>
         @endif
 
-    </ul>
+
+
+        @if (in_array(Helper::videoUrl($isVideoEmbed), ['vimeo.com', 'player.vimeo.com']))
+        <div class="embed-responsive embed-responsive-16by9">
+
+            <iframe class="embed-responsive-item"
+                src="https://player.vimeo.com/video/{{ Helper::getVimeoId($isVideoEmbed) }}"
+                allowfullscreen></iframe>
+
+        </div>
+        @endif
+        @endif
 
 
 
-</div><!-- btn-block parent -->
-@endif
+    </div><!-- btn-block -->
+@else
+    <div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 {{ $textWhite }}"
+        style="{{ $backgroundPostLocked }}">
+
+        <span class="btn-block text-center mb-3">
+            <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
+
+            <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
+                viewBox="0 0 90 120" fill="none">
+                <path
+                    d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
+                    fill="white" />
+            </svg>
+
+        </span>
+
+
+
+        @if (
+        ($response->creator->planActive() && $response->price == 0.0) ||
+        ($response->creator->free_subscription == 'yes' && $response->price == 0.0))
+        <a href="{{ request()->route()->named('profile') ? 'javascript:void(0);' : url($response->creator->username) }}"
+            @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($response->creator->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest
+            class="btn btn-primary w-100">
+
+            {{ __('general.content_locked_user_logged') }}
+
+        </a>
+        @elseif (
+        ($response->creator->planActive() && $response->price != 0.0) ||
+        ($response->creator->free_subscription == 'yes' && $response->price != 0.0))
+        <a href="javascript:void(0);"
+            @guest data-toggle="modal" data-target="#loginFormModal" @else @if ($response->status == 'active') data-toggle="modal" data-target="#payPerViewForm" data-mediaid="{{ $response->id }}" data-price="{{ Helper::formatPrice($response->price, true) }}" data-subtotalprice="{{ Helper::formatPrice($response->price) }}" data-pricegross="{{ $response->price }}" @endif @endguest
+            class="btn btn-primary w-100">
+
+            @guest
+
+            {{ __('general.content_locked_user_logged') }}
+            @else
+            @if ($response->status == 'active')
+            <i class="feather icon-unlock mr-1"></i> {{ __('general.unlock_post_for') }}
+            {{ Helper::formatPrice($response->price) }}
+            @else
+            {{ __('general.post_pending_review') }}
+            @endif
+
+            @endguest
+
+        </a>
+        @else
+        <a href="javascript:void(0);" class="btn btn-primary disabled w-100">
+
+            {{ __('general.subscription_not_available') }}
+
+        </a>
+        @endif
+
+
+
+        <ul class="list-inline mt-3">
+
+
+
+            @if ($mediaCount == 0)
+            <li class="list-inline-item"><i class="bi bi-file-font"></i> {{ __('admin.text') }}</li>
+            @endif
+
+
+
+            @if ($mediaCount != 0)
+            @foreach ($allFiles as $media)
+            @if ($media->type == 'image')
+            <li class="list-inline-item"><i class="feather icon-image"></i>
+                {{ $countFilesImage }}
+            </li>
+            @endif
+
+
+
+            @if ($media->type == 'video')
+            <li class="list-inline-item"><i class="feather icon-video"></i>
+                {{ $countFilesVideo }} @if (($media->duration_video && $countFilesVideo == 1) || ($media->quality_video && $countFilesVideo == 1))
+                <small class="ml-1">
+                    @if ($media->quality_video)
+                    <span class="quality-video">{{ $media->quality_video }}</span>
+                    @endif {{ $media->duration_video }}
+                </small>
+                @endif
+            </li>
+            @endif
+
+            @if ($media->type == 'music')
+            <li class="list-inline-item"><i class="feather icon-mic"></i> {{ $countFilesAudio }}
+            </li>
+            @endif
+
+            @if ($media->type == 'file')
+            <li class="list-inline-item"><i class="far fa-file-archive"></i>
+                {{ $media->file_size }}
+            </li>
+            @endif
+
+            @if ($media->type == 'epub')
+            <li class="list-inline-item"><i class="bi-book"></i> {{ $media->file_size }}</li>
+            @endif
+            @endforeach
+            @endif
+
+        </ul>
+
+
+
+    </div><!-- btn-block parent -->
+@endif --}}
 
 
 
