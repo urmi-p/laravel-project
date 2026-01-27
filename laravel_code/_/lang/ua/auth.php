@@ -68,4 +68,7 @@ return [
 'recover_pass_subtitle'    => 'Ви отримаєте лист для скидання пароля',
 'reset_pass_subtitle'      => 'Останній крок! введіть свій email і створіть новий пароль',
 'protected_recaptcha'      => 'Захищено reCAPTCHA',
+'full_name1' => 'ПІБ',
+'email' => 'Електронна пошта',
+'register' => 'Зареєструватися',
 ];

@@ -17,10 +17,10 @@
             <div class="col-md-9 mb-4">
                 <div class="row mb-sm">
                     <div class="col-lg-12">
-                        <h2 class="mb-0 font-montserrat">
+                        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
                             <img src="{{url('img-category', $image)}}" class="mr-2 rounded" width="30" /> {{$title}}
                         </h2>
-                        <p class="lead text-muted mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
+                        <p class="mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
                     </div>
                 </div>
                 <div class="row" id="containerWrapCreators">
@@ -36,10 +36,10 @@
             <div class="col-md-9">
               <div class="row mb-sm">
                     <div class="col-lg-12">
-                        <h2 class="mb-0 font-montserrat">
+                        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
                             <img src="{{url('img-category', $image)}}" class="mr-2 rounded" width="30" /> {{$title}}
                         </h2>
-                        <p class="lead text-muted mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
+                        <p class="mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
                     </div>
                 </div>
                 <div class="my-5 text-center no-updates main-no-updates">

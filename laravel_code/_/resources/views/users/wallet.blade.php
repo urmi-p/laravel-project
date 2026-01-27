@@ -342,7 +342,7 @@
             <div class="row mb-sm">
               <div class="col-lg-8">
                 <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{__('general.wallet')}}</h2>
-                <p class="lead text-muted mt-0 font_weight_400 fs-14 theme-subtitle">{{__('general.wallet_desc')}}</p>
+                <p class="mt-0 font_weight_400 fs-14 theme-subtitle">{{__('general.wallet_desc')}}</p>
               </div>
             </div>
             @include('errors.errors-forms')

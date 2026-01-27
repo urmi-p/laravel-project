@@ -15,7 +15,7 @@ return array(
 'following' => 'Підписки',
 'notifications' => 'Сповіщення',
 'account_settings' => 'Налаштування акаунта',
-'my_profile' => 'Мій профіль',
+'my_profile' => 'профіль',
 'logout' => 'Вийти',
 'stats' => 'Статистика',
 'edit_profile' => 'Редагувати профіль',

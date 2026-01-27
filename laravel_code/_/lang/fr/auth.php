@@ -68,4 +68,7 @@ return [
 'recover_pass_subtitle'     => 'Vous recevrez un email pour réinitialiser votre mot de passe',
 'reset_pass_subtitle'       => 'Dernière étape ! Entrez votre email et créez un nouveau mot de passe',
 'protected_recaptcha'       => 'Protégé par reCAPTCHA',
+'full_name1' => 'Nom et prénom',
+'email' => 'E-mail',
+'register' => 'S\'inscrire',
 ];

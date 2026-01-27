@@ -16,7 +16,7 @@
           <div class="row mb-sm">
             <div class="col-lg-8">
               <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-arrow-left-right mr-2"></i> {{trans('general.withdrawals')}}</h2>
-              <p class="lead mt-0 font_weight_400 fs-14">{{trans('general.history_withdrawals')}}</p>
+              <p class="mt-0 font_weight_400 fs-14">{{trans('general.history_withdrawals')}}</p>
             </div>
           </div>
           @include('errors.errors-forms')

@@ -15,7 +15,7 @@ return array(
 'following'                 => 'Abonnements',
 'notifications'             => 'Notifications',
 'account_settings'          => 'Paramètres du compte',
-'my_profile'                => 'Mon profil',
+'my_profile'                => 'profil',
 'logout'                    => 'Se déconnecter',
 'stats'                     => 'Statistiques',
 'edit_profile'              => 'Modifier le profil',

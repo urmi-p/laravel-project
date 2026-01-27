@@ -4,17 +4,16 @@
 
 @section('content')
 <section class="section section-sm">
-  <div class="container">
+  <div class="container-fluid">
     <div class="row mb-sm">
       <div class="col-lg-8 py-5">
-        <h2 class="mb-0 font-montserrat"><i class="feather icon-user-x mr-2"></i> {{__('general.delete_account')}}</h2>
-        <p class="lead text-muted mt-0">{{__('general.subtitle_delete_account')}}</p>
+        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-user-x mr-2"></i> {{__('general.delete_account')}}</h2>
+        <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_delete_account')}}</p>
       </div>
     </div>
     <div class="row justify-content-center">
 
       <div class="col-md-7 mb-5 mb-lg-0">
-
 
         @if (session('incorrect_pass'))
         <div class="alert alert-danger">
@@ -48,11 +47,8 @@
           <div class="text-center mt-3">
             <a href="{{ url('privacy/security') }}">{{ __('admin.cancel') }}</a>
           </div>
-
         </form>
-
       </div><!-- end col-md-6 -->
-
     </div>
   </div>
 </section>

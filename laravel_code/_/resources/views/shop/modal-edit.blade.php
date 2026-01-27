@@ -17,8 +17,8 @@
 							@csrf
 
 							<div class="form-group">
-                <input type="text" class="form-control" value="{{ $product->name }}" name="name" placeholder="{{ __('admin.name') }}">
-              </div>
+								<input type="text" class="form-control" value="{{ $product->name }}" name="name" placeholder="{{ __('admin.name') }}">
+							</div>
 
 							<div class="form-group">
 								<input type="text" class="form-control isNumber" value="{{ $product->price }}" autocomplete="off" name="price" placeholder="{{ __('general.price') }}">

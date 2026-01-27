@@ -4,11 +4,11 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row justify-content-center text-center mb-sm">
         <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat"><i class="feather icon-feather mr-2"></i> {{__('general.my_posts')}}</h2>
-          <p class="lead text-muted mt-0">{{__('general.all_post_created')}}</p>
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-feather mr-2"></i> {{__('general.my_posts')}}</h2>
+          <p class="lead mt-0 font_weight_400 fs-14">{{__('general.all_post_created')}}</p>
         </div>
       </div>
       <div class="row">
@@ -126,19 +126,24 @@
   			    	@endif
 
         @else
-          <div class="my-5 text-center">
-            <span class="btn-block mb-3">
-              <i class="feather icon-feather ico-no-result"></i>
-            </span>
+          <div class="my-5 text-center no-updates main-no-updates">
+            <div class="sub-no-updates">
+              <span class="btn-block mb-3">
+                <i class="feather icon-feather ico-no-result bg_black"></i>
+              </span>
 
-            @if (request('q'))
-              <h4 class="font-weight-light">{{__('general.no_results_found')}}</h4>
-              <a href="{{ url('my/posts') }}" class="btn btn-primary btn-sm mt-3">
-                <i class="bi-arrow-left mr-1"></i> {{ __('general.go_back') }}
-              </a>
-            @else
-              <h4 class="font-weight-light">{{__('general.not_post_created')}}</h4>
-            @endif
+              @if (request('q'))
+                <h4 class="font_weight_400 font_size_18">{{__('general.no_results_found')}}</h4>
+                
+                <div class="no-updates-div">
+                  <a href="{{ url('my/posts') }}" class="btn btn-primary btn-sm mt-3">
+                    <i class="bi-arrow-left mr-1"></i> {{ __('general.go_back') }}
+                  </a>
+                </div>
+              @else
+                <h4 class="font_weight_400 font_size_18">{{__('general.not_post_created')}}</h4>
+              @endif
+            </div>
           </div>
         @endif
         </div><!-- end col-md-6 -->

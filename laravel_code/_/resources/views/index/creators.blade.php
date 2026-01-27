@@ -28,7 +28,7 @@
 
                         <h2 class="mb-0 text-break font_weight_700 fs-24">{{ $title }}</h2>
 
-                        <p class="lead text-muted mt-0 font_weight_400 fs-14">
+                        <p class="mt-0 font_weight_400 fs-14">
                             {{ __('users.the_best_creators_is_here') }}
 
                             @guest

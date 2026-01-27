@@ -16,7 +16,7 @@ return array(
 	'messages' => 'Mensajes',
 	'notifications' => 'Notificaciones',
 	'account_settings' => 'Configuraciones',
-	'my_profile' => 'Mi perfil',
+	'my_profile' => 'Perfil',
 	'logout' => 'Cerrar sesión',
 	'stats' => 'Estadísticas',
 	'edit_profile' => 'Editar perfil',

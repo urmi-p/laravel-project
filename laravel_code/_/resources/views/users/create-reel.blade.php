@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
-
-
 @section('title') {{ __('general.create_reel') }} -@endsection
-
-
 
 @section('css')
 
@@ -24,25 +20,22 @@
 
 @endsection
 
-
-
 @section('content')
-
 <section class="section section-sm">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="row justify-content-center text-center mb-sm">
 
         <div class="col-lg-12 py-5">
 
-          <h2 class="mb-0 font-montserrat">
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
 
             {{ __('general.create_reel') }}
 
           </h2>
 
-          <p class="lead text-muted mt-0">
+          <p class="lead mt-0 font_weight_400 fs-14">
 
             {{ __('general.create_reel_subtitle') }}
 
@@ -60,13 +53,9 @@
 
               @csrf
 
-
-
               <input type="hidden" name="duration" id="videoDurarion" value="">
 
               <input type="hidden" name="video_thumbnail" id="videoThumbnail" value="">
-
-
 
               <div class="form-group">
 
@@ -74,15 +63,11 @@
 
               </div>
 
-
-
               <div class="form-group mb-4">
 
                 <input type="text" class="form-control" name="title" id="title" placeholder="{{ __('general.title') }} ({{ __('general.optional') }})">
 
               </div>
-
-
 
               <div class="form-group mb-4">
 
@@ -96,8 +81,6 @@
 
                 </div>
 
-
-
               <!-- Alert -->
 
             <div class="alert alert-danger my-3 display-none" id="errorCreateReel">
@@ -105,8 +88,6 @@
                <ul class="list-unstyled m-0" id="showErrorsCreateReel"><li></li></ul>
 
              </div><!-- Alert -->
-
-
 
               <button class="btn btn-1 btn-primary btn-block" id="createReelBtn" type="submit"><i></i> {{ __('users.create') }}</button>
 
@@ -121,8 +102,6 @@
   </section>
 
 @endsection
-
-
 
 @section('javascript')
 

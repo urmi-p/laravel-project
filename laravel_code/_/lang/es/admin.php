@@ -218,4 +218,5 @@ return array(
 		'text' => 'Texto',
 		'blog_deleted' => '¡Blog eliminado!',
 		'minimum_width_img_blog' => 'Ancho mínimo 650x430',
+		'commission' => 'Comisión',
 );

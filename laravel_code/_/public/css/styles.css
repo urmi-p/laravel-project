@@ -268,14 +268,11 @@ img.imageFull {
     content: "";
     position: absolute;
     inset: 0;
-
     background-image: var(--bg);
     background-size: cover;
     background-position: center;
-
     filter: blur(22px);
     transform: scale(1.25);
-
     z-index: 1;
 }
 
@@ -332,9 +329,7 @@ img.imageFull {
 .text-word-break {
     word-break: break-word;
 }
-.counterLike {
-    font-size: 14px;
-}
+
 .post-options {
     font-size: 7px;
     margin-top: 15px;
@@ -364,24 +359,6 @@ a.active > i.fas.fa-heart {
     -webkit-border-radius: 100px;
     border-bottom: 1px solid #dadada;
     font-size: 11px;
-}
-[data-bs-theme="dark"] .no-notification-main {
-    background-color: #ffffff1a;
-    padding: 15px;
-}
-[data-bs-theme="dark"] .notify-sub {
-    background-color: #303030;
-    padding: 25px;
-    border-radius: 8px;
-}
-[data-bs-theme="light"] .no-notification-main {
-    background-color: #7973731a;
-    padding: 15px;
-}
-[data-bs-theme="light"] .notify-sub {
-    background-color: #dddada;
-    padding: 25px;
-    border-radius: 8px;
 }
 
 #noti_notifications,
@@ -2822,7 +2799,7 @@ div.media-post {
 [data-bs-theme="light"] .lead {
     font-size: 14px;
     font-weight: 400;
-    color: #1402024d;
+    /* color: #1402024d; */
 }
 
 [data-bs-theme="dark"] .notify-card {

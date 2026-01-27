@@ -105,13 +105,13 @@
 	<div class="container-fluid pt-lg-5 pt-2">
 		<div class="row mb-sm">
 			@include('includes.cards-settings')
-			<div class="col-lg-9">
-				<h2 class="mb-0 font-montserrat">
+			<div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+				<h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
 					{{__('general.referrals')}}
 				</h2>
 
 				@if ($settings->referral_system == 'on')
-				<p class="lead  mt-1">
+				<p class="lead mt-1 font_weight_400 fs-14">
 					{{__('general.referrals_welcome_desc', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
 				</p>
 
@@ -122,6 +122,7 @@
 					</span>
 				</div>
 				@endif
+				
 				<div class="row">
 					<div class="col-lg-3 mb-2">
 						<div class="ref-card">

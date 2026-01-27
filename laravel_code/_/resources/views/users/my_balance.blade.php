@@ -74,7 +74,7 @@
                     <div class="row mb-sm">
                         <div class="col-lg-8">
                             <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{ __('general.balance') }}</h2>
-                            <p class="lead text-muted mt-0 font_weight_400 fs-14 theme-subtitle">
+                            <p class="lead mt-0 font_weight_400 fs-14 theme-subtitle">
                                 {{ __('general.balance_desc') }}</p>
                         </div>
                     </div>

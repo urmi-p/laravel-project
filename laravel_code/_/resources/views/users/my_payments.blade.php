@@ -145,9 +145,9 @@
               <i class="bi bi-receipt ico-no-result bg_black"></i>
             </span>
             @if (request()->is('my/payments'))
-            <h4 class="font-weight-light">{{trans('general.not_payment_made')}}</h4>
+            <h4 class="font_weight_400 font_size_18">{{trans('general.not_payment_made')}}</h4>
             @else
-            <h4 class="font-weight-light">{{trans('general.not_payment_received')}}</h4>
+            <h4 class="font_weight_400 font_size_18">{{trans('general.not_payment_received')}}</h4>
             @endif
           </div>
         </div>

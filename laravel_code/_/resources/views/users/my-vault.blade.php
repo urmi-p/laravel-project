@@ -39,11 +39,11 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center text-center mb-sm">
             <div class="col-lg-8 py-5">
-                <h2 class="mb-0 font-montserrat"><i class="feather icon-archive mr-2"></i> {{__('general.vault')}}</h2>
-                <p class="lead text-muted mt-0">{{__('general.all_vault_uploaded')}}</p>
+                <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-archive mr-2"></i> {{__('general.vault')}}</h2>
+                <p class="lead mt-0 font_weight_400 fs-14">{{__('general.all_vault_uploaded')}}</p>
             </div>
         </div>
         <div class="row">

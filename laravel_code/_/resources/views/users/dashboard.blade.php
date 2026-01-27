@@ -10,13 +10,13 @@
       
       <div class="row">
 			@include('includes.cards-settings')
-        <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
-            <div class="col-lg-8 pt-5 pb-2">
-				<h2 class="mb-0 font-montserrat pb-3">
+            <div class="col-lg-8">
+				<h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
 					{{__('admin.dashboard')}}
 				</h2>
-				<p class="lead mt-0">{{__('general.dashboard_desc')}}</p>
+				<p class="lead mt-0 font_weight_400 fs-14">{{__('general.dashboard_desc')}}</p>
             </div>
           </div>
           <div class="content">

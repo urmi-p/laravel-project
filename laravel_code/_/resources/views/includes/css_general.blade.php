@@ -1026,8 +1026,6 @@ align-items: center;
 
 }
 
-.text-featured {color: #fff !important;}
-
 .input-group-text {
 
   border-color: #222;

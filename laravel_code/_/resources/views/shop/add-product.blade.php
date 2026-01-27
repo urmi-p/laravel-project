@@ -10,19 +10,19 @@
 
 <section class="section section-sm">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="row justify-content-center text-center mb-sm">
 
         <div class="col-lg-12 py-5">
 
-          <h2 class="mb-0 font-montserrat">
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
 
             {{ __('general.add_product') }}
 
           </h2>
 
-          <p class="lead text-muted mt-0">
+          <p class="mt-0 font_weight_400 fs-14">
 
             {{ __('general.digital_products_desc') }}
 

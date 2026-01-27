@@ -15,8 +15,8 @@
       @include('includes.cards-settings')
 
       <div class="col-md-6 col-lg-9 pb-4 add-card">
-        <h2 class="mb-0 title">{{trans('general.payment_card')}}</h2>
-        <p class="lead text-muted mt-0 sub-title">{{trans('general.payment_card_subtitle')}}</p>
+        <h2 class="mb-0 title font_weight_700 fs-24 pb-3">{{trans('general.payment_card')}}</h2>
+        <p class="lead mt-0 sub-title font_weight_400 fs-14">{{trans('general.payment_card_subtitle')}}</p>
         <div class="bg-white rounded-lg shadow-sm  pt-2 pb-2">
 
           <div class="alert alert-success display-none" id="success">

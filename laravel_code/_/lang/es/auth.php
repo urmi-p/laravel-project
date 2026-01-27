@@ -41,7 +41,7 @@ return [
   	'remember_me'		      =>	  'Mantenerme conectado',
   	'logout'				  =>	  'Cerrar sesión',
   	'back'				      =>	  'Regresar',
-    'back_login'				      =>	  'Volver al inicio de sesión',
+    'back_login'			  =>	  'Volver al inicio de sesión',
   	'password_reset'	 	  =>	  'Tu contraseña ha sido restablecida con éxito.',
   	'password_recover'        =>      'Recuperar contraseña',
   	'password_reset_2'        =>      'Restablecer contraseña',
@@ -57,6 +57,7 @@ return [
   	'login'                   =>      'Iniciar sesión',
   	'not_have_account'        =>      "¿No tienes una cuenta?",
   	'already_have_an_account' =>      '¿Ya tienes una cuenta?',
+	'register'                 =>      'Inscribirse',
   	'terms'                   =>      'Una vez que haga clic para Registrarse, acepta nuestros Términos y condiciones.',
   	'logged_in_comments'      =>      'Debes iniciar sesión para comentar esta foto',
   	'error_captcha'           =>      'Error de CAPTCHA',
@@ -69,4 +70,6 @@ return [
     'recover_pass_subtitle' => 'Recibirás un correo electrónico para restablecer tu contraseña.',
     'reset_pass_subtitle' => '¡Último paso! ingrese su correo electrónico y cree una nueva contraseña',
     'protected_recaptcha' => 'Protegido por reCAPTCHA',
+	'full_name1' => 'nombre completo',
+	'email' => 'Correo electrónico',
 ];

@@ -55,7 +55,7 @@
               <!-- <i class="feather icon-send mr-2"></i>  -->
               {{__('general.conversations')}}
             </h2>
-            <p class="lead mt-0 font_weight_400 fs-14">{{__('general.subtitle_conversations')}}</p>
+            <p class="mt-0 font_weight_400 fs-14">{{__('general.subtitle_conversations')}}</p>
           </div>
         </div>
         @if (session('status'))

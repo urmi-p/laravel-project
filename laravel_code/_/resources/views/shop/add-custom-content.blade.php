@@ -1,28 +1,24 @@
 @extends('layouts.app')
 
-
-
 @section('title') {{ __('general.sell_custom_content') }} -@endsection
-
-
 
 @section('content')
 
 <section class="section section-sm">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="row justify-content-center text-center mb-sm">
 
         <div class="col-lg-12 py-5">
 
-          <h2 class="mb-0 font-montserrat">
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
 
             {{ __('general.sell_custom_content') }}
 
           </h2>
 
-          <p class="lead text-muted mt-0">
+          <p class="lead mt-0 font_weight_400 fs-14">
 
             {{ __('general.custom_content_desc') }}
 
@@ -34,15 +30,11 @@
 
       <div class="row justify-content-center">
 
-
-
         <div class="col-lg-7">
 
             <form action="{{ url()->current() }}" method="post" enctype="multipart/form-data" id="shopProductForm">
 
               @csrf
-
-
 
               <div class="form-group preview-shop">
 
@@ -52,31 +44,23 @@
 
               </div>
 
-
-
               <div class="form-group">
 
                 <input type="text" class="form-control" name="name" placeholder="{{ __('admin.name') }}">
 
               </div>
 
+              <div class="form-group">
 
+                <input type="text" class="form-control isNumber" name="price" autocomplete="off" placeholder="{{ __('general.price') }}">
 
-                <div class="form-group">
+              </div>
 
-                  <input type="text" class="form-control isNumber" name="price" autocomplete="off" placeholder="{{ __('general.price') }}">
+              <div class="form-group">
 
-                </div>
+                <input type="text" class="form-control" name="tags" placeholder="{{ __('general.tags') }} ({{ __('general.separate_with_comma') }})">
 
-
-
-                <div class="form-group">
-
-                  <input type="text" class="form-control" name="tags" placeholder="{{ __('general.tags') }} ({{ __('general.separate_with_comma') }})">
-
-                </div>
-
-
+              </div>
 
                 <div class="form-group">
 
@@ -93,8 +77,6 @@
                   </select>
 
                 </div>
-
-
 
                 <div class="form-group">
 
@@ -116,15 +98,11 @@
 
                 </div>
 
-
-
               <div class="form-group">
 
                 <textarea class="form-control textareaAutoSize" name="description" placeholder="{{ __('general.description') }}" rows="3"></textarea>
 
               </div>
-
-
 
               <!-- Alert -->
 
@@ -133,8 +111,6 @@
                <ul class="list-unstyled m-0" id="showErrorsShopProduct"><li></li></ul>
 
              </div><!-- Alert -->
-
-
 
               <button class="btn btn-1 btn-primary btn-block" id="shopProductBtn" type="submit"><i></i> {{ __('users.create') }}</button>
 
@@ -149,8 +125,6 @@
   </section>
 
 @endsection
-
-
 
 @section('javascript')
 

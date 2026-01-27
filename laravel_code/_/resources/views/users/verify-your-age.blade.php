@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center text-center mb-sm">
             <div class="col-lg-12 py-5">
                 @if (session('error_verification'))
@@ -19,11 +19,11 @@
                 <span class="mb-3" style="font-size: 80px;">
                     <i class="bi-person-bounding-box"></i>
                 </span>
-                <h2 class="mb-0 font-montserrat">
+                <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
                     {{ __('general.age_verification') }}
                 </h2>
 
-                <p class="lead text-muted mt-0">
+                <p class="mt-0 font_weight_400 fs-14">
 
                     @if (auth()->user()->age_verification === 0 && auth()->user()->role != 'admin')
                         {{ __('general.age_verification_desc') }}

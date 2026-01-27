@@ -10,7 +10,7 @@
 			<div class="col-lg-9">
 				<div class="row mb-sm">
 					<div class="col-lg-8">
-						<h2 class="mb-0 font-montserrat">
+						<h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
 							<!-- <i class="far fa-bell mr-2"></i> -->
 							<span class="caller-name">
 								{{__('general.notifications')}}
@@ -29,7 +29,7 @@
 					@endif
 					</small> -->
 						</h2>
-						<p class="lead  mt-1">{{__('general.notifications_subtitle')}}</p>
+						<p class="lead mt-1 font_weight_400 fs-14">{{__('general.notifications_subtitle')}}</p>
 					</div>
 				</div>
 				@if (!$notifications->isEmpty())
@@ -344,12 +344,12 @@
 				</div>
 				@endif
 				@if ($notifications->isEmpty())
-				<div class="my-5 text-center no-notification-main">
-					<div class="notify-sub py-6">
+				<div class="my-5 text-center no-updates main-no-updates">
+					<div class="sub-no-updates">
 						<span class="btn-block mb-3">
-							<i class="far fa-bell-slash ico-no-result"></i>
+							<i class="far fa-bell-slash ico-no-result bg_black"></i>
 						</span>
-						<h4 class="font-weight-light">{{__('general.no_notifications')}}</h4>
+						<h4 class="font_weight_400 font_size_18">{{__('general.no_notifications')}}</h4>
 					</div>
 				</div>
 				@endif

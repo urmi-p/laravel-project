@@ -3,11 +3,6 @@
 @section('title') {{__('users.payout_method')}} -@endsection
 
 @section('content')
-
-<style>
-
-</style>
-
 <section class="section section-sm payout-method">
   {{-- for mobile header --}}
   @include('includes.header-mobile')
@@ -18,8 +13,8 @@
       @include('includes.cards-settings')
 
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-        <h2 class="mb-0 font-montserrat">{{__('users.payout_method')}}</h2>
-        <p class="lead text-muted mt-0">{{__('general.default_payout_method')}}:
+        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{__('users.payout_method')}}</h2>
+        <p class="lead mt-0 font_weight_400 fs-14">{{__('general.default_payout_method')}}:
           @if(auth()->user()->payment_gateway != '')
           <strong class="text-success">
             {{auth()->user()->payment_gateway == 'Bank' ? __('users.bank_transfer') : auth()->user()->payment_gateway}}
@@ -53,12 +48,6 @@
           </ul>
         </div>
         @endif
-
-
-
-
-
-
 
         @if (session('status'))
         <div class="alert alert-success">
@@ -336,15 +325,6 @@
           @endif
           <!--============ END BANK TRANSFER ============-->
         </div>
-
-
-
-
-
-
-
-
-
         @endif
 
         @if (auth()->user()->verified_id == 'yes'
@@ -370,9 +350,6 @@
         @endif
 
       </div><!-- end col-md-6 -->
-
-
-
     </div>
   </div>
 </section>

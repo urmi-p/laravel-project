@@ -1,16 +1,12 @@
 @extends('layouts.app')
 
-
-
 @section('title') {{ trans('general.blog') }} -@endsection
-
-
 
 @section('content')
 
   <section class="section section-sm">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="row justify-content-center text-center mb-sm">
 
@@ -23,14 +19,9 @@
         </div>
 
       </div>
-
-
-
       <div class="row">
 
         @if ($blogs->total() != 0)
-
-
 
           @foreach ($blogs as $response)
 
@@ -60,8 +51,6 @@
 
           @endforeach
 
-
-
           @if ($blogs->hasPages())
 
             <div class="w-100 d-block">
@@ -72,12 +61,9 @@
 
           @endif
 
-
-
         @else
 
           <div class="col-md-12">
-
             <div class="my-5 text-center no-updates main-no-updates">
               <div class="sub-no-updates">
                 <span class="btn-block mb-3">
@@ -86,16 +72,10 @@
                 <h4 class="font_weight_400 font_size_18">{{trans('general.no_results_found')}}</h4>
               </div>
             </div>
-
           </div>
-
         @endif
-
       </div>
-
     </div>
-
   </section>
-
 @endsection
 
