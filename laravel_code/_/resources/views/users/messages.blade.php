@@ -3,7 +3,7 @@
 @section('title'){{trans('general.messages')}} -@endsection
 
 @section('content')
-<section class="section section-sm pb-0 h-100 section-msg position-fixed ">
+<section class="section section-sm pb-0  section-msg ">
   <div class="container-fluid pt-lg-5 pt-2">
     <div class="row justify-content-center h-100">
 
