@@ -2923,10 +2923,7 @@ div.media-post {
 [data-bs-theme="dark"] .dash-icon-span .text-primary {
     color: #fff !important;
 }
-.sub-title {
-    font-family: "Poppins";
-    font-weight: bold;
-}
+
 .sub-success {
     background-color: #e5fcda;
     color: #239a3c;
@@ -4185,14 +4182,9 @@ footer.footer-bg {
         font-weight: 700;
         font-size: 24px;
         line-height: 36px;
-        /* identical to box height */
         display: flex;
         align-items: flex-end;
-
         color: #ffffff;
-    }
-    .card-body {
-        /* padding: 0;*/
     }
 
     .credit-card {
@@ -4466,6 +4458,10 @@ footer.footer-bg {
         flex: none;
         padding-left: 4px;
     }
+
+    [data-bs-theme="light"] .left-settings-sidebar hr.separator {
+        border: 1px solid rgba(0, 0, 0, .1);
+    }
     .left-settings-sidebar .list-group-item i {
         font-size: 18px;
     }
@@ -4598,23 +4594,17 @@ footer.footer-bg {
         font-weight: 700;
         font-size: 24px;
         line-height: 36px;
-        /* identical to box height */
         display: flex;
         align-items: flex-end;
-
         color: #ffffff;
     }
     /* Add / Edit your payment card */
     .add-card .sub-title {
         width: 1023px;
         height: 16px;
-
-        font-family: "Poppins";
-        font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 16px;
-        /* identical to box height, or 114% */
         color: #ffffff;
     }
 

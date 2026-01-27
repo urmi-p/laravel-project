@@ -2698,9 +2698,23 @@ class UserController extends Controller
 
     $users = $this->userExplore();
 
+    // Get Platform Commission
+    $commission = auth()->user()->custom_fee == 0 ? $this->settings->fee_commission : auth()->user()->custom_fee;
+
+    // Get Payment Gateway Fee (Estimate using Stripe or first enabled)
+    $paymentGateway = PaymentGateways::whereName('Stripe')->whereEnabled('1')->first() 
+                      ?? PaymentGateways::whereEnabled('1')->first();
+
+    $tax = $paymentGateway ? $paymentGateway->fee : 0;
+    $taxCents = $paymentGateway ? $paymentGateway->fee_cents : 0;
+
     return view('users.commission', [
       'updates' => $purchases,
-      'users' => $users
+      'users' => $users,
+      'commission' => $commission,
+      'tax' => $tax,
+      'tax_cents' => $taxCents,
+      'payment_gateway' => $paymentGateway ? $paymentGateway->name : null
     ]);
   }
 }

@@ -12,7 +12,7 @@
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0  my-card">
         <div class="col-lg-8 title-div">
           <h2 class="mb-0 title font_weight_700 fs-24 pb-3"> {{trans('general.my_cards')}}</h2>
-          <p class="lead mt-0 sub-title font_weight_400 fs-14">{{trans('general.info_my_cards')}}</p>
+          <p class="mt-0 font_weight_400 fs-14">{{trans('general.info_my_cards')}}</p>
         </div>
         @if (session('success_removed'))
         <div class="alert alert-success">

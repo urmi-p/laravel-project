@@ -15,8 +15,11 @@
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
         <div class="row mb-sm">
           <div class="col-lg-8">
-            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi-clock-history mr-2"></i> {{trans('general.my_stories')}}</h2>
-            <p class="lead font_weight_400 fs-14 mt-0">{{trans('general.my_stories_subtitle')}}</p>
+            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+              <!-- <i class="bi-clock-history mr-2"></i>  -->
+              {{trans('general.my_stories')}}
+            </h2>
+            <p class="mt-0 font_weight_400 fs-14">{{trans('general.my_stories_subtitle')}}</p>
           </div>
         </div>
         @if ($stories->count() != 0)

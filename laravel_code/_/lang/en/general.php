@@ -1489,4 +1489,6 @@ return array(
 	'password' => 'Password',
 	'enter_your_old_password' => 'enter your old password',
 	'enter_your_new_password' => 'enter your new password',
+	'subscription_fees' => 'Subscription fees',
+	'subscription_fees_desc' => 'See how each subscription payment is split between the platform, payment processors, and your earnings.',
 );

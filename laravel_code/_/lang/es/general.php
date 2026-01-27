@@ -1575,4 +1575,6 @@ return array(
 	'direct_messages' => 'Mensajes directos',
 	'subscribe_date' => 'Fecha de suscripción',
 	'subscription_price_monthly' => 'Precio de suscripción (Por mes)',
+	'subscription_fees' => 'Tarifas de suscripción',
+	'subscription_fees_desc' => 'Ver cómo se divide cada pago de suscripción entre la plataforma, los procesadores de pagos y tus ganancias.',
 );

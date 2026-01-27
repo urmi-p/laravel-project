@@ -1480,4 +1480,6 @@ return array(
 		'direct_messages' => 'Прямі повідомлення',
 		'subscribe_date' => 'Дата підписки',
 		'subscription_price_monthly' => 'Вартість підписки (Місяць)',
+		'subscription_fees' => 'Плати',
+		'subscription_fees_desc' => 'Сподівайтесь, що кожен платіж підписки розділяється між платформою, обробниками платежів та вашими доходами.',
 );

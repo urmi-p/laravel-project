@@ -1472,4 +1472,6 @@ return array(
 	'direct_messages' => 'Messages directes',
 	'subscribe_date' => 'Date d\'abonnement',
 	'subscription_price_monthly' => 'Prix d\'abonnement (Par mois)',
+	'subscription_fees' => 'Frais d\'abonnement',
+	'subscription_fees_desc' => 'Voir comment chaque paiement d\'abonnement est divisé entre la plateforme, les processus de paiement et vos revenus.',
 );

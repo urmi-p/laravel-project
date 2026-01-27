@@ -13,8 +13,11 @@
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
         <div class="col-lg-8 py-4">
-          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi-tag mr-2"></i> {{trans('general.products')}}</h2>
-          <p class="lead m-0 font_weight_400 fs-14">{{trans('general.all_products_published')}}</p>
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+            <!-- <i class="bi-tag mr-2"></i>  -->
+            {{trans('general.products')}}
+          </h2>
+          <p class="m-0 font_weight_400 fs-14">{{trans('general.all_products_published')}}</p>
 
           <div class="mt-2">
             @if ($settings->digital_product_sale && ! $settings->custom_content && ! $settings->physical_products)

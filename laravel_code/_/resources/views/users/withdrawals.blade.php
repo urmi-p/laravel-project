@@ -15,7 +15,10 @@
         <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
-              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-arrow-left-right mr-2"></i> {{trans('general.withdrawals')}}</h2>
+              <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+                <!-- <i class="bi bi-arrow-left-right mr-2"></i>  -->
+                {{trans('general.withdrawals')}}
+              </h2>
               <p class="mt-0 font_weight_400 fs-14">{{trans('general.history_withdrawals')}}</p>
             </div>
           </div>
