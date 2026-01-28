@@ -1037,11 +1037,8 @@ align-items: center;
 
 
 .input-group .input-group-text {
-
   border-color: #222;
-
   background-color: #080808;
-
 } 
 
 

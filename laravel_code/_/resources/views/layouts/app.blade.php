@@ -125,28 +125,10 @@
   @include('includes.navbar')
   @endif
 
-  <main @if (request()->is('messages/*') || request()->is('live/*')) class="h-100" @endif role="main">
+  <main @if (request()->is('messages/*') || request()->is('live/*')) style="h-100" @endif role="main">
     @yield('content')
 
-    @if (auth()->guest() 
-          && ! request()->route()->named('profile')
-          && ! request()->is(['creators', 'category/*', 'creators/*'])
-          || auth()->check()
-          && request()->path() != '/'
-          && ! request()->route()->named('profile')
-          && ! request()->is([
-            'my/bookmarks', 
-            'my/likes', 
-            'my/purchases', 
-            'explore', 
-            'messages', 
-            'messages/*', 
-            'creators', 
-            'category/*', 
-            'creators/*', 
-            'live/*'
-            ])          
-          )
+    @if (auth()->guest() || auth()->check())
             
           @if (
                   !request()->is('password/reset*') &&
