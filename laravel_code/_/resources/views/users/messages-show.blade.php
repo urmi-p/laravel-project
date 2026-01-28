@@ -167,7 +167,7 @@
                     <ul class="list-unstyled m-0" id="showErrorMsg"></ul>
                   </div><!-- Alert -->
 
-                    <form action="{{url('message/send')}}" method="post" accept-charset="UTF-8" id="formSendMsg" enctype="multipart/form-data">
+                    <form action="{{url('message/send')}}" class="w-100" method="post" accept-charset="UTF-8" id="formSendMsg" enctype="multipart/form-data">
                       <input type="hidden" name="id_user" id="id_user" value="{{$user->id}}">
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
                       <input type="file" name="zip" id="zipFile" accept="application/x-zip-compressed" class="visibility-hidden">
@@ -234,7 +234,7 @@
 
                           @if (auth()->user()->verified_id == 'yes' && auth()->user()->free_subscription == 'yes' && $settings->ppv_only_free_accounts || !$settings->ppv_only_free_accounts && auth()->user()->verified_id == 'yes')
                           <button type="button" id="setPrice" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.set_price_for_msg')}}">
-                            <i class="feather icon-tag align-middle" style="font-size: 27px;"></i>
+                            <i class="bi bi-tag align-middle" style="font-size: 27px;"></i>
                           </button>
                         @endif
 

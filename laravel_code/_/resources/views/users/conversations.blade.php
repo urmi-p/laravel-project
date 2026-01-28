@@ -94,7 +94,7 @@
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text currency_span">{{$settings->currency_symbol}}</span>
               </div> -->
-              <input value="{{ auth()->user()->price_welcome_message }}" class="form-control form-control-lg isNumber brd-12" name="price_welcome_message" autocomplete="off" placeholder="{{$settings->currency_symbol}} 0.00" type="text">
+              <input value="{{ auth()->user()->price_welcome_message }}" class="form-control form-control-md isNumber brd-12" name="price_welcome_message" autocomplete="off" placeholder="{{$settings->currency_symbol}} 0.00" type="text">
             </div>
             <small class="btn-block text-lime">
               * {{ __('general.minimum') }} {{ Helper::priceWithoutFormat(config('settings.min_ppv_amount')) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat(config('settings.max_ppv_amount')) }}

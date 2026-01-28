@@ -34,9 +34,9 @@
 
           @csrf
           <div class="form-group">
-            <div class="input-group mb-4">
+            <div class="input-group mb-2 input-group-sub">
               <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                <span class="input-sub-text"><i class="fa fa-lock"></i></span>
               </div>
               <input class="form-control" name="password" required placeholder="{{__('general.enter_password')}}" type="password" required>
             </div>

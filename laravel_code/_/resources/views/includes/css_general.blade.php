@@ -4039,9 +4039,9 @@ a:hover.choose-type-sale {
 
   position: absolute;
 
-  right: 0;
+  right: 15px;
 
-  top: 40%;
+  top: 25%;
 
   cursor: pointer;
 

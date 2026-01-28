@@ -48,7 +48,7 @@ select { width: 100%; max-width: 100%; }
                     <!-- <div class="input-group-prepend">
                       <span class="input-group-text">{{$settings->currency_symbol}}</span>
                     </div> -->
-                        <input value="{{ auth()->user()->price_audio_call }}" class="form-control form-control-lg isNumber brd-12" required name="price_audio_call" autocomplete="off" placeholder="{{$settings->currency_symbol}} {{__('general.price_audio_call')}}" type="text">
+                        <input value="{{ auth()->user()->price_audio_call }}" class="form-control form-control-md isNumber brd-12" required name="price_audio_call" autocomplete="off" placeholder="{{$settings->currency_symbol}} {{__('general.price_audio_call')}}" type="text">
                     </div>
                     <small class="btn-block text-lime fs-16">
                       * {{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->audio_call_min_price) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat($settings->audio_call_max_price) }}

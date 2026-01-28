@@ -150,7 +150,7 @@
 
                         <div class="form-group">
                             <label>{{ trans('auth.full_name1') }} *</label>
-                            <div class="input-group mb-4">
+                            <div class="input-group mb-4 input-group-sub">
                                 {{-- <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-user"></i></span>
                                 </div> --}}
@@ -161,9 +161,9 @@
 
                         <div class="form-group">
                             <label>{{ trans('auth.username') }} *</label>
-                            <div class="input-group mb-2">
+                            <div class="input-group mb-2 input-group-sub">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text pr-0">{{ Helper::removeHTPP(url('/')) }}/</span>
+                                    <span class="input-sub-text pr-0">{{ Helper::removeHTPP(url('/')) }}/</span>
                                 </div>
                                 <input class="form-control light_mode_form" name="username" maxlength="25"
                                     placeholder="{{ trans('auth.username') }}" value="{{ auth()->user()->username }}"
@@ -181,8 +181,10 @@
 
                         <div class="form-group">
                             <label>{{ trans('auth.email') }} *</label>
-                            <input class="form-control " placeholder="{{ trans('auth.email') }} *" {!! auth()->user()->isSuperAdmin() ? 'name="email"' : 'disabled' !!}
+                            <div  class="input-group mb-2 input-group-sub">
+                                <input class="form-control " placeholder="{{ trans('auth.email') }} *" {!! auth()->user()->isSuperAdmin() ? 'name="email"' : 'disabled' !!}
                                 value="{{ auth()->user()->email }}" type="text">
+                            </div>
                         </div><!-- End form-group -->
 
                         <div class="form-group">
@@ -191,9 +193,11 @@
                               <span class="input-group-text"><i class="fa fa-user-tie"></i></span>
                           </div> --}}
                             <label>{{ trans('users.profession_ocupation') }} *</label>
-                            <input class="form-control light_mode_form" name="profession"
-                                placeholder="{{ trans('users.profession_ocupation') }}"
-                                value="{{ auth()->user()->profession }}" type="text">
+                            <div class="input-group mb-2 input-group-sub">
+                                <input class="form-control light_mode_form" name="profession"
+                                    placeholder="{{ trans('users.profession_ocupation') }}"
+                                    value="{{ auth()->user()->profession }}" type="text">
+                            </div>
 
                         </div>
 
@@ -204,14 +208,16 @@
                                     <span class="input-group-text"><i class="fa fa-language"></i></span>
                                 </div> --}}
                                     <label>{{ trans('general.language') }}</label>
-                                    <select name="language" class="form-control custom-select light_mode_form">
-                                        <option @if (auth()->user()->language == '') selected="selected" @endif value="">
-                                            ({{ trans('general.language') }}) {{ __('general.not_specified') }}</option>
-                                        @foreach (Languages::orderBy('name')->get() as $languages)
-                                            <option @if (auth()->user()->language == $languages->abbreviation) selected="selected" @endif
-                                                value="{{ $languages->abbreviation }}">{{ $languages->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <select name="language" class="form-control custom-select light_mode_form">
+                                            <option @if (auth()->user()->language == '') selected="selected" @endif value="">
+                                                ({{ trans('general.language') }}) {{ __('general.not_specified') }}</option>
+                                            @foreach (Languages::orderBy('name')->get() as $languages)
+                                                <option @if (auth()->user()->language == $languages->abbreviation) selected="selected" @endif
+                                                    value="{{ $languages->abbreviation }}">{{ $languages->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div><!-- End Form Group -->
 
@@ -221,10 +227,12 @@
                                     <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
                                 </div> --}}
                                     <label>{{ trans('general.birthdate') }} *</label>
-                                    <input class="form-control datepicker light_mode_form" @if (auth()->user()->birthdate_changed == 'yes') disabled @endif
-                                        name="birthdate" placeholder="{{ trans('general.birthdate') }} *"
-                                        value="{{ auth()->user()->birthdate ?? date(Helper::formatDatepicker(), strtotime(auth()->user()->birthdate)) }}"
-                                        autocomplete="off" type="text">
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <input class="form-control datepicker light_mode_form" @if (auth()->user()->birthdate_changed == 'yes') disabled @endif
+                                            name="birthdate" placeholder="{{ trans('general.birthdate') }} *"
+                                            value="{{ auth()->user()->birthdate ?? date(Helper::formatDatepicker(), strtotime(auth()->user()->birthdate)) }}"
+                                            autocomplete="off" type="text">
+                                    </div>
                                 </div>
                                 <small class="form-text text-muted mb-4">{{ trans('general.valid_formats') }}
                                     <strong>{{ now()->subYears(18)->format(Helper::formatDatepicker()) }}</strong> --
@@ -237,15 +245,17 @@
                                     <span class="input-group-text"><i class="fa fa-venus-mars"></i></span>
                                 </div> --}}
                                     <label>{{ trans('general.gender') }}</label>
-                                    <select name="gender" class="form-control custom-select light_mode_form">
-                                        <option @if (auth()->user()->gender == '') selected="selected" @endif value="">
-                                            ({{ trans('general.gender') }})
-                                            {{ __('general.not_specified') }}</option>
-                                        @foreach ($genders as $gender)
-                                            <option @if (auth()->user()->gender == $gender) selected="selected" @endif
-                                                value="{{ $gender }}">{{ __('general.' . $gender) }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <select name="gender" class="form-control custom-select light_mode_form">
+                                            <option @if (auth()->user()->gender == '') selected="selected" @endif value="">
+                                                ({{ trans('general.gender') }})
+                                                {{ __('general.not_specified') }}</option>
+                                            @foreach ($genders as $gender)
+                                                <option @if (auth()->user()->gender == $gender) selected="selected" @endif
+                                                    value="{{ $gender }}">{{ __('general.' . $gender) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                             </div><!-- End Form Group -->
@@ -259,9 +269,11 @@
                                             <span class="input-group-text"><i class="fa fa-link"></i></span>
                                         </div> --}}
                                         <label>{{ trans('general.website_misc') }}</label>
-                                        <input class="form-control light_mode_form" name="website"
-                                            placeholder="{{ trans('users.website') }}"
-                                            value="{{ auth()->user()->website }}" type="text">
+                                        <div class="input-group mb-2 input-group-sub">
+                                            <input class="form-control light_mode_form" name="website"
+                                                placeholder="{{ trans('users.website') }}"
+                                                value="{{ auth()->user()->website }}" type="text">
+                                        </div>
                                     </div>
                                 </div><!-- ./col-md-12 -->
 
@@ -271,14 +283,16 @@
                                             <span class="input-group-text"><i class="far fa-lightbulb"></i></span>
                                         </div> --}}
                                         <label>{{ trans('general.category') }}</label>
-                                        <select name="categories_id[]" multiple class="form-control categoriesMultiple light_mode_form">
-                                            @foreach (Categories::where('mode', 'on')->orderBy('name')->get() as $category)
-                                                <option @if (in_array($category->id, $categories)) selected="selected" @endif
-                                                    value="{{ $category->id }}">
-                                                    {{ Lang::has('categories.' . $category->slug) ? __('categories.' . $category->slug) : $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group mb-2 input-group-sub">
+                                            <select name="categories_id[]" multiple class="form-control categoriesMultiple light_mode_form">
+                                                @foreach (Categories::where('mode', 'on')->orderBy('name')->get() as $category)
+                                                    <option @if (in_array($category->id, $categories)) selected="selected" @endif
+                                                        value="{{ $category->id }}">
+                                                        {{ Lang::has('categories.' . $category->slug) ? __('categories.' . $category->slug) : $category->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div><!-- ./col-md-12 -->
                             @endif
@@ -293,9 +307,11 @@
                                         <span class="input-group-text"><i class="fa fa-building"></i></span>
                                     </div> --}}
                                     <label>{{ trans('general.company') }} *</label>
-                                    <input class="form-control light_mode_form" name="company"
-                                        placeholder="{{ trans('general.company') }}"
-                                        value="{{ auth()->user()->company }}" type="text">
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <input class="form-control light_mode_form" name="company"
+                                            placeholder="{{ trans('general.company') }}"
+                                            value="{{ auth()->user()->company }}" type="text">
+                                    </div>
                                 </div>
                             </div><!-- ./col-md-6 -->
 
@@ -305,13 +321,15 @@
                                         <span class="input-group-text"><i class="fa fa-globe"></i></span>
                                     </div> --}}
                                     <label>{{ trans('general.country') }}</label>
-                                    <select name="countries_id" class="form-control custom-select light_mode_form">
-                                        <option value="">{{ trans('general.select_your_country') }} *</option>
-                                        @foreach (Countries::orderBy('country_name')->get() as $country)
-                                            <option @if (auth()->user()->countries_id == $country->id) selected="selected" @endif
-                                                value="{{ $country->id }}">{{ $country->country_name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <select name="countries_id" class="form-control custom-select light_mode_form">
+                                            <option value="">{{ trans('general.select_your_country') }} *</option>
+                                            @foreach (Countries::orderBy('country_name')->get() as $country)
+                                                <option @if (auth()->user()->countries_id == $country->id) selected="selected" @endif
+                                                    value="{{ $country->id }}">{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div><!-- ./col-md-6 -->
 
@@ -321,8 +339,10 @@
                                         <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
                                     </div> --}}
                                     <label>{{ trans('general.city') }}</label>
-                                    <input class="form-control light_mode_form" name="city" placeholder="{{ trans('general.city') }}"
-                                        value="{{ auth()->user()->city }}" type="text">
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <input class="form-control light_mode_form" name="city" placeholder="{{ trans('general.city') }}"
+                                            value="{{ auth()->user()->city }}" type="text">
+                                    </div>
                                 </div>
                             </div><!-- ./col-md-6 -->
 
@@ -332,9 +352,11 @@
                                         <span class="input-group-text"><i class="fa fa-map-marked-alt"></i></span>
                                     </div> --}}
                                     <label>{{ trans('general.address') }}</label>
-                                    <input class="form-control light_mode_form" name="address"
-                                        placeholder="{{ trans('general.address') }}"
-                                        value="{{ auth()->user()->address }}" type="text">
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <input class="form-control light_mode_form" name="address"
+                                            placeholder="{{ trans('general.address') }}"
+                                            value="{{ auth()->user()->address }}" type="text">
+                                    </div>
                                 </div>
                             </div><!-- ./col-md-6 -->
 
@@ -344,8 +366,10 @@
                                         <span class="input-group-text"><i class="fa fa-map-marker-alt"></i></span>
                                     </div> --}}
                                     <label>{{ trans('general.zip') }}</label>
-                                    <input class="form-control light_mode_form" name="zip" placeholder="{{ trans('general.zip') }}"
-                                        value="{{ auth()->user()->zip }}" type="text">
+                                    <div class="input-group mb-2 input-group-sub">
+                                        <input class="form-control light_mode_form" name="zip" placeholder="{{ trans('general.zip') }}"
+                                            value="{{ auth()->user()->zip }}" type="text">
+                                    </div>
                                 </div>
                             </div><!-- ./col-md-6 -->
 
@@ -359,9 +383,9 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-facebook-f"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-facebook-f"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="facebook"
                                             placeholder="https://facebook.com/username"
@@ -370,9 +394,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-twitter-x"></i></span>
+                                            <span class="input-sub-text"><i class="bi-twitter-x"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="twitter"
                                             placeholder="https://twitter.com/username"
@@ -383,9 +407,9 @@
 
                             <div class="row form-group mb-0">
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-instagram"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="instagram"
                                             placeholder="https://instagram.com/username"
@@ -394,9 +418,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-youtube"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-youtube"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="youtube"
                                             placeholder="https://youtube.com/username"
@@ -407,9 +431,9 @@
 
                             <div class="row form-group mb-0">
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-pinterest-p"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-pinterest-p"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="pinterest"
                                             placeholder="https://pinterest.com/username"
@@ -418,9 +442,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-github"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-github"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="github"
                                             placeholder="https://github.com/username"
@@ -431,9 +455,9 @@
 
                             <div class="row form-group mb-0">
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-snapchat"></i></span>
+                                            <span class="input-sub-text"><i class="bi-snapchat"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="snapchat"
                                             placeholder="https://www.snapchat.com/add/username"
@@ -442,9 +466,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-tiktok"></i></span>
+                                            <span class="input-sub-text"><i class="bi-tiktok"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="tiktok"
                                             placeholder="https://www.tiktok.com/@username"
@@ -455,9 +479,9 @@
 
                             <div class="row form-group mb-0">
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-telegram"></i></span>
+                                            <span class="input-sub-text"><i class="bi-telegram"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="telegram" placeholder="https://t.me/username"
                                             value="{{ auth()->user()->telegram }}" type="text">
@@ -465,9 +489,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-twitch"></i></span>
+                                            <span class="input-sub-text"><i class="bi-twitch"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="twitch"
                                             placeholder="https://www.twitch.tv/username"
@@ -478,9 +502,9 @@
 
                             <div class="row form-group mb-0">
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-discord"></i></span>
+                                            <span class="input-sub-text"><i class="bi-discord"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="discord"
                                             placeholder="https://discord.gg/username"
@@ -489,9 +513,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-vk"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-vk"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="vk" placeholder="https://vk.com/username"
                                             value="{{ auth()->user()->vk }}" type="text">
@@ -501,9 +525,9 @@
 
                             <div class="row form-group mb-0">
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-reddit"></i></span>
+                                            <span class="input-sub-text"><i class="bi-reddit"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="reddit"
                                             placeholder="https://reddit.com/user/username"
@@ -512,9 +536,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-spotify"></i></span>
+                                            <span class="input-sub-text"><i class="bi-spotify"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="spotify"
                                             placeholder="https://spotify.com/username"
@@ -523,9 +547,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi-threads"></i></span>
+                                            <span class="input-sub-text"><i class="bi-threads"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="threads"
                                             placeholder="https://threads.net/username"
@@ -534,9 +558,9 @@
                                 </div><!-- ./col-md-6 -->
 
                                 <div class="col-md-6">
-                                    <div class="input-group mb-4">
+                                    <div class="input-group mb-4 input-group-sub">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fab fa-kickstarter"></i></span>
+                                            <span class="input-sub-text"><i class="fab fa-kickstarter"></i></span>
                                         </div>
                                         <input class="form-control light_mode_form" name="kick"
                                             placeholder="https://kick.com/username" value="{{ auth()->user()->kick }}"
@@ -547,7 +571,7 @@
 
 
 
-                            <div class="form-group">
+                            <div class="">
                                 <label class="w-100"><i class="fa fa-bullhorn text-muted"></i>
                                     {{ trans('users.your_story') }} *
                                     <span id="the-count" class="float-right d-inline">
@@ -555,9 +579,10 @@
                                         <span id="maximum">/ {{ $settings->story_length }}</span>
                                     </span>
                                 </label>
-                                <textarea name="story" id="story" rows="5" cols="40"
-                                    class="light_mode_form form-control textareaAutoSize scrollError">{{ auth()->user()->story ? auth()->user()->story : old('story') }}</textarea>
-
+                                <div class="input-group mb-4 input-group-sub">
+                                    <textarea name="story" id="story" rows="5" cols="40"
+                                        class="light_mode_form form-control textareaAutoSize scrollError">{{ auth()->user()->story ? auth()->user()->story : old('story') }}</textarea>
+                                </div>
                             </div><!-- End Form Group -->
                         @endif
 

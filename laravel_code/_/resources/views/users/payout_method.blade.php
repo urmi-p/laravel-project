@@ -164,19 +164,19 @@
           <form method="POST" action="{{ url('settings/payout/method/paypal') }}" id="PayPal" @if (auth()->user()->payment_gateway != 'PayPal') class="display-none" @endif>
             @csrf
 
-            <div class="form-group">
-              <div class="input-group mb-4">
+            <div class="">
+              <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fab fa-paypal"></i></span>
+                  <span class="input-sub-text"><i class="fab fa-paypal"></i></span>
                 </div>
                 <input class="form-control" name="email_paypal" value="{{auth()->user()->paypal_account == '' ? old('email_paypal') : auth()->user()->paypal_account}}" placeholder="{{__('general.email_paypal')}}" required type="email">
               </div>
             </div>
 
             <div class="form-group">
-              <div class="input-group mb-4">
+              <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                  <span class="input-sub-text"><i class="far fa-envelope"></i></span>
                 </div>
                 <input class="form-control" name="email_paypal_confirmation" placeholder="{{__('general.confirm_email_paypal')}}" required type="email">
               </div>
@@ -191,18 +191,18 @@
             @csrf
 
             <div class="form-group">
-              <div class="input-group mb-4">
+              <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                  <span class="input-sub-text"><i class="far fa-envelope"></i></span>
                 </div>
                 <input class="form-control" name="email_payoneer" value="{{auth()->user()->payoneer_account == '' ? old('email_payoneer') : auth()->user()->payoneer_account}}" placeholder="{{__('general.email_payoneer')}}" required type="email">
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="input-group mb-4">
+            <div class="">
+              <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                  <span class="input-sub-text"><i class="far fa-envelope"></i></span>
                 </div>
                 <input class="form-control" name="email_payoneer_confirmation" placeholder="{{__('general.confirm_email_payoneer')}}" required type="email">
               </div>
@@ -268,10 +268,10 @@
           <form method="POST" action="{{ url('settings/payout/method/bitcoin') }}" id="Bitcoin" @if (auth()->user()->payment_gateway != 'Bitcoin') class="display-none" @endif>
             @csrf
 
-            <div class="form-group">
-              <div class="input-group mb-4">
+            <div class="">
+              <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="bi-currency-bitcoin"></i></span>
+                  <span class="input-sub-text"><i class="bi-currency-bitcoin"></i></span>
                 </div>
                 <input class="form-control" name="crypto_wallet" value="{{auth()->user()->crypto_wallet == '' ? old('crypto_wallet') : auth()->user()->crypto_wallet}}" placeholder="{{__('general.bitcoin_wallet')}}" required type="text">
               </div>

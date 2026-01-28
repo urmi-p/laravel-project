@@ -58,7 +58,7 @@
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text">{{$settings->currency_symbol}}</span>
               </div> -->
-              <input value="{{ auth()->user()->price_live_streaming_private }}" class="form-control form-control-lg isNumber brd-12" required name="price_live_streaming_private" autocomplete="off" placeholder="{{$settings->currency_symbol}} {{__('general.price_live_streaming_private')}}" type="text">
+              <input value="{{ auth()->user()->price_live_streaming_private }}" class="form-control form-control-md isNumber brd-12" required name="price_live_streaming_private" autocomplete="off" placeholder="{{$settings->currency_symbol}} {{__('general.price_live_streaming_private')}}" type="text">
             </div>
             <small class="btn-block font_weight_400 fs-16 text-lime">
               * {{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->live_streaming_minimum_price_private) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat($settings->live_streaming_max_price_private) }}

@@ -25,9 +25,11 @@
                 <a href="{{ url('dashboard') }}"
                     class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('dashboard')) active @endif">
 
-                    <div>
-                        <i class="bi bi-speedometer2 mr-2"></i>
-                        <span>{{ __('admin.dashboard') }}</span>
+                    <div class="d-flex align-items-center justify-content-center gap-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="lay-dash-icon">
+                            <path d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z" fill="currentcolor"/>
+                        </svg>
+                        <span class="ml-2">{{ __('admin.dashboard') }}</span>
                     </div>
                 </a>
                 @endif
