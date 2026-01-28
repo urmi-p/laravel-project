@@ -301,14 +301,16 @@ class UpdatesController extends Controller
       // convert our array into json string
       $preloadedFile = $preloadedFile ? json_encode($preloadedFile) : false;
     }
-
+    $users = $this->userExplore();
+    
     return view('users.edit-update')->with([
       'data' => $data,
       'mediaCount' => $mediaCount,
       'preloadedFile' => $preloadedFile,
       'filePreload' => $filePreload,
       'fileZip' => $fileZip,
-      'fileEpub' => $fileEpub
+      'fileEpub' => $fileEpub,
+      'users' => $users
     ]);
   }
 
@@ -332,6 +334,10 @@ class UpdatesController extends Controller
       'price.max' => __('general.amount_maximum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'price.required_if' => __('validation.required'),
     ];
+
+    // Media Files
+    $fileuploader = $this->request->input('fileuploader-list-photo');
+    $fileuploader = json_decode($fileuploader, TRUE);
 
     $input = $this->request->all();
     $mediaFiles = $post->media()->where('video_embed', '=', '')->count();
@@ -385,6 +391,15 @@ class UpdatesController extends Controller
       $this->request->locked = 'no';
     }
 
+    if ($fileuploader) {
+      $nonMp3Count = count(array_filter($fileuploader, function ($media) {
+        $extension = strtolower(pathinfo($media['file'], PATHINFO_EXTENSION));
+        return $extension != 'mp3';
+      }));
+    }
+
+    $moderationStatus = isset($nonMp3Count) && $nonMp3Count ? $this->settings->moderation_status : false;
+
     $post->description  = trim(Helper::checkTextDb($this->request->description));
     $post->title        = $this->request->locked == 'yes' && !$getAllMedia && !$this->request->hasFile('zip') && !$this->request->hasFile('epub') ? $this->request->title : null;
     $post->user_id      = auth()->id();
@@ -392,6 +407,34 @@ class UpdatesController extends Controller
     $post->locked       = $this->settings->disable_free_post ? 'yes' : $this->request->locked;
     $post->price        = $this->request->price;
     $post->save();
+
+    // Insert Files
+    if ($fileuploader) {
+      foreach ($fileuploader as $key => $media) {
+        $mediaRecord = Media::whereImage($media['file'])
+          ->orWhere('video', $media['file'])
+          ->orWhere('music', $media['file'])
+          ->first();
+
+        if ($mediaRecord) {
+          $mediaRecord->update([
+            'updates_id' => $post->id,
+            'user_id' => auth()->id(),
+            'status' => 'active'
+          ]);
+
+          if ($moderationStatus) {
+            if ($mediaRecord->type == 'image') {
+              dispatch(new MediaModeration($mediaRecord));
+
+              $mediaRecord->update([
+                'status' => 'pending'
+              ]);
+            }
+          }
+        }
+      }
+    }
 
     $videoEmbed = $post->media()->where('video_embed', '<>', '')->first();
     // Insert Video Embed Youtube or Vimeo
