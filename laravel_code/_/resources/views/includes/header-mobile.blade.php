@@ -1,6 +1,6 @@
 @auth
 
-    <div class="d-lg-none d-flex justify-content-center">
+    <div class="d-lg-none  d-flex justify-content-center">
         <a class="nav-link {{ request()->is('dashboard') ? 'font_mobile_bold' : 'font_mobile_normal' }}" href="{{ url('dashboard') }}"
             title="{{ __('admin.dashboard') }}">
             {{ __('admin.dashboard') }}

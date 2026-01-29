@@ -235,9 +235,7 @@
                             <li class="nav-item dropdown d-lg-none mt-2 border-bottom">
                                 <a href="{{ url('panel/admin') }}" class="nav-link px-2 link-menu-mobile py-1">
                                     <div>
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z" fill="white"/>
-                                        </svg>
+                                        <i class="bi-speedometer2 me-2 mr-2"></i>
                                         <span class="d-lg-none">{{ __('admin.admin') }}</span>
                                     </div>
                                 </a>
@@ -513,10 +511,12 @@
 
                                 @if (auth()->user()->role == 'admin')
                                     <a class="dropdown-item dropdown-navbar" href="{{ url('panel/admin') }}">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z" fill="white"/>
+                                        <svg width="13" height="13" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="lay-dash-icon mr-2">
+                                            <path d="M10 6V0H18V6H10ZM0 10V0H8V10H0ZM10 18V8H18V18H10ZM0 18V12H8V18H0ZM2 8H6V2H2V8ZM12 16H16V10H12V16ZM12 4H16V2H12V4ZM2 16H6V14H2V16Z" fill="currentcolor"/>
                                         </svg>
-                                        {{ __('admin.admin') }}</a>
+                                        <span>{{ __('admin.admin') }}</span>
+
+                                        </a>
 
                                     <div class="dropdown-divider"></div>
                                 @endif
@@ -575,9 +575,7 @@
                                 @if (auth()->user()->verified_id == 'yes')
 
                                     <a class="dropdown-item dropdown-navbar" href="{{ url('dashboard') }}">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z" fill="white"/>
-                                        </svg>
+                                        <i class="bi-speedometer2 me-2 mr-2"></i>
                                         {{ __('admin.dashboard') }}</a>
 
                                     <a class="dropdown-item dropdown-navbar" href="{{ url('my/posts') }}"><i

@@ -886,6 +886,7 @@ a.link-border {
     background-color: #fff;
     border-radius: 50%;
 }
+
 [data-bs-theme="dark"] .section {
     background:
         radial-gradient(
@@ -910,7 +911,7 @@ a.link-border {
 /* background: radial-gradient(50% 50% at 85% 0%, rgba(226, 57, 76, 0.35) 0%, rgba(226, 57, 76, 0.15) 30%, rgba(0, 0, 0, 0) 50%), #000; */
 
 .section-sm {
-    padding: 78px 10px 0px 6px;
+    padding: 90px 10px 0px 6px;
 }
 
 .section-sm.section-msg {
@@ -3527,6 +3528,7 @@ div.media-post {
 .bg_prime_e3 {
     background-color: #e2394c !important;
     border-color: #e2394c !important;
+    color: white !important;
 }
 
 /* ===== SweetAlert2 Dark Theme (CloseOnly) ===== */
@@ -3991,6 +3993,10 @@ footer.footer-bg {
     .sidebar_li a {
         font-size: 15px !important;
     }
+}
+.section{
+    min-height: 80vh !important;
+    padding-bottom: 0px !important;
 }
 @media (max-width: 991px) {
     .navbar {
