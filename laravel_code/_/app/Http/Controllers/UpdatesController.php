@@ -255,7 +255,7 @@ class UpdatesController extends Controller
 
     $data = Updates::whereUserId(auth()->id())
       ->whereIn('status', ['active', 'schedule'])
-      ->with('media')
+      ->with('media', 'creator')
       ->findOrFail($id);
 
     $mediaCount = $data->media->isNotEmpty() ?? false;
