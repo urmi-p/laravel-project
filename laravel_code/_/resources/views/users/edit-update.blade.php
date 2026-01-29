@@ -81,7 +81,7 @@
                                     <label>Description</label>
                                     <textarea name="description" id="updateDescription" data-post-length="{{ $settings->update_length }}" rows="5"
                                         cols="40" placeholder="{{ __('general.write_something') }}"
-                                        class="form-control textareaAutoSize updateDescription emojiArea border-0">{{ $data->description }}</textarea>
+                                        class="form-control textareaAutoSize updateDescription emojiArea">{{ $data->description }}</textarea>
 
                                     <input class="custom-control-input d-none" id="customCheckLocked" type="checkbox"
                                         {{ $data->locked == 'yes' ? 'checked' : '' }} name="locked" value="yes">
@@ -184,7 +184,7 @@
                                                 $data->creator->id,
                                             );
                                         @endphp
-                                        <div class="action-bar">
+                                        <div>
                                             <div class="d-flex justify-content-between align-items-center">
 
                                                 <div class="action-left">
