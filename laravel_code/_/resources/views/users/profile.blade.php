@@ -63,10 +63,10 @@
 @endsection
 
 @section('content')
-    <section class="section section-sm">
+    <div class="d-lg-none pt-5 mt-5 d-flex justify-content-center">
     {{-- for mobile header --}}
     @include('includes.header-mobile')
-    </section>
+    </div>
 
     <div class="jumbotron jumbotron-cover-user home m-0 position-relative"
         style="padding: @if ($user->cover != '') @if (request()->path() == $user->username) 240px @else 125px @endif
