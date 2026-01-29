@@ -13,7 +13,7 @@
       </div>
       <div class="row">
 
-        <div class="col-md-12 mb-5 mb-lg-0">
+        <div class="col-md-12 mb-5">
 
           @if (session('notify'))
           <div class="alert alert-primary">

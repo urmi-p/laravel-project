@@ -49,7 +49,7 @@
         </div>
         @endif
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm mb-2">
           <div class="table-responsive">
             <table class="table table-striped m-0">
               <thead>

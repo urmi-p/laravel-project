@@ -576,7 +576,7 @@
             @if ($data->count() != 0)
               <h6 class="text-center mt-5 font-weight-light">{{ __('general.history_deposits') }}</h6>
 
-              <div class="card shadow-sm">
+              <div class="card shadow-sm mb-2">
                 <div class="table-responsive">
                   <table class="table table-striped m-0">
                     <thead>
