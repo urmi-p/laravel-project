@@ -120,8 +120,8 @@
 						<button type="submit" id="btnLoginRegister" class="btn btn-primary mt-4 w-100"><i></i> {{__('auth.login')}}</button>
 						@endif
 
-						<div class="w-100 mt-2">
-							<button type="button" class="btn e-none p-0" data-dismiss="modal">{{ __('admin.cancel') }}</button>
+						<div class="w-100 mt-2 brd-12" style="background-color: #161616 !important;">
+							<button type="button" class="btn e-none" data-dismiss="modal">{{ __('admin.cancel') }}</button>
 						</div>
 					</div>
 				</form>

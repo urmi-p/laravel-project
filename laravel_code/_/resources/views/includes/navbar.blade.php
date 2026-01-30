@@ -142,21 +142,24 @@
                 @endif
 
                 <ul class="navbar-nav">
-                    @if (auth()->user()->verified_id == 'yes')
-                    <li class="nav-item dropdown d-lg-block d-none">
-                        <a class="nav-link navbar_mid_link px-2 {{ request()->is('dashboard') ? 'font_bold' : 'font_normal' }}"
-                            href="{{ url('dashboard') }}" title="{{ __('admin.dashboard') }}">
-                            {{ __('admin.dashboard') }}
-                        </a>
-                    </li>
-                    @else
+                    
+                    @auth
+                        @if (auth()->user()->verified_id == 'yes')
                         <li class="nav-item dropdown d-lg-block d-none">
-                            <a class="nav-link navbar_mid_link px-2 {{ request()->is('/') ? 'font_bold' : 'font_normal' }}"
-                                href="{{ url('/') }}" title="{{ __('admin.dashboard') }}">
+                            <a class="nav-link navbar_mid_link px-2 {{ request()->is('dashboard') ? 'font_bold' : 'font_normal' }}"
+                                href="{{ url('dashboard') }}" title="{{ __('admin.dashboard') }}">
                                 {{ __('admin.dashboard') }}
                             </a>
                         </li>
-                    @endif
+                        @else
+                            <li class="nav-item dropdown d-lg-block d-none">
+                                <a class="nav-link navbar_mid_link px-2 {{ request()->is('/') ? 'font_bold' : 'font_normal' }}"
+                                    href="{{ url('/') }}" title="{{ __('admin.dashboard') }}">
+                                    {{ __('admin.dashboard') }}
+                                </a>
+                            </li>
+                        @endif
+                    @endauth
                     @if (!$settings->disable_creators_section)
 
                         <li class="nav-item dropdown d-lg-block d-none">

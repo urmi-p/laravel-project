@@ -280,13 +280,12 @@
 
     /* BUTTON */
     [data-bs-theme="light"] .calc-btn {
-        background: #ff4d5a;
         border: none;
         color: #fff;
     }
-
-    [data-bs-theme="light"] .calc-btn:hover {
-        background: #e84350;
+    
+    .calc-btn, .calc-btn:hover, .calc-btn:active{
+        background: #e2394c;
     }
 
     /* SVG ICONS */
@@ -313,9 +312,9 @@
             <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
 
                 <div class="commission-wrapper">
-                    <h4 class=" fw-bold text_white font_weight_700 fs-24">Subscription fees</h4>
+                    <h4 class="fw-bold font_weight_700 fs-24">{{ __('general.subscription_fees') }}</h4>
                     <p class="mb-4 font_weight_400 fs-14">
-                        See how each subscription payment is split between the platform, payment processors, and your earnings.
+                        {{ __('general.subscription_fees_desc') }}
                     </p>
 
                     {{-- TOP STATS --}}
@@ -337,8 +336,8 @@
                                     </defs>
                                 </svg>
                                 <span class="label">Creator take-home</span>
-                                <h2>93.0%</h2>
-                                <p>You currently retain 93.0% from each subscription.</p>
+                                <h2>{{ number_format(100 - ($commission + $tax), 1) }}%</h2>
+                                <p>You currently retain {{ number_format(100 - ($commission + $tax), 1) }}% from each subscription.</p>
                             </div>
                         </div>
 
@@ -356,7 +355,7 @@
                                     </defs>
                                 </svg>
                                 <span class="label">Platform maintenance</span>
-                                <h2>5.0%</h2>
+                                <h2>{{ $commission }}%</h2>
                                 <p>Allocated to infrastructure, moderation and support.</p>
                             </div>
                         </div>
@@ -369,7 +368,7 @@
                                     <path d="M9.32812 14.6666H22.6615" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <span class="label">Payment processing tax</span>
-                                <h2>2.0%</h2>
+                                <h2>{{ $tax }}%</h2>
                                 <p>Used to cover gateway fees and compliance.</p>
                             </div>
                         </div>
@@ -423,7 +422,7 @@
                                             </svg>
                                             <span class="rev-label">Creator take-home</span>
                                         </div>
-                                        <span class="rev-percent" data-value="93">93.0%</span>
+                                        <span class="rev-percent" data-value="{{ 100 - ($commission + $tax) }}">{{ number_format(100 - ($commission + $tax), 1) }}%</span>
                                     </div>
                                     <p>Sent to you before payment income taxes are applied.</p>
                                 </div>
@@ -445,7 +444,7 @@
                                             </svg>
                                             <span class="rev-label">Platform maintenance</span>
                                         </div>
-                                        <span class="rev-percent" data-value="5">5.0%</span>
+                                        <span class="rev-percent" data-value="{{ $commission }}">{{ $commission }}%</span>
                                     </div>
                                     <p>Supports product development, hosting, and member support.</p>
                                 </div>
@@ -461,7 +460,7 @@
                                             </svg>
                                             <span class="rev-label">Payment processing tax</span>
                                         </div>
-                                        <span class="rev-percent" data-value="2">2.0%</span>
+                                        <span class="rev-percent" data-value="{{ $tax }}">{{ $tax }}%</span>
                                     </div>
                                     <p>Reserved for payment processors and tax authorities.</p>
                                 </div>
@@ -544,8 +543,8 @@
                                     </defs>
                                 </svg>
                                 <span class="label">Creator keeps</span>
-                                <h4>$9.29</h4>
-                                <p>93.0%</p>
+                                <h4 id="calc-creator-keeps">$9.29</h4>
+                                <p>{{ number_format(100 - ($commission + $tax), 1) }}%</p>
                                 <p>Estimated payout to you per subscriber at this price</p>
                             </div>
                         </div>
@@ -564,8 +563,8 @@
                                     </defs>
                                 </svg>
                                 <span class="label">Platform keeps</span>
-                                <h4>$0.50</h4>
-                                <p>5.0%</p>
+                                <h4 id="calc-platform-keeps">$0.50</h4>
+                                <p>{{ $commission }}%</p>
                                 <p>Helps sustain operations, moderation, and creator programs</p>
                             </div>
                         </div>
@@ -578,8 +577,8 @@
                                     <path d="M9.32812 14.6666H22.6615" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <span class="label">Processing tax</span>
-                                <h4>$0.20</h4>
-                                <p>2.0%</p>
+                                <h4 id="calc-processing-tax">$0.20</h4>
+                                <p>{{ $tax }}% + {{ $tax_cents }}</p>
                                 <p>Set aside for gateways, VAT, and sales tax obligations</p>
                             </div>
                         </div>
@@ -598,13 +597,51 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", () => {
 
-        let creator = document.querySelector('.rev-percent[data-value="93"]').dataset.value;
-        let platform = document.querySelector('.rev-percent[data-value="5"]').dataset.value;
-        let tax = document.querySelector('.rev-percent[data-value="2"]').dataset.value;
+        // Set Progress Bar Widths
+        document.querySelector('.creator-bar').style.width = "{{ 100 - ($commission + $tax) }}%";
+        document.querySelector('.platform-bar').style.width = "{{ $commission }}%";
+        document.querySelector('.tax-bar').style.width = "{{ $tax }}%";
 
-        document.querySelector('.creator-bar').style.width = creator + '%';
-        document.querySelector('.platform-bar').style.width = platform + '%';
-        document.querySelector('.tax-bar').style.width = tax + '%';
+        // Calculator Logic
+        const calcInput = document.querySelector('.calc-input');
+        const calcBtn = document.querySelector('.calc-btn');
+        const creatorKeepsEl = document.getElementById('calc-creator-keeps');
+        const platformKeepsEl = document.getElementById('calc-platform-keeps');
+        const processingTaxEl = document.getElementById('calc-processing-tax');
+
+        const commissionPercent = parseFloat("{{ $commission }}");
+        const taxPercent = parseFloat("{{ $tax }}");
+        const taxCents = parseFloat("{{ $tax_cents }}");
+
+        function calculateEarnings() {
+            let price = parseFloat(calcInput.value);
+            if (isNaN(price) || price < 0) price = 0;
+
+            // Processor Fees (Tax)
+            // Logic: Amount - (Amount * Tax% + Cents)
+            let processorFeeAmount = (price * taxPercent / 100) + taxCents;
+            let amountAfterProcessor = price - processorFeeAmount;
+
+            // Platform Fee (Commission)
+            // Logic: AmountAfterProcessor * Commission%
+            let platformFeeAmount = amountAfterProcessor * commissionPercent / 100;
+
+            // Creator Net
+            let creatorNet = amountAfterProcessor - platformFeeAmount;
+
+            // Update UI
+            creatorKeepsEl.innerText = '$' + creatorNet.toFixed(2);
+            platformKeepsEl.innerText = '$' + platformFeeAmount.toFixed(2);
+            processingTaxEl.innerText = '$' + processorFeeAmount.toFixed(2);
+        }
+
+        calcBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            calculateEarnings();
+        });
+
+        // Initial Calculation
+        calculateEarnings();
 
     });
 </script>

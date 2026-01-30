@@ -300,7 +300,7 @@
 
   var urlPreviousPage = "<?php echo e(!Helper::isPreviousUrlReelsSection() ? url()->previous() : url('/'), false); ?>";
 
-  var lang = '<?php echo e(isset(auth()->user()->language) && !empty(auth()->user()->language) ? auth()->user()->language : session('locale'), false); ?>';
+  var lang = '{{ auth()->user()->language ?? session('locale') }}';
 
   var _title = '<?php $__env->startSection("title"); ?><?php echo $__env->yieldSection(); ?> <?php echo e(e($settings->title).' - '.__('seo.slogan'), false); ?>';
 

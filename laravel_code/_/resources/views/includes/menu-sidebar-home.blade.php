@@ -1,5 +1,6 @@
 <ul class="list-unstyled d-lg-block d-none menu-left-home sticky-top">
 	{{-- USER PROFILE HEADER --}}
+	@auth
 	<li class="sidebar-user mb-3">
 		<div class="user_avatar">
 			<img
@@ -45,6 +46,7 @@
 			<strong>{{ Helper::userWallet() }}</strong>
 		</div>
 	</li>
+	@endauth
 	<li class="sidebar_li">
 		<a href="{{url('/')}}" @if (request()->is('/')) class="active disabled" @endif>
 			<i class="bi-house-door"></i>
