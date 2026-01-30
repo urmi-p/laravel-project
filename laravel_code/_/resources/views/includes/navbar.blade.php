@@ -1,8 +1,8 @@
-<header>
+<header class=" @if ( request()->is('password/reset')) forgotpwd @endif">
     <nav
-        class="navbar navbar-expand-lg navbar-inverse fixed-top modern-navbar p-nav @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) scroll @else p-3 @if (request()->is('live/*')) d-none @endif @if (request()->is('password/reset')) d-none @endif @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
+        class="navbar navbar-expand-lg navbar-inverse fixed-top modern-navbar p-nav @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
         <div class="container-fluid d-flex align-items-center">
-            @auth
+            
                 <div class="d-flex justify-content-between">
                     <div class="navbar-left d-flex align-items-center">
                         <a class="navbar-brand" href="{{ url('/') }}">
@@ -18,6 +18,7 @@
                             @endif
                         </a>
                     </div>
+                    @auth
                     <div>
                         <div class="position-absolute d-flex d-lg-none main_head_search" style="top: 25px; right: 35px;gap:6px;margin-right:20px">
                             <div class="d-lg-none">
@@ -68,10 +69,11 @@
                             </a>
                         </div>
                     </div>
+                    @endauth
                 </div>
 
 
-            @endauth
+            
 
             @guest
                 <button class="333 navbar-toggler @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) text-white @endif" type="button"
@@ -80,7 +82,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
             @endguest
-
+            @auth
             <div class="justify-content-between collapse navbar-collapse navbar-mobile" id="navbarCollapse">
                 <div class="d-lg-none text-right pr-2 mb-2">
 
@@ -661,6 +663,7 @@
                 </ul>
 
             </div>
+            @endauth
 
         </div>
 

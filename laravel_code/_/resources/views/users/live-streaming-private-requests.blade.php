@@ -118,7 +118,7 @@
         @endif
 
         @else
-        <div class="my-5 text-center no-updates main-no-updates">
+        <div class="text-center no-updates main-no-updates">
           <div class="sub-no-updates">
             <span class="btn-block mb-3">
               <i class="bi-box-arrow-in-down ico-no-result bg_black"></i>

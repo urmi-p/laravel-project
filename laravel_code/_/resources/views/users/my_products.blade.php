@@ -4,48 +4,48 @@
 
 @section('content')
 <section class="section section-sm">
-    {{-- for mobile header --}}
+  {{-- for mobile header --}}
   @include('includes.header-mobile')
-    <div class="container-fluid pt-lg-5 pt-2">
-      
-      <div class="row">
-        @include('includes.cards-settings')
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-          <div class="row mb-sm">
-        <div class="col-lg-8 py-4">
-          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
-            <!-- <i class="bi-tag mr-2"></i>  -->
-            {{trans('general.products')}}
-          </h2>
-          <p class="m-0 font_weight_400 fs-14">{{trans('general.all_products_published')}}</p>
+  <div class="container-fluid pt-lg-5 pt-2">
 
-          <div class="mt-2">
-            @if ($settings->digital_product_sale && ! $settings->custom_content && ! $settings->physical_products)
+    <div class="row">
+      @include('includes.cards-settings')
+      <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+        <div class="row mb-sm">
+          <div class="col-lg-8 py-4">
+            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+              <!-- <i class="bi-tag mr-2"></i>  -->
+              {{trans('general.products')}}
+            </h2>
+            <p class="m-0 font_weight_400 fs-14">{{trans('general.all_products_published')}}</p>
+
+            <div class="mt-2">
+              @if ($settings->digital_product_sale && ! $settings->custom_content && ! $settings->physical_products)
               <a class="btn btn-primary" href="{{ url('add/product') }}">
                 <i class="bi-plus"></i> {{ __('general.add_product') }}
               </a>
 
-            @elseif (! $settings->digital_product_sale && $settings->custom_content && ! $settings->physical_products)
+              @elseif (! $settings->digital_product_sale && $settings->custom_content && ! $settings->physical_products)
               <a class="btn btn-primary" href="{{ url('add/custom/content') }}">
                 <i class="bi-plus"></i> {{ __('general.add_custom_content') }}
               </a>
 
-            @elseif (! $settings->digital_product_sale && $settings->physical_products && ! $settings->custom_content)
+              @elseif (! $settings->digital_product_sale && $settings->physical_products && ! $settings->custom_content)
               <a class="btn btn-primary" href="{{ url('add/physical/product') }}">
                 <i class="bi-plus"></i> {{ __('general.add_physical_product') }}
               </a>
 
-            @else
+              @else
               <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#addItemForm">
                 <i class="bi-plus"></i> {{ __('general.add_new') }}
               </a>
-            @endif
-          </div>
+              @endif
+            </div>
 
+          </div>
         </div>
-      </div>
-          @if ($products->count() != 0)
-          <div class="card shadow-sm mb-2">
+        @if ($products->count() != 0)
+        <div class="card shadow-sm mb-2">
           <div class="table-responsive">
             <table class="table table-striped m-0">
               <thead>
@@ -64,50 +64,52 @@
 
                 @foreach ($products as $product)
 
-                  <tr>
-                    <td>{{ $product->id }}</td>
+                <tr>
+                  <td>{{ $product->id }}</td>
 
-                    <td>
+                  <td>
                     <a href="{{ url('shop/product', $product->id) }}" target="_blank">
                       {{ str_limit($product->name, 20, '...') }} <i class="bi bi-box-arrow-up-right ml-1"></i>
                     </a>
-                    </td>
-                    <td>{{ ($product->type == 'digital') ? __('general.digital_download') : (($product->type == 'physical') ? __('general.physical_products') : __('general.custom_content')) }}</td>
-                    <td>{{ Helper::amountFormatDecimal($product->price) }}</td>
-                    <td>{{ $product->purchases->count() }}</td>
-                    <td>{{Helper::formatDate($product->created_at)}}</td>
-                    <td>
-                      @if ($product->status)
-                        <span class="badge badge-pill badge-success text-uppercase">{{trans('general.active')}}</span>
-                      @else
-                        <span class="badge badge-pill badge-secondary text-uppercase">{{trans('admin.disabled')}}</span>
-                      @endif
-                    </td>
-                  </tr>
+                  </td>
+                  <td>{{ ($product->type == 'digital') ? __('general.digital_download') : (($product->type == 'physical') ? __('general.physical_products') : __('general.custom_content')) }}</td>
+                  <td>{{ Helper::amountFormatDecimal($product->price) }}</td>
+                  <td>{{ $product->purchases->count() }}</td>
+                  <td>{{Helper::formatDate($product->created_at)}}</td>
+                  <td>
+                    @if ($product->status)
+                    <span class="badge badge-pill badge-success text-uppercase">{{trans('general.active')}}</span>
+                    @else
+                    <span class="badge badge-pill badge-secondary text-uppercase">{{trans('admin.disabled')}}</span>
+                    @endif
+                  </td>
+                </tr>
                 @endforeach
               </tbody>
             </table>
           </div>
-          </div><!-- card -->
+        </div><!-- card -->
 
-          @if ($products->hasPages())
-  			    	{{ $products->onEachSide(0)->links() }}
-  			    	@endif
+        @if ($products->hasPages())
+        {{ $products->onEachSide(0)->links() }}
+        @endif
 
         @else
-          <div class="my-5 text-center">
+        <div class="text-center no-updates main-no-updates">
+          <div class="sub-no-updates">
             <span class="btn-block mb-3">
               <i class="bi-tag ico-no-result"></i>
             </span>
             <h4 class="font-weight-light">{{trans('general.no_results_found')}}</h4>
           </div>
+        </div>
         @endif
-        </div><!-- end col-md-6 -->
+      </div><!-- end col-md-6 -->
 
-      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  @includeWhen(auth()->check() && auth()->user()->verified_id == 'yes', 'shop.modal-add-item')
+@includeWhen(auth()->check() && auth()->user()->verified_id == 'yes', 'shop.modal-add-item')
 
 @endsection

@@ -52,7 +52,7 @@
 
       </div>
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mb-5">
 
         <div class="col-lg-7">
 
