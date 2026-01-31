@@ -43,7 +43,7 @@ select { width: 100%; max-width: 100%; }
             @csrf
                 <div class="form-group mb-4">
                   <label class="w-100 fs-16">{{__('general.price_audio_call')}} *</label>
-                  <div class="input-group mb-2">
+                  <div class="input-group input-group-sub mb-2">
                     
                     <!-- <div class="input-group-prepend">
                       <span class="input-group-text">{{$settings->currency_symbol}}</span>
@@ -62,7 +62,7 @@ select { width: 100%; max-width: 100%; }
                 <div class="form-group mb-4">
                     <label class="w-100 fs-16">{{__('general.duration')}}</label>
                     <div class="w-100">
-                      <div class="input-group mb-2">
+                      <div class="input-group input-group-sub mb-2">
                         <!-- <div class="input-group-prepend">
                         <span class="input-group-text"><i class="bi-clock"></i></span>
                         </div> -->

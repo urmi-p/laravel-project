@@ -511,7 +511,7 @@
                         <p class="calc-desc">
                             Estimate how much you keep from each subscriber at different price points.
                         </p>
-                        <div class="mb-2">
+                        <div class="mb-2 input-group-sub">
                             <label class="form-label calc-label">Plan price</label>
                             <input type="number" class="form-control calc-input" value="10.00">
                             <small class="calc-help">

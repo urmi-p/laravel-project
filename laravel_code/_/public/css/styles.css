@@ -1053,7 +1053,7 @@ a.link-border {
     text-align: center;
     white-space: nowrap;
     color: #adb5bd;
-    border: 1px solid #222;
+    border: 1px solid #ced4da;
     border-radius: 8px;
     background-color: #fff;
     align-items: center;
@@ -1072,7 +1072,7 @@ a.link-border {
         0 1px 0 rgba(0, 0, 0, 0.02);
 }
 .form-control {
-    border: 1px solid #222;
+    /* border: 1px solid #222; */
     height: calc(2.75rem + 2px);
     padding: 0.625rem 0.75rem;
     border-radius: 8px;
@@ -1445,6 +1445,9 @@ a:hover.button-avatar-upload {
 .d-scrollbars {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
+}
+[data-bs-theme=light] .input-new-msg {
+    border: 1px solid #ced4da;
 }
 .input-new-msg {
     padding: 8px 34px !important;
@@ -3369,10 +3372,12 @@ div.media-post {
 }
 [data-bs-theme="light"] .input-group-sub .form-control,
 [data-bs-theme="light"] .input-group-sub .input-sub-text {
-    border: 0;
     box-shadow: none;
     background-color: #fff !important;
 }
+/* [data-bs-theme="light"] .input-group-sub{
+    border: 1px solid #ced4da;
+} */
 .input-sub-text {
     transition: box-shadow 0.15s ease;
     border: 0;
@@ -3390,6 +3395,7 @@ div.media-post {
     color: #222;
 }
 .input-sub-text {
+    border: 1px solid #ced4da;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -3878,6 +3884,12 @@ footer.footer-bg {
         justify-content: center;
         height: 403px;
     }
+}
+
+
+[data-bs-theme=light] .bg-whitee
+{
+  background-color: #f5f5f5 !important;
 }
 @media (min-width: 768px) and (max-width: 1024px) {
     /* -------------------------
@@ -4743,10 +4755,12 @@ footer.footer-bg {
     /* Content */
 
     /* Auto layout */
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 48px 350px;
+    align-items: center;
+    justify-content: center;
+    /* padding: 48px 350px; */
     gap: 10px;
 }
 [data-bs-theme="dark"] .my-card-not-card-added p.card-text {
@@ -4781,8 +4795,12 @@ footer.footer-bg {
     color: #000000 !important;
 }
 [data-bs-theme="light"] .my-card-not-card-added a.btn-success {
-    background: #28a744;
+    background: #9c9c9c;
+    border: 1px solid #dce4e8;
+    border-radius: 100px;
+    color: #ffffff  !important;
 }
+
 .my-card-not-card-added a.btn-success {
     box-sizing: border-box;
     display: flex;
@@ -4825,12 +4843,12 @@ footer.footer-bg {
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
-    /* identical to box height, or 125% */
     text-transform: capitalize;
-
-    /* white */
+}
+[data-bs-theme="dark"] .lbl-card{
     color: #ffffff;
 }
+
 .add-card .payment-actions {
     display: flex;
     align-items: center;

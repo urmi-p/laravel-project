@@ -15,19 +15,19 @@
 
 							@csrf
 
-							<div class="form-group">
-		            <div class="input-group mb-4">
+							<div class="">
+		            <div class="input-group mb-4 input-group-sub">
 		            <div class="input-group-prepend">
-		              <span class="input-group-text"><i class="bi bi-lightning-charge"></i></span>
+		              <span class="input-sub-text"><i class="bi bi-lightning-charge"></i></span>
 		            </div>
-		                <input type="text" autocomplete="off" class="form-control" name="name" placeholder="{{ __('auth.name') }} *">
+					<input type="text" autocomplete="off" class="form-control" name="name" placeholder="{{ __('auth.name') }} *">
 		            </div>
 		          </div><!-- End form-group -->
 
 							<div class="form-group">
-                <div class="input-group mb-2" id="AvailabilityGroup">
+                <div class="input-group mb-2 input-group-sub" id="AvailabilityGroup">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="bi bi-eye"></i></span>
+                  <span class="input-sub-text"><i class="bi bi-eye"></i></span>
                 </div>
                 <select name="availability" id="Availability" class="form-control custom-select">
                   <option value="all_pay" data-text="{{ trans('general.desc_available_everyone_paid') }}">{{trans('general.available_everyone_paid')}}</option>
@@ -54,9 +54,9 @@
                 </div><!-- ./form-group -->
 
 							<div class="form-group mb-0">
-		            <div class="input-group">
+		            <div class="input-group input-group-sub">
 		            <div class="input-group-prepend">
-		              <span class="input-group-text">{{$settings->currency_symbol}}</span>
+		              <span class="input-sub-text">{{$settings->currency_symbol}}</span>
 		            </div>
 		                <input type="number" min="{{$settings->live_streaming_minimum_price}}" autocomplete="off" id="onlyNumber" class="form-control priceLive" name="price" placeholder="{{ __('general.price') }} ({{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->live_streaming_minimum_price) }})">
 		            </div>

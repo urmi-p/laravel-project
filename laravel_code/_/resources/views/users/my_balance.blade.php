@@ -18,8 +18,8 @@
 
         .payment-select {
             width: 100%;
+            border: 1px solid ;
             background: #1c1c1c;
-            border: 1px solid #333;
             padding: 10px;
             color: #aaa;
             border-radius: 6px;
@@ -118,15 +118,16 @@
                     <div class="payment-method-container">
                         <div class="payment-header">
                             <span>Payment Method</span>
-                            
-                            <select class="payment-select" id="paymentSelect">
-                                <option value="">Please select your payment method</option>
-                                @foreach (PaymentGateways::where('enabled', '1')->orderBy('type', 'DESC')->get() as $payment)
-                                    <option value="{{ $payment->name }}">
-                                        {{ ucfirst($payment->type) }} - {{ $payment->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div class="input-group-sub">
+                                <select class="payment-select" id="paymentSelect">
+                                    <option value="">Please select your payment method</option>
+                                    @foreach (PaymentGateways::where('enabled', '1')->orderBy('type', 'DESC')->get() as $payment)
+                                        <option value="{{ $payment->name }}">
+                                            {{ ucfirst($payment->type) }} - {{ $payment->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <div class="payment-footer">

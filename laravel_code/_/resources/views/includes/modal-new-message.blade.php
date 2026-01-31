@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-dialog-scrollable modal-sm" role="document">
 		<div class="modal-content">
 			<div class="modal-body p-0">
-				<div class="card bg-white shadow border-0">
+				<div class="card bg-whitee shadow border-0">
 
 					<div class="card-body px-lg-5 py-lg-5">
 

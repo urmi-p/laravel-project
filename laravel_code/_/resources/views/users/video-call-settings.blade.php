@@ -35,7 +35,7 @@
             @csrf
                 <div class="form-group mb-4">
                   <label class="w-100 fs-16">{{__('general.price_video_call')}} *</label>
-                  <div class="input-group mb-2">
+                  <div class="input-group input-group-sub mb-2">
                     
                     <!-- <div class="input-group-prepend">
                       <span class="input-group-text currency_span">{{$settings->currency_symbol}}</span>
@@ -54,7 +54,7 @@
                 <div class="form-group mb-4">
                   <label class="w-100 fs-16">{{__('general.duration')}} </label>
                   <div class="w-100">
-                    <div class="input-group mb-2">
+                    <div class="input-group input-group-sub mb-2">
                         <!-- <div class="input-group-prepend">
                         <span class="input-group-text currency_span"><i class="bi-clock"></i></span>
                         </div> -->

@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('plugins/select2/select2.min.css') }}?v={{ $settings->version }}" rel="stylesheet" type="text/css" />
     <style type="text/css">
-    [data-bs-theme="light"] .light_mode_form {
-      border: 1px solid #1e1e1e2e;
-      
-    }
+
     [data-bs-theme="dark"] .light_mode_form {
       background-color: #111 !important;
     }

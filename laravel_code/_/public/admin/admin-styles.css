@@ -916,6 +916,13 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #000 !important;
 
 }
+[data-bs-theme=light] .bg-whitee
+
+{
+
+  background-color: #f5f5f5 !important;
+
+}
 
 [data-bs-theme=dark] .bg-light {
 

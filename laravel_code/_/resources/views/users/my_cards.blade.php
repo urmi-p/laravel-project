@@ -11,7 +11,7 @@
 
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0  my-card">
         <div class="col-lg-8 title-div">
-          <h2 class="mb-0 title font_weight_700 fs-24 pb-3"> {{trans('general.my_cards')}}</h2>
+          <h2 class="mb-0  font_weight_700 fs-24 pb-3"> {{trans('general.my_cards')}}</h2>
           <p class="mt-0 font_weight_400 fs-14">{{trans('general.info_my_cards')}}</p>
         </div>
         @if (session('success_removed'))
@@ -74,7 +74,7 @@
           </div>
         </div>
         @endif
-        <div class="card mb-4 my-card-not-card-added">
+        <div class="card mb-4 my-card-not-card-added py-4">
           <div class="card-body">
 
             <p class="card-text">

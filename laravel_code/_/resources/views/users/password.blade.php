@@ -42,7 +42,7 @@
           @if (auth()->user()->password != '')
           <div class="form-group">
             <label class="font_weight_500 fs-16">{{ __('general.old_password') }}</label>
-            <div class="input-group mb-4">
+            <div class="input-group input-group-sub mb-4">
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text"><i class="feather icon-unlock"></i></span>
               </div> -->
@@ -53,7 +53,7 @@
 
           <div class="form-group">
             <label class="font_weight_500 fs-16">{{ __('general.new_password') }}</label>
-            <div class="input-group mb-4" id="showHidePassword">
+            <div class="input-group input-group-sub mb-4" id="showHidePassword">
               
               <input class="form-control brd-12" name="new_password" placeholder="{{__('general.enter_your_new_password')}}" type="password" required oninput="checkStrength(this.value)">
               <div class="input-group-append">
@@ -74,7 +74,7 @@
           </div>
           <div class="form-group">
             <label class="font_weight_500 fs-16">{{ __('auth.confirm_password') }}</label>
-            <div class="input-group mb-4">
+            <div class="input-group input-group-sub mb-4">
               <input
                 class="form-control brd-12"
                 name="confirm_password"
