@@ -32,7 +32,20 @@ class UpdatesController extends Controller
     $this->settings = $settings::first();
     $this->request = $request;
   }
+  public function newUpdate(){
+    $data = Updates::whereUserId(auth()->id())
+      ->whereIn('status', ['active', 'schedule'])
+      ->with('media', 'creator')
+      ->findOrFail(auth()->id());
 
+    $users = $this->userExplore();
+    return view('users.new-update')->with([
+      'data' => $data,
+      'users' => $users,
+      'settings' => $this->settings,
+
+    ]);
+  }
   /**
    * Create Update / Post
    *
