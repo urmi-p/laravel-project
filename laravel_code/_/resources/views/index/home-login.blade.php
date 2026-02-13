@@ -235,7 +235,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 right-side">
+      <div class="col-lg-6 right-side d-lg-block d-none">
         <img src="{{url('img/main.png')}}" alt="User" class="img-fluid d-lg-block d-none" width="356" height="120">
         <span class="text-lime h5 mb-5 d-lg-block d-none title_home_login">{{__('general.title_home_login')}}</span>
         <div class="image-stack">
