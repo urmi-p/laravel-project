@@ -94,4 +94,11 @@ return array(
 	'subscription_price_info' => 'If you don\'t want them to subscribe just leave at 0.00',
 	'content_locked' => 'Content locked.',
 
+	'back_to_messages' => 'Back to messages',
+	'followed_you' => 'followed you',
+	'messages' => 'Messages',
+	'not_subscriptions' => 'You have not subscribed to any user',
+	'send_msg_private' => 'sent you a private message',
+	'unblock' => 'UNBLOCK',
+	'you_are_following' => 'started following you',
 );

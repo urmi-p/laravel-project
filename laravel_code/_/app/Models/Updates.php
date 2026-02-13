@@ -13,6 +13,8 @@ class Updates extends Model
 	protected $casts = [
 		'likes_extras' => 'integer',
 		'date' => 'datetime',
+		'hide_likes_count' => 'boolean',
+		'turn_off_comments' => 'boolean',
 	];
 
 	public function user()
@@ -76,6 +78,8 @@ class Updates extends Model
                 'updates.video_views',
 				'updates.scheduled_date',
 				'updates.likes_extras',
+				'updates.hide_likes_count',
+				'updates.turn_off_comments',
                 )
           ->with([
             'creator:id,name,username,avatar,hide_name,verified_id,plan,free_subscription,cover,allow_comments', 
@@ -99,7 +103,9 @@ class Updates extends Model
 		'updates.price',
 		'updates.status',
 		'updates.video_views',
-		'updates.scheduled_date'
+		'updates.scheduled_date',
+		'updates.hide_likes_count',
+		'updates.turn_off_comments'
 	  );
 	}
 

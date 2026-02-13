@@ -10,6 +10,10 @@
         $totalLikes = number_format($response->likes->count() + $response->likes_extras);
         $totalBookmarks = number_format($response->bookmarks->count());
         $totalComments = $response->totalComments();
+        $isOwner = auth()->check() && auth()->id() == $response->creator->id;
+        $likesHiddenForViewer = (bool) ($response->hide_likes_count ?? false) && !$isOwner;
+        $showLikesCount = !$settings->hide_total_likes && !$likesHiddenForViewer;
+        $allowCommentsOnPost = (bool) ($response->creator->allow_comments ?? true) && !(bool) ($response->turn_off_comments ?? false);
         $mediaCount = $response->media->count();
         $allFiles = $response->media()->groupBy('type')->get();
         $getFirstFile = $response
@@ -408,7 +412,7 @@
                     </a>
 
                     @if (!$settings->hide_comments)
-                    <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                    <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$allowCommentsOnPost) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
                         <i class="bi bi-chat-text"></i><span class="action-count">{{ $totalComments }}</span>
                     </span>
                     @endif
@@ -964,7 +968,7 @@
                     </div> --}}
 
                     <div class="w-100 mb-3 containerLikeComment ">
-                        @if (!$settings->hide_total_likes)
+                        @if ($showLikesCount)
                         <span class="countLikes text-muted dot-item action-pill">
                             {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
                         </span>
@@ -1124,9 +1128,9 @@
                         </div>
                         <div class="media position-relative px-3 py-3 border-top">
 
-                            <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,])></div>
+                            <div @class([ 'blocked' , 'display-none'=> $allowCommentsOnPost,])></div>
 
-                            <span href="#" @class([ 'float-left' , 'd-none'=> !$response->creator->allow_comments,])>
+                            <span href="#" @class([ 'float-left' , 'd-none'=> !$allowCommentsOnPost,])>
 
                                 <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
                                     class="rounded-circle mr-1 avatarUser" width="40">
@@ -1135,7 +1139,7 @@
 
                             <div class="media-body">
 
-                                @if (!$response->creator->allow_comments)
+                                @if (!$allowCommentsOnPost)
                                 <div class="p-2 text-center">
 
                                     {{ __('general.comments_disabled') }}
@@ -1144,7 +1148,7 @@
                                 @endif
 
                                 <form action="{{ url('comment/store') }}" method="post"
-                                    @class([ 'comments-form' , 'd-none'=> !$response->creator->allow_comments,])>
+                                    @class([ 'comments-form' , 'd-none'=> !$allowCommentsOnPost,])>
 
                                     @csrf
 
@@ -1296,7 +1300,7 @@
 
                     @if (!$settings->hide_comments)
                     <span
-                        class="@auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled mr-14px @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                        class="@auth @if (auth()->user()->checkRestriction($response->creator->id) || !$allowCommentsOnPost) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled mr-14px @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
 
                         <i class="far fa-comment"></i>
 
@@ -1458,7 +1462,7 @@
 
 
 
-    @if (!$settings->hide_total_likes)
+    @if ($showLikesCount)
     <span class="countLikes text-muted dot-item action-pill">
 
         {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
@@ -1556,10 +1560,10 @@
 
     <div class="media position-relative pt-3 border-top">
 
-        <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,
+        <div @class([ 'blocked' , 'display-none'=> $allowCommentsOnPost,
             ])></div>
 
-        <span href="#" @class([ 'float-left' , 'd-none'=> !$response->creator->allow_comments,
+        <span href="#" @class([ 'float-left' , 'd-none'=> !$allowCommentsOnPost,
             ])>
 
             <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
@@ -1571,7 +1575,7 @@
 
 
 
-            @if (!$response->creator->allow_comments)
+            @if (!$allowCommentsOnPost)
             <div class="p-2 text-center">
 
                 {{ __('general.comments_disabled') }}
@@ -1582,7 +1586,7 @@
 
 
             <form action="{{ url('comment/store') }}" method="post"
-                @class([ 'comments-form' , 'd-none'=> !$response->creator->allow_comments,
+                @class([ 'comments-form' , 'd-none'=> !$allowCommentsOnPost,
                 ])>
 
                 @csrf
@@ -1777,3 +1781,4 @@ $getHasPages = $updates->count() < $settings->number_posts_show ? false : true;
 
         </button>
         @endif
+

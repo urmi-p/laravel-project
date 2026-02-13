@@ -1577,4 +1577,11 @@ return array(
 	'subscription_price_monthly' => 'Precio de suscripción (Por mes)',
 	'subscription_fees' => 'Tarifas de suscripción',
 	'subscription_fees_desc' => 'Ver cómo se divide cada pago de suscripción entre la plataforma, los procesadores de pagos y tus ganancias.',
+	'accept' => 'Aceptar',
+	'activate_ad' => 'Activar',
+	'explore_shop' => 'Explorar tienda',
+	'fees_not_applied' => 'No se han aplicado tarifas.',
+	'share_thoughts' => 'Comparte tus pensamientos!',
+	'successfully_added' => 'Agregado exitosamente',
+	'successfully_removed' => 'Eliminado con exito',
 );

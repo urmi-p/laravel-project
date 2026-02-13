@@ -1,15 +1,13 @@
 <div class="col-md-3 col-lg-3">
 
-    @if (!request()->routeIs('user.settings'))
-    <!--<a href="{{ route('user.settings') }}" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none">
+    <button type="button" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none"
+    data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarSettings" aria-expanded="false">
 
-        <i class="fa fa-cog mr-2"></i> {{ __('general.settings') }}
+    <i class="fa fa-cog mr-2"></i> {{ __('general.settings') }}
 
-    </a> -->
-    @endif
+</button>
 
-    <div @class([ 'd-lg-block' , 'left-settings-sidebar' , 'navbar-collapse collapse'=> !request()->routeIs('user.settings'),
-        ])>
+<div class="d-lg-block left-settings-sidebar navbar-collapse collapse" id="navbarSettings">
 
         <!-- Start Account -->
 

@@ -9,6 +9,365 @@
             margin-left: 16px !important;
         }
 
+        #formUpdateCreate .fileuploader {
+            width: 100%;
+            margin: 0 0 24px !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+            min-height: 0 !important;
+        }
+
+        #formUpdateCreate .rounded-large {
+            position: relative;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input {
+            min-height: 674px !important;
+            border: 0 !important;
+            border-radius: 20px !important;
+            background: #333438 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-inner {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            width: 100%;
+            max-width: 320px;
+            padding: 0;
+            margin: 0 auto;
+            text-align: center;
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input p {
+            display: none !important;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-icon-main {
+            width: 80px;
+            height: 80px;
+            border-radius: 999px;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            background: #191919 !important;
+            font-size: 0 !important;
+            position: relative;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-icon-main::before {
+            content: "" !important;
+            width: 32px !important;
+            height: 32px !important;
+            display: inline-block;
+            background: none !important;
+            border: 2px solid #fff;
+            border-radius: 999px;
+            box-sizing: border-box;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-icon-main::after {
+            content: "!";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -53%);
+            color: #fff;
+            font-size: 19px;
+            font-weight: 500;
+            line-height: 1;
+            font-family: Poppins, sans-serif;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3 {
+            width: 283px;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 0 !important;
+            line-height: 0 !important;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3 span {
+            display: none !important;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3::after {
+            content: "Drag and drop an image or click\Ato upload";
+            white-space: pre-line;
+            display: block;
+            color: #fff;
+            font-family: Poppins, sans-serif;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 28px;
+            letter-spacing: -0.439453px;
+            margin: 0;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button {
+            width: 157px !important;
+            height: 48px !important;
+            border: 0 !important;
+            border-radius: 8px !important;
+            background: #191919 !important;
+            color: #fff !important;
+            box-shadow: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px;
+            padding: 12px 8px !important;
+            margin: 0 !important;
+            position: static !important;
+            transform: none !important;
+            overflow: hidden;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button span {
+            display: none !important;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button::before {
+            content: "";
+            width: 24px;
+            height: 24px;
+            flex: 0 0 24px;
+            display: inline-block;
+            background: url("data:image/svg+xml;utf8,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 10V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V10' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M12 4V14' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M9 7L12 4L15 7' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center / contain;
+        }
+
+        #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button::after {
+            content: "Choose File";
+            color: #fff;
+            font-family: Poppins, sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 27px;
+        }
+
+        @media (max-width: 768px) {
+            #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input {
+                min-height: 560px !important;
+                border-radius: 16px !important;
+            }
+
+            #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3::after {
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }
+
+        #formUpdateCreate .fileuploader-items {
+            display: none !important;
+        }
+
+        #formUpdateCreate.step-preview .fileuploader,
+        #formUpdateCreate.step-details .fileuploader {
+            display: none !important;
+        }
+
+        #formUpdateCreate.step-upload #postPreviewStep,
+        #formUpdateCreate.step-upload #postDetailsStep {
+            display: none !important;
+        }
+
+        .post-preview-step {
+            display: none;
+            background: #333438;
+            border-radius: 20px;
+            padding: 24px;
+            min-height: 674px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-preview-step.active {
+            display: block;
+        }
+
+        .post-preview-back {
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 10px;
+            background: rgba(25, 25, 25, 0.5);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-details-step {
+            display: none;
+        }
+
+        .post-details-step.active {
+            display: block;
+        }
+
+        .post-details-back-wrap {
+            margin-bottom: 12px;
+        }
+
+        .post-details-back {
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 10px;
+            background: rgba(25, 25, 25, 0.5);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-preview-media {
+            margin-top: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 560px;
+            background: #2d2f36;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-preview-media img {
+            max-width: 100%;
+            max-height: 100%;
+            transform-origin: center center;
+        }
+
+        .post-preview-controls {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: 20px;
+        }
+
+        .upload-processing-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: rgba(25, 25, 25, 0.86);
+            z-index: 5;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #fff;
+            gap: 10px;
+        }
+
+        .upload-processing-overlay.active {
+            display: flex;
+        }
+
+        .upload-processing-spinner {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            animation: post-upload-spin 0.9s linear infinite;
+        }
+
+        .upload-processing-text {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        @keyframes post-upload-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .post-preview-range {
+            width: 100%;
+            margin-bottom: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 14px;
+            border-radius: 999px;
+            background: linear-gradient(to right, #030213 var(--zoom-value, 100%), #d9d9df var(--zoom-value, 100%));
+            outline: none;
+        }
+
+        .post-preview-range::-webkit-slider-runnable-track {
+            height: 14px;
+            border-radius: 999px;
+            background: transparent;
+        }
+
+        .post-preview-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            margin-top: -7px;
+            border-radius: 50%;
+            background: #fff;
+            border: 6px solid #030213;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+        }
+
+        .post-preview-range::-moz-range-track {
+            height: 14px;
+            border-radius: 999px;
+            background: #d9d9df;
+        }
+
+        .post-preview-range::-moz-range-progress {
+            height: 14px;
+            border-radius: 999px;
+            background: #030213;
+        }
+
+        .post-preview-range::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #fff;
+            border: 6px solid #030213;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+        }
+
+        .post-preview-zoom-level {
+            display: block;
+            color: #fff;
+            font-size: 13px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        .post-preview-continue {
+            width: 100%;
+            border: 0;
+            border-radius: 8px;
+            background: #e53b54;
+            color: #fff;
+            font-weight: 700;
+            padding: 12px 14px;
+        }
+
         .advanced-settings {
             color: #fff;
         }
@@ -43,6 +402,11 @@
         .visibility-btn.active {
             background: #444;
             color: #fff;
+        }
+
+        .visibility-btn.is-disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
         }
 
         .setting-row {
@@ -85,13 +449,29 @@
             transition: .3s;
         }
 
-        .switch_update input:checked + .slider {
+        .switch_update input:checked + .slider_update {
             background-color: #ff4d6d;
         }
 
-        .switch_update input:checked + .slider:before {
+        .switch_update input:checked + .slider_update:before {
             transform: translateX(22px);
         }
+
+        .setting-help {
+            display: block;
+            margin-top: 8px;
+            color: #9ca3af;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .description-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
     </style>
 @endsection
 
@@ -181,27 +561,33 @@
                                         <input type="file" name="photo[]" id="filePhoto"
                                             accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple
                                             class="visibility-hidden filepond">
+                                        <div id="uploadProcessingOverlay" class="upload-processing-overlay">
+                                            <span class="upload-processing-spinner"></span>
+                                            <span class="upload-processing-text">Uploading... <strong id="uploadProcessingPercent">0%</strong></span>
+                                        </div>
+
+                                        <div id="postPreviewStep" class="post-preview-step">
+                                            <button type="button" id="postPreviewBack" class="post-preview-back">
+                                                <i class="fas fa-arrow-left"></i>
+                                            </button>
+                                            <div class="post-preview-media">
+                                                <img id="postPreviewImage" src="" alt="Preview">
+                                            </div>
+                                            <div class="post-preview-controls">
+                                                <small id="postPreviewZoomLevel" class="post-preview-zoom-level">100%</small>
+                                                <input id="postPreviewZoom" class="post-preview-range" type="range" min="1" max="100" step="1" value="100">
+                                                <button type="button" id="postPreviewContinue" class="post-preview-continue">Continue</button>
+                                            </div>
+                                        </div>
                                         
                                             
                                         {{-- for hide on first load start  --}}
-                                        <div>
-                                            <div class="form-group display-none" id="price">
-
-                                                <div class="input-group mb-2">
-
-                                                    <div class="input-group-prepend">
-
-                                                        <span class="input-group-text">{{ $settings->currency_symbol }}</span>
-
-                                                    </div>
-
-                                                    <input class="form-control isNumber" autocomplete="off" name="price"
-                                                        placeholder="{{ __('general.price') }}" type="text">
-
-                                                </div>
-
-                                            </div><!-- End form-group -->
-
+                                        <div id="postDetailsStep" class="post-details-step">
+                                            <div class="post-details-back-wrap">
+                                                <button type="button" id="postDetailsBack" class="post-details-back">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                </button>
+                                            </div>
                                             <div class="form-group" id="titlePost">
                                                 <label>Title</label>
                                                 <div class="input-group mb-2">
@@ -213,11 +599,40 @@
                                                 </small>
 
                                             </div><!-- End form-group -->
-                                            <label>Description</label>
+                                            <div class="description-row">
+                                                <label class="mb-0">Description</label>
+                                                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    class="btn btn-post p-bottom-8 btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill"
+                                                    title="Emoji">
+                                                    <i class="bi-emoji-smile f-size-20 align-bottom"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-emoji custom-scrollbar">
+                                                    @include('includes.emojis')
+                                                </div>
+                                            </div>
                                             <textarea name="description" id="updateDescription" data-post-length="{{ $settings->update_length }}" rows="5"
                                                 cols="40" placeholder="{{ __('general.write_something') }}"
-                                                class="form-control textareaAutoSize updateDescription emojiArea">
-                                            </textarea>
+                                                class="form-control textareaAutoSize updateDescription emojiArea"></textarea>
+                                            <div class="form-group display-none mt-3" id="price">
+                                                <label>Price</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">{{ $settings->currency_symbol }}</span>
+                                                    </div>
+
+                                                    <input class="form-control isNumber" autocomplete="off" name="price"
+                                                        placeholder="{{ __('general.price') }}" type="text">
+                                                </div>
+                                            </div><!-- End form-group -->
+                                            <input type="hidden" name="scheduled_date" id="inputScheduled" value="">
+                                            <input type="hidden" id="visibilityMode" value="everyone">
+                                            <div class="w-100 mb-3 display-none" id="dateScheduleContainer">
+                                                <small class="font-weight-bold">
+                                                    <i class="bi-calendar-event mr-1"></i> {{ __('general.date_schedule') }} <span id="dateSchedule"></span>
+                                                </small>
+                                                <a href="javascript:void(0)" id="deleteSchedule" class="text-danger p-1 px-2 btn-tooltip-form"
+                                                    data-toggle="tooltip" data-placement="top" title="{{ __('general.delete') }}"><i class="fa fa-times-circle"></i></a>
+                                            </div>
 
                                             <hr class="my-4">
                                             <div class="advanced-settings">
@@ -229,22 +644,23 @@
                                                     <label class="setting-label">Who can see this post</label>
 
                                                     <div class="visibility-options">
-                                                        <button type="button" class="visibility-btn active">
-                                                            ♡ Everyone
+                                                        <button type="button" class="visibility-btn active" data-visibility="everyone">
+                                                            Everyone
                                                         </button>
 
-                                                        <button type="button" class="visibility-btn">
-                                                            ♡ Followers Only
+                                                        <button type="button" class="visibility-btn is-disabled" data-visibility="followers" disabled>
+                                                            Followers Only
                                                         </button>
 
-                                                        <button type="button" class="visibility-btn">
-                                                            ♡ Subscribers Only
+                                                        <button type="button" class="visibility-btn" data-visibility="subscribers">
+                                                            Subscribers Only
                                                         </button>
 
-                                                        <button type="button" class="visibility-btn">
-                                                            ♡ Premium Post ($)
+                                                        <button type="button" class="visibility-btn" data-visibility="premium">
+                                                            Premium Post ($)
                                                         </button>
                                                     </div>
+                                                    <small class="setting-help">Followers-only is not available in current backend; Subscribers and Premium are supported.</small>
                                                 </div>
 
                                                 <!-- Hide likes -->
@@ -256,7 +672,7 @@
                                                         </small>
                                                     </div>
                                                     <label class="switch_update">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" id="hideLikesCountToggle" name="hide_likes_count" value="1">
                                                         <span class="slider_update"></span>
                                                     </label>
                                                 </div>
@@ -270,7 +686,7 @@
                                                         </small>
                                                     </div>
                                                     <label class="switch_update">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" id="turnOffCommentsToggle" name="turn_off_comments" value="1">
                                                         <span class="slider_update"></span>
                                                     </label>
                                                 </div>
@@ -279,19 +695,21 @@
                                                 <div class="setting-row">
                                                     <h6>Schedule</h6>
                                                     <label class="switch_update">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" id="advScheduleToggle" @if (!$settings->allow_scheduled_posts) disabled @endif>
                                                         <span class="slider_update"></span>
                                                     </label>
                                                 </div>
+                                                @if (!$settings->allow_scheduled_posts)
+                                                    <small class="setting-help">Scheduling is disabled by admin settings.</small>
+                                                @endif
 
                                                 <!-- Price -->
                                                 <div class="setting-row">
                                                     <h6>Price</h6>
-                                                    <strong>$280</strong>
+                                                    <strong id="advancedPriceValue">{{ $settings->currency_symbol }}0</strong>
                                                 </div>
 
                                             </div>
-                                        </div>
                                         {{-- for hide on first load end  --}}
                                         
                                         @php
@@ -338,6 +756,14 @@
                                                 </div>
                                             </div>
                                             <div>
+                                                @if ($settings->live_streaming_status == 'on')
+                                                    <button type="button"
+                                                        class="btnCreateLive btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="{{ __('general.stream_live') }}">
+                                                        <i class="bi-camera-video f-size-20 align-bottom"></i>
+                                                    </button>
+                                                @endif
                                                 <button type="button" class="btnMultipleUpload btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ __('general.media_type_upload') }})">
                                                     <i class="feather icon-image f-size-20 align-bottom"></i>
                                                 </button>
@@ -360,15 +786,12 @@
 
                                                 </button>
                                                 
-                                                @if (!$settings->disable_free_post)
-                                                    <button type="button" id="contentLocked"
-                                                        class="btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="{{ __('users.locked_content') }}">
-                                                        <i
-                                                            class="feather icon-lock f-size-20 align-bottom"></i>
-                                                    </button>
-                                                @endif
+                                                <button type="button" id="setSubscribersOnly"
+                                                    class="btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip-form"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="{{ __('users.locked_content') }}">
+                                                    <i class="feather icon-lock f-size-20 align-bottom"></i>
+                                                </button>
                                                 
                                                 <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-post p-bottom-8 btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
                                                     <i class="bi-emoji-smile f-size-20 align-bottom"></i>
@@ -410,7 +833,7 @@
 
                                                 <span class="btn-blocked display-none"></span>
 
-                                                <button type="submit" 
+                                                <button type="button" 
                                                     class="btn btn-sm btn-primary rounded-large float-right e-none w-100-mobile"
                                                     data-empty="{{ __('general.empty_post') }}"
                                                     data-error="{{ __('general.error') }}"
@@ -423,6 +846,8 @@
                                                 </button>
 
                                             </span>
+
+                                        </div>
 
                                         </div>
 
@@ -523,6 +948,305 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.fileuploader').addClass('d-block');
+
+            var $uploadStep = $('#formUpdateCreate .fileuploader');
+            var $previewStep = $('#postPreviewStep');
+            var $detailsStep = $('#postDetailsStep');
+            var $previewImage = $('#postPreviewImage');
+            var $zoom = $('#postPreviewZoom');
+            var $zoomLevel = $('#postPreviewZoomLevel');
+            var $form = $('#formUpdateCreate');
+            var $visibilityButtons = $('.visibility-btn[data-visibility]');
+            var $visibilityMode = $('#visibilityMode');
+            var $priceInput = $('input[name="price"]');
+            var $advancedPriceValue = $('#advancedPriceValue');
+            var $scheduleToggle = $('#advScheduleToggle');
+            var $uploadOverlay = $('#uploadProcessingOverlay');
+            var $uploadOverlayPercent = $('#uploadProcessingPercent');
+            var previewUrl = null;
+            var zoomBase = 100;
+            var currencySymbol = @json($settings->currency_symbol);
+            function syncZoomSliderFill() {
+                var min = parseFloat($zoom.attr('min')) || 1;
+                var max = parseFloat($zoom.attr('max')) || 100;
+                var val = parseFloat($zoom.val()) || min;
+                var pct = ((val - min) / Math.max(1, (max - min))) * 100;
+                $zoom.css('--zoom-value', pct + '%');
+            }
+
+            function setupAutoZoom() {
+                var imgEl = $previewImage.get(0);
+                var containerEl = $('.post-preview-media').get(0);
+                if (!imgEl || !containerEl || !imgEl.naturalWidth || !imgEl.naturalHeight) {
+                    zoomBase = 100;
+                    $zoom.attr({ min: 1, max: 100, step: 1 }).val(100).prop('disabled', true);
+                    syncZoomSliderFill();
+                    $zoomLevel.text('100%');
+                    $previewImage.css('transform', 'scale(1)');
+                    return;
+                }
+
+                var fitScale = Math.min(
+                    containerEl.clientWidth / imgEl.naturalWidth,
+                    containerEl.clientHeight / imgEl.naturalHeight
+                );
+
+                // Keep behavior similar to previous popup zoom: start at fitted scale.
+                zoomBase = Math.max(25, Math.min(100, Math.round(fitScale * 100)));
+                var zoomMax = 100;
+                $zoom.attr({ min: 1, max: zoomMax, step: 1 }).val(zoomBase).prop('disabled', zoomBase >= zoomMax);
+                syncZoomSliderFill();
+                $zoomLevel.text(zoomBase + '%');
+                $previewImage.css('transform', 'scale(1)');
+            }
+
+            function showUploadStep() {
+                $form.removeClass('step-preview step-details').addClass('step-upload');
+                $uploadStep.show();
+                $previewStep.removeClass('active');
+                $detailsStep.removeClass('active');
+                $zoom.val(zoomBase);
+                syncZoomSliderFill();
+                $zoomLevel.text(zoomBase + '%');
+                $previewImage.css('transform', 'scale(1)');
+            }
+
+            function showPreviewStep(src) {
+                $form.removeClass('step-upload step-details').addClass('step-preview');
+                $uploadStep.hide();
+                $detailsStep.removeClass('active');
+                $previewImage.attr('src', src || '');
+                $previewStep.addClass('active');
+
+                $previewImage.off('load.stepzoom').on('load.stepzoom', function() {
+                    setupAutoZoom();
+                });
+
+                if ($previewImage.get(0).complete) {
+                    setTimeout(function() {
+                        setupAutoZoom();
+                    }, 30);
+                }
+            }
+
+            function showDetailsStep() {
+                $form.removeClass('step-upload step-preview').addClass('step-details');
+                $uploadStep.hide();
+                $previewStep.removeClass('active');
+                $detailsStep.addClass('active');
+            }
+
+            function updatePriceLabel() {
+                var value = ($priceInput.val() || '').trim();
+                if (!value) {
+                    $advancedPriceValue.text(currencySymbol + '0');
+                    return;
+                }
+                $advancedPriceValue.text(currencySymbol + value);
+            }
+
+            function ensureLockedState(shouldLock) {
+                var isLocked = $('#customCheckLocked').is(':checked');
+                if (isLocked !== shouldLock) {
+                    $('#customCheckLocked').prop('checked', shouldLock);
+                }
+            }
+
+            function ensurePriceInputState(shouldShow) {
+                var isShown = $priceInput.hasClass('active');
+                if (isShown !== shouldShow) {
+                    if ($('#setPrice').length) {
+                        $('#setPrice').trigger('click');
+                    } else {
+                        $priceInput.toggleClass('active', shouldShow);
+                        if (shouldShow) {
+                            $('#price').stop(true, true).slideDown(100);
+                        } else {
+                            $('#price').stop(true, true).slideUp(100);
+                            $priceInput.val('');
+                        }
+                    }
+                }
+            }
+
+            function applyVisibilityMode(mode) {
+                $visibilityMode.val(mode);
+                $visibilityButtons.removeClass('active');
+                $visibilityButtons.filter('[data-visibility="' + mode + '"]').addClass('active');
+                $('#setSubscribersOnly').toggleClass('btn-active-hover', mode === 'subscribers');
+
+                if (mode === 'premium') {
+                    ensureLockedState(true);
+                    ensurePriceInputState(true);
+                } else if (mode === 'subscribers') {
+                    ensureLockedState(true);
+                    ensurePriceInputState(false);
+                    $priceInput.val('');
+                } else {
+                    ensureLockedState(false);
+                    ensurePriceInputState(false);
+                    $priceInput.val('');
+                }
+
+                updatePriceLabel();
+            }
+
+            showUploadStep();
+            if (($priceInput.val() || '').trim() !== '') {
+                applyVisibilityMode('premium');
+            } else if ($('#customCheckLocked').is(':checked')) {
+                applyVisibilityMode('subscribers');
+            } else {
+                applyVisibilityMode('everyone');
+            }
+            updatePriceLabel();
+
+            $(document).on('post-media-uploaded', function(e, payload) {
+                if (!payload || payload.format !== 'image') {
+                    return;
+                }
+
+                $uploadOverlay.removeClass('active');
+                $uploadOverlayPercent.text('100%');
+
+                if (previewUrl) {
+                    URL.revokeObjectURL(previewUrl);
+                    previewUrl = null;
+                }
+
+                if (payload.file) {
+                    previewUrl = URL.createObjectURL(payload.file);
+                }
+
+                if (!previewUrl) {
+                    var inputFile = ($('#filePhoto').get(0) && $('#filePhoto').get(0).files && $('#filePhoto').get(0).files[0]) ? $('#filePhoto').get(0).files[0] : null;
+                    if (inputFile) {
+                        previewUrl = URL.createObjectURL(inputFile);
+                    }
+                }
+
+                if (!previewUrl) {
+                    var fallbackSrc = $('#formUpdateCreate .fileuploader-item-image img').first().attr('src') || '';
+                    if (!fallbackSrc) {
+                        var fallbackCanvas = $('#formUpdateCreate .fileuploader-item-image canvas').first();
+                        if (fallbackCanvas.length) {
+                            fallbackSrc = fallbackCanvas.get(0).toDataURL('image/png');
+                        }
+                    }
+                    showPreviewStep(fallbackSrc || '');
+                    return;
+                }
+
+                showPreviewStep(previewUrl);
+            });
+
+            $(document).on('post-media-removed', function() {
+                if (previewUrl) {
+                    URL.revokeObjectURL(previewUrl);
+                    previewUrl = null;
+                }
+                $uploadOverlay.removeClass('active');
+                $uploadOverlayPercent.text('0%');
+                showUploadStep();
+            });
+
+            $(document).on('post-media-upload-start', function() {
+                $uploadOverlayPercent.text('0%');
+                $uploadOverlay.addClass('active');
+            });
+
+            $(document).on('post-media-upload-progress', function(e, payload) {
+                var percent = payload && typeof payload.percentage !== 'undefined' ? Math.max(0, Math.min(100, parseInt(payload.percentage, 10) || 0)) : 0;
+                $uploadOverlayPercent.text(percent + '%');
+            });
+
+            $(document).on('post-media-upload-failed', function() {
+                $uploadOverlay.removeClass('active');
+                $uploadOverlayPercent.text('0%');
+            });
+
+            $zoom.on('input change', function() {
+                var rawValue = parseFloat($(this).val() || zoomBase);
+                var value = Math.max(zoomBase, rawValue);
+                if (rawValue < zoomBase) {
+                    $(this).val(zoomBase);
+                }
+                syncZoomSliderFill();
+                var scale = value / zoomBase;
+                $previewImage.css('transform', 'scale(' + scale + ')');
+                $zoomLevel.text(Math.round(value) + '%');
+            });
+
+            $(window).on('resize', function() {
+                if ($previewStep.hasClass('active')) {
+                    setupAutoZoom();
+                }
+            });
+
+            $('#postPreviewContinue').on('click', function() {
+                showDetailsStep();
+            });
+
+            $('#postDetailsBack').on('click', function() {
+                var currentSrc = $previewImage.attr('src') || '';
+                showPreviewStep(currentSrc);
+            });
+
+            $('#postPreviewBack').on('click', function() {
+                var api = $.fileuploader.getInstance($('input[name="photo[]"]'));
+                if (api) {
+                    api.reset();
+                }
+                if (previewUrl) {
+                    URL.revokeObjectURL(previewUrl);
+                    previewUrl = null;
+                }
+                showUploadStep();
+            });
+
+            $visibilityButtons.on('click', function() {
+                if ($(this).is(':disabled')) {
+                    return;
+                }
+                applyVisibilityMode($(this).data('visibility'));
+            });
+
+            $('#setSubscribersOnly').on('click', function() {
+                if ($visibilityMode.val() === 'subscribers') {
+                    applyVisibilityMode('everyone');
+                } else {
+                    applyVisibilityMode('subscribers');
+                }
+            });
+
+
+            $priceInput.on('input change', function() {
+                updatePriceLabel();
+            });
+
+            $scheduleToggle.on('change', function() {
+                if (!$(this).is(':checked')) {
+                    $('#inputScheduled').val('');
+                    $('#dateScheduleContainer').hide();
+                    $('#textPostPublish').html(publish);
+                    return;
+                }
+                $('#modalSchedulePost').modal('show');
+            });
+
+            $(document).on('click', '#btnSubmitSchedule', function() {
+                setTimeout(function() {
+                    $scheduleToggle.prop('checked', !!$('#inputScheduled').val());
+                }, 120);
+            });
+
+            $('#modalSchedulePost').on('hidden.bs.modal', function() {
+                $scheduleToggle.prop('checked', !!$('#inputScheduled').val());
+            });
+
+            $(document).on('click', '#deleteSchedule', function() {
+                $scheduleToggle.prop('checked', false);
+            });
         });
     </script>
 @endsection

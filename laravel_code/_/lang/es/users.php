@@ -102,4 +102,6 @@ return array(
 	'subscription_price_info' => 'Si no quiere que se suscriban, déjelo en 0.00',
 	'content_locked' => 'Contenido bloqueado.',
 
+	'click_below_email' => 'Puede confirmar el email de su cuenta a traves del siguiente enlace:',
+	'code_not_valid' => 'Codigo de confirmacion no valido!',
 );

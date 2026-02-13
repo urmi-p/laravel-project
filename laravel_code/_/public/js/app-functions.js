@@ -1378,6 +1378,7 @@
 
 				success: function (result) {
 
+          var isNewUpdatePage = window.location.pathname.replace(/\/+$/, '') === '/new/update';
 
 
 					//===== SUCCESS =====//
@@ -1405,6 +1406,11 @@
 						$('#inputScheduled').val('');
 
 						$('#textPostPublish').html(publish);
+
+            if (isNewUpdatePage) {
+              window.location.href = URL_BASE + '/';
+              return;
+            }
 
 
 
@@ -1589,6 +1595,11 @@
 						$('#inputScheduled').val('');
 
 						$('#textPostPublish').html(publish);
+
+            if (isNewUpdatePage) {
+              window.location.href = URL_BASE + '/';
+              return;
+            }
 
 
 

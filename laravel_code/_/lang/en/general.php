@@ -1491,4 +1491,11 @@ return array(
 	'enter_your_new_password' => 'enter your new password',
 	'subscription_fees' => 'Subscription fees',
 	'subscription_fees_desc' => 'See how each subscription payment is split between the platform, payment processors, and your earnings.',
+	'active_ad' => 'Activate',
+	'add_new_product_to_shop' => 'Add new product to shop',
+	'encode_videos' => 'Video encoding',
+	'equivalent_money' => 'equivalent to',
+	'fee_not_applied' => 'Fees have not been applied.',
+	'subscriptions_to' => 'subscribed to',
+	'success_added' => 'Successfully added',
 );
