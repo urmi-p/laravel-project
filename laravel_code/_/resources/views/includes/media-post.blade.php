@@ -22,7 +22,7 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 
 	<a href="{{ $urlImg }}" class="glightbox w-100" data-gallery="gallery{{$response->id}}">
 
-		<img src="{{$urlImg}}?w=130&h=100" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} data-src="{{$urlImg}}?w=960&h=980" class="img-fluid lazyload {{ $fullViewImage }}" alt="{{ e($response->description) }}">
+		<img src="{{$urlImg}}?w=130&h=100" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} data-src="{{$urlImg}}?w=960&h=980" class="img-fluid lazyload top_left_right_brd {{ $fullViewImage }}" alt="{{ e($response->description) }}">
 
 	</a>
 
@@ -54,19 +54,12 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 
 	@if ($mediaImageVideoTotal >= 2)
 
-	<div class="container-post-media">
-
-
-
+	<div class="container-post-media top_left_right_brd">
 		<div class="media-grid-{{ $mediaImageVideoTotal > 5 ? 5 : $mediaImageVideoTotal }}">
-
-
 
 			@foreach ($mediaImageVideo as $media)
 
 			@php
-
-
 
 			if ($media->type == 'video') {
 
