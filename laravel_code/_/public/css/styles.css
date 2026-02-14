@@ -87,7 +87,7 @@ html[data-bs-theme="dark"] {
 .navbar {
     border: 1px solid #ffffff1a;
     /* background-color: #ffffff1a !important; */
-    margin: 20px;
+    margin: 0px 20px 20px;
     border-radius: 32px;
 }
 
@@ -4039,7 +4039,7 @@ footer.footer-bg {
 @media (max-width: 991px) {
     .navbar {
         border: none !important;
-        background-color: transparent !important;
+        background: rgba(0, 0, 0, 0.2);
         border-radius: 0;
     }
 
