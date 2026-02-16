@@ -289,7 +289,9 @@
 
 
 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
+@php
+    $pageTitle = trim($__env->yieldContent('title') . ' ' . $settings->title . ' - ' . __('seo.slogan'));
+@endphp
 
 
 <script type="text/javascript">
@@ -301,8 +303,7 @@
   var urlPreviousPage = "<?php echo e(!Helper::isPreviousUrlReelsSection() ? url()->previous() : url('/'), false); ?>";
 
   var lang = '{{ auth()->user()->language ?? session('locale') }}';
-
-  var _title = '<?php $__env->startSection("title"); ?><?php echo $__env->yieldSection(); ?> <?php echo e(e($settings->title).' - '.__('seo.slogan'), false); ?>';
+  var _title = @json($pageTitle);
 
   var session_status = "<?php echo e(auth()->check() ? 'on' : 'off', false); ?>";
 

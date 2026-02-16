@@ -1482,4 +1482,13 @@ return array(
 		'subscription_price_monthly' => 'Вартість підписки (Місяць)',
 		'subscription_fees' => 'Плати',
 		'subscription_fees_desc' => 'Сподівайтесь, що кожен платіж підписки розділяється між платформою, обробниками платежів та вашими доходами.',
+	'active_ad' => 'Activate',
+	'add_new_product_to_shop' => 'Add new product to shop',
+	'encode_videos' => 'Video encoding',
+	'equivalent_money' => 'equivalent to',
+	'explore_shop' => 'Explore shop',
+	'fee_not_applied' => 'Fees have not been applied.',
+	'share_thoughts' => 'Share your thoughts!',
+	'subscriptions_to' => 'subscribed to',
+	'success_added' => 'Successfully added',
 );

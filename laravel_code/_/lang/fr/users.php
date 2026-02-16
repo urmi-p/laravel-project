@@ -94,4 +94,11 @@ return array(
 	'subscription_price_info' => 'Si vous ne voulez pas qu\'ils s\'abonnent, laissez simplement à 0,00',
 	'content_locked' => 'Contenu verrouillé.',
 
+	'back_to_messages' => 'Retour aux messages',
+	'followed_you' => 'vous a suivi',
+	'messages' => 'Messages',
+	'not_subscriptions' => 'Vous n\'etes abonne a aucun utilisateur',
+	'send_msg_private' => 'vous a envoye un message prive',
+	'unblock' => 'DEBLOQUER',
+	'you_are_following' => 'a commence a vous suivre',
 );

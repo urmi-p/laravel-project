@@ -15,6 +15,9 @@
     background: {{ auth()->user()->dark_mode == 'on'? '#222' : '#fff' }};  
 
   }
+  [data-bs-theme="dark"] .light_mode_form {
+      background-color: #111 !important;
+    }
 
 </style>
 
@@ -71,7 +74,7 @@
 
               <div class="form-group mb-4">
 
-                  <select name="type" class="form-control custom-select">
+                  <select name="type" class="form-control custom-select light_mode_form">
 
                     <option value="private" selected>{{ __('general.available_only_for_subscribers') }}</option>
 

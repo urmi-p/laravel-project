@@ -1,88 +1,326 @@
 @include('includes.advertising')
 
 @foreach ($updates as $response)
+    @php
+        if (auth()->check()) {
+            $checkUserSubscription = auth()->user()->checkSubscription($response->creator);
+            $checkPayPerView = auth()->user()->payPerView()->where('updates_id', $response->id)->first();
+        }
+        $creatorLive = Helper::isCreatorLive($getCurrentLiveCreators, $response->creator->id);
+        $totalLikes = number_format($response->likes->count() + $response->likes_extras);
+        $totalBookmarks = number_format($response->bookmarks->count());
+        $totalComments = $response->totalComments();
+        $isOwner = auth()->check() && auth()->id() == $response->creator->id;
+        $likesHiddenForViewer = (bool) ($response->hide_likes_count ?? false) && !$isOwner;
+        $showLikesCount = !$settings->hide_total_likes && !$likesHiddenForViewer;
+        $allowCommentsOnPost = (bool) ($response->creator->allow_comments ?? true) && !(bool) ($response->turn_off_comments ?? false);
+        $mediaCount = $response->media->count();
+        $allFiles = $response->media()->groupBy('type')->get();
+        $getFirstFile = $response
+        ->media()
+        ->whereIn('type', ['image', 'video'])
+        ->where('video_embed', '')
+        ->first();
+        $mediaImageVideo = $response
+        ->media()
+        ->whereIn('type', ['image', 'video'])
+        ->where('video_embed', '')
+        ->get();
 
-@php
+        if ($getFirstFile && $getFirstFile->type == 'image' && $getFirstFile->img_type != 'gif') {
+        $urlMedia = url('media/storage/focus/photo', $getFirstFile->id);
+        $backgroundPostLocked = '--bg: url('.$urlMedia.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
+        $textWhite = 'text-white';
+        } elseif ($getFirstFile && $getFirstFile->type == 'video' && $getFirstFile->video_poster) {
+        $videoPoster = url('media/storage/focus/video', $getFirstFile->video_poster);
+        $backgroundPostLocked = '--bg: url('.$videoPoster.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
+        $textWhite = 'text-white';
+        } else {
+        $backgroundPostLocked = null;
+        $textWhite = null;
+        }
 
-if (auth()->check()) {
-$checkUserSubscription = auth()->user()->checkSubscription($response->creator);
+        $countFilesImage = $response->media->where('type', 'image')->count();
+        $countFilesVideo = $response->media->whereIn('type', ['video', 'video_embed'])->count();
+        $countFilesAudio = $response->media->where('type', 'music')->count();
+        $mediaImageVideoTotal = $response->media->whereIn('type', ['image', 'video'])->count();
+        $isVideoEmbed = $response->media[0]->video_embed ?? false;
+        $nth = 0; // nth foreach nth-child(3n-1)
+    @endphp
 
-$checkPayPerView = auth()->user()->payPerView()->where('updates_id', $response->id)->first();
-}
-
-$creatorLive = Helper::isCreatorLive($getCurrentLiveCreators, $response->creator->id);
-
-$totalLikes = number_format($response->likes->count() + $response->likes_extras);
-
-$totalComments = $response->totalComments();
-
-$mediaCount = $response->media->count();
-
-$allFiles = $response->media()->groupBy('type')->get();
-
-$getFirstFile = $response
-->media()
-->whereIn('type', ['image', 'video'])
-->where('video_embed', '')
-->first();
-
-$mediaImageVideo = $response
-->media()
-
-->whereIn('type', ['image', 'video'])
-
-->where('video_embed', '')
-
-->get();
-
-if ($getFirstFile && $getFirstFile->type == 'image' && $getFirstFile->img_type != 'gif') {
-$urlMedia = url('media/storage/focus/photo', $getFirstFile->id);
-
-$backgroundPostLocked = '--bg: url('.$urlMedia.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
-$textWhite = 'text-white';
-} elseif ($getFirstFile && $getFirstFile->type == 'video' && $getFirstFile->video_poster) {
-$videoPoster = url('media/storage/focus/video', $getFirstFile->video_poster);
-
-$backgroundPostLocked = '--bg: url('.$videoPoster.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
-
-$textWhite = 'text-white';
-} else {
-$backgroundPostLocked = null;
-
-$textWhite = null;
-}
-
-$countFilesImage = $response->media->where('type', 'image')->count();
-
-$countFilesVideo = $response->media->whereIn('type', ['video', 'video_embed'])->count();
-
-$countFilesAudio = $response->media->where('type', 'music')->count();
-
-$mediaImageVideoTotal = $response->media->whereIn('type', ['image', 'video'])->count();
-
-$isVideoEmbed = $response->media[0]->video_embed ?? false;
-
-$nth = 0; // nth foreach nth-child(3n-1)
-
-@endphp
-
-<div class="card mb-3 mt-3 mt-md-5 w-100 card-updates views rounded-large shadow-large card-border-0 border-0 @if ($response->status == 'pending') post-pending @endif @if (
+<div class="card mb-3 mt-3 mt-md-5 w-100 card-updates views rounded-large shadow-large card-border-0 border-0 remove_bg_white @if ($response->status == 'pending') post-pending @endif @if (
         ($response->fixed_post == '1' && request()->path() == $response->creator->username) ||
             (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id)) pinned-post @endif"
     data="{{ $response->id }}">
     <div class="card-updates-cover-image">
-        <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img">
+        {{-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> --}}
+        {{-- added new content start --}}
+        @if (
+        (auth()->check() && auth()->user()->id == $response->creator->id) ||
+        (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
+        (auth()->check() &&
+        $response->locked == 'yes' &&
+        $checkUserSubscription &&
+        $response->price != 0.0 &&
+        $checkPayPerView) ||
+        (auth()->check() &&
+        $response->locked == 'yes' &&
+        $response->price != 0.0 &&
+        !$checkUserSubscription &&
+        $checkPayPerView) ||
+        (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
+        $response->locked == 'no')
+            
+            <div class="btn-block @if ($mediaImageVideoTotal != 0) media-post @endif">
+                @if ($mediaImageVideoTotal != 0)
+                    @include('includes.media-post')
+                @endif
 
-        <!-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> -->
+                @foreach ($response->media as $media)
+                    @if ($media->music != '')
+                    <div class="mx-3 border rounded @if ($mediaCount > 1) mt-3 @endif">
 
-        {{-- <img class="" src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}"> --}}
+                        <audio id="music-{{ $media->id }}" preload="metadata"
+                            class="js-player w-100 @if (!request()->ajax()) invisible @endif" controls>
+
+                            <source src="{{ Helper::getFile(config('path.music') . $media->music) }}"
+                                type="audio/mp3">
+
+                            Your browser does not support the audio tag.
+
+                        </audio>
+
+                    </div>
+                    @endif
+
+                    @if ($media->type == 'file')
+                        <a href="{{ url('download/file', $response->id) }}"
+                            class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
+
+                            <div class="card mb-3 mx-3">
+
+                                <div class="row no-gutters">
+
+                                    <div class="col-md-2 text-center bg-primary rounded-left">
+
+                                        <i class="far fa-file-archive m-4 text-white fs-40"></i>
+
+                                    </div>
+
+                                    <div class="col-md-10">
+
+                                        <div class="card-body">
+
+                                            <h5 class="card-title text-primary text-truncate mb-0">
+
+                                                {{ $media->file_name }}.zip
+
+                                            </h5>
+
+                                            <p class="card-text">
+
+                                                <small class="text-muted">{{ $media->file_size }}</small>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+                    @endif
+
+                    @if ($media->type == 'epub')
+                        <a href="{{ url('viewer/epub', $media->id) }}" target="_blank"
+                            class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
+
+                            <div class="card mb-3 mx-3">
+
+                                <div class="row no-gutters">
+
+                                    <div class="col-md-2 text-center bg-primary rounded-left">
+
+                                        <i class="fas fa-book-open m-4 text-white fs-40"></i>
+
+                                    </div>
+
+                                    <div class="col-md-10">
+
+                                        <div class="card-body">
+
+                                            <h5 class="card-title text-primary text-truncate mb-1">
+
+                                                {{ $media->file_name }}.epub
+
+                                            </h5>
+
+                                            <p class="card-text">
+
+                                                <small class="text-muted">
+
+                                                    <strong>{{ __('general.view_online') }}</strong> <i
+                                                        class="bi-arrow-up-right ml-1"></i>
+
+                                                </small>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+                    @endif
+                @endforeach
+
+                @if ($isVideoEmbed)
+                    @if (in_array(Helper::videoUrl($isVideoEmbed), [
+                    'youtube.com',
+                    'www.youtube.com',
+                    'youtu.be',
+                    'www.youtu.be',
+                    'm.youtube.com',
+                    ]))
+                        <div class="embed-responsive embed-responsive-16by9 mb-2">
+
+                            <iframe class="embed-responsive-item" height="360"
+                                src="https://www.youtube.com/embed/{{ Helper::getYoutubeId($isVideoEmbed) }}"
+                                allowfullscreen></iframe>
+
+                        </div>
+                    @endif
+
+                    @if (in_array(Helper::videoUrl($isVideoEmbed), ['vimeo.com', 'player.vimeo.com']))
+                    <div class="embed-responsive embed-responsive-16by9">
+
+                        <iframe class="embed-responsive-item"
+                            src="https://player.vimeo.com/video/{{ Helper::getVimeoId($isVideoEmbed) }}"
+                            allowfullscreen></iframe>
+
+                    </div>
+                    @endif
+                @endif
+            </div><!-- btn-block -->
+        @else
+            <div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 {{ $textWhite }}"
+                style="{{ $backgroundPostLocked }}">
+                <span class="btn-block text-center mb-3">
+                    <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
+                    <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
+                        viewBox="0 0 90 120" fill="none">
+                        <path
+                            d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
+                            fill="white" />
+                    </svg>
+                </span>
+
+                @if (
+                ($response->creator->planActive() && $response->price == 0.0) ||
+                ($response->creator->free_subscription == 'yes' && $response->price == 0.0))
+                    <a href="{{ request()->route()->named('profile') ? 'javascript:void(0);' : url($response->creator->username) }}"
+                        @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($response->creator->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest
+                        class="btn btn-primary w-100">
+
+                        {{ __('general.content_locked_user_logged') }}
+
+                    </a>
+                @elseif (
+                ($response->creator->planActive() && $response->price != 0.0) ||
+                ($response->creator->free_subscription == 'yes' && $response->price != 0.0))
+                    <a href="javascript:void(0);"
+                        @guest data-toggle="modal" data-target="#loginFormModal" @else @if ($response->status == 'active') data-toggle="modal" data-target="#payPerViewForm" data-mediaid="{{ $response->id }}" data-price="{{ Helper::formatPrice($response->price, true) }}" data-subtotalprice="{{ Helper::formatPrice($response->price) }}" data-pricegross="{{ $response->price }}" @endif @endguest
+                        class="btn btn-primary w-100">
+
+                        @guest
+
+                        {{ __('general.content_locked_user_logged') }}
+                        @else
+                        @if ($response->status == 'active')
+                        <i class="feather icon-unlock mr-1"></i> {{ __('general.unlock_post_for') }}
+                        {{ Helper::formatPrice($response->price) }}
+                        @else
+                        {{ __('general.post_pending_review') }}
+                        @endif
+
+                        @endguest
+
+                    </a>
+                @else
+                    <a href="javascript:void(0);" class="btn btn-primary disabled w-100">
+
+                        {{ __('general.subscription_not_available') }}
+
+                    </a>
+                @endif
+
+                <ul class="list-inline mt-3">
+
+
+
+                    @if ($mediaCount == 0)
+                    <li class="list-inline-item"><i class="bi bi-file-font"></i> {{ __('admin.text') }}</li>
+                    @endif
+
+
+
+                    @if ($mediaCount != 0)
+                    @foreach ($allFiles as $media)
+                    @if ($media->type == 'image')
+                    <li class="list-inline-item"><i class="feather icon-image"></i>
+                        {{ $countFilesImage }}
+                    </li>
+                    @endif
+
+
+
+                    @if ($media->type == 'video')
+                    <li class="list-inline-item"><i class="feather icon-video"></i>
+                        {{ $countFilesVideo }} @if (($media->duration_video && $countFilesVideo == 1) || ($media->quality_video && $countFilesVideo == 1))
+                        <small class="ml-1">
+                            @if ($media->quality_video)
+                            <span class="quality-video">{{ $media->quality_video }}</span>
+                            @endif {{ $media->duration_video }}
+                        </small>
+                        @endif
+                    </li>
+                    @endif
+
+                    @if ($media->type == 'music')
+                    <li class="list-inline-item"><i class="feather icon-mic"></i> {{ $countFilesAudio }}
+                    </li>
+                    @endif
+
+                    @if ($media->type == 'file')
+                    <li class="list-inline-item"><i class="far fa-file-archive"></i>
+                        {{ $media->file_size }}
+                    </li>
+                    @endif
+
+                    @if ($media->type == 'epub')
+                    <li class="list-inline-item"><i class="bi-book"></i> {{ $media->file_size }}</li>
+                    @endif
+                    @endforeach
+                    @endif
+
+                </ul>
+            </div><!-- btn-block parent -->
+        @endif
+        {{-- added new content end --}}
     </div>
 
-    <div class="bg-dark-force">
+    <div class="bg-dark-force @if($mediaImageVideoTotal == 0) top_left_right_brd @endif">
         <div class="action-bar">
             <div class="action-left">
                 <div class="action_avatar">
-                    <span class="rounded-circle mr-3 position-relative">
+                    <span class="rounded-circle position-relative">
                         <a
                             href="{{ $creatorLive ? url('live', $response->creator->username) : url($response->creator->username) }}">
                             @if (auth()->check() && $creatorLive)
@@ -95,11 +333,11 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     </span>
                 </div>
                 <div class="action_user_info">
-                    <strong><a href="{{ url($response->creator->username) }}">
-
+                    <strong>
+                        <a href="{{ url($response->creator->username) }}">
                             {{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}
-
-                        </a></strong>
+                        </a>
+                    </strong>
 
                     @if ($response->creator->verified_id == 'yes')
                     <small class="verified mt-2" title="{{ __('general.verified_account') }}" data-toggle="tooltip"
@@ -174,7 +412,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                     </a>
 
                     @if (!$settings->hide_comments)
-                    <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                    <span class="text-white-force action-pill @auth @if (auth()->user()->checkRestriction($response->creator->id) || !$allowCommentsOnPost) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
                         <i class="bi bi-chat-text"></i><span class="action-count">{{ $totalComments }}</span>
                     </span>
                     @endif
@@ -262,31 +500,22 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                                         class="btn-block mt-3">{{ __('general.sms') }}</span>
 
                                                 </a>
-
                                             </div>
-
                                         </div>
-
-
-
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
 
-                    <!-- modal share -->
+                    <!-- modal share end  -->
                     <a href="javascript:void(0);"
                         @guest data-toggle="modal" data-target="#loginFormModal" @endguest
                         class="text-white-force action-pill pulse-btn @if ($bookmarkActive) text-primary @else text-muted @endif float-right {{ $buttonBookmark }}"
                         @auth data-id="{{ $response->id }}" @endauth>
 
                         <i class="@if ($bookmarkActive) fas @else far @endif fa-bookmark"></i>
-                        <span class="action-count">Bookmarks</span>
+                        <span class="action-count">{{ $totalBookmarks }}</span>
                     </a>
 
                     @auth
@@ -328,8 +557,205 @@ $nth = 0; // nth foreach nth-child(3n-1)
                         </a>
                         @endif
                     @endauth
+                    
+                    {{-- added three dot over here --}}
+                    <div class="mb-0 font-montserrat">
+                        @if (auth()->check() && auth()->user()->id == $response->creator->id)
+                            <a href="javascript:void(0);" class="float-right action-pill" id="dropdown_options" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+                            <!-- Target -->
+                            <button class="d-none copy-url" id="url{{ $response->id }}"
+                                data-clipboard-text="{{ url($response->creator->username . '/post', $response->id) }}">{{ __('general.copy_link') }}</button>
 
-                    <div class="mb-0 font-montserrat" class="post-options">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
+
+                                @if (request()->path() != $response->creator->username . '/post/' . $response->id)
+                                <a class="dropdown-item mb-1"
+                                    href="{{ url($response->creator->username . '/post', $response->id) }}"><i
+                                        class="bi bi-box-arrow-in-up-right mr-2"></i>
+                                    {{ __('general.go_to_post') }}</a>
+                                @endif
+
+                                @if ($response->status == 'active')
+                                <a class="dropdown-item mb-1 pin-post" href="javascript:void(0);"
+                                    data-id="{{ $response->id }}">
+
+                                    <i class="bi bi-pin mr-2"></i>
+                                    {{ $response->fixed_post == '0' ? __('general.pin_to_your_profile') : __('general.unpin_from_profile') }}
+
+                                </a>
+                                @endif
+
+                                <button class="dropdown-item mb-1" onclick="$('#url{{ $response->id }}').trigger('click')"><i
+                                        class="feather icon-link mr-2"></i> {{ __('general.copy_link') }}</button>
+
+                                <a href="{{ route('post.edit', ['id' => $response->id]) }}" class="dropdown-item mb-1">
+
+                                    <i class="bi bi-pencil mr-2"></i> {{ __('general.edit_post') }}
+
+                                </a>
+
+                                <form method="POST" action="{{ url('update/delete', $response->id) }}" class="d-inline">
+                                    @csrf
+
+                                    @if (isset($inPostDetail))
+                                    <input type="hidden" name="inPostDetail" value="true">
+                                    @endif
+
+                                    <button type="submit" class="dropdown-item mb-1 actionDelete">
+                                        <i class="feather icon-trash-2 mr-2"></i> {{ __('general.delete_post') }}
+                                    </button>
+                                </form>
+
+                            </div>
+                        @endif
+
+                        @if (
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        $response->locked == 'yes' &&
+                        $checkUserSubscription &&
+                        $response->price == 0.0) ||
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        $response->locked == 'yes' &&
+                        $checkUserSubscription &&
+                        $response->price != 0.0 &&
+                        $checkPayPerView) ||
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        $response->price != 0.0 &&
+                        !$checkUserSubscription &&
+                        $checkPayPerView) ||
+                        (auth()->check() &&
+                        auth()->user()->id != $response->creator->id &&
+                        auth()->user()->role == 'admin' &&
+                        auth()->user()->permission == 'all') ||
+                        (auth()->check() && auth()->user()->id != $response->creator->id && $response->locked == 'no'))
+                            <a href="javascript:void(0);" class="text-muted float-right action-pill" id="dropdown_options" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+
+                                <i class="bi bi-three-dots-vertical"></i>
+
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
+                                <!-- Target -->
+                                <button class="d-none copy-url" id="url{{ $response->id }}"
+                                    data-clipboard-text="{{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}">
+
+                                    {{ __('general.copy_link') }}
+
+                                </button>
+
+                                @if (request()->path() != $response->creator->username . '/post/' . $response->id)
+                                <a class="dropdown-item"
+                                    href="{{ url($response->creator->username . '/post', $response->id) }}">
+
+                                    <i class="bi bi-box-arrow-in-up-right mr-2"></i>
+                                    {{ __('general.go_to_post') }}
+
+                                </a>
+                                @endif
+
+                                <button class="dropdown-item" onclick="$('#url{{ $response->id }}').trigger('click')">
+                                    <i class="feather icon-link mr-2"></i> {{ __('general.copy_link') }}
+                                </button>
+                                <button type="button" class="dropdown-item" data-toggle="modal"
+                                    data-target="#reportUpdate{{ $response->id }}">
+                                    <i class="bi bi-flag mr-2"></i> {{ __('admin.report') }}
+                                </button>
+                            </div>
+
+                            <div class="modal fade modalReport" id="reportUpdate{{ $response->id }}" tabindex="-1"
+                                role="dialog" aria-hidden="true">
+
+                                <div class="modal-dialog modal-danger modal-sm">
+
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+
+                                            <h6 class="modal-title font-weight-light" id="modal-title-default">
+
+                                                <i class="fas fa-flag mr-1"></i> {{ __('admin.report_update') }}
+
+                                            </h6>
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                                                <i class="fa fa-times"></i>
+
+                                            </button>
+
+                                        </div>
+
+
+
+                                        <!-- form start -->
+
+                                        <form method="POST" action="{{ url('report/update', $response->id) }}"
+                                            enctype="multipart/form-data">
+
+                                            <div class="modal-body">
+
+                                                @csrf
+
+                                                <!-- Start Form Group -->
+
+                                                <div class="form-group">
+
+                                                    <label>{{ __('admin.please_reason') }}</label>
+
+                                                    <select name="reason" class="form-control custom-select">
+
+                                                        <option value="copyright">{{ __('admin.copyright') }}</option>
+
+                                                        <option value="privacy_issue">{{ __('admin.privacy_issue') }}
+                                                        </option>
+
+                                                        <option value="violent_sexual">
+                                                            {{ __('admin.violent_sexual_content') }}
+                                                        </option>
+
+                                                    </select>
+
+
+
+                                                    <textarea name="message" rows="" cols="40" maxlength="200"
+                                                        placeholder="{{ __('general.message') }} ({{ __('general.optional') }})"
+                                                        class="form-control mt-2 textareaAutoSize"></textarea>
+
+                                                </div><!-- /.form-group-->
+
+                                            </div><!-- Modal body -->
+
+
+
+                                            <div class="modal-footer">
+
+                                                <button type="button" class="btn border text-white"
+                                                    data-dismiss="modal">{{ __('admin.cancel') }}</button>
+
+                                                <button type="submit" class="btn btn-xs btn-white sendReport ml-auto"><i></i>
+                                                    {{ __('admin.report_update') }}</button>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div><!-- Modal content -->
+
+                                </div><!-- Modal dialog -->
+
+                            </div><!-- Modal -->
+                        @endif
+
+                    </div>
+                    {{-- added three dot over here end --}}
+
+                    {{-- <div class="mb-0 font-montserrat" class="post-options">
                         @if (auth()->check() && auth()->user()->id == $response->creator->id)
                         <a href="javascript:void(0);" class="text-muted float-right" id="dropdown_options" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -521,11 +947,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                             </div><!-- /.form-group-->
 
                                         </div><!-- Modal body -->
-
-
-
                                         <div class="modal-footer">
-
                                             <button type="button" class="btn border text-white"
                                                 data-dismiss="modal">{{ __('admin.cancel') }}</button>
 
@@ -543,15 +965,12 @@ $nth = 0; // nth foreach nth-child(3n-1)
                         </div><!-- Modal -->
                         @endif
 
-                    </div>
+                    </div> --}}
 
                     <div class="w-100 mb-3 containerLikeComment ">
-
-                        @if (!$settings->hide_total_likes)
+                        @if ($showLikesCount)
                         <span class="countLikes text-muted dot-item action-pill">
-
                             {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
-
                         </span>
                         @endif
 
@@ -569,7 +988,69 @@ $nth = 0; // nth foreach nth-child(3n-1)
             @endif
         </div>
 
-        <!-- for comment test start -->
+        <div class="card-body">
+            <div
+                class="pinned_post text-muted small w-100 mb-2 {{ ($response->fixed_post == '1' && request()->path() == $response->creator->username) || (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id) ? 'pinned-current' : 'display-none' }}">
+                <i class="bi bi-pin mr-2"></i> {{ __('general.pinned_post') }}
+            </div>
+
+            @if ($response->status == 'pending')
+                <h6 class="text-muted w-100 mb-4">
+                    <i class="bi bi-eye-fill mr-1"></i> <em>{{ __('general.post_pending_review') }}</em>
+                </h6>
+            @endif
+
+            @if ($response->status == 'schedule')
+                <h6 class="text-muted w-100 mb-4">
+                    <i class="bi-calendar-fill mr-1"></i> <em>{{ __('general.date_schedule') }}
+                        {{ Helper::formatDateSchedule($response->scheduled_date) }}</em>
+                </h6>
+            @endif
+
+            <div class="media">
+                <div class="media-body">
+                    <small class="timeAgo" data="{{ date('c', strtotime($response->date)) }}"></small>
+
+                    @if ($response->locked == 'no')
+                        <small class="type-post" title="{{ __('general.public') }}">
+                            <i class="iconmoon icon-WorldWide mr-1"></i>
+                        </small>
+                    @endif
+
+                    @if ($response->locked == 'yes')
+                        <small class="type-post" title="{{ __('users.content_locked') }}">
+                            <i class="feather icon-lock mr-1"></i>
+
+                            @if ((auth()->check() && $response->price != 0.0 && $checkUserSubscription && !$checkPayPerView) || (auth()->check() && $response->price != 0.0 && !$checkUserSubscription && !$checkPayPerView))
+                                {{ Helper::formatPrice($response->price) }}
+                            @elseif (auth()->check() && $checkPayPerView)
+                                {{ __('general.paid') }}
+                            @endif
+                        </small>
+                    @endif
+
+                </div><!-- media body -->
+            </div><!-- media -->
+        </div><!-- card body -->
+
+        @if ((auth()->check() && auth()->user()->id == $response->creator->id) || ($response->locked == 'yes' && $mediaCount != 0) || (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) || (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price != 0.0 && $checkPayPerView) || (auth()->check() && $response->locked == 'yes' && $response->price != 0.0 && !$checkUserSubscription && $checkPayPerView) || (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') || $response->locked == 'no')
+            <div class="card-body pt-0 pb-3">
+                <p class="mb-0 truncated position-relative text-word-break">
+                    {!! Helper::linkText(Helper::checkText($response->description, $isVideoEmbed ?? null)) !!}
+                </p>
+                <a href="javascript:void(0);" class="display-none link-border">{{ __('general.view_all') }}</a>
+            </div>
+        @else
+            @if ($response->title)
+                <div class="card-body pt-0 pb-3">
+                    <p class="mb-0 update-text position-relative text-word-break font-weight-bold">
+                        {!! Helper::linkText($response->title) !!}
+                    </p>
+                </div>
+            @endif
+        @endif
+
+         <!-- for comment test start -->
          <div class="comment_show_or_hide">
             @auth
                     @if (!auth()->user()->checkRestriction($response->creator->id) && !$settings->hide_comments)
@@ -647,9 +1128,9 @@ $nth = 0; // nth foreach nth-child(3n-1)
                         </div>
                         <div class="media position-relative px-3 py-3 border-top">
 
-                            <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,])></div>
+                            <div @class([ 'blocked' , 'display-none'=> $allowCommentsOnPost,])></div>
 
-                            <span href="#" @class([ 'float-left' , 'd-none'=> !$response->creator->allow_comments,])>
+                            <span href="#" @class([ 'float-left' , 'd-none'=> !$allowCommentsOnPost,])>
 
                                 <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
                                     class="rounded-circle mr-1 avatarUser" width="40">
@@ -658,7 +1139,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
                             <div class="media-body">
 
-                                @if (!$response->creator->allow_comments)
+                                @if (!$allowCommentsOnPost)
                                 <div class="p-2 text-center">
 
                                     {{ __('general.comments_disabled') }}
@@ -667,7 +1148,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
                                 @endif
 
                                 <form action="{{ url('comment/store') }}" method="post"
-                                    @class([ 'comments-form' , 'd-none'=> !$response->creator->allow_comments,])>
+                                    @class([ 'comments-form' , 'd-none'=> !$allowCommentsOnPost,])>
 
                                     @csrf
 
@@ -765,383 +1246,6 @@ $nth = 0; // nth foreach nth-child(3n-1)
          </div>
         <!-- for comment test end -->
     </div>
-    <div class="card-body">
-
-        <div
-            class="pinned_post text-muted small w-100 mb-2 {{ ($response->fixed_post == '1' && request()->path() == $response->creator->username) || (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id) ? 'pinned-current' : 'display-none' }}">
-
-            <i class="bi bi-pin mr-2"></i> {{ __('general.pinned_post') }}
-
-        </div>
-
-        @if ($response->status == 'pending')
-        <h6 class="text-muted w-100 mb-4">
-
-            <i class="bi bi-eye-fill mr-1"></i> <em>{{ __('general.post_pending_review') }}</em>
-
-        </h6>
-        @endif
-
-        @if ($response->status == 'schedule')
-        <h6 class="text-muted w-100 mb-4">
-
-            <i class="bi-calendar-fill mr-1"></i> <em>{{ __('general.date_schedule') }}
-                {{ Helper::formatDateSchedule($response->scheduled_date) }}</em>
-
-        </h6>
-        @endif
-
-        <div class="media">
-
-
-            <div class="media-body">
-
-
-                {{-- <small class="timeAgo text-muted" data="{{ date('c', strtotime($response->date)) }}"></small> --}}
-
-                {{-- @if ($response->locked == 'no')
-                        <small class="text-muted type-post" title="{{ __('general.public') }}">
-
-                <i class="iconmoon icon-WorldWide mr-1"></i>
-
-                </small>
-                @endif
-
-                @if ($response->locked == 'yes')
-                <small class="text-muted type-post" title="{{ __('users.content_locked') }}">
-
-                    <i class="feather icon-lock mr-1"></i>
-
-                    @if ((auth()->check() && $response->price != 0.0 && $checkUserSubscription && !$checkPayPerView) || (auth()->check() && $response->price != 0.0 && !$checkUserSubscription && !$checkPayPerView))
-                    {{ Helper::formatPrice($response->price) }}
-                    @elseif (auth()->check() && $checkPayPerView)
-                    {{ __('general.paid') }}
-                    @endif
-
-                </small>
-                @endif --}}
-
-            </div><!-- media body -->
-
-        </div><!-- media -->
-
-    </div><!-- card body -->
-
-
-
-    {{-- @if ((auth()->check() && auth()->user()->id == $response->creator->id) || ($response->locked == 'yes' && $mediaCount != 0) || (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) || (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price != 0.0 && $checkPayPerView) || (auth()->check() && $response->locked == 'yes' && $response->price != 0.0 && !$checkUserSubscription && $checkPayPerView) || (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') || $response->locked == 'no')
-            <div class="card-body pt-0 pb-3">
-
-                <p class="mb-0 truncated position-relative text-word-break">
-
-                    {!! Helper::linkText(Helper::checkText($response->description, $isVideoEmbed ?? null)) !!}
-
-                </p>
-
-                <a href="javascript:void(0);" class="display-none link-border">{{ __('general.view_all') }}</a>
-
-</div>
-@else
-@if ($response->title)
-<div class="card-body pt-0 pb-3">
-
-    <p class="mb-0 update-text position-relative text-word-break font-weight-bold">
-
-        {!! Helper::linkText($response->title) !!}
-
-    </p>
-
-</div>
-@endif
-@endif --}}
-
-
-
- {{-- @if (
-    (auth()->check() && auth()->user()->id == $response->creator->id) ||
-    (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
-    (auth()->check() &&
-    $response->locked == 'yes' &&
-    $checkUserSubscription &&
-    $response->price != 0.0 &&
-    $checkPayPerView) ||
-    (auth()->check() &&
-    $response->locked == 'yes' &&
-    $response->price != 0.0 &&
-    !$checkUserSubscription &&
-    $checkPayPerView) ||
-    (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
-    $response->locked == 'no')
-    <div class="btn-block @if ($mediaImageVideoTotal != 0) media-post  @endif">
-
-
-
-        @if ($mediaImageVideoTotal != 0)
-        @include('includes.media-post')
-        @endif
-
-
-
-        @foreach ($response->media as $media)
-        @if ($media->music != '')
-        <div class="mx-3 border rounded @if ($mediaCount > 1) mt-3 @endif">
-
-            <audio id="music-{{ $media->id }}" preload="metadata"
-                class="js-player w-100 @if (!request()->ajax()) invisible @endif" controls>
-
-                <source src="{{ Helper::getFile(config('path.music') . $media->music) }}"
-                    type="audio/mp3">
-
-                Your browser does not support the audio tag.
-
-            </audio>
-
-        </div>
-        @endif
-
-
-
-        @if ($media->type == 'file')
-        <a href="{{ url('download/file', $response->id) }}"
-            class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
-
-            <div class="card mb-3 mx-3">
-
-                <div class="row no-gutters">
-
-                    <div class="col-md-2 text-center bg-primary rounded-left">
-
-                        <i class="far fa-file-archive m-4 text-white fs-40"></i>
-
-                    </div>
-
-                    <div class="col-md-10">
-
-                        <div class="card-body">
-
-                            <h5 class="card-title text-primary text-truncate mb-0">
-
-                                {{ $media->file_name }}.zip
-
-                            </h5>
-
-                            <p class="card-text">
-
-                                <small class="text-muted">{{ $media->file_size }}</small>
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </a>
-        @endif
-
-
-
-        @if ($media->type == 'epub')
-        <a href="{{ url('viewer/epub', $media->id) }}" target="_blank"
-            class="d-block text-decoration-none @if ($mediaCount > 1) mt-3 @endif">
-
-            <div class="card mb-3 mx-3">
-
-                <div class="row no-gutters">
-
-                    <div class="col-md-2 text-center bg-primary rounded-left">
-
-                        <i class="fas fa-book-open m-4 text-white fs-40"></i>
-
-                    </div>
-
-                    <div class="col-md-10">
-
-                        <div class="card-body">
-
-                            <h5 class="card-title text-primary text-truncate mb-1">
-
-                                {{ $media->file_name }}.epub
-
-                            </h5>
-
-                            <p class="card-text">
-
-                                <small class="text-muted">
-
-                                    <strong>{{ __('general.view_online') }}</strong> <i
-                                        class="bi-arrow-up-right ml-1"></i>
-
-                                </small>
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </a>
-        @endif
-        @endforeach
-
-
-
-        @if ($isVideoEmbed)
-        @if (in_array(Helper::videoUrl($isVideoEmbed), [
-        'youtube.com',
-        'www.youtube.com',
-        'youtu.be',
-        'www.youtu.be',
-        'm.youtube.com',
-        ]))
-        <div class="embed-responsive embed-responsive-16by9 mb-2">
-
-            <iframe class="embed-responsive-item" height="360"
-                src="https://www.youtube.com/embed/{{ Helper::getYoutubeId($isVideoEmbed) }}"
-                allowfullscreen></iframe>
-
-        </div>
-        @endif
-
-
-
-        @if (in_array(Helper::videoUrl($isVideoEmbed), ['vimeo.com', 'player.vimeo.com']))
-        <div class="embed-responsive embed-responsive-16by9">
-
-            <iframe class="embed-responsive-item"
-                src="https://player.vimeo.com/video/{{ Helper::getVimeoId($isVideoEmbed) }}"
-                allowfullscreen></iframe>
-
-        </div>
-        @endif
-        @endif
-
-
-
-    </div><!-- btn-block -->
-@else
-    <div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 {{ $textWhite }}"
-        style="{{ $backgroundPostLocked }}">
-
-        <span class="btn-block text-center mb-3">
-            <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
-
-            <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
-                viewBox="0 0 90 120" fill="none">
-                <path
-                    d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
-                    fill="white" />
-            </svg>
-
-        </span>
-
-
-
-        @if (
-        ($response->creator->planActive() && $response->price == 0.0) ||
-        ($response->creator->free_subscription == 'yes' && $response->price == 0.0))
-        <a href="{{ request()->route()->named('profile') ? 'javascript:void(0);' : url($response->creator->username) }}"
-            @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($response->creator->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest
-            class="btn btn-primary w-100">
-
-            {{ __('general.content_locked_user_logged') }}
-
-        </a>
-        @elseif (
-        ($response->creator->planActive() && $response->price != 0.0) ||
-        ($response->creator->free_subscription == 'yes' && $response->price != 0.0))
-        <a href="javascript:void(0);"
-            @guest data-toggle="modal" data-target="#loginFormModal" @else @if ($response->status == 'active') data-toggle="modal" data-target="#payPerViewForm" data-mediaid="{{ $response->id }}" data-price="{{ Helper::formatPrice($response->price, true) }}" data-subtotalprice="{{ Helper::formatPrice($response->price) }}" data-pricegross="{{ $response->price }}" @endif @endguest
-            class="btn btn-primary w-100">
-
-            @guest
-
-            {{ __('general.content_locked_user_logged') }}
-            @else
-            @if ($response->status == 'active')
-            <i class="feather icon-unlock mr-1"></i> {{ __('general.unlock_post_for') }}
-            {{ Helper::formatPrice($response->price) }}
-            @else
-            {{ __('general.post_pending_review') }}
-            @endif
-
-            @endguest
-
-        </a>
-        @else
-        <a href="javascript:void(0);" class="btn btn-primary disabled w-100">
-
-            {{ __('general.subscription_not_available') }}
-
-        </a>
-        @endif
-
-
-
-        <ul class="list-inline mt-3">
-
-
-
-            @if ($mediaCount == 0)
-            <li class="list-inline-item"><i class="bi bi-file-font"></i> {{ __('admin.text') }}</li>
-            @endif
-
-
-
-            @if ($mediaCount != 0)
-            @foreach ($allFiles as $media)
-            @if ($media->type == 'image')
-            <li class="list-inline-item"><i class="feather icon-image"></i>
-                {{ $countFilesImage }}
-            </li>
-            @endif
-
-
-
-            @if ($media->type == 'video')
-            <li class="list-inline-item"><i class="feather icon-video"></i>
-                {{ $countFilesVideo }} @if (($media->duration_video && $countFilesVideo == 1) || ($media->quality_video && $countFilesVideo == 1))
-                <small class="ml-1">
-                    @if ($media->quality_video)
-                    <span class="quality-video">{{ $media->quality_video }}</span>
-                    @endif {{ $media->duration_video }}
-                </small>
-                @endif
-            </li>
-            @endif
-
-            @if ($media->type == 'music')
-            <li class="list-inline-item"><i class="feather icon-mic"></i> {{ $countFilesAudio }}
-            </li>
-            @endif
-
-            @if ($media->type == 'file')
-            <li class="list-inline-item"><i class="far fa-file-archive"></i>
-                {{ $media->file_size }}
-            </li>
-            @endif
-
-            @if ($media->type == 'epub')
-            <li class="list-inline-item"><i class="bi-book"></i> {{ $media->file_size }}</li>
-            @endif
-            @endforeach
-            @endif
-
-        </ul>
-
-
-
-    </div><!-- btn-block parent -->
-@endif --}}
-
-
 
         {{-- @if ($response->status == 'active')
             <div class="card-footer bg-white border-top-0 rounded-large">
@@ -1196,7 +1300,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
                     @if (!$settings->hide_comments)
                     <span
-                        class="@auth @if (auth()->user()->checkRestriction($response->creator->id) || !$response->creator->allow_comments) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled mr-14px @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
+                        class="@auth @if (auth()->user()->checkRestriction($response->creator->id) || !$allowCommentsOnPost) buttonDisabled @else text-muted @endif @else text-muted @endauth disabled mr-14px @auth @if (!isset($inPostDetail) && $buttonLike) pulse-btn toggleComments @endif @endauth">
 
                         <i class="far fa-comment"></i>
 
@@ -1358,7 +1462,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 
 
-    @if (!$settings->hide_total_likes)
+    @if ($showLikesCount)
     <span class="countLikes text-muted dot-item action-pill">
 
         {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
@@ -1456,10 +1560,10 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
     <div class="media position-relative pt-3 border-top">
 
-        <div @class([ 'blocked' , 'display-none'=> $response->creator->allow_comments,
+        <div @class([ 'blocked' , 'display-none'=> $allowCommentsOnPost,
             ])></div>
 
-        <span href="#" @class([ 'float-left' , 'd-none'=> !$response->creator->allow_comments,
+        <span href="#" @class([ 'float-left' , 'd-none'=> !$allowCommentsOnPost,
             ])>
 
             <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
@@ -1471,7 +1575,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 
 
-            @if (!$response->creator->allow_comments)
+            @if (!$allowCommentsOnPost)
             <div class="p-2 text-center">
 
                 {{ __('general.comments_disabled') }}
@@ -1482,7 +1586,7 @@ $nth = 0; // nth foreach nth-child(3n-1)
 
 
             <form action="{{ url('comment/store') }}" method="post"
-                @class([ 'comments-form' , 'd-none'=> !$response->creator->allow_comments,
+                @class([ 'comments-form' , 'd-none'=> !$allowCommentsOnPost,
                 ])>
 
                 @csrf
@@ -1677,3 +1781,4 @@ $getHasPages = $updates->count() < $settings->number_posts_show ? false : true;
 
         </button>
         @endif
+

@@ -1378,6 +1378,7 @@
 
 				success: function (result) {
 
+          var isNewUpdatePage = window.location.pathname.replace(/\/+$/, '') === '/new/update';
 
 
 					//===== SUCCESS =====//
@@ -1405,6 +1406,11 @@
 						$('#inputScheduled').val('');
 
 						$('#textPostPublish').html(publish);
+
+            if (isNewUpdatePage) {
+              window.location.href = URL_BASE + '/';
+              return;
+            }
 
 
 
@@ -1589,6 +1595,11 @@
 						$('#inputScheduled').val('');
 
 						$('#textPostPublish').html(publish);
+
+            if (isNewUpdatePage) {
+              window.location.href = URL_BASE + '/';
+              return;
+            }
 
 
 
@@ -4895,7 +4906,7 @@
 
 				if (data.type == 'like') {
 
-					element.html('<i class="fas fa-heart text-red mr-1"></i> <span class="countCommentsLikes">' + data.count + '</span>');
+					element.html('<i class="bi bi-hand-thumbs-up-fill text-red mr-1"></i> <span class="countCommentsLikes">' + data.count + '</span>');
 
 					element.blur();
 
@@ -4905,7 +4916,7 @@
 
 					var $count = data.count == 0 ? '' : data.count;
 
-					element.html('<i class="far fa-heart mr-1"></i> <span class="countCommentsLikes">' + $count + '</span>');
+					element.html('<i class="bi bi-hand-thumbs-up-fill mr-1"></i> <span class="countCommentsLikes">' + $count + '</span>');
 
 
 

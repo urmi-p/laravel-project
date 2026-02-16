@@ -87,7 +87,7 @@ html[data-bs-theme="dark"] {
 .navbar {
     border: 1px solid #ffffff1a;
     /* background-color: #ffffff1a !important; */
-    margin: 20px;
+    margin: 0px 20px 20px;
     border-radius: 32px;
 }
 
@@ -331,8 +331,7 @@ img.imageFull {
 }
 
 .post-options {
-    font-size: 7px;
-    margin-top: 15px;
+    font-size: 18px;
 }
 .actionDelete {
     cursor: pointer;
@@ -1446,7 +1445,7 @@ a:hover.button-avatar-upload {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
 }
-[data-bs-theme=light] .input-new-msg {
+[data-bs-theme="light"] .input-new-msg {
     border: 1px solid #ced4da;
 }
 .input-new-msg {
@@ -2101,7 +2100,10 @@ a:hover.button-avatar-upload {
     width: 32px;
     height: 32px;
 }
-
+.bg-dark-force{
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
 [data-bs-theme="dark"] .bg-dark-force .action-bar {
     display: flex;
     justify-content: space-between;
@@ -2776,19 +2778,19 @@ a.btn-category:focus {
     background: #fff;
 }
 
-.card-updates-cover-image,
-div.media-post {
+.card-updates-cover-image,div.media-post {
     background-color: #303030;
     text-align: center;
     position: relative;
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
 }
+
 [data-bs-theme="dark"] .card-updates-cover-image {
     background-color: #303030;
 }
-[data-bs-theme="light"] .card-updates-cover-image,
-div.media-post {
+
+[data-bs-theme="light"] .card-updates-cover-image, [data-bs-theme="light"] div.media-post {
     background-color: #fff;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
 }
@@ -3872,6 +3874,14 @@ footer.footer-bg {
     background-color: #E2394C !important;
     border-radius: 8px !important;
 }
+
+.remove_bg_white{
+    background: transparent !important;
+}
+.top_left_right_brd{
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+}
 @media (min-width: 40em) {
     /* Bump up size of carousel content */
     .carousel-caption p {
@@ -3893,7 +3903,7 @@ footer.footer-bg {
 
 [data-bs-theme=light] .bg-whitee
 {
-  background-color: #f5f5f5 !important;
+    background-color: #f5f5f5 !important;
 }
 @media (min-width: 768px) and (max-width: 1024px) {
     /* -------------------------
@@ -4008,27 +4018,28 @@ footer.footer-bg {
     .sidebar_li a {
         font-size: 15px !important;
     }
-    .action-bar .card-footer.action-pill{
-        justify-content:flex-start;
+    .action-bar .card-footer.action-pill {
+        justify-content: flex-start;
         margin-left: 10px;
     }
-    .fileuploader-theme-thumbnails .fileuploader-thumbnails-input, .fileuploader-theme-thumbnails .fileuploader-items-list .fileuploader-item{
+    .fileuploader-theme-thumbnails .fileuploader-thumbnails-input,
+    .fileuploader-theme-thumbnails .fileuploader-items-list .fileuploader-item {
         width: calc(40% - 16px) !important;
         padding-top: 25% !important;
     }
-    .my-card-not-card-added{
+    .my-card-not-card-added {
         padding: 48px 0px !important;
-        align-items: center!important;
+        align-items: center !important;
     }
 }
-.section{
+.section {
     min-height: 80vh !important;
     padding-bottom: 0px !important;
 }
 @media (max-width: 991px) {
     .navbar {
         border: none !important;
-        background-color: transparent !important;
+        background: rgba(0, 0, 0, 0.2);
         border-radius: 0;
     }
 
@@ -4514,9 +4525,7 @@ footer.footer-bg {
         align-items: center !important; */
         flex-wrap: wrap !important;
     }
-    .action-bar .card-footer.action-pill{
-        justify-content:center !important;
-    }
+
     .post_img {
         width: 80% !important;
     }
@@ -4901,5 +4910,38 @@ footer.footer-bg {
     font-weight: 600;
 }
 
-/* RESPONSIVE */
-/* } */
+/* RESPONSIVE ACTION PILLS */
+@media (max-width: 480px) {
+    .card-footer.action-pill {
+        display: flex !important;
+        justify-content: space-between !important;
+        gap: 5px !important;
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+    .action-pill {
+        padding: 4px 5px !important;
+        font-size: 10px !important;
+        gap: 2px !important;
+        border-radius: 12px !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+    }
+    .action-pill i, .action-pill svg {
+        width: 15px !important;
+        height: 15px !important;
+        font-size: 12px !important;
+        flex-shrink: 0 !important;
+    }
+    .action-pill .action-count {
+        font-size: 12px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    .action-pill.float-right {
+        float: none !important;
+    }
+    /* Hide 'Shares' text on very small screens if needed, or just let it shrink */
+}

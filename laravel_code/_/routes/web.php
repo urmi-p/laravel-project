@@ -327,6 +327,9 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
  	Route::post('upload/avatar',[UserController::class, 'uploadAvatar']);
 
 	// Updates
+	// New Update
+  	Route::get('new/update', [UpdatesController::class, 'newUpdate']);
+
 	Route::post('update/create',[UpdatesController::class, 'create']);
 	Route::get('post/edit/{id}',[UpdatesController::class, 'edit'])->name('post.edit');
 	Route::post('update/edit',[UpdatesController::class, 'postEdit']);

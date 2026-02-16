@@ -219,4 +219,10 @@ return array(
 		'blog_deleted' => '¡Blog eliminado!',
 		'minimum_width_img_blog' => 'Ancho mínimo 650x430',
 		'commission' => 'Comisión',
+	'authorized_to_upload' => 'Autorizado para subir',
+	'everyone_download' => 'Todos pueden descargar',
+	'funds_raised' => 'Fondos recaudados',
+	'google_ads_index' => 'Google Ads en el inicio',
+	'paypal_account_donations' => '* Email para recibir donaciones',
+	'who_can_download' => 'Quien puede descargar',
 );

@@ -15,7 +15,7 @@
     <section class="section section-sm">
         {{-- for mobile header --}}
         @include('includes.header-mobile')
-        <div class="container-fluid pt-lg-5 pt-2">
+        <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
             <div class="row">
                 <div class="col-lg-3 col-md-2 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
@@ -189,7 +189,7 @@
 
                                                 <div class="action-left">
                                                     <div class="action_avatar">
-                                                        <span class="rounded-circle mr-3 position-relative">
+                                                        <span class="rounded-circle position-relative">
                                                             <a
                                                                 href="{{ $creatorLive ? url('live', $data->creator->username) : url($data->creator->username) }}">
                                                                 @if (auth()->check() && $creatorLive)
@@ -324,66 +324,33 @@
                                                         class="visibility-hidden">
 
                                                     {{-- <button type="button" class="btnMultipleUpload btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ __('general.media_type_upload') }})">
-
-                        <i class="feather icon-image f-size-20 align-bottom"></i>
-
-                      </button> --}}
-
-                                                    {{-- @if ($settings->allow_zip_files)
-                                                        <input type="file" name="zip" id="fileZip"
-                                                            accept="application/x-zip-compressed"
-                                                            class="visibility-hidden">
-
-                                                        <button type="button"
-                                                            class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="{{ __('general.upload_file_zip') }}"
-                                                            onclick="$('#fileZip').trigger('click')">
-
-                                                            <i class="bi bi-file-earmark-zip f-size-20 align-bottom"></i>
-
-                                                        </button>
-                                                    @endif
-
-                                                    @if ($settings->allow_epub_files)
-                                                        <input type="file" name="epub" id="ePubFile"
-                                                            accept="application/epub+zip" class="visibility-hidden">
-
-                                                        <button type="button"
-                                                            class="btn btn-post btn-tooltip-form p-bottom-8 e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="{{ __('general.upload_epub_file') }}"
-                                                            onclick="$('#ePubFile').trigger('click')">
-
-                                                            <i class="bi-book f-size-20 align-bottom"></i>
-
-                                                        </button>
-                                                    @endif --}}
+                                                    <i class="feather icon-image f-size-20 align-bottom"></i>
+                                                    </button> --}}
                                                 @endif
 
                                                 {{-- @if (($data->price == 0.0 && !$settings->ppv_only_free_accounts) || (auth()->user()->free_subscription == 'yes' && $settings->ppv_only_free_accounts))
 
-                    <button type="button" id="setPrice" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.price_post_ppv')}}">
+                                                    <button type="button" id="setPrice" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.price_post_ppv')}}">
 
-                      <i class="feather icon-tag f-size-20 align-bottom"></i>
+                                                    <i class="feather icon-tag f-size-20 align-bottom"></i>
 
-                    </button>
+                                                    </button>
 
-                  @endif --}}
+                                                @endif --}}
 
                                                 {{-- @if ($data->price == 0.0)
 
-                    @if (!$settings->disable_free_post)
+                                                    @if (!$settings->disable_free_post)
 
-                    <button type="button" id="contentLocked" class="btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip {{$data->locked == 'yes' ? '' : 'unlock'}}" data-toggle="tooltip" data-placement="top" title="{{__('users.locked_content')}}">
+                                                    <button type="button" id="contentLocked" class="btn e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill btn-upload btn-tooltip {{$data->locked == 'yes' ? '' : 'unlock'}}" data-toggle="tooltip" data-placement="top" title="{{__('users.locked_content')}}">
 
-                      <i class="feather icon-{{$data->locked == 'yes' ? '' : 'un'}}lock f-size-20 align-bottom"></i>
+                                                    <i class="feather icon-{{$data->locked == 'yes' ? '' : 'un'}}lock f-size-20 align-bottom"></i>
 
-                    </button>
+                                                    </button>
 
-                    @endif
+                                                    @endif
 
-                  @endif --}}
+                                                @endif --}}
 
                                                 {{-- @if (!$mediaCount && $data->locked == 'yes')
                                                     <button type="button" id="setTitle"
@@ -398,17 +365,14 @@
 
                                                 {{-- <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-post p-bottom-8 btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill">
 
-                    <i class="bi-emoji-smile f-size-20 align-bottom"></i>
+                                                    <i class="bi-emoji-smile f-size-20 align-bottom"></i>
 
-                </button> --}}
-
-
-
+                                                </button> --}}
                                                 {{-- <div class="dropdown-menu dropdown-menu-right dropdown-emoji custom-scrollbar" aria-labelledby="dropdownEmoji">
 
-                  @include('includes.emojis')
+                                                    @include('includes.emojis')
 
-                </div> --}}
+                                                </div> --}}
                                             
                                         </div>
 

@@ -20,6 +20,7 @@ use App\Models\MediaMessages;
 use App\Models\Notifications;
 use League\Glide\ServerFactory;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use League\Glide\Responses\SymfonyResponseFactory;
 
@@ -32,7 +33,19 @@ class UpdatesController extends Controller
     $this->settings = $settings::first();
     $this->request = $request;
   }
+  public function newUpdate()
+  {
+    if (auth()->user()->verified_id != 'yes') {
+      abort(404);
+    }
 
+    $users = $this->userExplore();
+
+    return view('users.new-update')->with([
+      'users' => $users,
+      'settings' => $this->settings
+    ]);
+  }
   /**
    * Create Update / Post
    *
@@ -116,6 +129,8 @@ class UpdatesController extends Controller
     // Status final post
     $statusPost = $this->request->scheduled_date ? 'schedule' : 'active';
     $moderationStatus = isset($nonMp3Count) && $nonMp3Count ? $this->settings->moderation_status : false;
+    $hideLikesCount = $this->request->boolean('hide_likes_count');
+    $turnOffComments = $this->request->boolean('turn_off_comments');
 
     $post               = new Updates();
     $post->description  = trim(Helper::checkTextDb($this->request->description));
@@ -130,6 +145,15 @@ class UpdatesController extends Controller
     $post->scheduled_date = $this->request->scheduled_date ?? '';
     $post->can_media_edit = true;
     $post->ip = request()->ip();
+
+    if (Schema::hasColumn('updates', 'hide_likes_count')) {
+      $post->hide_likes_count = $hideLikesCount;
+    }
+
+    if (Schema::hasColumn('updates', 'turn_off_comments')) {
+      $post->turn_off_comments = $turnOffComments;
+    }
+
     $post->save();
 
     // Save blocked post option
@@ -399,6 +423,8 @@ class UpdatesController extends Controller
     }
 
     $moderationStatus = isset($nonMp3Count) && $nonMp3Count ? $this->settings->moderation_status : false;
+    $hideLikesCount = $this->request->boolean('hide_likes_count');
+    $turnOffComments = $this->request->boolean('turn_off_comments');
 
     $post->description  = trim(Helper::checkTextDb($this->request->description));
     $post->title        = $this->request->locked == 'yes' && !$getAllMedia && !$this->request->hasFile('zip') && !$this->request->hasFile('epub') ? $this->request->title : null;
@@ -406,6 +432,15 @@ class UpdatesController extends Controller
     $post->token_id     = Str::random(150);
     $post->locked       = $this->settings->disable_free_post ? 'yes' : $this->request->locked;
     $post->price        = $this->request->price;
+
+    if (Schema::hasColumn('updates', 'hide_likes_count')) {
+      $post->hide_likes_count = $hideLikesCount;
+    }
+
+    if (Schema::hasColumn('updates', 'turn_off_comments')) {
+      $post->turn_off_comments = $turnOffComments;
+    }
+
     $post->save();
 
     // Insert Files

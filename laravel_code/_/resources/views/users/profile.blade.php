@@ -931,7 +931,7 @@
 
     @if ($user->verified_id == 'yes' && !in_array(request('media'), ['shop', 'reels', 'photos', 'videos']))
 
-        <div class="container-fluid py-4 pb-5">
+        <div class="container-fluid py-4 pb-5 px-5">
             <div class="row">
                 <div class="col-lg-4 mb-3">
                     <button type="button"

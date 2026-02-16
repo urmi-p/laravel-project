@@ -102,7 +102,7 @@
 <section class="section section-sm">
   {{-- for mobile header --}}
   @include('includes.header-mobile')
-	<div class="container-fluid pt-lg-5 pt-2">
+	<div class="container-fluid pt-lg-5 pt-2 px-lg-5">
 		<div class="row mb-sm">
 			@include('includes.cards-settings')
 			<div class="col-md-6 col-lg-9 mb-5 mb-lg-0">

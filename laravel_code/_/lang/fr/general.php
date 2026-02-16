@@ -1474,4 +1474,13 @@ return array(
 	'subscription_price_monthly' => 'Prix d\'abonnement (Par mois)',
 	'subscription_fees' => 'Frais d\'abonnement',
 	'subscription_fees_desc' => 'Voir comment chaque paiement d\'abonnement est divisé entre la plateforme, les processus de paiement et vos revenus.',
+	'active_ad' => 'Activer',
+	'add_new_product_to_shop' => 'Ajouter un nouveau produit a la boutique',
+	'encode_videos' => 'Encodage des videos',
+	'equivalent_money' => 'equivaut a',
+	'explore_shop' => 'Explorer la boutique',
+	'fee_not_applied' => 'Aucun frais n\'a ete applique.',
+	'share_thoughts' => 'Partagez vos pensees !',
+	'subscriptions_to' => 'abonne a',
+	'success_added' => 'Ajoute avec succes',
 );
