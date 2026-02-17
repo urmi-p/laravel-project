@@ -5,13 +5,10 @@
 
 
 				<li class="flex-fill bd-highlight">
-
 					<a class="p-3 btn-mobile" href="{{url('/')}}" title="{{trans('admin.home')}}">
-
 						<i class="feather icon-home icon-navbar"></i>
-
+						<span class="nav-text">{{trans('admin.home')}}</span>
 					</a>
-
 				</li>
 
 
