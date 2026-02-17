@@ -33,13 +33,17 @@ class UpdatesController extends Controller
     $this->settings = $settings::first();
     $this->request = $request;
   }
-  public function newUpdate(){
-    $users = $this->userExplore();
-    return view('users.new-update')->with([
-      'data' => null,
-      'users' => $users,
-      'settings' => $this->settings,
+  public function newUpdate()
+  {
+    if (auth()->user()->verified_id != 'yes') {
+      abort(404);
+    }
 
+    $users = $this->userExplore();
+
+    return view('users.new-update')->with([
+      'users' => $users,
+      'settings' => $this->settings
     ]);
   }
   /**

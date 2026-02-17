@@ -5,7 +5,7 @@
 
 <section class="section section-sm creator">
   @include('includes.header-mobile')
-  <div class="container-fluid pt-lg-5 pt-2">
+  <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
     <div class="row">
       <div class="col-md-3 mb-4 menu-left-home side_bar_box_shadow">
 

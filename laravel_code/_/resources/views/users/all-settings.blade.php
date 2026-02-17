@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="section section-sm">
-    <div class="container-fluid pt-lg-5 pt-2">
+    <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
       <div class="row mb-sm">
         @include('includes.cards-settings')
         <div class="col-lg-9">
