@@ -2,7 +2,7 @@
 
 <a href="{{url($user->username)}}">
 
-  <div class="w-100 h-100 d-block" style="background: @if ($user->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $user->cover, 'size' => 480]) }})  @endif #505050 center center;  background-size: cover;">
+  <div class="w-100 h-100 d-block mb-1" style="background: @if ($user->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $user->cover, 'size' => 480]) }})  @endif #505050 center center;  background-size: cover;">
     <div class="card-cover position-relative" style="height: 50px">
 
       @if ($user->free_subscription == 'yes')
@@ -24,7 +24,7 @@
 
           <h5 class="media-heading mb-1">
 
-            <a href="{{url($user->username)}}" class="stretched-link text-white">
+            <a href="{{url($user->username)}}" class="stretched-link text-white fs-16 font_weight_400">
 
               <strong>{{$user->hide_name == 'yes' ? $user->username : $user->name}}</strong>
 
@@ -54,7 +54,7 @@
 
 
 
-            <small class=" text-white w-100 d-block text-truncate">{{'@'.$user->username}}</small>
+            <small class=" text-white w-100 d-block text-truncate font_weight_400 fs-12">{{'@'.$user->username}}</small>
 
           </h5>
 

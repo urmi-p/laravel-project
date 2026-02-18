@@ -36,7 +36,7 @@
                     class="list-group-item list-group-item-action d-flex justify-content-between url-user">
                     <div>
                         <i class="feather icon-user mr-2 fs-22"></i>
-                        <span>{{ auth()->user()->verified_id == 'yes' ? __('general.my_page') : __('users.my_profile') }}</span>
+                        <span>{{__('general.my_profile') }}</span>
                     </div>
                 </a>
 

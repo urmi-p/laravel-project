@@ -20,7 +20,7 @@
 
 	<div class="card-body text-center">
 
-			<h6 class="card-title @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) pt-4 mt-2 mb-1 @else pt-4 @endif">
+			<h6 class="card-title font_weight_400 fs-18 @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) pt-5 mt-2 mb-1 @else pt-5 @endif">
 
 				{{$response->hide_name == 'yes' ? $response->username : $response->name}}
 
@@ -80,9 +80,10 @@
 
 			</p>
 
-			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
+			<div class="d-flex" style="gap: 10px">
+			<a href="{{url($response->username)}}" class="w-100 btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
 
-			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
+			<a href="{{url($response->username)}}" class="w-100 btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
 
 				@if ($response->plans->where('status', '1')->first() && $response->free_subscription == 'no')
 
@@ -97,7 +98,7 @@
 				@endif
 
 			</a>
-
+</div>
 
 
 	</div>

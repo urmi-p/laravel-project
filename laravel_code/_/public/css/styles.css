@@ -259,7 +259,7 @@ img.imageFull {
 .content-locked {
     position: relative;
     overflow: hidden;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     min-height: 300px;
 }
 
@@ -271,7 +271,7 @@ img.imageFull {
     background-image: var(--bg);
     background-size: cover;
     background-position: center;
-    filter: blur(22px);
+    filter: blur(6px);
     transform: scale(1.25);
     z-index: 1;
 }
@@ -281,13 +281,15 @@ img.imageFull {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(
-        circle at center,
-        rgba(0, 0, 0, 0.15) 0%,
-        rgba(0, 0, 0, 0.55) 45%,
-        rgba(0, 0, 0, 0.9) 100%
-    );
+        /* background: radial-gradient(
+            circle at center,
+            rgba(0, 0, 0, 0.15) 0%,
+            rgba(0, 0, 0, 0.55) 45%,
+            rgba(0, 0, 0, 0.9) 100%
+        ); */
     z-index: 2;
+    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.45);
 }
 
 /* Foreground */
@@ -860,7 +862,7 @@ main > div.section:nth-child(even) {
     width: auto !important;
     border-radius: 50%;
     margin: 0 auto;
-    border: 5px solid #fff;
+    /* border: 5px solid #fff; */
 }
 .ico-social {
     font-size: 20px;
@@ -881,7 +883,7 @@ a.link-border {
     left: 50%;
     margin-left: -45px;
     position: absolute;
-    top: 80px;
+    top: 85px;
     background-color: #fff;
     border-radius: 50%;
 }
@@ -1244,8 +1246,8 @@ a.link-border {
     text-decoration: none;
 }
 .sm-btn-size {
-    font-weight: bold;
-    font-size: 17px !important;
+    font-weight: 500;
+    font-size: 16px !important;
     line-height: 15px;
     text-align: center;
 }
@@ -1355,7 +1357,7 @@ a:hover.button-avatar-upload {
 }
 .avatar-user-home {
     margin-top: -25px;
-    border: 2px solid #fff;
+    /* border: 2px solid #fff; */
     background-color: #fff;
 }
 .btn-upload {
@@ -1800,7 +1802,7 @@ a:hover.button-avatar-upload {
 /* kajal css */
 
 .menu-left-home {
-    background: #0f0f0f;
+    /* background: #0f0f0f; */
     border-radius: 18px;
     padding: 18px 14px;
 }
@@ -1813,14 +1815,13 @@ a:hover.button-avatar-upload {
 .user_avatar img {
     width: 99px;
     height: 99px;
-    border-radius: 12px;
+    border-radius: 16px;
     object-fit: cover;
-    border: 2px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 .user_info {
     flex: 1;
-    margin-left: 10px;
+    margin-left: 1px;
 }
 
 .user_info h6 {
@@ -1839,9 +1840,8 @@ a:hover.button-avatar-upload {
 /* PROFILE BUTTON */
 .btn_profile {
     width: fit-content;
-    margin-top: 10px;
     padding: 6px 24px !important;
-    background: #e63946;
+    background: #E2394C;
     color: #fff;
     font-size: 12px;
     font-weight: 500;
@@ -1862,14 +1862,18 @@ a:hover.button-avatar-upload {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: var(--sidebar-bg);
     border-radius: 14px;
     padding: 12px 14px;
     margin-bottom: 10px;
     border: 1px solid var(--sidebar-border);
     color: var(--text-color);
 }
-
+[data-bs-theme="dark"] .sidebar-card{
+    background: #202020 !important;
+}
+[data-bs-theme="light"] .sidebar-card{
+    background: #ffffff !important;
+}
 .card-icon {
     width: 36px;
     height: 36px;
@@ -1883,8 +1887,7 @@ a:hover.button-avatar-upload {
 
 .card-info small {
     display: block;
-    font-size: 12px;
-    color: var(--card-info-muted);
+    font-size: 14px;
 }
 
 .card-info strong {
@@ -1909,7 +1912,7 @@ a:hover.button-avatar-upload {
 
 .menu-left-home li a.active,
 .menu-left-home li a:hover {
-    background: #e63946;
+    background: #E2394C;
     color: #ffffff;
 }
 
@@ -2045,11 +2048,12 @@ a:hover.button-avatar-upload {
 
 /* Publish button – BIG RED */
 .post-composer-dark #btnCreateUpdate {
-    background: #e63946 !important;
+    background: #E2394C !important;
     border: none;
     font-weight: 600;
     padding: 12px 0;
     font-size: 15px;
+    border-radius: 8px !important;
 }
 
 .post-composer-dark #btnCreateUpdate:disabled {
@@ -2084,6 +2088,10 @@ a:hover.button-avatar-upload {
     color: #000 !important;
 }
 
+.explore_title{
+    font-weight:700 !important;
+    font-size: 18px !important;
+}
 .btn_position {
     display: flex;
     gap: 6px;
@@ -2247,7 +2255,7 @@ a:hover.button-avatar-upload {
 
 .font_mobile_normal {
     font-weight: 500 !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     color: #99a1af !important;
     padding: 0.5rem 0.5rem;
 }
@@ -2285,6 +2293,9 @@ a:hover.button-avatar-upload {
 }
 .font_size_18 {
     font-size: 18px !important;
+}
+.fs-12{
+    font-size: 12px !important;
 }
 .fs-13 {
     font-size: 13px !important;
@@ -2466,10 +2477,10 @@ a.btn-category:focus {
 }
 .sidebar_li a {
     font-size: 18px !important;
-    font-weight: 400;
+    font-weight: 300;
 }
 .sidebar_li a.active {
-    font-weight: 600 !important;
+    font-weight: 500 !important;
 }
 [data-bs-theme="dark"] .navbar_mid_link {
     color: #ffffff !important;
@@ -2478,7 +2489,8 @@ a.btn-category:focus {
     color: #ffffff !important;
 }
 [data-bs-theme="dark"] .menu-left-home {
-    background: #191919;
+    background: #FFFFFF1A;
+    box-shadow: 0px 4px 25px 0px #2A864214;
 }
 [data-bs-theme="light"] .menu-left-home {
     background: #fff;
@@ -3827,7 +3839,11 @@ footer.footer-bg {
     color: #ff3b3b;
 }
 /* Password Strength Meter */
-
+.my_flash_main {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
 [data-bs-theme="light"] .my_flash_main {
     color: black !important;
 }
@@ -4055,7 +4071,7 @@ footer.footer-bg {
         height: 255px;
     }
     .wallet_inner_text {
-        font-size: 58.35px !important;
+        font-size: 50.35px !important;
     }
     .lock_dim {
         height: 60px;
@@ -4385,6 +4401,17 @@ footer.footer-bg {
         width: 69px;
         height: 64px;
         border-width: 0.64px;
+    }
+    .stories.snapssenger.carousel .story {
+        width: 69px !important;
+        max-width: 69px !important;
+        max-height: 64px !important;
+        border-radius:10.24px !important;
+    }
+    .stories.snapssenger.carousel .story > .item-link {
+        width: 69px !important;
+        height: 64px !important;
+        border-radius:10.24px !important;
     }
     .my-card {
         margin-top: 1.5rem !important;

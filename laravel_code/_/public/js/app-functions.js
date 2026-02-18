@@ -1758,6 +1758,8 @@
 				if (result.success) {
 
 					element.parents('.card-updates').find('.countLikes').html(result.total);
+					var countElement = element.find('.action-count');
+					var currentCount = parseInt((countElement.text() || '0').replace(/[^0-9]/g, ''), 10) || 0;
 
 
 
@@ -1768,6 +1770,7 @@
 						element.find('i').removeClass('fas fa-heart').addClass('far fa-heart');
 
 						element.parents('.card-updates').find('.countLikes').html(result.total);
+						countElement.text(Math.max(0, currentCount - 1));
 
 
 
@@ -1788,6 +1791,7 @@
 						element.addClass('active');
 
 						element.find('i').removeClass('far fa-heart').addClass('fas fa-heart');
+						countElement.text(currentCount + 1);
 
 					}
 

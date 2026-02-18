@@ -321,6 +321,18 @@
   .theme-subtitle {
      color: #fff;
   }
+  .center_align{
+    text-align: center;
+  }
+  @media (max-width: 480px) {
+    .currency_class{
+        font-size:18px !important;
+        line-height: 2.01 !important;
+    }
+    .mobile_fund_text{
+      font-size:12.51px !important;
+    }
+  }
 </style>
 @endsection
 
@@ -372,10 +384,10 @@
                 <div class="inner-wrap">
                   <span>
                     <h2 class="text_color_white font_weight_700 wallet_inner_text"><strong>{{ Helper::userWallet() }}</strong>
-                      <small class="h1">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null}}</small>
+                      <small class="h1 currency_class">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null}}</small>
                     </h2>
 
-                    <span class="w-100 d-block font_weight_400 fs-24 text_color_white">
+                    <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_fund_text center_align">
                       {{__('general.funds_available')}}
                     </span>
                      

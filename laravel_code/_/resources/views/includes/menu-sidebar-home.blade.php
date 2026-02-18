@@ -50,7 +50,7 @@
 	<li class="sidebar_li">
 		<a href="{{url('/')}}" @if (request()->is('/')) class="active disabled" @endif>
 			<i class="bi-house-door"></i>
-			<span class="ml-2">{{ __('admin.home') }}</span>
+			<span class="ml-2 fs-18">{{ __('admin.home') }}</span>
 		</a>
 	</li>
 
@@ -60,7 +60,7 @@
 			<svg xmlns="http://www.w3.org/2000/svg" class="align-text-bottom me-2" fill="currentColor" width="19" height="19" viewBox="0 0 50 50">
 				<path d="M 15 4 C 8.9365932 4 4 8.9365932 4 15 L 4 35 C 4 41.063407 8.9365932 46 15 46 L 35 46 C 41.063407 46 46 41.063407 46 35 L 46 15 C 46 8.9365932 41.063407 4 35 4 L 15 4 z M 16.740234 6 L 27.425781 6 L 33.259766 16 L 22.574219 16 L 16.740234 6 z M 29.740234 6 L 35 6 C 39.982593 6 44 10.017407 44 15 L 44 16 L 35.574219 16 L 29.740234 6 z M 14.486328 6.1035156 L 20.259766 16 L 6 16 L 6 15 C 6 10.199833 9.7581921 6.3829803 14.486328 6.1035156 z M 6 18 L 44 18 L 44 35 C 44 39.982593 39.982593 44 35 44 L 15 44 C 10.017407 44 6 39.982593 6 35 L 6 18 z M 21.978516 23.013672 C 20.435152 23.049868 19 24.269284 19 25.957031 L 19 35.041016 C 19 37.291345 21.552344 38.713255 23.509766 37.597656 L 31.498047 33.056641 C 33.442844 31.951609 33.442844 29.044485 31.498047 27.939453 L 23.509766 23.398438 L 23.507812 23.398438 C 23.018445 23.120603 22.49297 23.001607 21.978516 23.013672 z M 21.982422 24.986328 C 22.158626 24.988232 22.342399 25.035052 22.521484 25.136719 L 30.511719 29.677734 C 31.220922 30.080703 31.220922 30.915391 30.511719 31.318359 L 22.519531 35.859375 C 21.802953 36.267773 21 35.808686 21 35.041016 L 21 25.957031 C 21 25.573196 21.201402 25.267385 21.492188 25.107422 C 21.63758 25.02744 21.806217 24.984424 21.982422 24.986328 z" stroke="currentColor" stroke-width="3" fill="none"></path>
 			</svg>
-			<span class="ml-2">{{ __('general.reels') }}</span>
+			<span class="ml-2 fs-18">{{ __('general.reels') }}</span>
 		</a>
 	</li>
 	@endif
@@ -68,11 +68,11 @@
 	@auth
 	<li class="sidebar_li">
 		<a href="{{ url(auth()->user()->username) }}">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M12.0002 12.75C8.83016 12.75 6.25016 10.17 6.25016 7C6.25016 3.83 8.83016 1.25 12.0002 1.25C15.1702 1.25 17.7502 3.83 17.7502 7C17.7502 10.17 15.1702 12.75 12.0002 12.75ZM12.0002 2.75C9.66016 2.75 7.75016 4.66 7.75016 7C7.75016 9.34 9.66016 11.25 12.0002 11.25C14.3402 11.25 16.2502 9.34 16.2502 7C16.2502 4.66 14.3402 2.75 12.0002 2.75ZM20.5902 22.75C20.1802 22.75 19.8402 22.41 19.8402 22C19.8402 18.55 16.3202 15.75 12.0002 15.75C7.68016 15.75 4.16016 18.55 4.16016 22C4.16016 22.41 3.82016 22.75 3.41016 22.75C3.00016 22.75 2.66016 22.41 2.66016 22C2.66016 17.73 6.85016 14.25 12.0002 14.25C17.1502 14.25 21.3402 17.73 21.3402 22C21.3402 22.41 21.0002 22.75 20.5902 22.75Z" fill="currentcolor"/>
 			</svg>
 
-			<span class="ml-2">{{ auth()->user()->verified_id == 'yes' ? __('users.my_profile') : __('users.my_profile') }}</span>
+			<span class="ml-2">{{ __('general.my_profile') }}</span>
 		</a>
 	</li>
 	 {{-- @if (auth()->user()->verified_id == 'yes') --}}
@@ -123,16 +123,16 @@
 	</li>
 	
 	@if (auth()->user()->verified_id == 'yes')
-	<li class="sidebar_li">
+	{{-- <li class="sidebar_li">
 		<a href="{{ url('settings/subscription') }}" @if (request()->is('settings/subscription')) class="active disabled" @endif>
 			<i class="bi bi-cash-stack"></i>
 			<span class="ml-2">{{ __('general.subscription_price') }}</span>
 		</a>
-	</li>
+	</li> --}}
 	
 	<li class="sidebar_li">
 		<a href="{{ url('my/commission') }}" @if (request()->is('my/commission')) class="active disabled" @endif>
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentcolor" stroke-width="1.5"/>
 				<path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentcolor" stroke-width="1.5" stroke-linecap="round"/>
 			</svg>

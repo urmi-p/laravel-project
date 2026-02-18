@@ -2700,7 +2700,7 @@ input[type=number] {
 
   margin-bottom: 8px;
 
-  border-radius: <?php echo e($settings->button_style == 'rounded' ? '20px' : '4px', false); ?>;
+  border-radius: <?php echo e($settings->button_style == 'rounded' ? '20px' : '8px', false); ?>;
 
   color: #8a96a3;
 
