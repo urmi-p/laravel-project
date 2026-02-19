@@ -86,20 +86,9 @@
                   <span class="">Password</span>
                 </div>
                 <div class="input-group input-group-alternative" id="showHidePassword">
-                  <input name="password" type="password" class="form-control" placeholder="{{ __('auth.password') }}"  oninput="checkStrength(this.value)">
+                  <input name="password" type="password" class="form-control" placeholder="{{ __('auth.password') }}">
                   <div class="input-group-append">
                     <span class="input-group-text c-pointer"><i class="feather icon-eye-off"></i></span>
-                  </div>
-                </div>
-                <div id="strong" class="display-none">
-                  <div class="strength-bar">
-                    <div id="strengthFill" class="strength-fill"></div>
-                  </div>
-
-                  <div id="strengthText" class="strength-text">Very Weak</div>
-
-                  <div id="strengthHint" class="strength-hint">
-                    Please enter strong password include Capital Letters, Numbers and signs
                   </div>
                 </div>
               </div>

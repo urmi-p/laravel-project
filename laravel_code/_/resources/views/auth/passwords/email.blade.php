@@ -14,73 +14,62 @@
 
 @section('content')
 
-  <div class="jumbotron m-0 bg-gradient maaa ">
-    <div class="container pt-lg-md">
-      <div class="row justify-content-center forgotpwd-row">
-
-        <div class="col-lg-6 d-flex flex-column justify-content-center inline-padding forgotpwd-form-left ">
-          <div class="d-flex items-center">
-            <a href="{{ url()->previous() }}" class="text-light d-flex align-items-center">
-              <small><i class="fas fa-arrow-left"></i></small>
-            </a>
-            <div>
-              <img src="{{ url('img/small-logo.png') }}" class="ml-2 d-block  d-lg-none" width="125" height="42">
-            </div>
-          </div>
-          <div class=" shadow border-0 b-radio-custom">
-
-            <h4 class="text-start mb-0 font-weight-bold pt-4 ">
-              {{__('auth.password_recover')}}
-            </h4>
-            <small class="btn-block text-start mt-2 ">{{ __('auth.recover_pass_subtitle') }}</small>
-
-            <div class="py-lg-3 forgotpwd-form">
-              @if (session('status'))
-              <div class="alert alert-success">
-                {{{ session('status') }}}
-              </div>
-              @endif
-
-              @include('errors.errors-forms')
-
-              <form method="POST" action="{{ route('password.email') }}" id="passwordEmailForm">
-                @csrf
-                <div class="form-group mb-3">
-                   <div class="">
-                      <span class="">Email</span>
-                    </div>
-                  <div class="input-group input-group-alternative">
-                    <input class="form-control @if (count($errors) > 0) is-invalid @endif" value="{{ old('email')}}" placeholder="{{__('auth.email')}}" name="email" required type="text">
-                  </div>
-                </div>
-
-                <div class="text-center">
-                  @if ($settings->captcha == 'on')
-                  {!! NoCaptcha::displaySubmit('passwordEmailForm', __('auth.send_pass_reset'), ['data-size' => 'invisible', 'class' => 'btn btn-primary my-4 w-100']) !!}
-
-                  {!! NoCaptcha::renderJs() !!}
-                  @else
-                  <button type="submit" class="cls btn btn-primary my-4 w-100 ">{{__('auth.send_pass_reset')}}</button>
-                  @endif
-                </div>
-              </form>
-
-              @if ($settings->captcha == 'on')
-              <small class="btn-block text-center">{{__('auth.protected_recaptcha')}} <a href="https://policies.google.com/privacy" target="_blank">{{__('general.privacy')}}</a> - <a href="https://policies.google.com/terms" target="_blank">{{__('general.terms')}}</a></small>
-              @endif
-
-            </div>
-          </div>
+<div class="jumbotron m-0 auth-shell">
+  <div class="container pt-lg-md auth-shell-container">
+    <div class="row auth-shell-row">
+      <div class="col-12 col-xl-6 d-flex flex-column justify-content-center auth-form-left forgotpwd-form-left">
+        <div class="d-flex align-items-center mb-4">
+          <a href="{{ url()->previous() }}" class="text-light d-flex align-items-center mr-3">
+            <small><i class="fas fa-arrow-left"></i></small>
+          </a>
+          <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="logo align-baseline mb-1" width="125" height="42" />
         </div>
 
-        <div class="col-lg-6 right-side d-none d-sm-block">
-          <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block d-none mt-3" width="356" height="120">
-          <span class="text-lime h5 mb-5 d-lg-block d-none title_home_login">{{__('general.title_home_login')}}</span>
-          <div class="image-stack">
-            <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none stack-img">
+        <h4 class="auth-title mb-2">{{__('auth.password_recover')}}</h4>
+        <small class="btn-block pb-4 title_login">{{ __('auth.recover_pass_subtitle') }}</small>
+
+        @if (session('status'))
+        <div class="alert alert-success">
+          {{{ session('status') }}}
+        </div>
+        @endif
+
+        @include('errors.errors-forms')
+
+        <form method="POST" action="{{ route('password.email') }}" id="passwordEmailForm">
+          @csrf
+          <div class="form-group mb-3">
+            <div class="mb-1">
+              <span>{{__('auth.email')}}</span>
+            </div>
+            <div class="input-group input-group-alternative">
+              <input class="form-control @if (count($errors) > 0) is-invalid @endif" value="{{ old('email')}}" placeholder="{{__('auth.email')}}" name="email" required type="text">
+            </div>
           </div>
+
+          <div class="text-center">
+            @if ($settings->captcha == 'on')
+            {!! NoCaptcha::displaySubmit('passwordEmailForm', __('auth.send_pass_reset'), ['data-size' => 'invisible', 'class' => 'btn btn-primary my-4 w-100']) !!}
+            {!! NoCaptcha::renderJs() !!}
+            @else
+            <button type="submit" class="btn btn-primary my-4 w-100">{{__('auth.send_pass_reset')}}</button>
+            @endif
+          </div>
+        </form>
+
+        @if ($settings->captcha == 'on')
+        <small class="btn-block text-center">{{__('auth.protected_recaptcha')}} <a href="https://policies.google.com/privacy" target="_blank">{{__('general.privacy')}}</a> - <a href="https://policies.google.com/terms" target="_blank">{{__('general.terms')}}</a></small>
+        @endif
+      </div>
+
+      <div class="col-xl-6 right-side auth-right-panel d-none d-xl-block">
+        <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block mt-3 auth-hero-logo" width="356" height="120" alt="{{$settings->title}}">
+        <span class="h5 mb-5 d-lg-block title_home_login">{{__('general.title_home_login')}}</span>
+        <div class="image-stack">
+          <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block stack-img" alt="Hero">
         </div>
       </div>
     </div>
   </div>
+</div>
   @endsection
