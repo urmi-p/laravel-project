@@ -70,62 +70,63 @@
                     </p>
                 </div>
             </div>
+            <div class="shop_filter_dropdown mb-3">
+                <select class="custom-select mb-2 mb-lg-0 " id="filter">
+                    <option @if (!request()->get('sort')) selected @endif value="{{ url('shop') }}">
+                        {{ trans('general.latest') }}</option>
+
+                    <option @if (request()->get('sort') == 'oldest') selected @endif
+                        value="{{ url('shop?sort=oldest') }}">{{ trans('general.oldest') }}</option>
+
+                    <option @if (request()->get('sort') == 'priceMin') selected @endif
+                        value="{{ url('shop?sort=priceMin') }}">{{ trans('general.lowest_price') }}
+                    </option>
+                    <option @if (request()->get('sort') == 'priceMax') selected @endif
+                        value="{{ url('shop?sort=priceMax') }}">{{ trans('general.highest_price') }}
+                    </option>
+
+                    @if ($settings->physical_products)
+                        <option @if (request()->get('sort') == 'physical') selected @endif
+                            value="{{ url('shop?sort=physical') }}">
+                            {{ trans('general.physical_products') }}</option>
+                    @endif
+
+                    <option @if (request()->get('sort') == 'digital') selected @endif
+                        value="{{ url('shop?sort=digital') }}">{{ trans('general.digital_products') }}
+                    </option>
+
+                    <option @if (request()->get('sort') == 'custom') selected @endif
+                        value="{{ url('shop?sort=custom') }}">{{ trans('general.custom_content') }}
+                    </option>
+
+                </select>
+
+                @if ($categories->count())
+                    <select class="custom-select mb-2 mb-lg-0  filter">
+
+                        <option @if (!request()->get('cat')) selected @endif
+                            value="{{ url('shop') }}">{{ trans('general.all_categories') }}</option>
+
+                        @foreach ($categories as $category)
+                            <option @if (request()->get('cat') == $category->slug) selected @endif
+                                value="{{ url("shop?cat=$category->slug") }}">
+
+                                {{ Lang::has('shop-categories.' . $category->slug) ? __('shop-categories.' . $category->slug) : $category->name }}
+
+                            </option>
+                        @endforeach
+
+                    </select>
+                @endif
+
+            </div>
             <div class="row">
                 @if ($products->total() != 0)
                     <div class="col-md-12 mb-4">
-                        <div class="btn-block mb-3">
-                            <span>
-                                <select class="ml-2 custom-select mb-2 mb-lg-0 w-auto" id="filter">
-                                    <option @if (!request()->get('sort')) selected @endif value="{{ url('shop') }}">
-                                        {{ trans('general.latest') }}</option>
+                        {{-- <div class="btn-block mb-3">
+                           
 
-                                    <option @if (request()->get('sort') == 'oldest') selected @endif
-                                        value="{{ url('shop?sort=oldest') }}">{{ trans('general.oldest') }}</option>
-
-                                    <option @if (request()->get('sort') == 'priceMin') selected @endif
-                                        value="{{ url('shop?sort=priceMin') }}">{{ trans('general.lowest_price') }}
-                                    </option>
-                                    <option @if (request()->get('sort') == 'priceMax') selected @endif
-                                        value="{{ url('shop?sort=priceMax') }}">{{ trans('general.highest_price') }}
-                                    </option>
-
-                                    @if ($settings->physical_products)
-                                        <option @if (request()->get('sort') == 'physical') selected @endif
-                                            value="{{ url('shop?sort=physical') }}">
-                                            {{ trans('general.physical_products') }}</option>
-                                    @endif
-
-                                    <option @if (request()->get('sort') == 'digital') selected @endif
-                                        value="{{ url('shop?sort=digital') }}">{{ trans('general.digital_products') }}
-                                    </option>
-
-                                    <option @if (request()->get('sort') == 'custom') selected @endif
-                                        value="{{ url('shop?sort=custom') }}">{{ trans('general.custom_content') }}
-                                    </option>
-
-                                </select>
-
-                                @if ($categories->count())
-                                    <select class="ml-2 custom-select mb-2 mb-lg-0 w-auto filter">
-
-                                        <option @if (!request()->get('cat')) selected @endif
-                                            value="{{ url('shop') }}">{{ trans('general.all_categories') }}</option>
-
-                                        @foreach ($categories as $category)
-                                            <option @if (request()->get('cat') == $category->slug) selected @endif
-                                                value="{{ url("shop?cat=$category->slug") }}">
-
-                                                {{ Lang::has('shop-categories.' . $category->slug) ? __('shop-categories.' . $category->slug) : $category->name }}
-
-                                            </option>
-                                        @endforeach
-
-                                    </select>
-                                @endif
-
-                            </span>
-
-                        </div>
+                        </div> --}}
 
                         <div class="row">
                             @foreach ($products as $product)

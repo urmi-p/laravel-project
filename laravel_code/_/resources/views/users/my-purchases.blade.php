@@ -18,7 +18,7 @@
                         </div>
                     @else
 
-                        <div class="my-5 text-center no-updates main-no-updates">
+                        <div class="mb-5 text-center no-updates main-no-updates">
                             <div class="sub-no-updates">
                                 <span class="btn-block mb-3">
                                     <i class="bi bi-ban ico-no-result bg_black"></i>

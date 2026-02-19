@@ -3,6 +3,26 @@
 
 
 @section('content')
+    <style>
+        #stories .story .story-posted-username {
+            display: block;
+            max-width: 100px;
+            margin-top: 8px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.2;
+            color: #FFFFFF;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        @media (max-width: 767.98px) {
+            #stories .story .story-posted-username {
+                max-width: 69px;
+            }
+        }
+    </style>
 
     <section class="section section-sm">
         @include('includes.header-mobile')
@@ -484,12 +504,14 @@
                 }
 
                 insertTextStory();
+                insertStoryUsernames();
 
             }
 
 
 
             insertTextStory();
+            insertStoryUsernames();
 
 
 
@@ -510,6 +532,27 @@
 
                 });
 
+            }
+
+            function insertStoryUsernames() {
+                $('#stories .story').each(function() {
+                    let storyElement = $(this);
+                    let itemLink = storyElement.find('> .item-link');
+                    let userName = $.trim(itemLink.find('.info .name').first().text());
+
+                    if (!itemLink.length || !userName) {
+                        return;
+                    }
+
+                    let userNameLabel = storyElement.children('.story-posted-username');
+
+                    if (!userNameLabel.length) {
+                        userNameLabel = $('<div class="story-posted-username"></div>');
+                        storyElement.append(userNameLabel);
+                    }
+
+                    userNameLabel.text(userName);
+                });
             }
 
 

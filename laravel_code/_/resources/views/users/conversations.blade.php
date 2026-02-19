@@ -51,7 +51,7 @@
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
         <div class="row mb-sm">
           <div class="col-lg-8">
-            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2">
               <!-- <i class="feather icon-send mr-2"></i>  -->
               {{__('general.conversations')}}
             </h2>

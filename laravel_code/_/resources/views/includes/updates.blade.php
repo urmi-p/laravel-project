@@ -46,6 +46,21 @@
         $mediaImageVideoTotal = $response->media->whereIn('type', ['image', 'video'])->count();
         $isVideoEmbed = $response->media[0]->video_embed ?? false;
         $nth = 0; // nth foreach nth-child(3n-1)
+        $canViewContent =
+            (auth()->check() && auth()->user()->id == $response->creator->id) ||
+            (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
+            (auth()->check() &&
+                $response->locked == 'yes' &&
+                $checkUserSubscription &&
+                $response->price != 0.0 &&
+                $checkPayPerView) ||
+            (auth()->check() &&
+                $response->locked == 'yes' &&
+                $response->price != 0.0 &&
+                !$checkUserSubscription &&
+                $checkPayPerView) ||
+            (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
+            $response->locked == 'no';
     @endphp
 
 <div class="card mb-3 mt-3 mt-md-5 w-100 card-updates views rounded-large shadow-large card-border-0 border-0 remove_bg_white @if ($response->status == 'pending') post-pending @endif @if (
@@ -55,21 +70,7 @@
     <div class="card-updates-cover-image">
         {{-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> --}}
         {{-- added new content start --}}
-        @if (
-        (auth()->check() && auth()->user()->id == $response->creator->id) ||
-        (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) ||
-        (auth()->check() &&
-        $response->locked == 'yes' &&
-        $checkUserSubscription &&
-        $response->price != 0.0 &&
-        $checkPayPerView) ||
-        (auth()->check() &&
-        $response->locked == 'yes' &&
-        $response->price != 0.0 &&
-        !$checkUserSubscription &&
-        $checkPayPerView) ||
-        (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') ||
-        $response->locked == 'no')
+        @if ($canViewContent)
             
             <div class="btn-block @if ($mediaImageVideoTotal != 0) media-post @endif">
                 @if ($mediaImageVideoTotal != 0)
@@ -210,11 +211,11 @@
                 @endif
             </div><!-- btn-block -->
         @else
-            <div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 {{ $textWhite }}"
+            <div class="btn-block p-sm text-center content-locked pt-lg pb-lg px-3 top_left_right_brd {{ $textWhite }}"
                 style="{{ $backgroundPostLocked }}">
                 <span class="btn-block text-center mb-3">
                     <!-- <i class="feather icon-lock ico-no-result border-0 {{ $textWhite }}"></i> -->
-                    <svg class=" ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
+                    <svg class="ico-no-result border-0 lock_dim" xmlns="http://www.w3.org/2000/svg" width="30" height="40"
                         viewBox="0 0 90 120" fill="none">
                         <path
                             d="M78.75 45H75V30C75 13.455 61.545 0 45 0C28.455 0 15 13.455 15 30V45H11.25C8.26753 45.004 5.40836 46.1905 3.29943 48.2994C1.19051 50.4084 0.00396869 53.2675 0 56.25V108.75C0 114.955 5.05 120 11.25 120H78.75C84.95 120 90 114.955 90 108.75V56.25C90 50.045 84.95 45 78.75 45ZM25 30C25 18.97 33.97 10 45 10C56.03 10 65 18.97 65 30V45H25V30ZM50 83.61V95C50 96.3261 49.4732 97.5979 48.5355 98.5355C47.5979 99.4732 46.3261 100 45 100C43.6739 100 42.4021 99.4732 41.4645 98.5355C40.5268 97.5979 40 96.3261 40 95V83.61C37.025 81.875 35 78.685 35 75C35 69.485 39.485 65 45 65C50.515 65 55 69.485 55 75C55 78.685 52.975 81.875 50 83.61Z"
@@ -316,7 +317,7 @@
         {{-- added new content end --}}
     </div>
 
-    <div class="bg-dark-force @if($mediaImageVideoTotal == 0) top_left_right_brd @endif">
+    <div class="bg-dark-force @if($mediaImageVideoTotal == 0 && $canViewContent) top_left_right_brd @endif">
         <div class="action-bar">
             <div class="action-left">
                 <div class="action_avatar">
@@ -967,7 +968,7 @@
 
                     </div> --}}
 
-                    <div class="w-100 mb-3 containerLikeComment ">
+                    <div class="containerLikeComment ">
                         @if ($showLikesCount)
                         <span class="countLikes text-muted dot-item action-pill">
                             {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
@@ -1781,4 +1782,3 @@ $getHasPages = $updates->count() < $settings->number_posts_show ? false : true;
 
         </button>
         @endif
-

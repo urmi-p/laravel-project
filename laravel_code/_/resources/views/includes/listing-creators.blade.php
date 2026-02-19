@@ -1,6 +1,6 @@
 	<div class="card card-updates h-100 card-user-profile shadow-sm">
 
-	<div class="card-cover" style="background: @if ($response->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $response->cover, 'size' => 480]) }})  @endif #505050 center center; background-size: cover;"></div>
+	<div class="card-cover" style="height:192px;background: @if ($response->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $response->cover, 'size' => 480]) }})  @endif #505050 center center; background-size: cover;"></div>
 
 	<div class="card-avatar @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id))liveLink @endif" @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) data-url="{{ url('live', $response->username) }}" @endif>
 		@if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id))
@@ -20,7 +20,7 @@
 
 	<div class="card-body text-center">
 
-			<h6 class="card-title @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) pt-4 mt-2 mb-1 @else pt-4 @endif">
+			<h6 class="card-title font_weight_400 fs-18 @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) pt-5 mt-2 mb-1 @else pt-5 @endif">
 
 				{{$response->hide_name == 'yes' ? $response->username : $response->name}}
 
@@ -52,7 +52,7 @@
 
 
 
-			<ul class="list-inline m-0">
+			<ul class="list-inline m-0 fs-18 font_weight_400" style="color:#99A1AF">
 
 				<li class="list-inline-item small"><i class="feather icon-image"></i> {{ Helper::formatNumber($response->media->where('type', 'image')->count()) }}</li>
 
@@ -63,10 +63,13 @@
 					<li class="list-inline-item small"><i class="feather icon-mic"></i> {{ Helper::formatNumber($response->media->where('type', 'music')->count()) }}</li>
 
 				@endif
+				{{-- for test  --}}
+				<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
 
+				{{-- for test  --}}
 				@if ($response->media->where('type', 'file')->groupBy('type')->count() != 0)
 
-				<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
+					<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
 
 				@endif
 
@@ -80,9 +83,10 @@
 
 			</p>
 
-			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
+			<div class="d-flex" style="gap: 10px">
+			<a href="{{url($response->username)}}" class="w-100 btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
 
-			<a href="{{url($response->username)}}" class="btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
+			<a href="{{url($response->username)}}" class="w-100 btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
 
 				@if ($response->plans->where('status', '1')->first() && $response->free_subscription == 'no')
 
@@ -97,7 +101,7 @@
 				@endif
 
 			</a>
-
+</div>
 
 
 	</div>

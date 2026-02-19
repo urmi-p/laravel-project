@@ -36,7 +36,7 @@
                     class="list-group-item list-group-item-action d-flex justify-content-between url-user">
                     <div>
                         <i class="feather icon-user mr-2 fs-22"></i>
-                        <span>{{ auth()->user()->verified_id == 'yes' ? __('general.my_page') : __('users.my_profile') }}</span>
+                        <span>{{__('general.my_profile') }}</span>
                     </div>
                 </a>
 
@@ -160,7 +160,7 @@
 
                 @if ($settings->allow_reels && auth()->user()->verified_id == 'yes')
                 <a href="{{ url('my/reels') }}"
-                    class="list-group-item list-group-item-action d-flex justify-content-between">
+                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('my/reels')) active @endif">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" fill="currentColor" width="20" height="20" viewBox="0 0 50 50">
                             <path

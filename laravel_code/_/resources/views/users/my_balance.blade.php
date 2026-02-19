@@ -57,6 +57,21 @@
             color:black;
             border: 1px solid #1e1e1e2e;
         }
+        .center_align{
+            text-align: center;
+        }
+        @media (max-width: 480px) {
+            .currency_class{
+                font-size:18px !important;
+                line-height: 2.01 !important;
+            }
+            .mobile_fund_text{
+                font-size:12.51px !important;
+            }
+            .wallet_inner_text{
+                padding-left:28px;
+            }
+        }
     </style>
 @endsection
 
@@ -83,14 +98,13 @@
                     <div class="alert text_color_white alert-custom shadow overflow-hidden position-relative alert_custom w-100 w-lg-auto"
                         role="alert">
                         <div class="inner-wrap" >
-                            <span style="text-align: center">
+                            <span>
                                 <h2 class="text_color_white font_weight_700 wallet_inner_text">
                                     <strong>{{ Helper::userWallet() }}</strong>
-                                    <small
-                                        class="h1">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null }}</small>
+                                    <small class="h1 currency_class">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null }}</small>
                                 </h2>
 
-                                <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_small_fs">
+                                <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_small_fs center_align mobile_fund_text">
                                     Amount minimum withdrawal <p class="font_weight_900 fs-32 d-inline mobile_small_fs">20€ EUR</p>
                                 </span>
 
@@ -100,7 +114,7 @@
                                     </span>
                                 @endif
 
-                                <span class="w-100 d-block mt-2">
+                                <span class="w-100 d-block mt-2 center_align mobile_fund_text">
                                     <p class="fs-24 font_weight_400 mobile_small_fs">your payment would be avaliable in 4 business day’s</p>
                                     {{-- @if (auth()->user()->balance != 0.0)
                                         <a href="#" data-toggle="modal" data-target="#modalTransfer"

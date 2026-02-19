@@ -128,12 +128,12 @@
 						<div class="ref-card">
 							<div class="ref-card-body current_balance">
 								<span class="small-text mb-2">{{ __('general.current_balance') }}</span>
-								<h5 class="my-2 py-2">
+								<h5 class="my-2 py-2 fs-24">
 									{{Helper::amountFormatDecimal(auth()->user()->balance)}}
 								</h5>
 								<!-- <small>{{ __('general.balance') }}</small> -->
 								@if (auth()->user()->balance >= $settings->amount_min_withdrawal)
-								<a href="{{ url('settings/withdrawals')}}" class="link-border color-link"> {{ __('general.make_withdrawal') }}</a>
+								<a href="{{ url('settings/withdrawals')}}" class="color-link"> {{ __('general.make_withdrawal') }}</a>
 
 								@else
 								<a href="javascript:;" class="color-link text-muted" data-toggle="tooltip" title="{{__('general.amount_min_withdrawal')}} {{Helper::amountWithoutFormat($settings->amount_min_withdrawal)}} {{$settings->currency_code}}">

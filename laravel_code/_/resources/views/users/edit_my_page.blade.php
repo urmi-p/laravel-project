@@ -118,7 +118,7 @@
                 <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8 py-3">
-                            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{ trans('users.edit_profile') }}
+                            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2">{{ trans('users.edit_profile') }}
                             </h2>
                             <p class="lead mt-0 font_weight_400 fs-14 sub_desc_edit_page">{{ trans('users.settings_page_desc') }}</p>
                         </div>

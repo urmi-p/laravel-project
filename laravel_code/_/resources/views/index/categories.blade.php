@@ -17,7 +17,7 @@
             <div class="col-md-9 mb-4">
                 <div class="row mb-sm">
                     <div class="col-lg-12">
-                        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+                        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2">
                             <img src="{{url('img-category', $image)}}" class="mr-2 rounded" width="30" /> {{$title}}
                         </h2>
                         <p class="mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
@@ -36,7 +36,7 @@
             <div class="col-md-9">
               <div class="row mb-sm">
                     <div class="col-lg-12">
-                        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+                        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2">
                             <img src="{{url('img-category', $image)}}" class="mr-2 rounded" width="30" /> {{$title}}
                         </h2>
                         <p class="mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>

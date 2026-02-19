@@ -14,6 +14,7 @@ return array(
 	'latest_creators_sub' => 'Discover new creators.',
 	'start_my_page' => 'Start my page',
 	'edit_my_page' => 'My Profile',
+	'my_profile' => 'My Profile',
 	'my_page' => 'My page',
 	'subtitle_welcome' => 'Sponzy is designed to help content creators on the web, create a free account and start making money now.',
 	'install_success' => 'Installation completed successfully!',

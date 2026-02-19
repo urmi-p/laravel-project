@@ -1,6 +1,6 @@
 <div class="mb-2">
-  <h6 class="mb-3 filter-explorer">
-    {{__('general.explore_creators')}}
+  <h6 class="mb-3 filter-explorer explore_title">
+    {{__('general.explore_our_creators')}}
 
     @auth
     @if ($users->count() > 2)

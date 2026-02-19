@@ -12,7 +12,7 @@
 
         <div class="col-lg-12 py-5">
 
-          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2">
 
             {{ __('general.sell_custom_content') }}
 
@@ -28,7 +28,7 @@
 
       </div>
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mb-3">
 
         <div class="col-lg-7">
 

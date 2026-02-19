@@ -41,6 +41,9 @@
   /* max-height: 160px; */
   width: 100px;
   height: 100px;
+  border: 1px solid #E2394C !important;
+  border-radius: 16px;
+  overflow: hidden
 }
 
 .stories.snapssenger.carousel .story>.item-link>.item-preview img {
@@ -49,17 +52,7 @@
 }
 
 .stories.snapssenger.carousel .story>.item-link>.info {
-  top: auto;
-  height: auto;
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 6px;
-  font-weight: 700;
-  font-size: 12px;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35), 1px 0 1px rgba(0, 0, 0, 0.35);
+  display: none;
 }
 
 .stories.snapssenger.carousel .story>.item-link>.info .name {

@@ -24,7 +24,7 @@
                             style="top: 25px; right: 35px;gap:6px;margin-right:20px">
                             <div class="d-lg-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                    data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                    data-toggle="collapse" data-target="#mobileCreatorSearch" aria-controls="mobileCreatorSearch"
                                     aria-expanded="false" role="button">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -102,6 +102,51 @@
                 </button>
             @endguest
             @auth
+                @if ((auth()->guest() && $settings->who_can_see_content == 'all') || auth()->check())
+                    @if (!$settings->disable_creators_section)
+                        @if (!$settings->disable_search_creators)
+                            <div class="collapse d-lg-none w-100 mt-2 mb-1" id="mobileCreatorSearch">
+                                <form class="form-inline my-lg-0 position-relative" method="get"
+                                    action="{{ url('creators') }}">
+
+                                    <input id="searchCreatorNavbarMobile"
+                                        class="form-control search-bar w-100 @if (auth()->guest() && request()->path() == '/') border-0 @endif"
+                                        type="text" required name="q" autocomplete="off" minlength="3"
+                                        placeholder="{{ __('general.search') }}" aria-label="Search">
+
+                                    <button class="btn btn-outline-success my-sm-0 button-search e-none"
+                                        type="submit"><i class="bi bi-search"></i></button>
+
+                                    <div class="dropdown-menu dd-menu-user position-absolute"
+                                        style="width: 95%; top: 48px;" id="dropdownCreatorsMobile">
+
+                                        <button type="button" class="d-none" id="triggerBtnMobile" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false"></button>
+
+                                        <div class="w-100 text-center display-none py-2" id="spinnerSearchMobile">
+
+                                            <span
+                                                class="spinner-border spinner-border-sm align-middle text-primary"></span>
+
+                                        </div>
+                                        <div id="containerCreatorsMobile"></div>
+
+                                        <div id="viewAllMobile" class="display-none mt-2">
+
+                                            <a class="dropdown-item border-top py-2 text-center"
+                                                href="#">{{ __('general.view_all') }}</a>
+
+                                        </div>
+
+                                    </div><!-- dropdown-menu -->
+
+                                </form>
+                            </div>
+                        @endif
+                    @endif
+                @endif
+            @endauth
+            @auth
                 <div class="justify-content-between collapse navbar-collapse navbar-mobile" id="navbarCollapse">
                     <div class="d-lg-none text-right pr-2 mb-2">
 
@@ -117,7 +162,7 @@
                             @if (!$settings->disable_creators_section)
 
                                 @if (!$settings->disable_search_creators)
-                                    <form class="form-inline my-lg-0 position-relative" method="get"
+                                    <form class="form-inline my-lg-0 position-relative d-none d-lg-flex" method="get"
                                         action="{{ url('creators') }}">
 
                                         <input id="searchCreatorNavbar"
@@ -315,7 +360,7 @@
                                 <a href="{{ url(auth()->user()->username) }}"
                                     class="nav-link px-2 link-menu-mobile py-1 url-user">
                                     <div>
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        <svg class="margin-right-4" width="19" height="19" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M12.0002 12.75C8.83016 12.75 6.25016 10.17 6.25016 7C6.25016 3.83 8.83016 1.25 12.0002 1.25C15.1702 1.25 17.7502 3.83 17.7502 7C17.7502 10.17 15.1702 12.75 12.0002 12.75ZM12.0002 2.75C9.66016 2.75 7.75016 4.66 7.75016 7C7.75016 9.34 9.66016 11.25 12.0002 11.25C14.3402 11.25 16.2502 9.34 16.2502 7C16.2502 4.66 14.3402 2.75 12.0002 2.75ZM20.5902 22.75C20.1802 22.75 19.8402 22.41 19.8402 22C19.8402 18.55 16.3202 15.75 12.0002 15.75C7.68016 15.75 4.16016 18.55 4.16016 22C4.16016 22.41 3.82016 22.75 3.41016 22.75C3.00016 22.75 2.66016 22.41 2.66016 22C2.66016 17.73 6.85016 14.25 12.0002 14.25C17.1502 14.25 21.3402 17.73 21.3402 22C21.3402 22.41 21.0002 22.75 20.5902 22.75Z"
@@ -331,7 +376,7 @@
                                     <a href="{{ url('dashboard') }}"
                                         class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('dashboard')) active disabled @endif">
                                         <div>
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            <svg class="margin-right-4" width="19" height="19" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z"

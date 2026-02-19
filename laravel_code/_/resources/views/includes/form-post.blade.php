@@ -290,13 +290,11 @@
 
         <div class="d-inline-block mt-3 mt-lg-1 position-relative w-100-mobile">
 
-          <span class="d-inline-block position-relative rounded-pill w-100-mobile">
+          <span class="d-inline-block position-relative w-100-mobile">
 
             <span class="btn-blocked display-none"></span>
 
-
-
-            <button type="submit" disabled class="btn btn-sm btn-primary rounded-large float-right e-none w-100-mobile" data-empty="{{__('general.empty_post')}}" data-error="{{__('general.error')}}" data-msg-error="{{__('general.error_internet_disconnected')}}" id="btnCreateUpdate">
+            <button type="submit" disabled class="btn btn-sm btn-primary float-right e-none w-100-mobile" data-empty="{{__('general.empty_post')}}" data-error="{{__('general.error')}}" data-msg-error="{{__('general.error_internet_disconnected')}}" id="btnCreateUpdate">
 
               <i></i> <span id="textPostPublish">{{__('general.publish')}}</span>
 

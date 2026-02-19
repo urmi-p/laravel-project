@@ -33,17 +33,20 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             row-gap: 12px;
-            font-size: 14px;
         }
 
         .my_subscription_card_content .label {
-            color: #aaa;
+            color: #FFFFFF;
             font-size: 14px;
+            font-weight:500;
+            opacity: unset;
         }
 
         .my_subscription_card_content .value {
             text-align: right;
             color: #fff;
+            font-size: 14px;
+            font-weight:300;
         }
 
         .status-dot {
