@@ -2,7 +2,7 @@
 
 	<div class="shop-card card card-updates h-100 card-user-profile shadow-sm">
 
-		<span class="badge type-item p-2 badge-pill">
+		<span class="badge type-item p-2 badge-pill brd-8">
 
 			{!! ($product->type == 'digital')
 

@@ -4305,114 +4305,64 @@
 
 
 	//==== Search Creator Navbar
+	function bindCreatorSearch(inputSelector, dropdownSelector, triggerSelector, spinnerSelector, containerSelector, viewAllSelector) {
+		$(inputSelector).on('keyup', function (e) {
 
-	$('#searchCreatorNavbar').on('keyup', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
 
-		e.preventDefault();
+			var $string = $(this).val();
+			var $url = URL_BASE + '/creators?q=' + $string;
 
-		e.stopPropagation();
+			if (trim($string).length < 3) {
+				$(dropdownSelector).removeClass('show');
+				return false;
+			} else if (e.which == 16
+				|| e.which == 17
+				|| e.which == 18
+				|| e.which == 20
+				|| e.which == 32
+				|| e.which == 37
+				|| e.which == 38
+				|| e.which == 39
+				|| e.which == 40
+			) {
+				return false;
+			}
 
+			$(triggerSelector).trigger('click');
+			$(spinnerSelector).show();
+			$(containerSelector).html('');
+			$(viewAllSelector).hide();
 
-
-		var $string = $(this).val();
-
-		var $url = URL_BASE + '/creators?q=' + $string;
-
-
-
-		if (trim($string).length < 3) {
-
-			$('#dropdownCreators').removeClass('show');
-
-			return false;
-
-		} else if (e.which == 16
-
-			|| e.which == 17
-
-			|| e.which == 18
-
-			|| e.which == 20
-
-			|| e.which == 32
-
-			|| e.which == 37
-
-			|| e.which == 38
-
-			|| e.which == 39
-
-			|| e.which == 40
-
-		) {
-
-			return false;
-
-		}
-
-
-
-
-
-		$('#triggerBtn').trigger('click');
-
-		$('#spinnerSearch').show();
-
-		$('#containerCreators').html('');
-
-		$('#viewAll').hide();
-
-
-
-		$(this).waiting(500).done(function () {
-
-
-
-			$.ajax({
-
-				type: 'get',
-
-				url: URL_BASE + '/search/creators',
-
-				data: { 'user': trim($string) },
-
-				success: function (data) {
-
-					if (data) {
-
-						$('#spinnerSearch').hide();
-
-						$('#containerCreators').html(data);
-
-						$('#viewAll').show();
-
-						$('#viewAll > a').attr({ 'href': $url });
-
-					} else {
-
-						$('#containerCreators').html('<span class="p-2 text-center w-100 d-block">' + no_results + '</span>');
-
-						$('#spinnerSearch, #viewAll').hide();
-
+			$(this).waiting(500).done(function () {
+				$.ajax({
+					type: 'get',
+					url: URL_BASE + '/search/creators',
+					data: { 'user': trim($string) },
+					success: function (data) {
+						if (data) {
+							$(spinnerSelector).hide();
+							$(containerSelector).html(data);
+							$(viewAllSelector).show();
+							$(viewAllSelector + ' > a').attr({ 'href': $url });
+						} else {
+							$(containerSelector).html('<span class="p-2 text-center w-100 d-block">' + no_results + '</span>');
+							$(spinnerSelector + ', ' + viewAllSelector).hide();
+						}
 					}
+				}).fail(function (jqXHR, ajaxOptions, thrownError) {
+					$(containerSelector).html('');
+					$(containerSelector).html('<span class="p-2 text-center w-100 d-block">' + error_occurred + '</span>');
+					$(spinnerSelector + ', ' + viewAllSelector).hide();
+				});//<--- AJAX
+			});//<----- * WAITING * ---->
+		});
+	}
 
-				}
-
-			}).fail(function (jqXHR, ajaxOptions, thrownError) {
-
-				$('#containerCreators').html('');
-
-				$('#containerCreators').html('<span class="p-2 text-center w-100 d-block">' + error_occurred + '</span>');
-
-				$('#spinnerSearch, #viewAll').hide();
-
-			});//<--- AJAX
-
-
-
-		});//<----- * WAITING * ---->
-
-	});//==== End Search Creator
+	bindCreatorSearch('#searchCreatorNavbar', '#dropdownCreators', '#triggerBtn', '#spinnerSearch', '#containerCreators', '#viewAll');
+	bindCreatorSearch('#searchCreatorNavbarMobile', '#dropdownCreatorsMobile', '#triggerBtnMobile', '#spinnerSearchMobile', '#containerCreatorsMobile', '#viewAllMobile');
+	//==== End Search Creator
 
 
 

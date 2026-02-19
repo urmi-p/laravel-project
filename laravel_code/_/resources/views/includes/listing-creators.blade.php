@@ -1,6 +1,6 @@
 	<div class="card card-updates h-100 card-user-profile shadow-sm">
 
-	<div class="card-cover" style="background: @if ($response->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $response->cover, 'size' => 480]) }})  @endif #505050 center center; background-size: cover;"></div>
+	<div class="card-cover" style="height:192px;background: @if ($response->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $response->cover, 'size' => 480]) }})  @endif #505050 center center; background-size: cover;"></div>
 
 	<div class="card-avatar @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id))liveLink @endif" @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) data-url="{{ url('live', $response->username) }}" @endif>
 		@if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id))
@@ -52,7 +52,7 @@
 
 
 
-			<ul class="list-inline m-0">
+			<ul class="list-inline m-0 fs-18 font_weight_400" style="color:#99A1AF">
 
 				<li class="list-inline-item small"><i class="feather icon-image"></i> {{ Helper::formatNumber($response->media->where('type', 'image')->count()) }}</li>
 
@@ -63,10 +63,13 @@
 					<li class="list-inline-item small"><i class="feather icon-mic"></i> {{ Helper::formatNumber($response->media->where('type', 'music')->count()) }}</li>
 
 				@endif
+				{{-- for test  --}}
+				<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
 
+				{{-- for test  --}}
 				@if ($response->media->where('type', 'file')->groupBy('type')->count() != 0)
 
-				<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
+					<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
 
 				@endif
 

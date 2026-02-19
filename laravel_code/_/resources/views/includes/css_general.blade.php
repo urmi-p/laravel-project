@@ -3834,17 +3834,18 @@ a:hover.choose-type-sale {
 
   bottom: 10px;
 
-  padding: 8px 6px;
+  padding: 6px 12px;
 
-  background: <?php echo e($settings->color_default, false); ?>;
+  background: #E7000B;
+  // background: <?php echo e($settings->color_default, false); ?>;
 
-  border-radius: 6px;
+  border-radius: 10px;
 
   color: #fff;
 
-  font-size: 19px;
+  font-size: 16px;
 
-  font-weight: bold;
+  font-weight: 500;
 
 }
 
@@ -4100,10 +4101,11 @@ a:hover.choose-type-sale {
 
   z-index: 2;
 
-  background-color: #0000008c;
+  // background-color: #0000008c;
+  background: #27272AE5;
 
-  font-size: 13px;
-
+  font-size: 12px;
+  font-weight:400;
   color: #fff;
 
 }

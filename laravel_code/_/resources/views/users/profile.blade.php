@@ -214,7 +214,7 @@
                             <span>
                                 @if (!Cache::has('is-online-' . $user->id) && $user->hide_last_seen == 'no')
 
-                                <span class="w-100 d-block">
+                                <span class="w-100 d-block fs-14">
                                     <small>{{ __('general.active') }}</small>
                                     <small class="timeAgo"
                                         data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
@@ -253,7 +253,7 @@
                                         $totalPosts != 0)
 
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#subscriptionForm"
-                                        class="btn btn-primary btn-profile mr-1">
+                                        class="btn btn-primary btn-profile mr-1 fs-14 font_weight_500">
 
                                         <i class="feather icon-unlock mr-1"></i>
                                         {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'))]) }}
@@ -261,7 +261,7 @@
                                     </a>
                                 @elseif (auth()->check() && auth()->id() != $user->id && !$checkSubscription && $paymentIncomplete)
                                     <a href="{{ route('cashier.payment', $paymentIncomplete->last_payment) }}"
-                                        class="btn btn-warning btn-profile mr-1">
+                                        class="btn btn-warning btn-profile mr-1 fs-14 font_weight_500">
 
                                         <i class="fa fa-exclamation-triangle"></i> {{ __('general.confirm_payment') }}
 
@@ -416,14 +416,14 @@
                                     @endif
                                 @elseif (auth()->check() && auth()->id() != $user->id && $user->free_subscription == 'yes' && $totalPosts != 0)
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#subscriptionFreeForm"
-                                        class="btn btn-primary btn-profile mr-1">
+                                        class="btn btn-primary btn-profile mr-1 fs-14 font_weight_500">
 
                                         <i class="feather icon-user-plus mr-1"></i> {{ __('general.subscribe_for_free') }}
 
                                     </a>
                                 @elseif (auth()->guest() && $totalPosts != 0)
                                     <a href="{{ url('login') }}" data-toggle="modal" data-target="#loginFormModal"
-                                        class="btn btn-primary btn-profile mr-1">
+                                        class="btn btn-primary btn-profile mr-1 fs-14 font_weight_500">
 
                                         @if ($user->free_subscription == 'yes')
 
@@ -700,7 +700,7 @@
 
                         <div class="d-flex-user justify-content-center mb-2">
 
-                            <p class="card-text position-relative">
+                            <p class="card-text position-relative fs-16">
 
                                 @if ($likeCount != 0 || $subscriptionsActive != 0)
 
@@ -821,7 +821,7 @@
 
                 @if ($user->verified_id == 'yes')
                     <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile">
-                        <li class="nav-link nav_link @if (request()->path() == $user->username) active @endif navbar-user-mobile">
+                        <li class="nav-link nav_link @if (request()->path() == $user->username) active @endif navbar-user-mobile fs-16">
                             <a href="{{ request()->path() == $user->username ? 'javascript:;' : url($user->username) }}"
                                 title="{{ __('general.posts') }}">
                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -834,14 +834,14 @@
                                 <span class="d-lg-inline-block">{{ __('general.posts') }}</span>
                             </a>
                         </li>
-                        <li class="nav-link nav_link @if (request()->path() == $user->username . '/photos') active @endif navbar-user-mobile">
+                        <li class="nav-link nav_link @if (request()->path() == $user->username . '/photos') active @endif navbar-user-mobile fs-16">
                             <a href="{{ request()->path() == $user->username . '/photos' ? 'javascript:;' : url($user->username, 'photos') }}"
                                 title="{{ __('general.photos') }}"><i class="feather icon-image"></i>
                                 <small class="sm-btn-size">{{ $totalPhotos }}</small>
                                 <span class="d-lg-inline-block">{{ __('general.photos') }}</span>
                             </a>
                         </li>
-                        <li class="nav-link nav_link @if (request()->path() == $user->username . '/videos') active @endif navbar-user-mobile">
+                        <li class="nav-link nav_link @if (request()->path() == $user->username . '/videos') active @endif navbar-user-mobile fs-16">
                             <a href="{{ request()->path() == $user->username . '/videos' ? 'javascript:;' : url($user->username, 'videos') }}"
                                 title="{{ __('general.video') }}">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -853,7 +853,7 @@
                         </li>
 
                         @if ($totalReels != 0)
-                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/reels') active @endif navbar-user-mobile">
+                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/reels') active @endif navbar-user-mobile fs-16">
                                 <a href="{{ request()->path() == $user->username . '/reels' ? 'javascript:;' : url($user->username, 'reels') }}"
                                     title="{{ __('general.reels') }}">
 
@@ -872,7 +872,7 @@
                         @endif
 
                         @if (!$settings->disable_audio)
-                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/audio') active @endif navbar-user-mobile">
+                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/audio') active @endif navbar-user-mobile fs-16">
                                 <a href="{{ request()->path() == $user->username . '/audio' ? 'javascript:;' : url($user->username, 'audio') }}"
                                     title="{{ __('general.audio') }}"><i class="feather icon-mic"></i> 
                                     <small class="sm-btn-size">{{ $totalMusic }}</small>
@@ -882,7 +882,7 @@
                         @endif
 
                         @if ($settings->shop || (!$settings->shop && $userProducts->count() != 0))
-                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/shop') active @endif navbar-user-mobile">
+                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/shop') active @endif navbar-user-mobile fs-16">
                                 <a href="{{ request()->path() == $user->username . '/shop' ? 'javascript:;' : url($user->username, 'shop') }}"
                                     title="{{ __('general.shop') }}">
                                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -902,7 +902,7 @@
                         @endif
 
                         @if ($totalFiles != 0)
-                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/files') active @endif navbar-user-mobile">
+                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/files') active @endif navbar-user-mobile fs-16">
                                 
                                 <a href="{{ request()->path() == $user->username . '/files' ? 'javascript:;' : url($user->username, 'files') }}"
                                     title="{{ __('general.files') }}"><i class="far fa-file-archive"></i> 
@@ -913,7 +913,7 @@
                         @endif
 
                         @if ($totalEpub != 0)
-                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/epub') active @endif navbar-user-mobile">
+                            <li class="nav-link nav_link @if (request()->path() == $user->username . '/epub') active @endif navbar-user-mobile fs-16">
                                 <a href="{{ request()->path() == $user->username . '/epub' ? 'javascript:;' : url($user->username, 'epub') }}"
                                     title="{{ __('general.epub') }}"><i class="feather icon-book-open"></i> 
                                     <small class="sm-btn-size">{{ $totalEpub }}</small>
@@ -969,17 +969,11 @@
 
                                     @endif
                                     
-                                    {{-- for test --}}
-                                    <small><i class="feather icon-users mr-1"></i>
-                                            {{ Helper::formatNumber($subscriptionsActive) }}
-                                            {{ trans_choice('general.subscribers', $subscriptionsActive) }}</small>
-                                    {{-- end for test --}}
                                     @if ($subscriptionsActive != 0 && $user->hide_count_subscribers == 'no')
-
                                         <small><i class="feather icon-users mr-1"></i>
                                             {{ Helper::formatNumber($subscriptionsActive) }}
-                                            {{ trans_choice('general.subscribers', $subscriptionsActive) }}</small>
-
+                                            {{ trans_choice('general.subscribers', $subscriptionsActive) }}
+                                        </small>
                                     @endif
                                         
                                     @if (isset($user->country()->country_name) && $user->hide_my_country == 'no')
@@ -1856,40 +1850,40 @@
 
                         @endif
                     @else
-                        <div class="my-5 text-center no-updates w-100">
+                        <div class="my-5 text-center no-updates w-100 main-no-updates">
+                            <div class="sub-no-updates">
+                                <span class="btn-block mb-3">
 
-                            <span class="btn-block mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="align-bottom border-0 ico-no-result bg_black"
+                                        fill="currentColor" width="20" height="20" viewBox="0 0 50 50">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" class="align-bottom border-0 ico-no-result"
-                                    fill="currentColor" width="20" height="20" viewBox="0 0 50 50">
+                                        <path
+                                            d="M 15 4 C 8.9365932 4 4 8.9365932 4 15 L 4 35 C 4 41.063407 8.9365932 46 15 46 L 35 46 C 41.063407 46 46 41.063407 46 35 L 46 15 C 46 8.9365932 41.063407 4 35 4 L 15 4 z M 16.740234 6 L 27.425781 6 L 33.259766 16 L 22.574219 16 L 16.740234 6 z M 29.740234 6 L 35 6 C 39.982593 6 44 10.017407 44 15 L 44 16 L 35.574219 16 L 29.740234 6 z M 14.486328 6.1035156 L 20.259766 16 L 6 16 L 6 15 C 6 10.199833 9.7581921 6.3829803 14.486328 6.1035156 z M 6 18 L 44 18 L 44 35 C 44 39.982593 39.982593 44 35 44 L 15 44 C 10.017407 44 6 39.982593 6 35 L 6 18 z M 21.978516 23.013672 C 20.435152 23.049868 19 24.269284 19 25.957031 L 19 35.041016 C 19 37.291345 21.552344 38.713255 23.509766 37.597656 L 31.498047 33.056641 C 33.442844 31.951609 33.442844 29.044485 31.498047 27.939453 L 23.509766 23.398438 L 23.507812 23.398438 C 23.018445 23.120603 22.49297 23.001607 21.978516 23.013672 z M 21.982422 24.986328 C 22.158626 24.988232 22.342399 25.035052 22.521484 25.136719 L 30.511719 29.677734 C 31.220922 30.080703 31.220922 30.915391 30.511719 31.318359 L 22.519531 35.859375 C 21.802953 36.267773 21 35.808686 21 35.041016 L 21 25.957031 C 21 25.573196 21.201402 25.267385 21.492188 25.107422 C 21.63758 25.02744 21.806217 24.984424 21.982422 24.986328 z">
+                                        </path>
 
-                                    <path
-                                        d="M 15 4 C 8.9365932 4 4 8.9365932 4 15 L 4 35 C 4 41.063407 8.9365932 46 15 46 L 35 46 C 41.063407 46 46 41.063407 46 35 L 46 15 C 46 8.9365932 41.063407 4 35 4 L 15 4 z M 16.740234 6 L 27.425781 6 L 33.259766 16 L 22.574219 16 L 16.740234 6 z M 29.740234 6 L 35 6 C 39.982593 6 44 10.017407 44 15 L 44 16 L 35.574219 16 L 29.740234 6 z M 14.486328 6.1035156 L 20.259766 16 L 6 16 L 6 15 C 6 10.199833 9.7581921 6.3829803 14.486328 6.1035156 z M 6 18 L 44 18 L 44 35 C 44 39.982593 39.982593 44 35 44 L 15 44 C 10.017407 44 6 39.982593 6 35 L 6 18 z M 21.978516 23.013672 C 20.435152 23.049868 19 24.269284 19 25.957031 L 19 35.041016 C 19 37.291345 21.552344 38.713255 23.509766 37.597656 L 31.498047 33.056641 C 33.442844 31.951609 33.442844 29.044485 31.498047 27.939453 L 23.509766 23.398438 L 23.507812 23.398438 C 23.018445 23.120603 22.49297 23.001607 21.978516 23.013672 z M 21.982422 24.986328 C 22.158626 24.988232 22.342399 25.035052 22.521484 25.136719 L 30.511719 29.677734 C 31.220922 30.080703 31.220922 30.915391 30.511719 31.318359 L 22.519531 35.859375 C 21.802953 36.267773 21 35.808686 21 35.041016 L 21 25.957031 C 21 25.573196 21.201402 25.267385 21.492188 25.107422 C 21.63758 25.02744 21.806217 24.984424 21.982422 24.986328 z">
-                                    </path>
+                                    </svg>
 
-                                </svg>
+                                </span>
 
-                            </span>
-
-                            <h4 class="font_weight_400 font_size_18">{{ __('general.no_results_found') }}</h4>
-
-
-
-                            @if (auth()->check() && auth()->user()->verified_id == 'yes' && auth()->id() == $user->id)
-
-                                <div class="mt-3">
-
-                                    <a class="btn btn-primary" href="{{ url('create/reel') }}">
-
-                                        <i class="bi-plus"></i> {{ __('general.create_reel') }}
-
-                                    </a>
-
-                                </div>
-
-                            @endif
+                                <h4 class="font_weight_400 font_size_18">{{ __('general.no_results_found') }}</h4>
 
 
+
+                                @if (auth()->check() && auth()->user()->verified_id == 'yes' && auth()->id() == $user->id)
+
+                                    <div class="mt-3">
+
+                                        <a class="btn btn-primary" href="{{ url('create/reel') }}">
+
+                                            <i class="bi-plus"></i> {{ __('general.create_reel') }}
+
+                                        </a>
+
+                                    </div>
+
+                                @endif
+
+                            </div>
 
                         </div>
 
@@ -2062,59 +2056,37 @@
 
                     @endif
                 @else
-                    <div class="my-5 text-center no-updates w-100">
+                    <div class="my-5 text-center no-updates w-100 main-no-updates">
+                        <div class="sub-no-updates">
+                            <span class="btn-block mb-3">
+                                <i class="feather icon-shopping-bag ico-no-result bg_black"></i>
+                            </span>
+                            <h4 class="font_weight_400 font_size_18">{{ __('general.no_results_found') }}</h4>
+                            @if (auth()->check() && auth()->user()->verified_id == 'yes' && auth()->id() == $user->id)
+                                <div class="mt-3">
+                                    @if ($settings->digital_product_sale && !$settings->custom_content && !$settings->physical_products)
+                                        <a class="btn btn-primary" href="{{ url('add/product') }}">
+                                            <i class="bi-plus"></i> {{ __('general.add_product') }}
+                                        </a>
+                                    @elseif (!$settings->digital_product_sale && $settings->custom_content && !$settings->physical_products)
+                                        <a class="btn btn-primary" href="{{ url('add/custom/content') }}">
+                                            <i class="bi-plus"></i> {{ __('general.add_custom_content') }}
+                                        </a>
+                                    @elseif (!$settings->digital_product_sale && $settings->physical_products && !$settings->custom_content)
+                                        <a class="btn btn-primary" href="{{ url('add/physical/product') }}">
+                                            <i class="bi-plus"></i> {{ __('general.add_physical_product') }}
+                                        </a>
+                                    @else
+                                        <a class="btn btn-primary" href="#" data-toggle="modal"
+                                            data-target="#addItemForm">
+                                            <i class="bi-plus"></i> {{ __('general.add_new') }}
+                                        </a>
+                                    @endif
+                                </div>
 
-                        <span class="btn-block mb-3">
-
-                            <i class="feather icon-shopping-bag ico-no-result"></i>
-
-                        </span>
-
-                        <h4 class="font_weight_400 font_size_18">{{ __('general.no_results_found') }}</h4>
-
-                        @if (auth()->check() && auth()->user()->verified_id == 'yes' && auth()->id() == $user->id)
-
-                            <div class="mt-3">
-
-                                @if ($settings->digital_product_sale && !$settings->custom_content && !$settings->physical_products)
-
-                                    <a class="btn btn-primary" href="{{ url('add/product') }}">
-
-                                        <i class="bi-plus"></i> {{ __('general.add_product') }}
-
-                                    </a>
-                                @elseif (!$settings->digital_product_sale && $settings->custom_content && !$settings->physical_products)
-                                    <a class="btn btn-primary" href="{{ url('add/custom/content') }}">
-
-                                        <i class="bi-plus"></i> {{ __('general.add_custom_content') }}
-
-                                    </a>
-                                @elseif (!$settings->digital_product_sale && $settings->physical_products && !$settings->custom_content)
-                                    <a class="btn btn-primary" href="{{ url('add/physical/product') }}">
-
-                                        <i class="bi-plus"></i> {{ __('general.add_physical_product') }}
-
-                                    </a>
-                                @else
-                                    <a class="btn btn-primary" href="#" data-toggle="modal"
-                                        data-target="#addItemForm">
-
-                                        <i class="bi-plus"></i> {{ __('general.add_new') }}
-
-                                    </a>
-
-                                @endif
-
-                            </div>
-
-                        @endif
-
-
-
+                            @endif
+                        </div>
                     </div>
-
-
-
                 @endif
 
             </div>

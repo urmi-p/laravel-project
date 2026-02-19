@@ -37,6 +37,7 @@
   }
   .close_all_btn{
     border-radius: 100px;
+    background-color: #E2394C;
   }
 
   .close_all_btn:hover, .delete_account_btn:hover{

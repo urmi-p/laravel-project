@@ -9,12 +9,15 @@
 		</div>
 
 		<div class="user_info">
-			<h6 class="mb-0">
-				{{ Auth::user()->name }}
-			</h6>
-			<small>
-				{{ Auth::user()->email }}
-			</small>
+			<div>
+
+				<h6 class="mb-0">
+					{{ Auth::user()->name }}
+				</h6>
+				<small>
+					{{ Auth::user()->email }}
+				</small>
+			</div>
 			<a href="{{ url(auth()->user()->username) }}" class="btn_profile">
 				My Profile
 			</a>

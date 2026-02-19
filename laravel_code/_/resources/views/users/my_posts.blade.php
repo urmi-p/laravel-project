@@ -4,10 +4,11 @@
 
 @section('content')
 <section class="section section-sm">
+    @include('includes.header-mobile')
     <div class="container-fluid">
       <div class="row justify-content-center text-center mb-sm">
         <div class="col-lg-8 py-5">
-          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-feather mr-2"></i> {{__('general.my_posts')}}</h2>
+          <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2"><i class="feather icon-feather mr-2"></i> {{__('general.my_posts')}}</h2>
           <p class="lead mt-0 font_weight_400 fs-14">{{__('general.all_post_created')}}</p>
         </div>
       </div>
