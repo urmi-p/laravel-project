@@ -78,14 +78,14 @@
 			<span class="ml-2">{{ __('general.my_profile') }}</span>
 		</a>
 	</li>
-	 {{-- @if (auth()->user()->verified_id == 'yes') --}}
-	<!--<li>
-		<a href="{{ url('dashboard') }}">
-			<i class="bi-speedometer2"></i>
+	@if (auth()->user()->verified_id == 'yes')
+	<li class="sidebar_li">
+		<a href="{{ url('dashboard') }}" @if (request()->is('dashboard')) class="active disabled" @endif>
+			<i class="bi bi-grid"></i>
 			<span class="ml-2">{{ __('admin.dashboard') }}</span>
 		</a>
-	</li>-->
-	{{-- @endif  --}}
+	</li>
+	@endif
 
 	<li class="sidebar_li">
 		<a href="{{ url('my/purchases') }}" @if (request()->is('my/purchases')) class="active disabled" @endif>

@@ -83,7 +83,7 @@
                         <div class="col-lg-8 py-5">
                             <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-cash-stack mr-2"></i>
                                 {{ trans('general.subscription_price') }}</h2>
-                            <p class="lead text-muted mt-0 fs-14 font_weight_400 theme-subtitle">{{ trans('general.info_subscription') }}</p>
+                            <p class="lead mt-0 fs-14 font_weight_400 theme-subtitle">{{ trans('general.info_subscription') }}</p>
                         </div>
                     </div>
                     @if (session('status'))
@@ -328,7 +328,7 @@
                                 <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
                                     {{ trans('general.subscription_price') }}
                                 </h2>
-                                <p class="lead text-muted mt-0 fs-14 font_weight_400 theme-subtitle">{{ trans('general.info_subscription') }}</p>
+                                <p class="lead mt-0 fs-14 font_weight_400 theme-subtitle">{{ trans('general.info_subscription') }}</p>
                             </div>
                         </div>
                         @if (session('status'))
@@ -378,7 +378,7 @@
                                 <div class="">
                                     <div class="mb-4">
                                         <!-- <span class="status-dot-pos {{ auth()->user()->getPlan('weekly', 'status') ? 'bg-success' : 'bg-danger' }}"></span> -->
-                                        <label class="fs-14">{{ trans('general.subscription_price_weekly') }}</label>
+                                        <label class="fs-16">{{ trans('general.subscription_price_weekly') }}</label>
                                         <div class="input-group mb-2 input-group-sub">
                                             <div class="input-group-prepend">
                                                 <span class="input-sub-text">{{ $settings->currency_symbol }}</span>
@@ -409,7 +409,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <!-- <span class="status-dot-pos {{ auth()->user()->getPlan('monthly', 'status') ? 'bg-success' : 'bg-danger' }}"></span> -->
-                                        <label class="fs-14">{{ trans('general.subscription_price_monthly') }}</label>
+                                        <label class="fs-16">{{ trans('general.subscription_price_monthly') }}</label>
                                         <div class="input-group mb-2 input-group-sub">
                                             <div class="input-group-prepend">
                                                 <span class="input-sub-text">{{ $settings->currency_symbol }}</span>
@@ -433,7 +433,7 @@
                                 <div class="mb-4">
                                     <div class="my-4">
                                         <!-- <span class="status-dot-pos {{ auth()->user()->getPlan('quarterly', 'status') ? 'bg-success' : 'bg-danger' }}"></span> -->
-                                        <label class="fs-14">{{ trans('general.subscription_price_quarterly') }}</label>
+                                        <label class="fs-16">{{ trans('general.subscription_price_quarterly') }}</label>
                                         <div class="input-group mb-2 input-group-sub">
                                             <div class="input-group-prepend">
                                                 <span class="input-sub-text">{{ $settings->currency_symbol }}</span>
@@ -464,7 +464,7 @@
                                     <div class="my-4">
                                         <!-- <span class="status-dot-pos {{ auth()->user()->getPlan('biannually', 'status') ? 'bg-success' : 'bg-danger' }}"></span> -->
                                         <label
-                                            class="fs-14">{{ trans('general.subscription_price_biannually') }}</label>
+                                            class="fs-16">{{ trans('general.subscription_price_biannually') }}</label>
                                         <div class="input-group mb-2 input-group-sub">
                                             <div class="input-group-prepend">
                                                 <span class="input-sub-text">{{ $settings->currency_symbol }}</span>
@@ -498,7 +498,7 @@
                                     <div class="my-3">
                                         <!-- <span class="status-dot-pos {{ auth()->user()->getPlan('yearly', 'status') ? 'bg-success' : 'bg-danger' }}"></span> -->
                                         <label
-                                            class="fs-14">{{ trans('general.subscription_price_yearly') }}</label>
+                                            class="fs-16">{{ trans('general.subscription_price_yearly') }}</label>
                                         <div class="input-group mb-2 input-group-sub">
                                             <div class="input-group-prepend">
                                                 <span class="input-sub-text">{{ $settings->currency_symbol }}</span>

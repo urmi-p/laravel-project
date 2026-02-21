@@ -18,6 +18,36 @@
       padding-top: 12%;
       }
     }
+    .profile-card {
+      text-align: center;
+    }
+    .profile-desc {
+      font-weight:400;
+      font-size: 14px;
+      max-width: 320px;
+      margin: 10px auto 18px;
+      line-height: 1.5;
+    }
+    [data-bs-theme="dark"] .profile-desc {
+      color: #FFFFFF;
+    }
+    [data-bs-theme="light"] .profile-desc {
+      color: #222;
+    }
+    .visit-profile-btn {
+      display: block;
+      width:fit-content;
+      background: #E2394C;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: 0.25s;
+      margin: 0 auto; 
+    }
+    .desc-break {
+      display: block;
+    }
   </style>
 @endsection`
 
@@ -39,12 +69,12 @@
                 <div class="media-message-profile-center">
                   <a href="{{url($user->username)}}" class="mr-3">
                     <span class="position-relative user-status @if ($user->active_status_online == 'yes') @if (Helper::isOnline($user->id)) user-online @else user-offline @endif @endif d-block">
-                      <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle" width="40" height="40">
+                      <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle" width="95" height="95">
                     </span>
                   </a>
 
-                  <div class="media-body">
-                    <h6 class="m-0">
+                  <div class="media-body profile-card">
+                    <h6 class="m-0 fs-24 font_weight_500">
                       <a href="{{url($user->username)}}">
                         {{$user->hide_name == 'yes' ? $user->username : $user->name}}
                       </a>
@@ -55,23 +85,34 @@
                           </small>
                       @endif
                     </h6>
+                    <!-- Description line -->
+                    <p class="profile-desc">
+                      Chat with 
+                      {{ $user->hide_name == 'yes' ? $user->username : $user->name }},
+                      <span class="desc-break">
+                        you follow each other & share a community together
+                      </span>
+                    </p>
 
-                      @if ($user->active_status_online == 'yes')
+                    <!-- Visit Profile Button -->
+                    <a href="{{ url($user->username) }}" class="btn visit-profile-btn">
+                      Visit Profile
+                    </a>
+
+                    @if ($user->active_status_online == 'yes')
 
                         @if ($user->hide_last_seen == 'no')
-                        <small>{{ __('general.active') }}</small>
-
-                        <span id="timeAgo">
-                          <small class="timeAgo @if (Helper::isOnline($user->id)) display-none @endif" id="lastSeen" data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
+                          <small>{{ __('general.active') }}</small>
+                          <span id="timeAgo">
+                            <small class="timeAgo @if (Helper::isOnline($user->id)) display-none @endif" id="lastSeen" data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
                           </span>
                         @else
                           {{'@'.$user->username}}
-                          @endif
-
-                        @else
-                          {{'@'.$user->username}}
-                          @endif
-
+                        @endif
+                    @else
+                      {{'@'.$user->username}}
+                    @endif
+                    
                   </div>
                 </div>
                 @if (auth()->user()->verified_id == 'yes' 
@@ -79,7 +120,7 @@
                     && auth()->user()->price_audio_call
                     && !auth()->user()->isRestricted($user->id)
                     )
-                <a href="javascript:void(0);" class="text-white float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
+                <a href="javascript:void(0);" class="float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
                   <i class="feather icon-phone"></i>
                 </a>
                 @endif
@@ -89,12 +130,12 @@
                     && auth()->user()->price_video_call
                     && !auth()->user()->isRestricted($user->id)
                     )
-                <a href="javascript:void(0);" class="text-white float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
+                <a href="javascript:void(0);" class="float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
                   <i class="feather icon-video"></i>
                 </a>
                 @endif
 
-                <a href="javascript:void(0);" class="text-white float-right vertical-ellipsis " id="dropdown_options" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <a href="javascript:void(0);" class="float-right vertical-ellipsis " id="dropdown_options" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   <i class="fa fa-ellipsis-v"></i>
                 </a>
 
@@ -182,7 +223,7 @@
                           @include('includes.emojis')
                         </div>
                       </div>
-                        <textarea class="form-control textareaAutoSize emojiArea border-0" data-post-length="{{$settings->update_length}}" rows="1" placeholder="{{__('general.write_something')}}" id="message" name="message"></textarea>
+                        <textarea class="form-control textareaAutoSize emojiArea" data-post-length="{{$settings->update_length}}" rows="1" placeholder="{{__('general.write_something')}}" id="message" name="message"></textarea>
                       </div>
 
                       <div class="form-group display-none mt-2" id="price">

@@ -76,20 +76,20 @@
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="allow_dm" value="1" @checked(auth()->user()->allow_dm) id="allow_dm">
-                <label class="custom-control-label switch fs-16 font_weight_500" for="allow_dm">{{ __('general.receive_private_messages') }}</label>
+                <label class="custom-control-label switch fs-16 font_weight_500 wel_msg_mob_12" for="allow_dm">{{ __('general.receive_private_messages') }}</label>
               </div>
             </div>
 
             <div class="btn-block mb-4">
               <div class="custom-control custom-switch custom-switch-lg">
                 <input type="checkbox" class="custom-control-input" name="send_welcome_message" value="1" @checked(auth()->user()->send_welcome_message) id="send_welcome_message">
-                <label class="custom-control-label switch fs-16 font_weight_500" for="send_welcome_message">{{ __('general.send_welcome_message_new_subscribers') }}</label>
+                <label class="custom-control-label switch fs-16 font_weight_500 wel_msg_mob_12" for="send_welcome_message">{{ __('general.send_welcome_message_new_subscribers') }}</label>
               </div>
             </div>
           </div>
 
           <div class="form-group mb-4">
-            <label class="w-100 fs-16 font_weight_500">{{__('general.price_welcome_message')}} ({{ __('general.optional') }})</label>
+            <label class="w-100 fs-16 font_weight_500 wel_msg_mob_16">{{__('general.price_welcome_message')}} ({{ __('general.optional') }})</label>
             <div class="input-group mb-2">
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text currency_span">{{$settings->currency_symbol}}</span>
@@ -106,7 +106,7 @@
           </div>
 
           <div class="form-group">
-            <label class="w-100 font_weight_500 fs-20">{{ __('general.add_file') }} ({{ __('general.optional') }})</label>
+            <label class="w-100 font_weight_500 fs-20 wel_msg_mob_16">{{ __('general.add_file') }} ({{ __('general.optional') }})</label>
 
             @if ($settings->video_encoding == 'on')
             <div class="alert alert-primary m-0 alert-dismissible fade show" role="alert">
@@ -119,7 +119,7 @@
           </div>
 
           <div class="form-group">
-            <label class="w-100 font_weight_500 fs-20 ">{{__('general.welcome_message_new_subs')}}</label>
+            <label class="w-100 font_weight_500 fs-20 wel_msg_mob_16">{{__('general.welcome_message_new_subs')}}</label>
             <textarea name="message" rows="5" cols="40" class="form-control textareaAutoSize brd-8">{{auth()->user()->welcome_message_new_subs ? auth()->user()->welcome_message_new_subs : old('welcome_message_new_subs') }}</textarea>
           </div>
 

@@ -8,7 +8,7 @@
     <span class="category-filter d-lg-block d-none font_weight_400 fs-16">
         {{ trans('general.categories') }}
     </span>
-    <div class="filter-divider"></div>
+    <div class="filter-divider mb-3"></div>
     <div class="py-1 mb-4 myhover_btn">
 
         <div class="text-center">
@@ -20,7 +20,7 @@
             @endif
 
             @foreach (Categories::where('mode', 'on')->orderBy('name')->get() as $category)
-            <a class="btn btn-sm mb-2 e-none btn-category @if (Request::path() == "category/$category->slug" ||
+            <a class="btn mb-3 e-none btn-category @if (Request::path() == "category/$category->slug" ||
                 Request::path() == "category/$category->slug/featured" ||
                 Request::path() == "category/$category->slug/more-active" ||
                 Request::path() == "category/$category->slug/new" ||

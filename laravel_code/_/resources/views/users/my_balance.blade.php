@@ -60,13 +60,19 @@
         .center_align{
             text-align: center;
         }
+        .balance-wrap {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+        }
         @media (max-width: 480px) {
             .currency_class{
                 font-size:18px !important;
                 line-height: 2.01 !important;
             }
             .mobile_fund_text{
-                font-size:12.51px !important;
+                font-size:19.51px !important;
             }
             .wallet_inner_text{
                 padding-left:28px;
@@ -99,7 +105,7 @@
                         role="alert">
                         <div class="inner-wrap" >
                             <span>
-                                <h2 class="text_color_white font_weight_700 wallet_inner_text">
+                                <h2 class="text_color_white font_weight_700 wallet_inner_text balance-wrap">
                                     <strong>{{ Helper::userWallet() }}</strong>
                                     <small class="h1 currency_class">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null }}</small>
                                 </h2>

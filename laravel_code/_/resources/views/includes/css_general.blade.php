@@ -2742,7 +2742,7 @@ input[type=number] {
 
 .category-filter {
 
-  padding: 10px 2px;
+  padding: 10px 2px 6px 2px;
 
   display: block;
 
