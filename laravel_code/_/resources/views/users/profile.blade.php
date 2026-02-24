@@ -2348,7 +2348,7 @@
                                                     $paymentName =
                                                         '<img src="' .
                                                         url(
-                                                            'public/img/payments',
+                                                            'img/payments',
                                                             auth()->user()->dark_mode == 'off'
                                                                 ? $payment->logo
                                                                 : 'paypal-white.png',

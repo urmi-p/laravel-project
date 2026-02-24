@@ -300,6 +300,7 @@
 					?>
 						<div style=""></div>
 						<div class="notify-div mb-3">
+							<small class="timeAgo float-right" style="padding:8px;" data="{{date('c', strtotime($key->created_at))}}"></small>
 							<div class="px-3 py-4">
 								<div class="notify-border d-flex">
 									<!-- @if ($notyNormal)
@@ -334,7 +335,7 @@
 											@endif
 										</small>
 									</div><!-- media body -->
-									<small class="timeAgo" data="{{date('c', strtotime($key->created_at))}}"></small>
+									
 								</div><!-- media -->
 							</div>
 						</div>

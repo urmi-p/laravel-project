@@ -164,10 +164,11 @@
 
   .pay-btn-mini {
     background: transparent;
-    border: 1px solid #333;
+    /* border: 1px solid #333; */
+    border: 1.5px solid #FFFFFF;
     color: #fff;
-    border-radius: 12px;
-    padding: 6px 28px;
+    border-radius: 6px;
+    padding: 6px 32px;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s;
@@ -204,10 +205,10 @@
   }
 
   .btn-recharge-custom {
-    background: #f1415d;
+    background: #E2394C;
     color: #fff;
-    border-radius: 18px;
-    height: 60px;
+    border-radius: 12px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -324,13 +325,25 @@
   .center_align{
     text-align: center;
   }
+  .currency_class{
+      font-size:42px !important;
+      line-height: 2.01 !important;
+      font-weight:700;
+  }
+  .balance-wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+  }
+
   @media (max-width: 480px) {
     .currency_class{
         font-size:18px !important;
         line-height: 2.01 !important;
     }
     .mobile_fund_text{
-      font-size:12.51px !important;
+      font-size:19.51px !important;
     }
   }
 </style>
@@ -383,8 +396,13 @@
 
                 <div class="inner-wrap">
                   <span>
-                    <h2 class="text_color_white font_weight_700 wallet_inner_text"><strong>{{ Helper::userWallet() }}</strong>
-                      <small class="h1 currency_class">{{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null}}</small>
+                    <h2 class="text_color_white font_weight_700 wallet_inner_text balance-wrap">
+                      <span class="balance-amount">
+                        {{ Helper::userWallet() }}
+                      </span>
+                      <span class="currency_class">
+                        {{ $settings->wallet_format == 'real_money' ? config('settings.currency_code') : null}}
+                      </span>
                     </h2>
 
                     <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_fund_text center_align">
@@ -423,7 +441,9 @@
                     <input class="form-control amt_input" required id="onlyNumber" name="amount" min="{{ $settings->min_deposits_amount }}" max="{{ $settings->max_deposits_amount }}" autocomplete="off" placeholder="{{__('admin.amount')}} ({{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->min_deposits_amount) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat($settings->max_deposits_amount) }})" type="number">
                   </div>
                   <small class="amt-helper-text">
-                    <i class="bi-arrow-up-square mr-1"></i> <i class="bi-arrow-down-square mr-1"></i> {{ __('general.increase_decrease_amount') }}
+                    <i class="bi-arrow-up-square mr-1 amount-increase" style="cursor:pointer;"></i> 
+                    <i class="bi-arrow-down-square mr-1 amount-decrease" style="cursor:pointer;"></i> 
+                    {{ __('general.increase_decrease_amount') }}
                   </small>
                 </div>
 
@@ -829,5 +849,16 @@ $('#onlyNumber').on('keyup', function() {
     $('#addFundsBtn').attr('disabled', 'disabled').html('<i class="spinner-border spinner-border-sm mr-2"></i> {{__("general.processing")}}');
   });
 
+
+$('.amount-increase').click(function () {
+  let input = $('#onlyNumber');
+  input.val(parseInt(input.val() || 0) + 1);
+});
+
+$('.amount-decrease').click(function () {
+  let input = $('#onlyNumber');
+  let val = parseInt(input.val() || 0);
+  if (val > 1) input.val(val - 1);
+});
 </script>
 @endsection

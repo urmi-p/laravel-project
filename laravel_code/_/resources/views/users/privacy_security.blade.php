@@ -58,7 +58,7 @@
       @include('includes.cards-settings')
 
       <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
-        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{trans('general.privacy_security')}}</h2>
+        <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2">{{trans('general.privacy_security')}}</h2>
         <p class="lead font_weight_400 fs-14 mt-0">{{trans('general.desc_privacy')}}</p>
         @if (session('status'))
         <div class="alert alert-success">
@@ -77,7 +77,7 @@
           <div class="card-body">
 
             @if ($agents->count() || $currentSession)
-            <small class="w-100 d-block font_weight_700 fs-24 pb-3"><strong>{{ __('general.last_login_record') }}</strong></small>
+            <small class="w-100 d-block font_weight_700 fs-24 pb-3 txt_mob_18"><strong>{{ __('general.last_login_record') }}</strong></small>
 
             @if ($currentSession)
             <div class="card-text mb-4 border_bottom pb-3 font_weight_400 fs-14">

@@ -17,7 +17,7 @@
                             .avatar-modal-img {
                                 width: 110px;
                                 height: 110px;
-                                border: 6px solid white;
+                                /* border: 6px solid white; */
                                 border-radius: 50%;
                                 object-fit: cover;
                                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -48,7 +48,7 @@
 
 						<div class="text-center">
                             <div class="avatar-wrapper">
-							    <img src="{{Helper::getFile(config('path.avatar').auth()->user()->avatar)}}" class="avatar-modal-img">
+							    <img src="{{Helper::getFile(config('path.avatar').auth()->user()->avatar)}}" class="avatar-modal avatar-modal-img">
                             </div>
 							<h5 class="font-weight-bold mb-1">
 								{{__('general.send_tip')}} <span class="userNameTip"></span>
@@ -115,7 +115,7 @@
 										<div class="payment-option-item border-bottom payment-option-row">
 											<div class="d-flex align-items-center justify-content-between">
 												<div class="d-flex align-items-center">
-													<div class="icon-wrapper mr-3 text-muted tip_modal_icon_wrap">
+													<div class="icon-wrapper mr-3 tip_modal_icon_wrap">
 														{!! $paymentIcon !!}
 													</div>
 													<div>
@@ -150,7 +150,7 @@
 									<div class="payment-option-item border-bottom payment-option-row">
 										<div class="d-flex align-items-center justify-content-between">
 											<div class="d-flex align-items-center">
-												<div class="icon-wrapper mr-3 text-muted tip_modal_icon_wrap">
+												<div class="icon-wrapper mr-3 tip_modal_icon_wrap">
 													<i class="fas fa-wallet fa-lg"></i>
 												</div>
 												<div>
@@ -183,8 +183,8 @@
 								<ul class="list-unstyled m-0" id="showErrorsTip"></ul>
 							</div>
 
-							<div class="d-flex justify-content-between mt-4">
-								<button type="button" class="btn btn-outline-danger w-50 mr-2 tip_modal_cancel" data-dismiss="modal">{{__('admin.cancel')}}</button>
+							<div class="d-flex justify-content-between mt-4 float-right">
+								<button type="button" class="btn btn-outline-danger mr-2 tip_modal_cancel" data-dismiss="modal">{{__('admin.cancel')}}</button>
 								<button type="submit" id="tipBtn" class="btn btn-danger w-50 ml-2 tipBtn tip_modal_send"><i></i> {{__('auth.send')}}</button>
 							</div>
 

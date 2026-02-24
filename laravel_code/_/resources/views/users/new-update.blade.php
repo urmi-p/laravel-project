@@ -368,9 +368,9 @@
             padding: 12px 14px;
         }
 
-        .advanced-settings {
+        /* .advanced-settings {
             color: #fff;
-        }
+        } */
 
         .setting-label {
             display: block;

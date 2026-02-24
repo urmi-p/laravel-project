@@ -162,8 +162,8 @@
                                                 {{ __('general.no_available') }}
                                             @else
                                                 <a href="{{ url($subscription->creator->username) }}">
-                                                    <img src="{{ Helper::getFile(config('path.avatar') . $subscription->creator->avatar) }}"
-                                                        width="24" height="24" class="rounded-circle mr-1">
+                                                    {{-- <img src="{{ Helper::getFile(config('path.avatar') . $subscription->creator->avatar) }}"
+                                                        width="24" height="24" class="rounded-circle mr-1"> --}}
                                                     {{ $subscription->creator->hide_name == 'yes' ? $subscription->creator->username : $subscription->creator->name }}
                                                 </a>
                                             @endif

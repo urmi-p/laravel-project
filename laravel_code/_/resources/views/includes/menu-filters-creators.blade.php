@@ -13,39 +13,39 @@
                 <span class="category-filter d-lg-block d-none font_weight_400 fs-16">
                     {{ trans('general.filter_by') }}
                 </span>
-                <div class="filter-divider"></div>
-                <a class="btn btn-sm mb-2 e-none btn-category brd-8 @if (request()->is('creators') || (isset($isCategory) && request()->is('category/' . $slug . ''))) active-category @endif"
+                <div class="filter-divider mb-3"></div>
+                <a class="btn mb-3 e-none btn-category brd-8 fs-18 @if (request()->is('creators') || (isset($isCategory) && request()->is('category/' . $slug . ''))) active-category @endif"
                     href="{{ isset($isCategory) ? url('category', $slug) : url('creators') }}"
                     >
                     <i class="feather icon-heart mr-2"></i>
                     {{ trans('general.popular') }}
 
                 </a>
-                <a class="btn btn-sm mb-2 e-none btn-category @if (request()->is('creators/featured') || (isset($isCategory) && request()->is('category/' . $slug . '/featured'))) active-category @endif"
+                <a class="btn mb-3 e-none btn-category fs-18 @if (request()->is('creators/featured') || (isset($isCategory) && request()->is('category/' . $slug . '/featured'))) active-category @endif"
                     href="{{ isset($isCategory) ? url('category/' . $slug . '', 'featured') : url('creators/featured') }}">
                     <i class="bi bi-award mr-2"></i>
                     {{ trans('general.featured_creators') }}
 
                 </a>
-                <a class="btn btn-sm mb-2 e-none btn-category @if (request()->is('creators/more-active') ||
+                <a class="btn mb-3 e-none btn-category fs-18 @if (request()->is('creators/more-active') ||
                         (isset($isCategory) && request()->is('category/' . $slug . '/more-active'))) active-category @endif"
                     href="{{ isset($isCategory) ? url('category/' . $slug . '', 'more-active') : url('creators/more-active') }}">
                     <i class="bi bi-lightning mr-2"></i>
                     {{ trans('general.more_active') }}
                 </a>
-                <a class="btn btn-sm mb-2 e-none btn-category @if (request()->is('creators/new') || (isset($isCategory) && request()->is('category/' . $slug . '/new'))) active-category @endif"
+                <a class="btn mb-3 e-none btn-category fs-18 @if (request()->is('creators/new') || (isset($isCategory) && request()->is('category/' . $slug . '/new'))) active-category @endif"
                     href="{{ isset($isCategory) ? url('category/' . $slug . '', 'new') : url('creators/new') }}">
                     <i class="bi bi-people mr-2"></i>
                     {{ trans('general.new_creators') }}
 
                 </a>
-                <a class="btn btn-sm mb-2 e-none btn-category @if (request()->is('creators/free') || (isset($isCategory) && request()->is('category/' . $slug . '/free'))) active-category @endif"
+                <a class="btn mb-3 e-none btn-category fs-18 @if (request()->is('creators/free') || (isset($isCategory) && request()->is('category/' . $slug . '/free'))) active-category @endif"
                     href="{{ isset($isCategory) ? url('category/' . $slug . '', 'free') : url('creators/free') }}">
                     <i class="bi bi-currency-dollar mr-2"></i>
                     {{ trans('general.free_subscription') }}
                 </a>
                 @if ($settings->search_creators_genders)
-                    <a class="btn btn-sm mb-2 e-none btn-category" href="javascript:;" data-toggle="modal"
+                    <a class="btn mb-3 e-none btn-category fs-18" href="javascript:;" data-toggle="modal"
                         data-target="#filterGendersAge">
 
                         <img src="{{ url('public/img/genders.png') }}" class="mr-2" width="30" />
@@ -54,7 +54,7 @@
                     </a>
                 @endif
                 @if ($settings->live_streaming_status == 'on')
-                    <a class="btn btn-sm mb-2 e-none btn-category @if (request()->is('explore/creators/live')) active-category @endif"
+                    <a class="btn mb-3 e-none btn-category fs-18 @if (request()->is('explore/creators/live')) active-category @endif"
                         href="{{ url('explore/creators/live') }}">
                         <i class="bi bi-broadcast mr-2"></i>
                         {{ trans('general.live') }}
