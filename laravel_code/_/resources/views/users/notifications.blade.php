@@ -345,7 +345,7 @@
 				</div>
 				@endif
 				@if ($notifications->isEmpty())
-				<div class="my-5 text-center no-updates main-no-updates">
+				<div class="text-center no-updates main-no-updates">
 					<div class="sub-no-updates">
 						<span class="btn-block mb-3">
 							<i class="far fa-bell-slash ico-no-result bg_black"></i>

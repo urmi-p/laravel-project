@@ -66,7 +66,7 @@
             </div><!-- col-md-9 -->
             @else
             <div class="col-md-9">
-                <div class="my-5 text-center no-updates main-no-updates">
+                <div class="text-center no-updates main-no-updates">
                   <div class="sub-no-updates">
                     <span class="btn-block mb-3">
                         <i class="fa fa-user-slash ico-no-result bg_black"></i>
