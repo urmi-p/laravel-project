@@ -358,7 +358,7 @@
 <section class="section section-sm">
   @include('includes.header-mobile')
     <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
-        <div class="row">
+        <div class="row app-main-row">
           @if (auth()->user()->verified_id == 'yes')
             @include('includes.cards-settings')
           @else

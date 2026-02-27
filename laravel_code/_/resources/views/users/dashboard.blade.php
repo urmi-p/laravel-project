@@ -10,7 +10,7 @@
       
       <div class="row">
 			@include('includes.cards-settings')
-        <div class="col-sm-12 col-md-12 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-md-9 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
 				<h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">

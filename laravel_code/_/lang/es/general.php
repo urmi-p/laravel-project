@@ -154,6 +154,7 @@ return array(
 	'cancel_confirm' => '¡No, cancelar!',
 	'yes_confirm' => '¡Sí, eliminar!',
 	'recent' => 'Reciente',
+	'recent_uploaded' => 'Recientes subidos',
 	'online' => 'Online',
 	'view_all' => 'Ver todo',
 	'add_tag' => 'Agrega una etiqueta y presiona Enter o coma',

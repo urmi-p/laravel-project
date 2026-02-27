@@ -1701,7 +1701,6 @@
 
 
 @if (
-(request()->is('/') && $loop->first && $users->count() != 0) ||
 (request()->is('explore') && $loop->first && $users->count() != 0) ||
 (request()->is('my/bookmarks') && $loop->first && $users->count() != 0) ||
 (request()->is('my/purchases') && $loop->first && $users->count() != 0) ||

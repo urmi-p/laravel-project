@@ -303,8 +303,8 @@
     @include('includes.header-mobile')
     <div class="container-fluid pt-lg-5 pt-3">
 
-        <div class="row">
-            <div class="col-lg-3 col-md-4 side_bar_box_shadow">
+        <div class="row app-main-row">
+            <div class="col-lg-3 col-md-2 side_bar_box_shadow">
                 @include('includes.menu-sidebar-home')
             </div>
             {{-- @include('includes.cards-settings') --}}

@@ -37,7 +37,7 @@
   @endif
 </head>
 
-<body>
+<body class="@yield('body_class') @auth app-auth-shell @endauth">
   @if ($settings->google_tag_manager_body != '')
   {!! $settings->google_tag_manager_body !!}
   @endif
@@ -111,8 +111,12 @@
 
   <div class="popout popout-error font-default"></div>
 
+@php
+  $hideGlobalChrome = request()->is('login') || request()->is('signup') || request()->is('register') || request()->is('password/*');
+@endphp
+
 @if (
-      !request()->is('password/reset/*') &&
+      !$hideGlobalChrome &&
       (
         (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
         || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
@@ -126,13 +130,17 @@
   @include('includes.navbar')
   @endif
 
+  @if (!$hideGlobalChrome)
+    @include('includes.header-mobile')
+  @endif
+
   <main @if (request()->is('messages/*') || request()->is('live/*')) style="h-100" @endif role="main">
     @yield('content')
 
     @if (auth()->guest() || auth()->check())
             
           @if (
-                  !request()->is('password/reset*') &&
+                  !$hideGlobalChrome &&
                 ( 
                   (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
                         || auth()->guest() && request()->path() != '/' && $settings->home_style == 0

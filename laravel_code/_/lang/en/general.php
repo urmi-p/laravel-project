@@ -154,6 +154,7 @@ return array(
 	'cancel_confirm'	        =>		'No, cancel!',
 	'yes_confirm'	            =>		'Yes, delete it!',
 	'recent'                    =>      'Recent',
+	'recent_uploaded'           =>      'Recent Uploaded',
 	'online'                    =>      'Online',
 	'view_all'                  =>      'View all',
 	'subscribe_date'            =>      'Subscribe Date',

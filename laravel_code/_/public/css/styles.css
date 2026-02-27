@@ -9,6 +9,7 @@ body {
     height: 100%;
     font-family: "Poppins", sans-serif;
 }
+
 li {
     list-style: none;
 }
@@ -2514,23 +2515,9 @@ a.btn-category:focus {
     color: #5f5f5f;
 }
 
-.btn_mobile_nav {
-    padding: 6px 10px !important;
-    background-color: #a3a3a31a !important;
-    border-radius: 8px !important;
-}
-.btn_mobile_nav i {
-    font-size: 16px !important;
-    vertical-align: unset;
-    gap: 6px !important;
-}
 .post_img {
     /* width: fit-content; */
     width: 80%;
-}
-
-.myhover_btn a.btn {
-    border-radius: 8px !important;
 }
 
 [data-bs-theme="dark"] .profile-btns .pr-btn,
@@ -2588,22 +2575,252 @@ a.btn-category:focus {
     text-decoration: none !important;
 }
 
+/* Profile tabs (2 posts / photos / videos / shop) */
+.top_side_profile {
+    max-width: 34.3125rem; /* 549px */
+    min-height: 3.75rem; /* 60px */
+    padding: 0.75rem 1.5rem !important;
+    gap: 0.75rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem !important;
+}
+
+.top_side_profile .nav_link {
+    padding: 0 !important;
+    min-height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top_side_profile .nav_link a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+}
+
+.top_side_profile .sm-btn-size {
+    font-size: 1rem !important;
+    line-height: 1.25rem !important;
+    font-weight: 500;
+}
+
+/* Profile warning alert row */
+.profile-right-col .no_sub_msg {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem; /* 40px */
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.25rem !important;
+}
+
+.profile-right-col .no_sub_msg .list-unstyled {
+    width: 100%;
+    margin: 0 !important;
+}
+
+.profile-right-col .no_sub_msg li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: #fff;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.profile-right-col .no_sub_msg li .fa-exclamation-triangle {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.profile-right-col .no_sub_msg li a {
+    margin-left: 0.125rem;
+}
+
+/* Profile middle-content alignment */
+.profile-cover {
+    position: relative;
+    overflow: hidden;
+    background: #505050;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.profile-middle-content {
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
+.profile-content-row {
+    align-items: flex-start;
+}
+
+.profile-left-col .recent-media {
+    margin-top: 1rem;
+}
+
+.profile-recent-card {
+    border-radius: 2rem !important;
+    padding: 1.5rem 1rem;
+}
+
+.profile-recent-title {
+    padding: 0;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    color: #fff;
+}
+
+.profile-recent-body {
+    padding: 0 !important;
+}
+
+.profile-recent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.033rem; /* 16.53px */
+    margin: 0 !important;
+}
+
+.profile-recent-grid > [class*="col-"] {
+    flex: none;
+    max-width: none;
+    width: auto;
+    padding: 0 !important;
+}
+
+.profile-recent-grid img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.profile-glass-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 25px rgba(42, 134, 66, 0.08);
+    border-radius: 32px;
+}
+
+.profile-muted-copy {
+    color: #dadada !important;
+}
+
+.profile-accent-link {
+    color: #e2394c !important;
+}
+
+.profile-ppv-label {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    color: #fff;
+    font-size: 11px;
+}
+
+@media (min-width: 1200px) {
+    .profile-content-row {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 33px;
+    }
+
+    .profile-content-row .profile-left-col {
+        flex: 0 0 485px;
+        max-width: 485px;
+        padding-right: 0;
+    }
+
+    .profile-content-row .profile-right-col {
+        flex: 1 1 auto;
+        max-width: none;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .profile-middle-content {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    .profile-recent-card {
+        padding: 1rem;
+    }
+
+    .profile-recent-grid {
+        gap: 0.625rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .profile-middle-content {
+        max-width: 21.875rem; /* 350px */
+        width: 100%;
+        margin-inline: auto;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .profile-content-row {
+        --bs-gutter-x: 0;
+        row-gap: 1rem;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .profile-content-row .profile-left-col,
+    .profile-content-row .profile-right-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .top_side_profile {
+        max-width: 21.875rem;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        align-items: stretch;
+        margin-inline: auto;
+        padding: 0.75rem 0.5rem !important;
+        border-radius: 0.75rem;
+        gap: 0.625rem;
+    }
+
+    .top_side_profile .nav_link {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .top_side_profile .nav_link a {
+        white-space: nowrap;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .profile-right-col .no_sub_msg {
+        max-width: 21.875rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 .text_color_white {
     color: #fff !important;
 }
-.storiesWrapper {
-    display: flex;
-    gap: 8px;
-    overflow: auto;
-}
-.dashboard_story {
-    border-radius: 16px !important;
-}
-.dashboard_other_story {
-    border-radius: 16px !important;
-    border: 1px solid #e2394c;
-}
-
 .main-no-updates {
     background-color: var(--no-updates-main-bg);
     padding: 24px;
@@ -2879,17 +3096,6 @@ a.btn-category:focus {
     width: 270px;
     height: auto;
 }
-/* 
-.right-side{
-    padding:40px;
-    border-radius: 20px;
-    background: linear-gradient(
-    to left,
-    rgba(120, 0, 0, 0.5),
-    rgba(0, 0, 0, 0.9) 45%,
-    #000 65%
-  );
-}*/
 .make_withdraw_btn {
     border: 1px solid #eaecf0;
     border-radius: 20px;
@@ -3989,18 +4195,6 @@ footer.footer-bg {
 }
 /* Footer */
 
-.no_sub_msg {
-    background: #e2394c33;
-    gap: 105px;
-    opacity: 1;
-    border-radius: 6px;
-    border-width: 1px;
-    padding-top: 20px;
-    padding-right: 24px;
-    padding-bottom: 20px;
-    padding-left: 24px;
-}
-
 /* Password Strength Meter */
 .strength-bar {
     width: 100%;
@@ -4824,11 +5018,700 @@ footer.footer-bg {
         padding-bottom: 6rem !important;
     }
 }
+
+/* Login page: figma-aligned dark theme only */
+.login-page-theme {
+    --login-bg: #000000;
+    --login-surface: #191919;
+    --login-input-bg: #161616;
+    --login-input-border: #1f1f1f;
+    --login-text: #ffffff;
+    --login-text-muted: #a3a3a3;
+    --login-placeholder: #8c8c8c;
+    --login-icon: #8d8d8d;
+    --login-primary: #e2394c;
+    --login-primary-hover: #d52d41;
+    --login-link: #ffffff;
+    --login-divider: #333333;
+    --login-error: #ff1f1f;
+    --login-facebook: #1877f2;
+    --login-google-bg: #ffffff;
+    --login-google-text: #344054;
+    --login-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.login-page-theme.auth-shell,
+.login-page-theme .auth-shell-row,
+.login-page-theme .right-side {
+    background: var(--login-bg);
+}
+
+.login-page-theme .login-figma-container {
+    max-width: 1232px;
+}
+
+.login-page-theme .login-figma-left-col {
+    color: var(--login-text);
+}
+
+.login-page-theme .login-figma-logo {
+    width: 125px;
+    height: 42px;
+}
+
+.login-page-theme .auth-title {
+    color: var(--login-text);
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+}
+
+.login-page-theme .login-figma-subtitle,
+.login-page-theme .login-figma-or,
+.login-page-theme .title_home_login {
+    color: var(--login-text-muted);
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0 !important;
+}
+
+.login-page-theme .login-figma-label {
+    color: var(--login-text);
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 500;
+    letter-spacing: 0 !important;
+}
+
+.login-page-theme .login-figma-social-btn {
+    border-radius: 10px;
+    height: 45px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.login-page-theme .btn-google.login-figma-social-btn,
+.login-page-theme .btn-google.login-figma-social-btn:hover,
+.login-page-theme .btn-google.login-figma-social-btn:focus {
+    background: var(--login-google-bg) !important;
+    color: var(--login-google-text) !important;
+    border-color: var(--login-google-bg) !important;
+}
+
+.login-page-theme .btn-facebook.login-figma-social-btn,
+.login-page-theme .btn-facebook.login-figma-social-btn:hover,
+.login-page-theme .btn-facebook.login-figma-social-btn:focus {
+    background: var(--login-facebook);
+    color: var(--login-text);
+    border-color: var(--login-facebook);
+}
+
+.login-page-theme .btn-twitter.login-figma-social-btn,
+.login-page-theme .btn-twitter.login-figma-social-btn:hover,
+.login-page-theme .btn-twitter.login-figma-social-btn:focus {
+    background: transparent;
+    color: var(--login-text);
+    border-color: var(--login-divider);
+}
+
+.login-page-theme .login-figma-input-wrap {
+    border-radius: 10px;
+    border: 1px solid var(--login-input-border);
+    background: var(--login-input-bg);
+    box-shadow: none;
+}
+
+.login-page-theme .login-figma-input-wrap .form-control,
+.login-page-theme .login-figma-input-wrap .input-group-text,
+.login-page-theme .login-figma-input {
+    height: 50px;
+    color: var(--login-text);
+    background: transparent !important;
+    font-size: 14px;
+    line-height: 1.35;
+    letter-spacing: 0 !important;
+}
+
+.login-page-theme .login-figma-input::placeholder {
+    color: var(--login-placeholder);
+}
+
+.login-page-theme .login-figma-pass-toggle {
+    color: var(--login-icon);
+}
+
+.login-page-theme .login-figma-remember .custom-control-label,
+.login-page-theme .login-figma-remember .custom-control-label span,
+.login-page-theme #forgotPassword {
+    color: var(--login-link);
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: 0 !important;
+}
+
+.login-page-theme .login-figma-social-btn,
+.login-page-theme .login-figma-submit,
+.login-page-theme #loginSpan,
+.login-page-theme .login-figma-hero-title {
+    letter-spacing: 0 !important;
+}
+
+.login-page-theme .login-figma-submit,
+.login-page-theme .btn-primary.login-figma-submit,
+.login-page-theme #btnLoginRegister {
+    background: var(--login-primary);
+    border-color: var(--login-primary);
+    border-radius: 10px;
+    height: 53px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.login-page-theme .login-figma-submit:hover,
+.login-page-theme .login-figma-submit:focus,
+.login-page-theme #btnLoginRegister:hover,
+.login-page-theme #btnLoginRegister:focus {
+    background: var(--login-primary-hover);
+    border-color: var(--login-primary-hover);
+}
+
+.login-page-theme .alert-danger {
+    background: var(--login-error);
+    border-color: var(--login-error);
+    color: var(--login-text);
+}
+
+.login-page-theme #loginSpan {
+    color: var(--login-text);
+}
+
+.login-page-theme .login-figma-switch-link {
+    color: var(--login-primary) !important;
+}
+
+/* Hide global chrome on home login page to match figma */
+.home-login-page .site-header,
+.home-login-page #mobileMenuOverlay,
+.home-login-page > .d-lg-none.d-flex.justify-content-center,
+.home-login-page footer,
+.home-login-page .footer-bg,
+.home-login-page .showBanner {
+    display: none !important;
+}
+
+.home-login-page .auth-shell {
+    min-height: 100vh;
+}
+
+.login-page-theme .login-figma-right-col {
+    border-radius: 20px;
+}
+
+.login-page-theme .login-figma-hero-logo {
+    width: 356px;
+    height: 120px;
+}
+
+.login-page-theme .login-figma-stack-img {
+    border-radius: 14px;
+    box-shadow: var(--login-shadow);
+    opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+    .login-page-theme.auth-shell {
+        min-height: calc(100vh - 72px);
+        padding: 20px 0 28px;
+    }
+    .login-page-theme .login-figma-left-col {
+        padding: 32px 28px;
+        max-width: none;
+    }
+    .login-page-theme .login-figma-card {
+        padding: 0;
+    }
+    .login-page-theme .login-figma-right-col {
+        min-height: 760px;
+        padding: 40px 34px;
+    }
+    .login-page-theme .login-figma-hero-title {
+        font-size: 24px !important;
+        line-height: 1.25;
+        margin-top: 18px;
+        margin-bottom: 24px !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .login-page-theme.auth-shell {
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+    .login-page-theme .login-figma-container {
+        max-width: 1376px;
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+    .login-page-theme .login-figma-row {
+        display: grid;
+        grid-template-columns: minmax(0, 636px) minmax(0, 636px);
+        column-gap: 40px;
+        justify-content: center;
+        align-items: center;
+        min-height: 946px;
+        border-radius: 0;
+        overflow: visible;
+    }
+    .login-page-theme .login-figma-left-col,
+    .login-page-theme .login-figma-right-col {
+        width: auto;
+        max-width: none;
+        flex: none;
+    }
+    .login-page-theme .login-figma-left-col {
+        margin: 0;
+        padding: 0 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    .login-page-theme .auth-logo-wrap {
+        margin-bottom: 80px;
+    }
+    .login-page-theme .login-figma-left-inner {
+        width: 100%;
+    }
+    .login-page-theme .login-figma-card {
+        width: 100%;
+        max-width: 476px;
+        padding: 0;
+    }
+    .login-page-theme .auth-title {
+        font-size: 32px;
+        line-height: 32px;
+    }
+    .login-page-theme .login-figma-subtitle {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .login-page-theme .login-figma-social {
+        margin-bottom: 0 !important;
+    }
+    .login-page-theme .login-figma-social-btn {
+        height: 44px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    .login-page-theme .login-figma-or {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .login-page-theme .login-figma-label {
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .login-page-theme .login-figma-input-wrap {
+        border-radius: 12px;
+        border: 0;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .login-page-theme .login-figma-input-wrap .form-control,
+    .login-page-theme .login-figma-input-wrap .input-group-text,
+    .login-page-theme .login-figma-input {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .login-page-theme .login-figma-remember .custom-control-label,
+    .login-page-theme .login-figma-remember .custom-control-label span,
+    .login-page-theme #forgotPassword {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+    .login-page-theme .login-figma-submit,
+    .login-page-theme .btn-primary.login-figma-submit,
+    .login-page-theme #btnLoginRegister {
+        height: 52px;
+        border-radius: 12px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    .login-page-theme .login-figma-switch-row {
+        margin-top: 20px !important;
+    }
+    .login-page-theme #loginSpan {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+    .login-page-theme .login-figma-right-col {
+        min-height: 946px;
+        padding: 40px;
+        border-radius: 20px;
+    }
+    .login-page-theme .login-figma-hero-title {
+        font-size: 24px !important;
+        line-height: 33px;
+        font-weight: 300;
+        margin-top: 24px;
+        margin-bottom: 32px !important;
+        max-width: 556px;
+    }
+}
+
+
+
+/* Auth form optimization: shared login + signup field system */
+.login-page-theme .login-figma-field {
+    margin-bottom: 1rem;
+}
+
+.login-page-theme .login-figma-field .login-figma-label-wrap {
+    margin-bottom: 0.375rem;
+}
+
+.login-page-theme .login-figma-field .login-figma-label {
+    display: inline-block;
+}
+
+.login-page-theme .loginRegisterWith {
+    display: inline;
+    margin-right: 0;
+}
+
+.login-page-theme #agree_gdpr.login-figma-gdpr {
+    margin-top: 0.75rem;
+}
+
+.login-page-theme #agree_gdpr.login-figma-gdpr .custom-control-label,
+.login-page-theme #agree_gdpr.login-figma-gdpr .custom-control-label span {
+    color: var(--login-text);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+.login-page-theme #agree_gdpr.login-figma-gdpr .custom-control-label a {
+    color: var(--login-text);
+    text-decoration: none;
+}
+
+.login-page-theme #agree_gdpr.login-figma-gdpr .custom-control-label a:hover {
+    color: var(--login-primary);
+}
+
+/* Left column alignment fix (login + signup) */
+@media (min-width: 75rem) {
+    .home-login-page .login-page-theme .login-figma-row {
+        grid-template-columns: minmax(0, 39.75rem) minmax(0, 39.75rem);
+        column-gap: 2.5rem;
+        min-height: 54.125rem;
+        align-items: stretch;
+    }
+
+    .home-login-page .login-page-theme .login-figma-left-col {
+        padding: 0 5rem;
+        padding-bottom: 0;
+        min-height: 54.125rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 3rem;
+    }
+
+    .home-login-page .login-page-theme .auth-logo-wrap {
+        margin-bottom: 0;
+    }
+
+    .home-login-page .login-page-theme .login-figma-left-inner {
+        width: 100%;
+        max-width: 29.75rem;
+    }
+
+    .home-login-page .login-page-theme .login-figma-card {
+        width: 100%;
+        max-width: 29.75rem;
+        padding: 0;
+    }
+}
+
+@media (max-width: 47.99875rem) {
+    .home-login-page .login-page-theme .login-figma-left-col {
+        padding: 0;
+        gap: 2rem;
+        align-items: flex-start;
+    }
+
+    .home-login-page .login-page-theme .login-figma-left-inner,
+    .home-login-page .login-page-theme .login-figma-card {
+        width: 100%;
+        max-width: 21.875rem;
+    }
+}
+
+/* Right panel alignment fix (login) */
+@media (min-width: 75rem) {
+    .home-login-page .login-page-theme .login-figma-right-col {
+        min-height: 54.125rem;
+        padding: 2.5rem;
+        border-radius: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 2rem;
+    }
+
+    .home-login-page .login-page-theme .login-figma-hero-logo {
+        width: 22.2725rem;
+        height: 7.5rem;
+        max-width: 100%;
+    }
+
+    .home-login-page .login-page-theme .login-figma-hero-title {
+        max-width: 34.75rem;
+        font-size: 1.5rem !important;
+        line-height: 2.0625rem;
+        font-weight: 300 !important;
+        margin-top: 0;
+        margin-bottom: 0 !important;
+    }
+
+    .home-login-page .login-page-theme .login-figma-hero-stack {
+        width: 100%;
+        max-width: 34.75rem;
+        margin-top: 0;
+    }
+
+    .home-login-page .login-page-theme .login-figma-stack-img {
+        width: 100%;
+        max-width: 34.75rem;
+        height: auto;
+        opacity: 0.5;
+    }
+
+    .home-login-page .login-page-theme .login-figma-switch-row {
+        margin-top: 1.25rem !important;
+        padding-top: 0;
+    }
+
+}
+
+@media (min-width: 48rem) and (max-width: 74.99875rem) {
+    .home-login-page .login-page-theme .login-figma-right-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 1.75rem 1.5rem;
+    }
+
+    .home-login-page .login-page-theme .login-figma-hero-title {
+        margin-top: 1rem;
+        margin-bottom: 1.25rem !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .login-page-theme.auth-shell {
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+    .login-page-theme .login-figma-container {
+        width: 100%;
+        max-width: 390px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .login-page-theme .login-figma-row {
+        min-height: auto;
+        border-radius: 0;
+        border: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .login-page-theme .login-figma-left-col {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+    }
+    .login-page-theme .auth-logo-wrap {
+        margin-bottom: 0;
+    }
+    .login-page-theme .login-figma-logo {
+        display: block;
+        margin: 0;
+    }
+    .login-page-theme .login-figma-left-inner {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+    .login-page-theme .login-figma-card {
+        padding: 0;
+    }
+    .login-page-theme .auth-title {
+        font-size: 24px;
+        line-height: 36px;
+    }
+    .login-page-theme .login-figma-subtitle,
+    .login-page-theme .login-figma-or {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .login-page-theme .login-figma-social {
+        margin-bottom: 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .login-page-theme .login-figma-label,
+    .login-page-theme .login-figma-input {
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .login-page-theme .login-figma-social-btn {
+        height: 44px;
+        border-radius: 8px;
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+    .login-page-theme .login-figma-input-wrap {
+        border-radius: 12px;
+        border: 0;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .login-page-theme .login-figma-input-wrap .form-control,
+    .login-page-theme .login-figma-input-wrap .input-group-text,
+    .login-page-theme .login-figma-input {
+        height: 50px;
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .login-page-theme .login-figma-submit,
+    .login-page-theme .btn-primary.login-figma-submit,
+    .login-page-theme #btnLoginRegister {
+        height: 52px;
+        border-radius: 12px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    .login-page-theme .login-figma-remember .custom-control-label,
+    .login-page-theme .login-figma-remember .custom-control-label span,
+    .login-page-theme #forgotPassword {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+    .login-page-theme #loginSpan,
+    .login-page-theme .login-figma-switch-link {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    .login-page-theme .auth-title {
+        font-size: 34px;
+        line-height: 1.22;
+        letter-spacing: 0 !important;
+    }
+    .login-page-theme .login-figma-subtitle,
+    .login-page-theme .login-figma-or {
+        font-size: 13px;
+    }
+    .login-page-theme .login-figma-label,
+    .login-page-theme .login-figma-input {
+        font-size: 13px;
+    }
+    .login-page-theme .login-figma-social-btn {
+        font-size: 13px;
+    }
+    .login-page-theme .login-figma-submit,
+    .login-page-theme .btn-primary.login-figma-submit,
+    .login-page-theme #btnLoginRegister {
+        font-size: 13px;
+    }
+
+    /* Tablet layout normalization: strict 2-column flow with no fixed desktop geometry */
+    .login-page-theme .login-figma-container {
+        max-width: 100%;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .login-page-theme .login-figma-row {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        min-height: auto;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .login-page-theme .login-figma-left-col,
+    .login-page-theme .login-figma-right-col {
+        flex: 0 0 50%;
+        max-width: 50%;
+        width: 50%;
+    }
+
+    .login-page-theme .login-figma-left-col {
+        margin: 0;
+        padding: 28px 24px;
+    }
+
+    .login-page-theme .login-figma-right-col {
+        min-height: auto;
+        padding: 28px 24px;
+        border-radius: 0;
+    }
+
+    .login-page-theme .login-figma-hero-logo {
+        width: 280px;
+        height: auto;
+        max-width: 100%;
+    }
+
+    .login-page-theme .login-figma-hero-title {
+        font-size: 24px !important;
+        line-height: 1.28;
+        margin-top: 14px;
+        margin-bottom: 18px !important;
+        max-width: 100%;
+    }
+
+    .login-page-theme .login-figma-hero-stack {
+        margin-top: 20px;
+    }
+
+    .login-page-theme .login-figma-stack-img {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        transform: none;
+        opacity: 0.55;
+    }
+}
 @media (max-width: 1199.98px) {
     .auth-shell-row {
         min-height: auto;
         border-radius: 18px;
-        border: 1px solid #171717;
     }
     .auth-form-left {
         max-width: 620px;
@@ -4864,43 +5747,43 @@ footer.footer-bg {
     .inline-padding.resetpwd-form-left {
         padding-inline: 0;
     }
-    .auth-shell {
+    body:not(.login-page-theme) .auth-shell {
         padding-top: 10px;
         min-height: calc(100vh - 58px);
     }
-    .auth-shell-row {
+    body:not(.login-page-theme) .auth-shell-row {
         border-radius: 0;
         border: 0;
         min-height: calc(100vh - 72px);
     }
-    .auth-form-left {
+    body:not(.login-page-theme) .auth-form-left {
         padding: 20px 14px 30px;
     }
-    .auth-title {
-        font-size: 32px;
+    body:not(.login-page-theme) .auth-title {
+        font-size: 24px;
         line-height: 1.25;
     }
-    .auth-shell .title_login {
+    body:not(.login-page-theme) .auth-shell .title_login {
         font-size: 15px;
         line-height: 1.45;
     }
-    .auth-shell .form-group > .mb-1 span {
+    body:not(.login-page-theme) .auth-shell .form-group > .mb-1 span {
         font-size: 15px;
     }
-    .auth-shell .input-group-alternative .form-control,
-    .auth-shell .input-group-alternative .input-group-text,
-    .auth-shell .auth-form-btn {
+    body:not(.login-page-theme) .auth-shell .input-group-alternative .form-control,
+    body:not(.login-page-theme) .auth-shell .input-group-alternative .input-group-text,
+    body:not(.login-page-theme) .auth-shell .auth-form-btn {
         height: 46px;
     }
-    .auth-shell .btn-primary {
+    body:not(.login-page-theme) .auth-shell .btn-primary {
         height: 50px;
         font-size: 15px;
     }
-    .auth-shell .auth-switch {
+    body:not(.login-page-theme) .auth-shell .auth-switch {
         font-size: 15px;
     }
-    .auth-shell .custom-control-label,
-    .auth-shell .custom-control-label span {
+    body:not(.login-page-theme) .auth-shell .custom-control-label,
+    body:not(.login-page-theme) .auth-shell .custom-control-label span {
         font-size: 13px;
     }
 }
@@ -4999,6 +5882,7 @@ footer.footer-bg {
     background: none;
     border: none;
     box-shadow: none !important;
+    width:100%;
 }
 
 .left-settings-sidebar .card > .list-group {
@@ -5265,4 +6149,1563 @@ footer.footer-bg {
         float: none !important;
     }
     /* Hide 'Shares' text on very small screens if needed, or just let it shrink */
+}
+
+/* Home login page: consolidated and in-use styles only */
+.home-login-page {
+    --hl-bg: #000000;
+    --hl-panel-bg: #000000;
+    --hl-panel-glow: rgb(81 20 27 / 42%);
+    --hl-text: #ffffff;
+    --hl-muted: #a3a3a3;
+    --hl-input-bg: #181818;
+    --hl-input-border: #1f1f1f;
+    --hl-placeholder: #8c8c8c;
+    --hl-primary: #e2394c;
+    --hl-primary-hover: #cf3244;
+    --hl-facebook: #1877f2;
+    --hl-twitter-border: #1f1f1f;
+    --hl-right-glow: rgb(81 20 27 / 42%);
+}
+
+.home-login-page .auth-shell {
+    background: var(--hl-bg);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.home-login-page .login-figma-container {
+    max-width: 86rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.home-login-page .login-figma-row {
+    min-height: 59.125rem;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: var(--hl-bg);
+}
+
+.home-login-page .login-figma-left-col {
+    padding: 2rem 0;
+    color: var(--hl-text);
+}
+
+.home-login-page .auth-logo-wrap {
+    margin-bottom: 3.75rem;
+}
+
+.home-login-page .login-figma-left-inner,
+.home-login-page .login-figma-card,
+.home-login-page #full_name,
+.home-login-page #email,
+.home-login-page #username_email,
+.home-login-page #agree_gdpr,
+.home-login-page #btnLoginRegister {
+    width: 100%;
+    max-width: 29.75rem;
+}
+
+.home-login-page .auth-title {
+    color: var(--hl-text);
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 700 !important;
+}
+
+.home-login-page .login-figma-subtitle,
+.home-login-page .login-figma-or,
+.home-login-page .login-figma-hero-title {
+    color: var(--hl-muted);
+}
+
+.home-login-page .login-figma-subtitle,
+.home-login-page .login-figma-or,
+.home-login-page .login-figma-label,
+.home-login-page .login-figma-input,
+.home-login-page .login-figma-social-btn,
+.home-login-page #forgotPassword,
+.home-login-page .login-figma-remember .custom-control-label,
+.home-login-page .login-figma-remember .custom-control-label span,
+.home-login-page #loginSpan,
+.home-login-page .login-figma-switch-link {
+    font-size: 1rem;
+}
+
+.home-login-page .login-figma-label {
+    color: var(--hl-text);
+    line-height: 1.25;
+    font-weight: 500;
+}
+
+.home-login-page .login-figma-social-btn {
+    height: 2.75rem;
+    border-radius: 0.625rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.home-login-page .btn-google.login-figma-social-btn {
+    background: #ffffff !important;
+    color: #344054 !important;
+    border-color: #ffffff !important;
+}
+
+.home-login-page .btn-facebook.login-figma-social-btn {
+    background: var(--hl-facebook);
+    border-color: var(--hl-facebook);
+    color: var(--hl-text);
+}
+
+.home-login-page .btn-twitter.login-figma-social-btn {
+    background: transparent;
+    border-color: var(--hl-twitter-border);
+    color: var(--hl-text);
+}
+
+.home-login-page .login-figma-input-wrap {
+    border-radius: 0.625rem;
+    border: 0.0625rem solid var(--hl-input-border);
+    background: var(--hl-input-bg);
+}
+
+.home-login-page .login-figma-input-wrap .form-control,
+.home-login-page .login-figma-input-wrap .input-group-text,
+.home-login-page .login-figma-input {
+    height: 3.125rem;
+    color: var(--hl-text);
+    background: transparent !important;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.home-login-page .login-figma-input::placeholder {
+    color: var(--hl-placeholder);
+}
+
+.home-login-page .login-figma-pass-toggle,
+.home-login-page #forgotPassword,
+.home-login-page #loginSpan {
+    color: var(--hl-text);
+}
+
+.home-login-page .login-figma-submit,
+.home-login-page #btnLoginRegister {
+    background: var(--hl-primary);
+    border-color: var(--hl-primary);
+    border-radius: 0.625rem;
+    height: 3.1875rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.home-login-page .login-figma-submit:hover,
+.home-login-page .login-figma-submit:focus,
+.home-login-page #btnLoginRegister:hover,
+.home-login-page #btnLoginRegister:focus {
+    background: var(--hl-primary-hover);
+    border-color: var(--hl-primary-hover);
+}
+
+.home-login-page .login-figma-switch-link {
+    color: var(--hl-primary) !important;
+}
+
+.home-login-page .login-figma-right-col {
+    padding: 2.5rem 3.375rem;
+    background: radial-gradient(
+            96% 112% at 132% 52%,
+            rgb(81 20 27 / 62%) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            46% 36% at 102% 6%,
+            rgb(81 20 27 / 100%) 0%,
+            transparent 74%
+        ),
+        radial-gradient(
+            46% 36% at 102% 94%,
+            rgb(81 20 27 / 100%) 0%,
+            transparent 74%
+        ),
+        var(--hl-panel-bg) !important;
+}
+
+.home-login-page .login-figma-hero-logo {
+    width: 22.25rem;
+    height: 7.5rem;
+}
+
+.home-login-page .login-figma-hero-title {
+    max-width: 31.5rem;
+    font-size: 2.25rem !important;
+    line-height: 1.28;
+    font-weight: 300;
+    margin-top: 1.5rem;
+    margin-bottom: 1.75rem !important;
+}
+
+.home-login-page .login-figma-hero-stack {
+    margin-top: 1rem;
+    max-width: 33.75rem;
+}
+
+.home-login-page .login-figma-stack-img {
+    max-width: 33.75rem;
+    border-radius: 0.875rem;
+    opacity: 0.5;
+    box-shadow: 0 1.25rem 2.5rem rgb(0 0 0 / 60%);
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+@media (max-width: 47.99875rem) {
+    .home-login-page .auth-shell {
+        padding: 1.25rem 0;
+    }
+
+    .home-login-page .login-figma-container {
+        max-width: 24.375rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    .home-login-page .login-figma-row {
+        min-height: auto;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .home-login-page .login-figma-left-col {
+        padding: 0;
+        gap: 2rem;
+    }
+
+    .home-login-page .auth-logo-wrap {
+        margin-bottom: 0;
+    }
+
+    .home-login-page .login-figma-left-inner,
+    .home-login-page .login-figma-card {
+        max-width: 100%;
+    }
+
+    .home-login-page .auth-title {
+        font-size: 2.25rem;
+        line-height: 1.2;
+    }
+
+    .home-login-page .login-figma-input-wrap {
+        border-radius: 0.75rem;
+    }
+
+    .home-login-page .login-figma-right-col {
+        display: none !important;
+    }
+}
+
+/* Forgot password: dark-only figma alignment */
+.forgot-password-page {
+    --fp-bg: #000000;
+    --fp-text: #ffffff;
+    --fp-muted: #a3a3a3;
+    --fp-input-bg: rgba(255, 255, 255, 0.1);
+    --fp-input-text: #ffffff;
+    --fp-placeholder: #a3a3a3;
+    --fp-primary: #e2394c;
+    --fp-primary-hover: #d52d41;
+    --fp-primary-text: #fcfcfc;
+    min-height: 100vh;
+    background: var(--fp-bg);
+    padding: 2rem 0 1rem;
+}
+
+.forgot-password-container {
+    max-width: 86rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.forgot-password-row {
+    min-height: 49.125rem;
+    background: var(--fp-bg);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    gap: 2.5rem;
+    flex-wrap: nowrap;
+}
+
+.forgot-password-left,
+.forgot-password-right {
+    flex: 0 0 calc(50% - 1.25rem);
+    max-width: calc(50% - 1.25rem);
+}
+
+.forgot-password-left {
+    color: var(--fp-text);
+    min-height: 49.125rem;
+    padding: 2.5rem 3.375rem;
+    padding-top: 0;
+    justify-content: flex-start;
+    gap: 14rem;
+}
+
+.forgot-brand-logo {
+    width: 9.6725rem;
+    height: auto;
+}
+
+.forgot-header-logo {
+    width: 7.8125rem;
+    height: auto;
+}
+
+.forgot-password-form {
+    max-width: 25rem;
+    width: 100%;
+    gap: 2rem;
+}
+
+.forgot-title-wrap {
+    gap: 1.25rem;
+}
+
+.forgot-back-link {
+    color: var(--fp-text);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.forgot-title {
+    color: var(--fp-text);
+    font-size: 2rem;
+    line-height: 3rem;
+    font-weight: 700;
+}
+
+.forgot-subtitle {
+    color: var(--fp-muted);
+    font-size: 1rem;
+    line-height: 1.625rem;
+    font-weight: 400;
+}
+
+.forgot-label {
+    color: var(--fp-text);
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+}
+
+.forgot-input-wrap {
+    width: 25rem;
+    max-width: 25rem;
+    height: 3.125rem;
+    border-radius: 0.75rem;
+    background: var(--fp-input-bg);
+    padding: 0.75rem 0.875rem;
+    align-items: center;
+}
+
+.forgot-input {
+    height: 100%;
+    width: 100%;
+    border: 0;
+    color: var(--fp-input-text);
+    font-size: 1rem;
+    line-height: 1.625rem;
+    padding: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.forgot-input::placeholder {
+    color: var(--fp-placeholder);
+}
+
+.forgot-password-page .btn-primary {
+    --bs-btn-bg: var(--fp-primary);
+    --bs-btn-border-color: var(--fp-primary);
+    --bs-btn-hover-bg: var(--fp-primary-hover);
+    --bs-btn-hover-border-color: var(--fp-primary-hover);
+    --bs-btn-active-bg: var(--fp-primary-hover);
+    --bs-btn-active-border-color: var(--fp-primary-hover);
+    --bs-btn-color: var(--fp-primary-text);
+    --bs-btn-disabled-bg: var(--fp-primary);
+    --bs-btn-disabled-border-color: var(--fp-primary);
+}
+
+.forgot-submit-btn {
+    width: 25rem;
+    max-width: 25rem;
+    height: 3.25rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.forgot-recaptcha,
+.forgot-recaptcha a {
+    color: var(--fp-text);
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.forgot-recaptcha a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password-right {
+    position: relative;
+    min-height: 49.125rem;
+    background: radial-gradient(
+            96% 112% at 132% 52%,
+            rgb(81 20 27 / 62%) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            46% 36% at 102% 6%,
+            rgb(81 20 27 / 100%) 0%,
+            transparent 74%
+        ),
+        radial-gradient(
+            46% 36% at 102% 94%,
+            rgb(81 20 27 / 100%) 0%,
+            transparent 74%
+        ),
+        var(--fp-bg) !important;
+    border-radius: 1.25rem;
+    padding: 2.5rem 3.375rem;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.forgot-hero-logo {
+    width: 22.2725rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.forgot-hero-title {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--fp-muted);
+    font-size: 1.5rem;
+    line-height: 2.0625rem;
+    font-weight: 300;
+    max-width: 34.75rem;
+}
+
+.forgot-stack-img {
+    width: 100%;
+    max-width: 33rem;
+    opacity: 0.95;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+@media (max-width: 991.98px) {
+    .forgot-password-left {
+        padding: 0 2.5rem;
+    }
+
+    .forgot-password-right {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .forgot-password-page {
+        padding: 0;
+        min-height: 52.75rem;
+    }
+
+    .forgot-password-container {
+        max-width: 24.375rem;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .forgot-password-row {
+        min-height: 47.6875rem;
+        padding: 0;
+        gap: 0;
+        flex-wrap: wrap;
+        border-radius: 0;
+    }
+
+    .forgot-password-left {
+        flex: 0 0 100%;
+        max-width: 100%;
+        min-height: 47.6875rem;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .forgot-mobile-header {
+        width: min(21.875rem, calc(100vw - 2.5rem));
+        max-width: 21.875rem;
+        height: 2.625rem;
+        gap: 1.125rem;
+    }
+
+    .forgot-password-form {
+        width: min(21.875rem, calc(100vw - 2.5rem));
+        max-width: 21.875rem;
+        min-height: 40.5625rem;
+    }
+
+    .forgot-title-wrap {
+        gap: 1.25rem;
+        width: min(21.875rem, calc(100vw - 2.5rem));
+    }
+
+    .forgot-input-wrap,
+    .forgot-submit-btn {
+        width: min(21.875rem, calc(100vw - 2.5rem));
+        max-width: 21.875rem;
+    }
+
+    .forgot-recaptcha {
+        width: min(21.875rem, calc(100vw - 2.5rem));
+    }
+
+    .forgot-title {
+        font-size: 1.5rem;
+        line-height: 2.25rem;
+    }
+
+    .forgot-subtitle {
+        font-size: 1rem;
+        line-height: 1.625rem;
+    }
+
+    .forgot-recaptcha {
+        text-align: left;
+    }
+}
+
+/* Reset password page: figma-aligned dark mode only */
+.reset-password-page {
+    --rp-bg: #000000;
+    --rp-text: #ffffff;
+    --rp-muted: #a3a3a3;
+    --rp-input-bg: rgba(255, 255, 255, 0.1);
+    --rp-input-text: #a3a3a3;
+    --rp-track: #d9d9d9;
+    --rp-danger: #b91c1c;
+    --rp-primary: #e2394c;
+    --rp-primary-hover: #d52d41;
+    --rp-btn-text: #fcfcfc;
+    --rp-glow: rgba(226, 57, 76, 0.5);
+    --rp-strength: linear-gradient(
+        90deg,
+        #e2a139 0%,
+        #aa5a31 54.64%,
+        #00ff43 100%
+    );
+}
+
+.reset-password-page.auth-shell {
+    background: var(--rp-bg);
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.reset-password-page .reset-password-container {
+    max-width: 86rem;
+    padding: 0;
+}
+
+.reset-password-page .reset-password-row {
+    min-height: 59.125rem;
+    background: var(--rp-bg);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    gap: 2.5rem;
+    flex-wrap: nowrap;
+}
+
+.reset-password-page .reset-password-left,
+.reset-password-page .reset-password-right {
+    flex: 0 0 calc(50% - 1.25rem);
+    max-width: calc(50% - 1.25rem);
+}
+
+.reset-password-page .reset-password-left {
+    min-height: 59.125rem;
+    padding: 0 5rem;
+    color: var(--rp-text);
+    gap: 3rem;
+    justify-content: center;
+}
+
+.reset-password-page .reset-logo-wrap {
+    width: 29.75rem;
+    max-width: 100%;
+}
+
+.reset-password-page .reset-password-content,
+.reset-password-page #passwordResetForm {
+    width: 100%;
+    max-width: 29.75rem;
+}
+
+.reset-password-page .auth-title {
+    color: var(--rp-text);
+    font-size: 2rem;
+    line-height: 3rem;
+    font-weight: 700 !important;
+}
+
+.reset-password-page .title_login {
+    color: var(--rp-muted) !important;
+    font-size: 1rem;
+    line-height: 1.625rem;
+    font-weight: 400;
+}
+
+.reset-password-page .reset-password-form {
+    gap: 1.5rem;
+}
+
+.reset-password-page .form-group > .mb-1 span {
+    color: var(--rp-text);
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+}
+
+.reset-password-page .input-group-alternative {
+    border: 0;
+    border-radius: 0.75rem;
+    box-shadow: none;
+    background: var(--rp-input-bg);
+}
+
+.reset-password-page .input-group-alternative .form-control,
+.reset-password-page .input-group-alternative .input-group-text {
+    height: 3.125rem;
+    color: var(--rp-input-text);
+    background: transparent !important;
+    font-size: 1rem;
+    line-height: 1.625rem;
+}
+
+.reset-password-page .input-group-alternative .form-control::placeholder {
+    color: var(--rp-input-text);
+}
+
+.reset-password-page .strength-bar {
+    height: 0.875rem;
+    border-radius: 18.75rem;
+    background: var(--rp-track);
+    margin-top: 0.375rem;
+}
+
+.reset-password-page .strength-fill {
+    width: 17.4375%;
+    background: var(--rp-strength);
+    border-radius: 18.75rem 0 0 18.75rem;
+}
+
+.reset-password-page .strength-text {
+    margin-top: 0.375rem;
+    font-size: 1rem;
+    line-height: 1.625rem;
+    color: var(--rp-muted);
+}
+
+.reset-password-page .strength-hint {
+    margin-top: 0.375rem;
+    font-size: 1rem;
+    line-height: 1.625rem;
+    color: var(--rp-danger);
+}
+
+.reset-password-page .reset-submit-wrap {
+    margin-top: 0;
+}
+
+.reset-password-page .btn-primary {
+    --bs-btn-bg: var(--rp-primary);
+    --bs-btn-border-color: var(--rp-primary);
+    --bs-btn-hover-bg: var(--rp-primary-hover);
+    --bs-btn-hover-border-color: var(--rp-primary-hover);
+    --bs-btn-active-bg: var(--rp-primary-hover);
+    --bs-btn-active-border-color: var(--rp-primary-hover);
+    --bs-btn-color: var(--rp-btn-text);
+    --bs-btn-disabled-bg: var(--rp-primary);
+    --bs-btn-disabled-border-color: var(--rp-primary);
+}
+
+.reset-password-page .reset-submit-btn {
+    height: 3.25rem;
+    border-radius: 0.75rem;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+}
+
+.reset-password-page .reset-password-right {
+    position: relative;
+    padding: 2.5rem;
+    border-radius: 1.25rem;
+    background: radial-gradient(
+            96% 112% at 132% 52%,
+            rgb(81 20 27 / 62%) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            46% 36% at 102% 6%,
+            rgb(81 20 27 / 100%) 0%,
+            transparent 74%
+        ),
+        radial-gradient(
+            46% 36% at 102% 94%,
+            rgb(81 20 27 / 100%) 0%,
+            transparent 74%
+        ),
+        var(--rp-bg) !important;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.reset-password-page .reset-password-right::after {
+    content: none;
+}
+
+.reset-password-page .auth-hero-logo,
+.reset-password-page .title_home_login,
+.reset-password-page .image-stack {
+    position: relative;
+    z-index: 1;
+}
+
+.reset-password-page .auth-hero-logo {
+    width: 22.2725rem;
+    height: auto;
+    margin-top: 0 !important;
+}
+
+.reset-password-page .title_home_login {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem !important;
+    max-width: 34.75rem;
+    color: var(--rp-muted) !important;
+    font-size: 1.5rem !important;
+    line-height: 2.0625rem;
+    font-weight: 300;
+}
+
+.reset-password-page .image-stack {
+    width: 100%;
+    max-width: 33rem;
+}
+
+.reset-password-page .stack-img {
+    width: 100%;
+    max-width: 33rem;
+    opacity: 0.5;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+@media (max-width: 47.99875rem) {
+    .reset-password-page.auth-shell,
+    body:not(.login-page-theme) .reset-password-page.auth-shell {
+        min-height: 51.1875rem;
+        padding: 0;
+    }
+
+    .reset-password-page .reset-password-container {
+        max-width: 24.375rem;
+        padding: 0;
+    }
+
+    .reset-password-page .reset-password-row,
+    body:not(.login-page-theme) .reset-password-page .reset-password-row {
+        min-height: 51.1875rem;
+        border-radius: 0;
+        gap: 0;
+        flex-wrap: wrap;
+    }
+
+    .reset-password-page .reset-password-left,
+    body:not(.login-page-theme) .reset-password-page .reset-password-left {
+        flex: 0 0 100%;
+        max-width: 100%;
+        min-height: 46.125rem;
+        padding: 2.5rem;
+        gap: 2rem;
+    }
+
+    .reset-password-page .reset-logo-wrap,
+    .reset-password-page .reset-password-content,
+    .reset-password-page #passwordResetForm,
+    .reset-password-page .reset-submit-btn {
+        width: min(21.875rem, calc(100vw - 2.5rem));
+        max-width: 21.875rem;
+    }
+
+    .reset-password-page .auth-title,
+    body:not(.login-page-theme) .reset-password-page .auth-title {
+        font-size: 1.5rem;
+        line-height: 2.25rem;
+    }
+
+    .reset-password-page .title_login,
+    body:not(.login-page-theme) .reset-password-page .title_login {
+        font-size: 1rem;
+        line-height: 1.625rem;
+    }
+
+    .reset-password-page .reset-password-right {
+        display: none !important;
+    }
+}
+
+/* Auth App Shell (Figma-aligned baseline) */
+:root {
+    --co-light-bg: #f6f7fb;
+    --co-light-surface: #ffffff;
+    --co-light-border: rgba(17, 24, 39, 0.08);
+    --co-light-text: #111827;
+    --co-light-muted: #6b7280;
+    --co-light-menu-item: #eef1f6;
+    --co-light-menu-active: #e2394c;
+    --co-light-footer: #ffffff;
+
+    --co-dark-bg: #000000;
+    --co-dark-surface: rgba(255, 255, 255, 0.1);
+    --co-dark-border: rgba(255, 255, 255, 0.1);
+    --co-dark-text: #ffffff;
+    --co-dark-muted: #a3a3a3;
+    --co-dark-menu-item: #202020;
+    --co-dark-menu-active: #e2394c;
+    --co-dark-footer: #171717;
+
+    --co-shadow: 0 0.25rem 1.5625rem rgba(42, 134, 66, 0.08);
+    --co-radius-lg: 2rem;
+    --co-radius-md: 1rem;
+}
+
+.app-auth-shell {
+    --co-bg: var(--co-light-bg);
+    --co-surface: var(--co-light-surface);
+    --co-border: var(--co-light-border);
+    --co-text: var(--co-light-text);
+    --co-muted: var(--co-light-muted);
+    --co-menu-item: var(--co-light-menu-item);
+    --co-menu-active: var(--co-light-menu-active);
+    --co-footer: var(--co-light-footer);
+    background: var(--co-bg);
+    color: var(--co-text);
+}
+
+html[data-bs-theme="dark"] .app-auth-shell {
+    --co-bg: var(--co-dark-bg);
+    --co-surface: var(--co-dark-surface);
+    --co-border: var(--co-dark-border);
+    --co-text: var(--co-dark-text);
+    --co-muted: var(--co-dark-muted);
+    --co-menu-item: var(--co-dark-menu-item);
+    --co-menu-active: var(--co-dark-menu-active);
+    --co-footer: var(--co-dark-footer);
+}
+
+.app-auth-shell .modern-navbar.site-header {
+    width: calc(100% - 4rem);
+    max-width: 92rem;
+    margin: 2rem auto 1.5rem !important;
+    padding: 1rem !important;
+    border-radius: var(--co-radius-lg);
+    border: 0.0625rem solid var(--co-border);
+    background: var(--co-surface) !important;
+    box-shadow: var(--co-shadow);
+}
+
+.app-auth-shell .modern-navbar.site-header .container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.app-auth-shell .search-bar {
+    border: 0.0625rem solid var(--co-border);
+    background: var(--co-surface);
+    color: var(--co-text);
+    border-radius: 0.75rem;
+}
+
+.app-auth-shell .modern-navbar.site-header .site-header-collapse {
+    display: flex !important;
+    align-items: center;
+    gap: 1rem;
+}
+
+.app-auth-shell .modern-navbar.site-header .site-header-center {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.app-auth-shell .modern-navbar.site-header .site-header-actions {
+    flex: 0 0 auto;
+    margin-left: auto !important;
+}
+
+.app-auth-shell .dashboard-home-container {
+    width: calc(100% - 4rem);
+    max-width: 86rem;
+    margin-inline: auto;
+}
+
+.app-auth-shell .section-sm {
+    padding: 0 !important;
+}
+
+.app-auth-shell .section {
+    background: var(--co-bg) !important;
+}
+
+.app-auth-shell main .container-fluid {
+    width: calc(100% - 4rem);
+    max-width: 92rem;
+    margin-inline: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (min-width: 48rem) and (max-width: 61.99875rem) {
+    .app-auth-shell .modern-navbar.site-header {
+        width: calc(100% - 4rem);
+        max-width: 86rem;
+    }
+
+    .app-auth-shell .dashboard-home-container,
+    .app-auth-shell main .container-fluid {
+        width: calc(100% - 4rem);
+        max-width: 86rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-collapse {
+        gap: 0.75rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-search {
+        flex: 0 0 13rem;
+        max-width: 13rem;
+        margin-right: 0.5rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-center {
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 0.25rem;
+        flex-wrap: nowrap;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-center .navbar_mid_link {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem;
+        white-space: nowrap;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-actions {
+        gap: 0.25rem;
+    }
+
+    .app-auth-shell .app-main-row,
+    .app-auth-shell .dashboard-main-row {
+        --bs-gutter-x: 1rem;
+        row-gap: 1rem;
+    }
+
+    .app-auth-shell .dashboard-left-col {
+        flex: 0 0 28%;
+        max-width: 28%;
+    }
+
+    .app-auth-shell .dashboard-center-col {
+        flex: 0 0 72%;
+        max-width: 72%;
+        padding-inline: 0.5rem;
+    }
+
+    .app-auth-shell .dashboard-right-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .app-auth-shell .dashboard-right-col .sticky-top {
+        position: static;
+    }
+
+    .app-auth-shell .menu-left-home {
+        padding: 0.75rem;
+        border-radius: 1.25rem;
+    }
+
+    .app-auth-shell .sidebar_li {
+        padding: 0.25rem 0.375rem;
+    }
+
+    .app-auth-shell .sidebar_li a {
+        font-size: 0.9375rem !important;
+        line-height: 1.35;
+    }
+
+    .app-auth-shell .storiesWrapper {
+        gap: 0.375rem;
+        padding: 0.5rem !important;
+    }
+
+    .app-auth-shell .dashboard_story {
+        width: 5.5rem;
+        height: 5.5rem;
+    }
+
+    .app-auth-shell .my_flash_main {
+        font-size: 0.8125rem;
+        line-height: 1.25rem;
+    }
+}
+
+@media (min-width: 62rem) and (max-width: 74.99875rem) {
+    .app-auth-shell .modern-navbar.site-header {
+        width: calc(100% - 3rem);
+        padding: 0.875rem !important;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-collapse {
+        gap: 0.625rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-search {
+        flex: 0 0 12rem;
+        max-width: 12rem;
+        margin-right: 0.25rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-center {
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 0.125rem;
+        flex-wrap: nowrap;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-center .navbar_mid_link {
+        padding-left: 0.375rem !important;
+        padding-right: 0.375rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem;
+        white-space: nowrap;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-actions {
+        gap: 0.125rem;
+    }
+
+    .app-auth-shell .dashboard-home-container,
+    .app-auth-shell main .container-fluid {
+        width: calc(100% - 3rem);
+    }
+
+    .app-auth-shell .app-main-row,
+    .app-auth-shell .dashboard-main-row {
+        --bs-gutter-x: 1rem;
+        row-gap: 1rem;
+    }
+
+    .app-auth-shell .dashboard-left-col {
+        flex: 0 0 24%;
+        max-width: 24%;
+    }
+
+    .app-auth-shell .dashboard-center-col {
+        flex: 0 0 52%;
+        max-width: 52%;
+        padding-inline: 0.5rem;
+    }
+
+    .app-auth-shell .dashboard-right-col {
+        flex: 0 0 24%;
+        max-width: 24%;
+        margin-top: 0;
+    }
+
+    .app-auth-shell .dashboard-right-col .sticky-top {
+        position: sticky;
+    }
+}
+
+.app-auth-shell main .container-fluid.pt-lg-5,
+.app-auth-shell main .container-fluid.pt-2,
+.app-auth-shell main .container-fluid.pt-3,
+.app-auth-shell main .container-fluid.py-4 {
+    padding-top: 0 !important;
+}
+
+.app-auth-shell .app-main-row,
+.app-auth-shell .dashboard-main-row {
+    --bs-gutter-x: 2.0625rem;
+    align-items: flex-start;
+}
+
+.app-auth-shell .app-main-row:not(.dashboard-main-row) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.app-auth-shell .app-main-row:not(.dashboard-main-row) > [class*="col-"] {
+    padding-left: 1.03125rem;
+    padding-right: 1.03125rem;
+}
+
+.app-auth-shell .app-main-row:not(.dashboard-main-row) > [class*="col-"]:first-child {
+    padding-left: 1.03125rem;
+}
+
+.app-auth-shell .app-main-row:not(.dashboard-main-row) > [class*="col-"]:last-child {
+    padding-right: 1.03125rem;
+}
+
+.app-auth-shell .dashboard-main-row {
+    margin-left: calc(var(--bs-gutter-x, 2.0625rem) * -0.5) !important;
+    margin-right: calc(var(--bs-gutter-x, 2.0625rem) * -0.5) !important;
+}
+
+.app-auth-shell .dashboard-main-row > [class*="col-"] {
+    padding-left: calc(var(--bs-gutter-x, 2.0625rem) * 0.5);
+    padding-right: calc(var(--bs-gutter-x, 2.0625rem) * 0.5);
+}
+
+.app-auth-shell .menu-left-home {
+    background: var(--co-surface);
+    border: 0.0625rem solid var(--co-border);
+    border-radius: var(--co-radius-lg);
+    box-shadow: var(--co-shadow);
+}
+
+.app-auth-shell .menu-left-home li a {
+    color: var(--co-text);
+    border-radius: 0.5rem;
+}
+
+.app-auth-shell .menu-left-home li a.active,
+.app-auth-shell .menu-left-home li a:hover {
+    background: var(--co-menu-active);
+    color: var(--co-dark-text);
+}
+
+.app-auth-shell .sidebar-card {
+    background: var(--co-menu-item) !important;
+    border: 0.0625rem solid var(--co-border);
+}
+
+.app-auth-shell .dashboard-right-col .panel,
+.app-auth-shell .dashboard-right-col .card,
+.app-auth-shell .dashboard-center-col .card {
+    background: var(--co-surface);
+    border: 0.0625rem solid var(--co-border);
+    border-radius: var(--co-radius-md);
+}
+
+.app-auth-shell .storiesWrapper {
+    gap: 0.5rem;
+}
+
+.app-auth-shell .story-add-wrap {
+    width: fit-content;
+}
+
+.app-auth-shell .dashboard_story {
+    width: 6.25rem;
+    height: 6.25rem;
+    border-radius: 1rem !important;
+}
+
+.app-auth-shell .plus_icon i {
+    inline-size: 1rem;
+    block-size: 1rem;
+    border-radius: 50%;
+}
+
+.app-auth-shell .my_flash_main {
+    color: var(--co-text) !important;
+}
+
+.app-auth-shell footer.footer-bg,
+.app-auth-shell div.footer-bg {
+    background: var(--co-footer) !important;
+    color: var(--co-text) !important;
+}
+
+@media (max-width: 47.99875rem) {
+    .app-auth-shell {
+        --app-mobile-gutter: 1.25rem;
+        --app-mobile-frame: 24.375rem; /* 390px */
+        --app-mobile-content: 21.875rem; /* 350px */
+        --app-mobile-gap: 1.5rem; /* 24px */
+    }
+
+    .app-auth-shell .modern-navbar.site-header {
+        width: 100%;
+        max-width: none;
+        margin: 1.25rem auto var(--app-mobile-gap) !important;
+        padding: 0 var(--app-mobile-gutter) !important;
+        border-radius: 0;
+        min-height: 2.625rem;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .d-flex.justify-content-between {
+        width: 100%;
+        align-items: center;
+        min-height: 2.625rem;
+        gap: 1rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .logo {
+        width: 7.8125rem; /* 125px */
+        max-height: 2.625rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .navbar-brand {
+        margin-right: 0 !important;
+        padding: 0 !important;
+        line-height: 1;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .buttons-mobile-nav {
+        display: flex !important;
+        position: static !important;
+        margin-left: 0 !important;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .main_head_search {
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        margin: 0 !important;
+        gap: 0.625rem !important;
+        align-items: center;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .d-flex.justify-content-between > div:last-child {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .main_head_search .btn_mobile_nav {
+        inline-size: 2.25rem;
+        block-size: 2.25rem;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(163, 163, 163, 0.1);
+        border: 0;
+        box-shadow: 0 0.0536rem 0.107rem rgba(16, 24, 40, 0.05);
+    }
+
+    .app-auth-shell .modern-navbar.site-header .buttons-mobile-nav .btn_mobile_nav {
+        inline-size: 2.25rem;
+        block-size: 2.25rem;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(163, 163, 163, 0.1);
+        border: 0;
+        box-shadow: 0 0.0536rem 0.107rem rgba(16, 24, 40, 0.05);
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-collapse.navbar-collapse {
+        display: none !important;
+        position: fixed;
+        right: -100%;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+        background: var(--co-bg);
+        color: var(--co-text);
+        z-index: 999999;
+        overflow-y: auto;
+        transition: right 0.25s ease-out;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-collapse.navbar-collapse.show {
+        display: block !important;
+        right: 0;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-collapse.navbar-collapse.collapsing {
+        display: block !important;
+        right: 0;
+        height: 100% !important;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .btn_mobile_nav svg,
+    .app-auth-shell .modern-navbar.site-header .btn-mobile-nav svg {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+
+    .app-auth-shell .app-mobile-top-tabs {
+        width: 100%;
+        max-width: none;
+        margin: 0 auto 0.75rem;
+        padding: 0 var(--app-mobile-gutter);
+        gap: 0.5rem;
+        justify-content: space-between !important;
+        align-items: flex-end;
+        overflow: visible;
+        white-space: normal;
+        display: flex !important;
+    }
+
+    .app-auth-shell .app-mobile-top-tabs .nav-link {
+        padding: 0 0 0.25rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem;
+        letter-spacing: -0.0094rem;
+        flex: 1 1 0;
+        text-align: center;
+        min-width: 0;
+        white-space: nowrap;
+    }
+
+    .app-auth-shell .app-mobile-top-tabs .nav-link:nth-child(2) {
+        font-size: 0.8125rem !important;
+    }
+
+    .app-auth-shell .font_mobile_bold {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        border-bottom: 0.125rem solid #ffffff !important;
+    }
+
+    .app-auth-shell .font_mobile_normal {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem;
+        font-weight: 500 !important;
+        color: #99a1af !important;
+        border-bottom: 0.125rem solid transparent !important;
+    }
+
+    .app-auth-shell .dashboard-home-container {
+        width: 100%;
+        max-width: none;
+        padding-left: var(--app-mobile-gutter) !important;
+        padding-right: var(--app-mobile-gutter) !important;
+    }
+
+    .app-auth-shell main .container-fluid {
+        width: 100%;
+        max-width: none;
+        padding-left: var(--app-mobile-gutter) !important;
+        padding-right: var(--app-mobile-gutter) !important;
+    }
+
+    .app-auth-shell .app-main-row,
+    .app-auth-shell .dashboard-main-row {
+        --bs-gutter-x: 0;
+        row-gap: var(--app-mobile-gap);
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .app-auth-shell .app-main-row > [class*="col-"],
+    .app-auth-shell .dashboard-main-row > [class*="col-"] {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .app-auth-shell .dashboard-center-col {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .app-auth-shell main[role="main"] {
+        padding-bottom: 5.5rem;
+    }
+
+    .app-auth-shell .menuMobile {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: none;
+        margin-inline: 0;
+        border-radius: 0;
+        border: 0;
+        background: #191919 !important;
+        box-shadow: none;
+        overflow: hidden;
+        min-height: 5.5rem; /* 88px */
+    }
+
+    .app-auth-shell .menuMobile::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0.5rem;
+        transform: translateX(-50%);
+        width: 8.4375rem; /* 135px */
+        height: 0.3125rem; /* 5px */
+        background: #b9c0c9;
+        border-radius: 6.25rem;
+    }
+
+    .app-auth-shell .menuMobile .list-inline {
+        width: min(100%, var(--app-mobile-frame));
+        margin: 0 auto;
+        min-height: 3.625rem; /* 58px */
+        padding: 0.75rem 1rem 0.375rem;
+        border-radius: 0;
+        align-items: center;
+    }
+
+    .app-auth-shell .menuMobile .bd-highlight {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .app-auth-shell .menuMobile .btn-mobile {
+        min-height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+        color: #676d75 !important;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6.25rem;
+    }
+
+    .app-auth-shell .menuMobile .btn-mobile .icon-navbar,
+    .app-auth-shell .menuMobile .btn-mobile i.icon-navbar,
+    .app-auth-shell .menuMobile .btn-mobile svg,
+    .app-auth-shell .menuMobile .btn-mobile svg * {
+        color: #676d75 !important;
+        stroke: #676d75 !important;
+    }
+
+    .app-auth-shell .menuMobile .btn-mobile.active {
+        color: #000000 !important;
+        background: #ffffff;
+        border-radius: 6.25rem;
+        min-width: 5.625rem; /* 90px */
+    }
+
+    .app-auth-shell .menuMobile .btn-mobile.active .icon-navbar,
+    .app-auth-shell .menuMobile .btn-mobile.active i.icon-navbar,
+    .app-auth-shell .menuMobile .btn-mobile.active svg,
+    .app-auth-shell .menuMobile .btn-mobile.active svg * {
+        color: #000000 !important;
+        stroke: #000000 !important;
+    }
+
+    .app-auth-shell .menuMobile .btn-mobile .font_weight_400 {
+        font-size: 0.75rem !important;
+        line-height: 1rem;
+        font-weight: 500 !important;
+    }
+
+    .app-auth-shell .menuMobile .icon-navbar {
+        font-size: 1.125rem;
+        line-height: 1;
+    }
+
+    .app-auth-shell footer.footer-bg {
+        width: 100%;
+        max-width: none;
+        margin-inline: 0;
+        padding-left: var(--app-mobile-gutter) !important;
+        padding-right: var(--app-mobile-gutter) !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .app-auth-shell footer.footer-bg > .container {
+        max-width: var(--app-mobile-content);
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .app-auth-shell footer.footer-bg .row,
+    .app-auth-shell footer.footer-bg .col-md-12 {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .app-auth-shell footer.footer-bg .max-w-125 {
+        max-width: 7.8125rem !important;
+    }
+
+    .app-auth-shell footer.footer-bg .d-lg-none.d-block.pb-5.mb-2.w-100 {
+        padding-bottom: 0.75rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    .app-auth-shell footer.footer-bg .card {
+        margin: 0;
+    }
+
+    .app-auth-shell footer.footer-bg small {
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+        color: #ffffff;
+    }
+
+    .app-auth-shell footer.footer-bg .list-inline.small {
+        margin-top: 0.5rem;
+    }
+
+    .app-auth-shell footer.footer-bg .list-inline-item {
+        margin-right: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .app-auth-shell footer.footer-bg .link-footer {
+        color: #99a1af;
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+    }
+
+    .app-auth-shell div.footer-bg {
+        width: 100%;
+        max-width: none;
+        margin-inline: 0;
+        padding-left: var(--app-mobile-gutter) !important;
+        padding-right: var(--app-mobile-gutter) !important;
+    }
 }

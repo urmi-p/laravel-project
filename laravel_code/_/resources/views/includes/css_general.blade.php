@@ -4774,4 +4774,153 @@ height: auto;
 
 
 
+@media (min-width: 992px) {
+  .modern-navbar.site-header {
+    padding: 10px 16px !important;
+    min-height: 84px;
+    margin: 12px 20px 0 !important;
+    border-radius: 32px;
+  }
+
+  .modern-navbar.site-header .container-fluid {
+    padding-left: 6px;
+    padding-right: 6px;
+    gap: 20px;
+  }
+
+  .modern-navbar.site-header .navbar-brand {
+    margin-right: 14px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .modern-navbar.site-header .logo {
+    max-height: 44px;
+    width: auto;
+  }
+
+  .modern-navbar.site-header .site-header-collapse {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .modern-navbar.site-header .site-header-search {
+    flex: 0 0 280px;
+    max-width: 280px;
+    margin-right: 4px;
+  }
+
+  .modern-navbar.site-header .site-header-search .form-inline {
+    width: 100%;
+  }
+
+  .modern-navbar.site-header .site-header-search .search-bar {
+    width: 100%;
+  }
+
+  .modern-navbar.site-header .site-header-actions {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    margin-left: 0 !important;
+  }
+
+  .modern-navbar.site-header .site-header-actions .navbar_mid_link {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .modern-navbar.site-header {
+    padding: 10px 14px !important;
+    min-height: 84px;
+    margin: 12px 20px 0 !important;
+    border-radius: 32px;
+  }
+
+  .modern-navbar.site-header .container-fluid {
+    padding-left: 6px;
+    padding-right: 6px;
+    gap: 16px;
+  }
+
+  .modern-navbar.site-header .logo {
+    max-height: 42px;
+    width: auto;
+  }
+
+  .modern-navbar.site-header .navbar-toggler,
+  .modern-navbar.site-header .main_head_search,
+  .modern-navbar.site-header .buttons-mobile-nav {
+    display: none !important;
+  }
+
+  .modern-navbar.site-header .site-header-collapse.navbar-collapse {
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-basis: auto !important;
+    flex-grow: 1 !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .modern-navbar.site-header .site-header-collapse.collapse {
+    display: flex !important;
+  }
+
+  .modern-navbar.site-header .site-header-search {
+    display: flex !important;
+    flex: 0 0 250px;
+    max-width: 250px;
+  }
+
+  .modern-navbar.site-header .site-header-search .form-inline.d-none.d-lg-flex {
+    display: flex !important;
+    width: 100%;
+  }
+
+  .modern-navbar.site-header .site-header-search .search-bar {
+    width: 100%;
+  }
+
+  .modern-navbar.site-header .site-header-actions {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    margin-left: 0 !important;
+  }
+
+  .modern-navbar.site-header .site-header-actions .nav-item.d-lg-block.d-none {
+    display: block !important;
+  }
+
+  .modern-navbar.site-header .site-header-actions .nav-item.d-lg-none {
+    display: none !important;
+  }
+
+  .modern-navbar.site-header .site-header-actions .navbar_mid_link {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
 </style><?php /**PATH C:\Users\urmila\Documents\closeonly\laravel_dating_app\laravel code\_\resources\views/includes/css_general.blade.php ENDPATH**/ ?>

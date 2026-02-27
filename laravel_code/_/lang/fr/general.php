@@ -152,6 +152,7 @@ return array(
 'cancel_confirm'            => 'Non, annuler !',
 'yes_confirm'               => 'Oui, supprimer !',
 'recent'                    => 'Récent',
+'recent_uploaded'           => 'Recent Uploaded',
 'online'                    => 'En ligne',
 'view_all'                  => 'Tout voir',
 'add_tag'                   => 'Ajoutez un tag et appuyez sur Entrée ou virgule',

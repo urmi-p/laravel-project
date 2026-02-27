@@ -1,15 +1,15 @@
-<div class="menuMobile w-100 bg-white shadow-lg p-3 border-top">
+<div class="menuMobile d-md-none">
 	<ul class="list-inline d-flex bd-highlight m-0 text-center">
 		<li class="flex-fill bd-highlight">
-			<a class="p-3 btn-mobile @if (request()->is('/')) active disabled @endif" href="{{url('/')}}" title="{{trans('admin.home')}}">
-				<i class="feather icon-home icon-navbar" @if (request()->is('/')) style="color:#000000 !important;" @endif></i> 
+			<a class="btn-mobile @if (request()->is('/')) active disabled @endif" href="{{url('/')}}" title="{{trans('admin.home')}}">
+				<i class="feather icon-home icon-navbar"></i>
 				@if (request()->is('/')) <span class="font_weight_400 fs-14">Home</span> @endif
 			</a>
 		</li>
 		<li class="flex-fill bd-highlight">
-			<a href="{{url(auth()->user()->username)}}" class="p-3 btn-mobile position-relative @if (request()->is(auth()->user()->username)) active disabled @endif ">
-				<i class="far fa-user icon-navbar" @if (request()->is(auth()->user()->username)) style="color:#000000 !important;" @endif></i>
-				@if (request()->is(auth()->user()->username)) <span class="font_weight_400 fs-14">Profile</span> @endif
+			<a href="{{url(auth()->user()->username)}}" class="btn-mobile position-relative @if (request()->is(auth()->user()->username . '*')) active disabled @endif ">
+				<i class="far fa-user icon-navbar"></i>
+				@if (request()->is(auth()->user()->username . '*')) <span class="font_weight_400 fs-14">Profile</span> @endif
 			</a>
 		</li>
 		{{-- <li class="flex-fill bd-highlight">
@@ -19,20 +19,20 @@
 		</li> --}}
 
 		<li class="flex-fill bd-highlight">
-			<a href="{{url('messages')}}" class="p-3 btn-mobile position-relative @if (request()->is('messages')) active disabled @endif" title="{{ trans('general.messages') }}">
+			<a href="{{url('messages')}}" class="btn-mobile position-relative @if (request()->is('messages*')) active disabled @endif" title="{{ trans('general.messages') }}">
 				<span class="noti_msg notify @if (auth()->user()->messagesInbox() != 0) d-block @endif">
 					{{ auth()->user()->messagesInbox() }}
 				</span>
-				<i class="feather icon-send icon-navbar" @if (request()->is('messages')) style="color:#000000 !important;" @endif></i>
-				@if (request()->is('messages')) <span class="font_weight_400 fs-14">Message</span> @endif
+				<i class="feather icon-send icon-navbar"></i>
+				@if (request()->is('messages*')) <span class="font_weight_400 fs-14">Message</span> @endif
 			</a>
 		</li>
 
 		@if (!$settings->disable_creators_section)
 			<li class="flex-fill bd-highlight">
-				<a class="p-3 btn-mobile @if (request()->is('creators')) active disabled @endif" href="{{url('creators')}}" title="{{trans('general.explore')}}">
-					<i class="far fa-compass icon-navbar" @if (request()->is('creators')) style="color:#000000 !important;" @endif></i>
-					@if (request()->is('creators')) <span class="font_weight_400 fs-14">Explore</span> @endif
+				<a class="btn-mobile @if (request()->is('creators*')) active disabled @endif" href="{{url('creators')}}" title="{{trans('general.explore')}}">
+					<i class="far fa-compass icon-navbar"></i>
+					@if (request()->is('creators*')) <span class="font_weight_400 fs-14">Explore</span> @endif
 				</a>
 			</li>
 		@endif
@@ -49,12 +49,11 @@
 		@endif --}}
 		@if ($settings->shop)
 			<li class="flex-fill bd-highlight">
-				<a class="p-3 btn-mobile @if (request()->is('shop')) active disabled @endif" href="{{url('shop')}}" title="{{trans('general.shop')}}">
-					<i class="feather icon-shopping-bag icon-navbar" @if (request()->is('shop')) style="color:#000000 !important;" @endif></i>
-					@if (request()->is('shop')) <span class="font_weight_400 fs-14">Shop</span> @endif
+				<a class="btn-mobile @if (request()->is('shop*')) active disabled @endif" href="{{url('shop')}}" title="{{trans('general.shop')}}">
+					<i class="feather icon-shopping-bag icon-navbar"></i>
+					@if (request()->is('shop*')) <span class="font_weight_400 fs-14">Shop</span> @endif
 				</a>
 			</li>
 		@endif
 	</ul>
 </div>
-

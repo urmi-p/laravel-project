@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
+@section('body_class', 'home-login-page dark-theme')
 
 
 @section('content')
 
-<div class="jumbotron m-0 bg-gradient">
-  <div class="container pt-lg-md">
-    <div class="row">
-      <div class="col-lg-6 login-form-left">
-        <div class="d-block px-3 px-lg-5 w-100 px-mobile-1 ">
-          <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="logo align-baseline mb-1" width="125" height="42" />
+<div class="jumbotron m-0 auth-shell login-page-theme">
+  <div class="container login-figma-container">
+    <div class="row auth-shell-row g-0 align-items-stretch login-figma-row">
+      <div class="col-12 col-md-6 col-lg-6 d-flex flex-column login-figma-left-col">
+        <div class="d-block w-100 auth-logo-wrap">
+          <img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="logo align-baseline mb-1 login-figma-logo" width="125" height="42" />
         </div>
-        <div class="">
-          <div class="card-body px-lg-5 py-lg-5 pt-4">
-            <h4>Welcome Back</h4>
-            <small class="btn-block pb-4 h6 text-lime title_login">{{ __('general.title_login') }}</small>
+        <div class="login-figma-left-inner">
+          <div class="card-body login-figma-card">
+            <h4 class="auth-title mb-0">Welcome Back</h4>
+            <small class="btn-block pb-4 h6 text-lime title_login login-figma-subtitle">{{ __('general.title_login') }}</small>
 
             @if (session('login_required'))
             <div class="alert alert-danger" id="dangerAlert">
@@ -22,26 +23,26 @@
             </div>
             @endif
             @if ($settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
-            <div class="mb-2 w-100">
+            <div class="mb-2 w-100 login-figma-social">
               @if ($settings->google_login == 'on')
-              <a href="{{url('oauth/google')}}" class="btn btn-google auth-form-btn mb-2 flex-grow w-100">
-                <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> Google
+              <a href="{{url('oauth/google')}}" class="btn btn-google login-figma-social-btn mb-2 w-100">
+                <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span>{{ __('auth.login_with') }} Google</span>
               </a>
               @endif
 
               @if ($settings->facebook_login == 'on')
-              <a href="{{url('oauth/facebook')}}" class="btn btn-facebook auth-form-btn flex-grow mb-2 w-100">
-                <i class="fab fa-facebook mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> Facebook
+              <a href="{{url('oauth/facebook')}}" class="btn btn-facebook login-figma-social-btn mb-2 w-100">
+                <i class="fab fa-facebook mr-2"></i> <span>{{ __('auth.login_with') }} Facebook</span>
               </a>
               @endif
               @if ($settings->twitter_login == 'on')
-              <a href="{{url('oauth/twitter')}}" class="btn btn-twitter auth-form-btn mb-2 w-100">
-                <i class="bi-twitter-x mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> Twitter
+              <a href="{{url('oauth/twitter')}}" class="btn btn-twitter login-figma-social-btn mb-2 w-100">
+                <i class="bi-twitter-x mr-2"></i> <span>{{ __('auth.login_with') }} Twitter</span>
               </a>
               @endif
             </div>
             @if (! $settings->disable_login_register_email)
-            <small class="btn-block text-center my-3 text-text-capitalize login-form-or">{{__('general.or')}}</small>
+            <small class="btn-block text-center my-3 text-text-capitalize login-form-or login-figma-or">{{__('general.or')}}</small>
             @endif
             @endif
             @if (! $settings->disable_login_register_email)
@@ -54,41 +55,41 @@
 
               <input type="hidden" name="return" value="{{ count($errors) > 0 ? old('return') : url()->previous() }}">
 
-              <div class="form-group mb-3 display-none" id="full_name">
-                <div class="">
-                  <span class="">Full name</span>
+              <div class="form-group mb-3 display-none login-figma-field" id="full_name">
+                <div class="mb-1 login-figma-label-wrap">
+                  <span class="login-figma-label">Full name</span>
                 </div>
-                <div class="input-group input-group-alternative">
-                  <input class="form-control" value="{{ old('name')}}" placeholder="{{__('auth.full_name')}}" name="name" type="text">
-                </div>
-              </div>
-
-              <div class="form-group mb-3 display-none" id="email">
-                <div class="">
-                  <span class="">Email</span>
-                </div>
-                <div class="input-group input-group-alternative">
-                  <input class="form-control" value="{{ old('email')}}" placeholder="{{__('auth.email')}}" name="email" type="text">
+                <div class="input-group input-group-alternative login-figma-input-wrap">
+                  <input class="form-control login-figma-input" value="{{ old('name')}}" placeholder="{{__('auth.full_name')}}" name="name" type="text" autocomplete="name">
                 </div>
               </div>
 
-              <div class="form-group mb-3" id="username_email">
-                <div class="mb-1">
-                  <span>Email</span>
+              <div class="form-group mb-3 display-none login-figma-field" id="email">
+                <div class="mb-1 login-figma-label-wrap">
+                  <span class="login-figma-label">Email</span>
                 </div>
-                <div class="input-group input-group-alternative">
-                  <input class="form-control" value="{{ old('username_email') }}" placeholder="{{ __('auth.username_or_email') }}" name="username_email" type="text">
+                <div class="input-group input-group-alternative login-figma-input-wrap">
+                  <input class="form-control login-figma-input" value="{{ old('email')}}" placeholder="{{__('auth.email')}}" name="email" type="text" autocomplete="email">
                 </div>
               </div>
 
-              <div class="form-group">
-                <div class="mb-1">
-                  <span class="">Password</span>
+              <div class="form-group mb-3 login-figma-field" id="username_email">
+                <div class="mb-1 login-figma-label-wrap">
+                  <span class="login-figma-label">Email</span>
                 </div>
-                <div class="input-group input-group-alternative" id="showHidePassword">
-                  <input name="password" type="password" class="form-control" placeholder="{{ __('auth.password') }}">
+                <div class="input-group input-group-alternative login-figma-input-wrap">
+                  <input class="form-control login-figma-input" value="{{ old('username_email') }}" placeholder="{{ __('auth.username_or_email') }}" name="username_email" type="text" autocomplete="username">
+                </div>
+              </div>
+
+              <div class="form-group login-figma-field">
+                <div class="mb-1 login-figma-label-wrap">
+                  <span class="login-figma-label">Password</span>
+                </div>
+                <div class="input-group input-group-alternative login-figma-input-wrap" id="showHidePassword">
+                  <input name="password" type="password" class="form-control login-figma-input" placeholder="{{ __('auth.password') }}" autocomplete="current-password">
                   <div class="input-group-append">
-                    <span class="input-group-text c-pointer"><i class="feather icon-eye-off"></i></span>
+                    <span class="input-group-text c-pointer login-figma-pass-toggle"><i class="feather icon-eye-off"></i></span>
                   </div>
                 </div>
               </div>
@@ -109,8 +110,8 @@
                 </div>
               </div>
 
-              <div class="custom-control custom-control-alternative custom-checkbox" id="remember">
-                <div class="d-flex justify-content-between flex-nowrap">
+              <div class="custom-control custom-control-alternative custom-checkbox login-figma-remember" id="remember">
+                <div class="d-flex justify-content-between flex-nowrap login-figma-meta">
                   <input class="custom-control-input" id="customCheckLogin" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                   <label class="custom-control-label" for="customCheckLogin">
                     <span>{{__('auth.remember_me')}}</span>
@@ -123,11 +124,11 @@
               </div>
 
 
-              <div class="custom-control custom-control-alternative custom-checkbox display-none" id="agree_gdpr">
+              <div class="custom-control custom-control-alternative custom-checkbox display-none login-figma-remember login-figma-gdpr" id="agree_gdpr">
 
                 <input class="custom-control-input d2" id="customCheckRegister" type="checkbox" name="agree_gdpr">
 
-                <label class="custom-control-label" for="customCheckRegister">
+                <label class="custom-control-label login-figma-gdpr-label" for="customCheckRegister">
 
                   <span>
 
@@ -169,7 +170,7 @@
 
                 @else
 
-                <button type="submit" id="btnLoginRegister" class="btn btn-primary mt-4 w-100"><i></i> {{__('auth.login')}}</button>
+                <button type="submit" id="btnLoginRegister" class="btn btn-primary mt-4 w-100 login-figma-submit"><i></i> {{__('auth.login')}}</button>
 
                 @endif
 
@@ -189,14 +190,14 @@
 
             @if ($settings->registration_active == '1')
 
-            <div class="row mt-3">
+            <div class="row mt-3 login-figma-switch-row">
 
               <div class="col-12 text-center">
 
 
                 <span id="loginSpan">{{__('auth.not_have_account')}}</span>
 
-                <a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}" class="text-red text-capitalize" data-text-signin="{{__('auth.sign_in')}}" data-text-signup="{{__('auth.register')}}">{{__('auth.register')}}</a>
+                <a href="javascript:void(0);" id="toggleLogin" data-not-account="{{__('auth.not_have_account')}}" data-already-account="{{__('auth.already_have_an_account')}}" data-text-login="{{__('auth.login')}}" data-text-register="{{__('auth.sign_up')}}" class="text-red text-capitalize login-figma-switch-link" data-text-signin="{{__('auth.sign_in')}}" data-text-signup="{{__('auth.register')}}">{{__('auth.register')}}</a>
 
               </div>
 
@@ -224,11 +225,11 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 right-side d-lg-block d-none">
-        <img src="{{url('img/main.png')}}" alt="User" class="img-fluid d-lg-block d-none" width="356" height="120">
-        <span class="text-lime h5 mb-5 d-lg-block d-none title_home_login">{{__('general.title_home_login')}}</span>
-        <div class="image-stack">
-          <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block d-none img-login-background stack-img" />
+      <div class="col-md-6 col-lg-6 d-none d-md-flex flex-column login-figma-right-col">
+        <img src="{{url('img/main.png')}}" alt="User" class="img-fluid d-block login-figma-hero-logo" width="356" height="120">
+        <span class="h5 mb-5 d-block login-figma-hero-title">{{__('general.title_home_login')}}</span>
+        <div class="image-stack login-figma-hero-stack">
+          <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-block img-login-background stack-img login-figma-stack-img" />
         </div>
       </div>
     </div>
@@ -664,3 +665,6 @@
 </script>
 
 @endsection
+
+
+

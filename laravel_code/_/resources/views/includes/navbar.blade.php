@@ -1,6 +1,6 @@
 <header class=" @if (request()->is('password/reset')) forgotpwd @endif">
     <nav
-        class="navbar navbar-expand-lg navbar-inverse fixed-top modern-navbar p-nav @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
+        class="navbar navbar-expand-md navbar-inverse modern-navbar site-header p-nav @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
         <div class="container-fluid d-flex align-items-center">
 
             <div class="d-flex justify-content-between">
@@ -20,9 +20,9 @@
                 </div>
                 @auth
                     <div>
-                        <div class="position-absolute d-flex d-lg-none main_head_search"
+                        <div class="position-absolute d-flex d-md-none main_head_search"
                             style="top: 25px; right: 35px;gap:6px;margin-right:20px">
-                            <div class="d-lg-none">
+                            <div class="d-md-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     data-toggle="collapse" data-target="#mobileCreatorSearch" aria-controls="mobileCreatorSearch"
                                     aria-expanded="false" role="button">
@@ -37,7 +37,7 @@
                                     </svg>
                                 </a>
                             </div>
-                            <div class="d-lg-none">
+                            <div class="d-md-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
                                     aria-expanded="false" role="button">
@@ -53,7 +53,7 @@
 
                                 </a>
                             </div>
-                            <div class="d-lg-none">
+                            <div class="d-md-none">
                                 <a href="{{ url('notifications') }}" class="position-relative btn_mobile_nav"
                                     title="{{ trans('general.notifications') }}">
                                     <span
@@ -71,7 +71,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="buttons-mobile-nav d-lg-none">
+                        <div class="buttons-mobile-nav d-md-none">
                             <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                 data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
                                 aria-expanded="false" role="button">
@@ -105,7 +105,7 @@
                 @if ((auth()->guest() && $settings->who_can_see_content == 'all') || auth()->check())
                     @if (!$settings->disable_creators_section)
                         @if (!$settings->disable_search_creators)
-                            <div class="collapse d-lg-none w-100 mt-2 mb-1" id="mobileCreatorSearch">
+                            <div class="collapse d-md-none w-100 mt-2 mb-1" id="mobileCreatorSearch">
                                 <form class="form-inline my-lg-0 position-relative" method="get"
                                     action="{{ url('creators') }}">
 
@@ -147,8 +147,8 @@
                 @endif
             @endauth
             @auth
-                <div class="justify-content-between collapse navbar-collapse navbar-mobile" id="navbarCollapse">
-                    <div class="d-lg-none text-right pr-2 mb-2">
+                <div class="justify-content-between collapse navbar-collapse navbar-mobile site-header-collapse" id="navbarCollapse">
+                    <div class="d-md-none text-right pr-2 mb-2">
 
                         <button type="button" class="navbar-toggler close-menu-mobile" data-toggle="collapse"
                             data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false">
@@ -158,11 +158,11 @@
 
                     @if ((auth()->guest() && $settings->who_can_see_content == 'all') || auth()->check())
 
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav site-header-search">
                             @if (!$settings->disable_creators_section)
 
                                 @if (!$settings->disable_search_creators)
-                                    <form class="form-inline my-lg-0 position-relative d-none d-lg-flex" method="get"
+                                    <form class="form-inline my-lg-0 position-relative d-none d-md-flex" method="get"
                                         action="{{ url('creators') }}">
 
                                         <input id="searchCreatorNavbar"
@@ -205,10 +205,46 @@
                         </ul>
                     @endif
 
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav site-header-center d-none d-md-flex">
+                        @auth
+                            @if (auth()->user()->verified_id == 'yes')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link navbar_mid_link px-2 {{ request()->is('dashboard') ? 'font_bold' : 'font_normal' }}"
+                                        href="{{ url('dashboard') }}" title="{{ __('admin.dashboard') }}">
+                                        {{ __('admin.dashboard') }}
+                                    </a>
+                                </li>
+                            @else
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link navbar_mid_link px-2 {{ request()->is('/') ? 'font_bold' : 'font_normal' }}"
+                                        href="{{ url('/') }}" title="{{ __('admin.dashboard') }}">
+                                        {{ __('admin.dashboard') }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endauth
+                        @if (!$settings->disable_creators_section)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link navbar_mid_link px-2 {{ request()->is('creators*') ? 'font_bold' : 'font_normal' }}"
+                                    href="{{ url('creators') }}" title="{{ __('general.explore_creators') }}">
+                                    {{ __('general.explore_creators') }}
+                                </a>
+                            </li>
+                        @endif
+                        @if ($settings->shop)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link navbar_mid_link px-2 {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
+                                    href="{{ url('shop') }}" title="{{ __('general.explore_shop') }}">
+                                    {{ __('general.explore_shop') }}
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+
+                    <ul class="navbar-nav site-header-actions">
                         {{-- need only for mobile sidebar --}}
                         @auth
-                            <li class="sidebar-user mb-3 d-lg-none">
+                            <li class="sidebar-user mb-3 d-md-none">
                                 <div class="user_avatar">
                                     <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
                                         alt="User Avatar">
@@ -228,7 +264,7 @@
                                 </div>
                             </li>
                             @if (auth()->user()->verified_id == 'yes')
-                                <li class="sidebar-card d-lg-none">
+                                <li class="sidebar-card d-md-none">
                                     <div class="card-icon">
                                         <i class="fas fa-dollar-sign"></i>
                                     </div>
@@ -240,7 +276,7 @@
                             @endif
 
                             {{-- WALLET BALANCE --}}
-                            <li class="sidebar-card d-lg-none">
+                            <li class="sidebar-card d-md-none">
                                 <div class="card-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -260,60 +296,6 @@
                             </li>
                         @endauth
                         {{-- end for mobile sidebar --}}
-                        @auth
-                            @if (auth()->user()->verified_id == 'yes')
-                                <li class="nav-item dropdown d-lg-block d-none">
-                                    <a class="nav-link navbar_mid_link px-2 {{ request()->is('dashboard') ? 'font_bold' : 'font_normal' }}"
-                                        href="{{ url('dashboard') }}" title="{{ __('admin.dashboard') }}">
-                                        {{ __('admin.dashboard') }}
-                                    </a>
-                                </li>
-                            @else
-                                <li class="nav-item dropdown d-lg-block d-none">
-                                    <a class="nav-link navbar_mid_link px-2 {{ request()->is('/') ? 'font_bold' : 'font_normal' }}"
-                                        href="{{ url('/') }}" title="{{ __('admin.dashboard') }}">
-                                        {{ __('admin.dashboard') }}
-                                    </a>
-                                </li>
-                            @endif
-                        @endauth
-                        @if (!$settings->disable_creators_section)
-                            <li class="nav-item dropdown d-lg-block d-none">
-                                <a class="nav-link navbar_mid_link px-2 {{ request()->is('creators*') ? 'font_bold' : 'font_normal' }}"
-                                    href="{{ url('creators') }}" title="{{ __('general.explore_creators') }}">
-                                    {{ __('general.explore_creators') }}
-                                </a>
-                            </li>
-                        @endif
-
-                        @if ($settings->shop)
-                            <li class="nav-item dropdown d-lg-block d-none">
-                                <a class="nav-link navbar_mid_link px-2 {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
-                                    href="{{ url('shop') }}" title="{{ __('general.explore_shop') }}">
-                                    {{ __('general.explore_shop') }}
-                                </a>
-                            </li>
-                        @endif
-
-                        <!-- @guest
-              @if (!$settings->disable_creators_section)
-        <li class="nav-item dropdown d-lg-block d-none">
-                <a class="nav-link px-2 {{ request()->is('creators*') ? 'font_bold' : 'font_normal' }}"
-                 href="{{ url('creators') }}" title="{{ __('general.explore_creators') }}">
-                 {{ __('general.explore_creators') }}
-                </a>
-               </li>
-        @endif
-
-              @if ($settings->shop)
-        <li class="nav-item dropdown d-lg-block d-none">
-                <a class="nav-link px-2 {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
-                 href="{{ url('shop') }}" title="{{ __('general.explore_shop') }}">
-                 {{ __('general.explore_shop') }}
-                </a>
-               </li>
-        @endif
-                        @endguest -->
                     </ul>
 
                     <ul class="navbar-nav">
@@ -346,17 +328,17 @@
                         @else
                             <!-- ============ Menu Mobile ============-->
                             @if (auth()->user()->role == 'admin')
-                                <li class="nav-item dropdown d-lg-none mt-2">
+                                <li class="nav-item dropdown d-md-none mt-2">
                                     <a href="{{ url('panel/admin') }}" class="nav-link px-2 link-menu-mobile py-1">
                                         <div>
                                             <i class="bi-speedometer2 me-2 mr-2"></i>
-                                            <span class="d-lg-none">{{ __('admin.admin') }}</span>
+                                            <span class="d-md-none">{{ __('admin.admin') }}</span>
                                         </div>
                                     </a>
                                 </li>
                             @endif
 
-                            <li class="nav-item dropdown d-lg-none @if (auth()->user()->role != 'admin') mt-2 @endif">
+                            <li class="nav-item dropdown d-md-none @if (auth()->user()->role != 'admin') mt-2 @endif">
                                 <a href="{{ url(auth()->user()->username) }}"
                                     class="nav-link px-2 link-menu-mobile py-1 url-user">
                                     <div>
@@ -366,13 +348,13 @@
                                                 d="M12.0002 12.75C8.83016 12.75 6.25016 10.17 6.25016 7C6.25016 3.83 8.83016 1.25 12.0002 1.25C15.1702 1.25 17.7502 3.83 17.7502 7C17.7502 10.17 15.1702 12.75 12.0002 12.75ZM12.0002 2.75C9.66016 2.75 7.75016 4.66 7.75016 7C7.75016 9.34 9.66016 11.25 12.0002 11.25C14.3402 11.25 16.2502 9.34 16.2502 7C16.2502 4.66 14.3402 2.75 12.0002 2.75ZM20.5902 22.75C20.1802 22.75 19.8402 22.41 19.8402 22C19.8402 18.55 16.3202 15.75 12.0002 15.75C7.68016 15.75 4.16016 18.55 4.16016 22C4.16016 22.41 3.82016 22.75 3.41016 22.75C3.00016 22.75 2.66016 22.41 2.66016 22C2.66016 17.73 6.85016 14.25 12.0002 14.25C17.1502 14.25 21.3402 17.73 21.3402 22C21.3402 22.41 21.0002 22.75 20.5902 22.75Z"
                                                 fill="currentcolor" />
                                         </svg>
-                                        <span class="d-lg-none">{{ __('users.my_profile') }}</span>
+                                        <span class="d-md-none">{{ __('users.my_profile') }}</span>
                                     </div>
                                 </a>
                             </li>
 
                             @if (auth()->user()->verified_id == 'yes')
-                                <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                     <a href="{{ url('dashboard') }}"
                                         class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('dashboard')) active disabled @endif">
                                         <div>
@@ -382,106 +364,106 @@
                                                     d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z"
                                                     fill="white" />
                                             </svg>
-                                            <span class="d-lg-none">{{ __('admin.dashboard') }}</span>
+                                            <span class="d-md-none">{{ __('admin.dashboard') }}</span>
                                         </div>
                                     </a>
                                 </li>
                             @endif
 
-                            <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('my/purchases') }}"
                                     class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/purchases')) active disabled @endif">
                                     <div>
                                         <i class="bi bi-bag-check mr-2"></i>
-                                        <span class="d-lg-none">{{ __('general.purchased') }}</span>
+                                        <span class="d-md-none">{{ __('general.purchased') }}</span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('messages') }}"
                                     @if (request()->is('messages')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
                                     <div>
                                         <i class="bi bi-chat-square-text mr-2"></i>
-                                        <span class="d-lg-none">{{ __('general.messages') }}</span>
+                                        <span class="d-md-none">{{ __('general.messages') }}</span>
                                     </div>
                                 </a>
                             </li>
                             @if ($settings->disable_wallet == 'off')
-                                <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                     <a href="{{ url('my/wallet') }}"
                                         @if (request()->is('my/wallet')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
                                         <div>
                                             <i class="iconmoon icon-Wallet mr-2"></i>
-                                            <span class="d-lg-none">{{ __('general.wallet') }}</span>
+                                            <span class="d-md-none">{{ __('general.wallet') }}</span>
                                         </div>
                                     </a>
                                 </li>
                             @endif
                             @if (!$settings->disable_explore_section)
-                                <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                     <a href="{{ url('explore') }}"
                                         @if (request()->is('explore')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
                                         <div>
                                             <i class="bi-compass mr-2"></i>
-                                            <span class="d-lg-none">{{ __('general.explore') }}</span>
+                                            <span class="d-md-none">{{ __('general.explore') }}</span>
                                         </div>
                                     </a>
                                 </li>
                             @endif
 
-                            <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('my/subscriptions') }}"
                                     @if (request()->is('my/subscriptions')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
                                     <div>
                                         <i class="bi bi-cart mr-2"></i>
-                                        <span class="d-lg-none">{{ __('admin.subscriptions') }}</span>
+                                        <span class="d-md-none">{{ __('admin.subscriptions') }}</span>
                                     </div>
                                 </a>
                             </li>
                             @if (auth()->user()->verified_id == 'yes')
-                                <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                     <a href="{{ url('my/posts') }}"
                                         class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/posts')) active disabled @endif">
                                         <div>
                                             <i class="feather icon-feather mr-2"></i>
-                                            <span class="d-lg-none">{{ __('general.my_posts') }}</span>
+                                            <span class="d-md-none">{{ __('general.my_posts') }}</span>
                                         </div>
                                     </a>
                                 </li>
 
                                 @if ($settings->allow_vault)
-                                    <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                                    <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                         <a href="{{ url('my/vault') }}"
                                             class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/vault')) active disabled @endif">
                                             <div>
                                                 <i class="feather icon-archive mr-2"></i>
-                                                <span class="d-lg-none">{{ __('general.vault') }}</span>
+                                                <span class="d-md-none">{{ __('general.vault') }}</span>
                                             </div>
                                         </a>
                                     </li>
                                 @endif
                             @endif
 
-                            <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('my/bookmarks') }}"
                                     class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/bookmarks')) active disabled @endif">
                                     <div>
                                         <i class="feather icon-bookmark mr-2"></i>
-                                        <span class="d-lg-none">{{ __('general.bookmarks') }}</span>
+                                        <span class="d-md-none">{{ __('general.bookmarks') }}</span>
                                     </div>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item dropdown d-lg-none">
+                            {{-- <li class="nav-item dropdown d-md-none">
                             <a href="{{ url('my/likes') }}" class="nav-link px-2 link-menu-mobile py-1">
                                 <div>
                                     <i class="feather icon-heart mr-2"></i>
-                                    <span class="d-lg-none">{{ __('general.likes') }}</span>
+                                    <span class="d-md-none">{{ __('general.likes') }}</span>
                                 </div>
                             </a>
                         </li> --}}
 
                             {{-- for mobile menu --}}
-                            <li class="nav-item dropdown d-lg-none">
+                            <li class="nav-item dropdown d-md-none">
 
                                 <a href="{{ auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light') }}"
                                     class="nav-link px-2 link-menu-mobile py-1">
@@ -489,13 +471,13 @@
                                         <i
                                             class="feather icon-{{ auth()->user()->dark_mode == 'off' ? 'moon' : 'sun' }} mr-2"></i>
                                         <span
-                                            class="d-lg-none">{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}
+                                            class="d-md-none">{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}
                                         </span>
 
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown d-lg-none menu_mobile_active_link">
+                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
 
                                 <a href="{{ route('user.settings') }}"
                                     class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('settings/user')) active disabled @endif">
@@ -504,7 +486,7 @@
 
                                         <i class="bi-shield-check mr-2"></i>
 
-                                        <span class="d-lg-none">{{ __('general.settings') }}</span>
+                                        <span class="d-md-none">{{ __('general.settings') }}</span>
 
                                     </div>
 
@@ -513,11 +495,11 @@
                             </li>
 
                             {{-- @if (auth()->user()->verified_id == 'yes')
-                            <li class="nav-item dropdown d-lg-none">
+                            <li class="nav-item dropdown d-md-none">
                                 <a class="nav-link px-2 link-menu-mobile py-1 balance">
                                     <div>
                                         <i class="iconmoon icon-Dollar mr-2"></i>
-                                        <span class="d-lg-none balance">{{ __('general.balance') }}:
+                                        <span class="d-md-none balance">{{ __('general.balance') }}:
                                             {{ Helper::amountFormatDecimal(auth()->user()->balance) }}</span>
 
                                     </div>
@@ -526,7 +508,7 @@
                         @endif --}}
 
                             {{-- @if (($settings->disable_wallet == 'on' && auth()->user()->wallet != 0.0) || $settings->disable_wallet == 'off')
-                            <li class="nav-item dropdown d-lg-none">
+                            <li class="nav-item dropdown d-md-none">
                                 <a @if ($settings->disable_wallet == 'off') href="{{ url('my/wallet') }}" @endif
                                     class="nav-link px-2 link-menu-mobile py-1">
 
@@ -542,49 +524,49 @@
                         @endif --}}
 
                             {{-- @if (auth()->user()->verified_id == 'yes')
-                            <li class="nav-item dropdown d-lg-none">
+                            <li class="nav-item dropdown d-md-none">
                                 <a href="{{ url('my/subscribers') }}" class="nav-link px-2 link-menu-mobile py-1">
                                     <div>
                                         <i class="feather icon-users mr-2"></i>
-                                        <span class="d-lg-none">{{ __('users.my_subscribers') }}</span>
+                                        <span class="d-md-none">{{ __('users.my_subscribers') }}</span>
                                     </div>
                                 </a>
                             </li>
                         @endif --}}
 
-                            {{-- <li class="nav-item dropdown d-lg-none">
+                            {{-- <li class="nav-item dropdown d-md-none">
                             <a href="{{ url('my/subscriptions') }}" class="nav-link px-2 link-menu-mobile py-1">
                                 <div>
                                     <i class="feather icon-user-check mr-2"></i>
-                                    <span class="d-lg-none">{{ __('users.my_subscriptions') }}</span>
+                                    <span class="d-md-none">{{ __('users.my_subscriptions') }}</span>
                                 </div>
                             </a>
                         </li> --}}
 
                             @if (auth()->user()->verified_id == 'no' && auth()->user()->verified_id != 'reject')
-                                <li class="nav-item dropdown d-lg-none">
+                                <li class="nav-item dropdown d-md-none">
                                     <a href="{{ url('settings/verify/account') }}"
                                         class="nav-link px-2 link-menu-mobile py-1">
                                         <div>
                                             <i class="feather icon-star mr-2"></i>
-                                            <span class="d-lg-none">{{ __('general.become_creator') }}</span>
+                                            <span class="d-md-none">{{ __('general.become_creator') }}</span>
                                         </div>
                                     </a>
                                 </li>
                             @endif
 
-                            <li class="nav-item dropdown d-lg-none">
+                            <li class="nav-item dropdown d-md-none">
                                 <a href="{{ url('logout') }}" class="nav-link px-2 link-menu-mobile py-1">
                                     <div>
                                         <i class="feather icon-log-out mr-2"></i>
-                                        <span class="d-lg-none">{{ __('auth.logout') }}</span>
+                                        <span class="d-md-none">{{ __('auth.logout') }}</span>
                                     </div>
                                 </a>
                             </li>
 
                             <!-- =========== End Menu Mobile ============-->
 
-                            <li class="nav-item dropdown d-lg-block d-none">
+                            <li class="nav-item dropdown d-md-block d-none">
                                 <div class="theme-toggle-group">
                                     <a href="{{ url('mode/light') }}"
                                         class="theme-toggle-btn {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
@@ -600,7 +582,7 @@
 
                                 </div>
                             </li>
-                            <li class="nav-item dropdown d-lg-block d-none">
+                            <li class="nav-item dropdown d-md-block d-none">
                                 @if (($settings->disable_wallet == 'on' && auth()->user()->wallet != 0.0) || $settings->disable_wallet == 'off')
                                     @if ($settings->disable_wallet == 'off')
                                         <a class="nav-link px-2" href="{{ url('my/wallet') }}">
@@ -631,7 +613,7 @@
                                     @endif
                                 @endif
                             </li>
-                            <li class="nav-item dropdown d-lg-block d-none">
+                            <li class="nav-item dropdown d-md-block d-none">
                                 <a href="{{ url('messages') }}" class="nav-link px-2" title="{{ __('general.messages') }}">
 
                                     <span class="noti_msg notify @if (auth()->user()->messagesInbox() != 0) d-block @endif">
@@ -652,12 +634,12 @@
                                             stroke-linejoin="round" />
                                     </svg>
 
-                                    <span class="d-lg-none align-middle ml-1">{{ __('general.messages') }}</span>
+                                    <span class="d-md-none align-middle ml-1">{{ __('general.messages') }}</span>
 
                                 </a>
 
                             </li>
-                            <li class="nav-item dropdown d-lg-block d-none">
+                            <li class="nav-item dropdown d-md-block d-none">
                                 <a href="{{ url('notifications') }}" class="nav-link px-2"
                                     title="{{ __('general.notifications') }}">
                                     <span class="noti_notifications notify @if (auth()->user()->unseenNotifications()) d-block @endif">
@@ -671,10 +653,10 @@
                                             stroke-linejoin="round" />
                                     </svg>
 
-                                    <span class="d-lg-none align-middle ml-1">{{ __('general.notifications') }}</span>
+                                    <span class="d-md-none align-middle ml-1">{{ __('general.notifications') }}</span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown d-lg-block d-none">
+                            <li class="nav-item dropdown d-md-block d-none">
 
                                 <a class="nav-link" href="#" id="nav-inner-success_dropdown_1" role="button"
                                     data-toggle="dropdown">
@@ -682,7 +664,7 @@
                                     <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
                                         alt="User" class="rounded-circle avatarUser mr-1" width="28" height="28">
 
-                                    <span class="d-lg-none">{{ auth()->user()->first_name }}</span>
+                                    <span class="d-md-none">{{ auth()->user()->first_name }}</span>
 
                                     <i class="feather icon-chevron-down m-0 align-middle"></i>
 
@@ -845,3 +827,4 @@
 
     </nav>
 </header>
+

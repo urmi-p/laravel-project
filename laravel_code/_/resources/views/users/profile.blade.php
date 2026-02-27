@@ -63,15 +63,13 @@
 @endsection
 
 @section('content')
-    <div class="d-lg-none pt-5 mt-5 d-flex justify-content-center">
     {{-- for mobile header --}}
     @include('includes.header-mobile')
-    </div>
+    
 
-    <div class="jumbotron jumbotron-cover-user home m-0 position-relative"
-        style="padding: @if ($user->cover != '') @if (request()->path() == $user->username) 240px @else 125px @endif
-@else
-125px @endif 0; background: #505050 @if ($user->cover != '') url('{{ Helper::getFile(config('path.cover') . $user->cover) }}') no-repeat center center; background-size: cover; @endif">
+    <div
+        class="jumbotron jumbotron-cover-user home m-0 position-relative profile-cover"
+        style="padding: @if ($user->cover != '') @if (request()->path() == $user->username) 240px @else 125px @endif @else 125px @endif 0; background: #505050 @if ($user->cover != '') url('{{ Helper::getFile(config('path.cover') . $user->cover) }}') no-repeat center center; background-size: cover; @endif">
 
         @if (auth()->check() && auth()->user()->status == 'active' && auth()->id() == $user->id)
 
@@ -773,7 +771,7 @@
                                     {{ __('custom.alert_profile_verification') }}
                                     <br>
                                     <a href="{{ url('settings/page') }}"
-                                        class="link-border" style="color:#E2394C !important;">{{ __('general.become_creator') }}</a>
+                                        class="link-border profile-accent-link">{{ __('general.become_creator') }}</a>
 
                                 </div>
                             </div>
@@ -931,9 +929,9 @@
 
     @if ($user->verified_id == 'yes' && !in_array(request('media'), ['shop', 'reels', 'photos', 'videos']))
 
-        <div class="container-fluid py-4 pb-5 px-5">
-            <div class="row">
-                <div class="col-lg-4 mb-3">
+        <div class="container-fluid py-4 pb-5 px-3 px-lg-5 profile-middle-content">
+            <div class="row profile-content-row">
+                <div class="col-lg-4 col-md-4 mb-3 profile-left-col">
                     <button type="button"
                         class="btn-arrow-expand btn btn-outline-primary btn-block mb-2 d-lg-none text-word-break font-weight-bold"
                         type="button" data-toggle="collapse" data-target="#navbarUserHome"
@@ -944,14 +942,14 @@
                     </button>
                     <div class="navbar-collapse collapse d-lg-block" id="navbarUserHome" >
 
-                        <div class="card mb-3 rounded-large shadow-large" style="background: #FFFFFF1A;">
+                        <div class="card mb-3 rounded-large shadow-large profile-glass-card">
 
                             <div class="card-body">
 
                                 <h6 class="card-title font_weight_700 fs-18">{{ __('users.about_me') }}</h6>
                                 @if ($user->verified_id == 'yes')
 
-                                    <div class="truncated font_weight_400 fs-14 " style="color:#DADADA !important;margin-bottom: 1rem;">
+                                    <div class="truncated font_weight_400 fs-14 profile-muted-copy mb-3">
 
                                         {!! Helper::checkText($user->story) !!}
 
@@ -1285,17 +1283,13 @@
 
                             {{-- recent media test end --}}
 
-                            <div class="card recent-media rounded-lg">
+                            <div class="card recent-media rounded-lg profile-glass-card profile-recent-card">
 
-                                <div class="card-body m-0 pb-0">
-
-                                </div>
-
-                                <h6 class="card-title pl-3 mb-0 card-title text-uppercase font-weight-bold">
+                                <h6 class="card-title mb-0 card-title text-uppercase font-weight-bold profile-recent-title">
                                     {{ __('general.recent') }}</h6>
 
-                                <div class="card-body">
-                                    <div class="row">
+                                <div class="card-body profile-recent-body">
+                                    <div class="row profile-recent-grid">
                                         @foreach ($recentMedia as $media)
                                             @php
 
@@ -1354,8 +1348,7 @@
                                                             </div>
                                                         </div>
                                                     </a>
-                                                    <small class="d-block w-100 text-center text-truncate"
-                                                        style="position: absolute; bottom: 10px; color: #fff; font-size: 11px;">{{ __('general.ppv') }}</small>
+                                                    <small class="d-block w-100 text-center text-truncate profile-ppv-label">{{ __('general.ppv') }}</small>
 
                                                 </div>
                                             @else
@@ -1406,7 +1399,7 @@
                     </div><!-- navbar-collapse -->
 
                 </div><!-- col-lg-4 -->
-                <div class="col-lg-8 wrap-post">
+                <div class="col-lg-8 col-md-8 wrap-post profile-right-col">
                     <!-- for testing top alert message of subscription -->
                     <!-- <div class="alert alert-danger mb-3 no_sub_msg">
 

@@ -26,19 +26,19 @@
         <div class="mb-2 w-100">
           @if ($settings->google_login == 'on')
           <a href="{{url('oauth/google')}}" class="btn btn-google auth-form-btn mb-2 w-100">
-            <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> {{ __('auth.sign_up_with') }} Google
+            <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> {{ __('auth.sign_up_with') }}<span class="auth-provider-name">Google</span>
           </a>
           @endif
 
           @if ($settings->facebook_login == 'on')
           <a href="{{url('oauth/facebook')}}" class="btn btn-facebook auth-form-btn mb-2 w-100">
-            <i class="fab fa-facebook mr-2"></i> {{ __('auth.sign_up_with') }} Facebook
+            <i class="fab fa-facebook mr-2"></i> {{ __('auth.sign_up_with') }}<span class="auth-provider-name">Facebook</span>
           </a>
           @endif
 
           @if ($settings->twitter_login == 'on')
           <a href="{{url('oauth/twitter')}}" class="btn btn-twitter auth-form-btn mb-2 w-100">
-            <i class="bi-twitter-x mr-2"></i> {{ __('auth.sign_up_with') }} Twitter
+            <i class="bi-twitter-x mr-2"></i> {{ __('auth.sign_up_with') }}<span class="auth-provider-name">Twitter</span>
           </a>
           @endif
         </div>

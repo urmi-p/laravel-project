@@ -152,6 +152,7 @@ return array(
 'cancel_confirm' => 'Ні, скасувати!',
 'yes_confirm' => 'Так, видалити!',
 'recent' => 'Нещодавні',
+'recent_uploaded' => 'Recent Uploaded',
 'online' => 'Онлайн',
 'view_all' => 'Переглянути все',
 'add_tag' => 'Додайте тег і натисніть Enter або кому',

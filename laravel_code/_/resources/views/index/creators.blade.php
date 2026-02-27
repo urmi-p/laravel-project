@@ -10,7 +10,7 @@
     @include('includes.header-mobile')
 
     <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
-        <div class="row ">
+        <div class="row app-main-row">
             <div class="col-md-3 mb-4 menu-left-home side_bar_box_shadow">
                 @if (!$settings->disable_creators_section)
                 @include('includes.menu-filters-creators')

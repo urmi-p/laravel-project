@@ -3,47 +3,27 @@
 
 
 @section('content')
-    <style>
-        #stories .story .story-posted-username {
-            display: block;
-            max-width: 100px;
-            margin-top: 8px;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 1.2;
-            color: #FFFFFF;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        @media (max-width: 767.98px) {
-            #stories .story .story-posted-username {
-                max-width: 69px;
-            }
-        }
-    </style>
 
-    <section class="section section-sm">
-        @include('includes.header-mobile')
-        <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
 
-            <div class="row">
-                <div class="col-lg-3 col-md-4 side_bar_box_shadow">
+    <section class="section section-sm dashboard-home">
+        <div class="container-fluid pt-lg-5 pt-2 px-lg-5 dashboard-home-container">
+
+            <div class="row app-main-row dashboard-main-row">
+                <div class="col-lg-3 col-md-3 side_bar_box_shadow dashboard-left-col">
                     @include('includes.menu-sidebar-home')
                 </div>
 
-                <div class="col-lg-6 col-md-8 p-0 second wrap-post">
+                <div class="col-lg-6 col-md-6 second wrap-post dashboard-center-col">
                     @if ($stories->count() || ($settings->story_status && auth()->user()->verified_id == 'yes'))
                         <div id="stories" class="storiesWrapper mb-2 p-2">
 
                             @if ($settings->story_status && auth()->user()->verified_id == 'yes')
-                                <div style="width: fit-content" title="{{ __('general.add_story') }}">
+                                <div class="story-add-wrap" title="{{ __('general.add_story') }}">
 
                                     <a class="item-add-story" href="#" data-toggle="modal" data-target="#addStory">
 
                                         <div>
-                                            <img lazy="eager" class="dashboard_story" width="100"
+                                            <img lazy="eager" class="dashboard_story"
                                                 src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}">
 
                                         </div>
@@ -54,7 +34,7 @@
                                                 My Flash
                                             </span>
                                             <span class="plus_icon">
-                                                <i class="bi-plus bg-primary" style="border-radius: 50%"></i>
+                                                <i class="bi-plus bg-primary"></i>
                                             </span>
 
                                         </div>
@@ -170,9 +150,9 @@
 
                 </div><!-- end col-md-12 -->
 
-                <div class="col-lg-3 col-md-4 @if ($users->count() != 0) mb-4 @endif d-lg-block d-none">
+                <div class="col-lg-3 col-md-3 @if ($users->count() != 0) mb-4 @endif d-md-block d-none dashboard-right-col">
 
-                    <div class="d-lg-block sticky-top">
+                    <div class="d-md-block sticky-top">
 
                         @if ($users->count() == 0)
                             <div class="panel panel-default panel-transparent mb-4 d-lg-block d-none">
