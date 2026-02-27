@@ -7,12 +7,12 @@
   <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
     <div class="row justify-content-center h-100">
 
-      <div class="col-md-3">
+      <div class="col-lg-3">
         @include('includes.menu-sidebar-message')
       </div>
 
-      <div class="col-md-6  p-0">
-        <div class="card   border-0 d-lg-block d-none messageDiv" >
+      <div class="col-md-6 col-sm-6 p-0">
+        <div class="card border-0 d-lg-block d-md-block d-none messageDiv">
           <div class="content px-4 py-3 d-scrollbars container-msg">
 
             <div class="flex-column d-flex justify-content-center text-center h-100">
@@ -30,7 +30,7 @@
 
         </div><!-- card -->
       </div><!-- end col-md-6 -->
-      <div class="col-md-3 wrapper-msg-inbox" id="messagesContainer">
+      <div class="col-sm-3 col-md-6 col-lg-3 wrapper-msg-inbox" id="messagesContainer">
         @include('includes.sidebar-messages-inbox')
       </div>
     </div><!-- end row -->

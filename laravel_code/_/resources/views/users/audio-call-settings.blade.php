@@ -20,7 +20,7 @@ select { width: 100%; max-width: 100%; }
 
         @include('includes.cards-settings')
 
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
               <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2"> {{__('general.audio_call_settings')}}</h2>

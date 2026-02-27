@@ -17,10 +17,10 @@
         @include('includes.header-mobile')
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
             <div class="row">
-                <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+                <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
-                <div class="col-lg-6 col-md-6 p-0">
+                <div class="col-lg-6 col-md-8 p-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8">
                             <h4 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">

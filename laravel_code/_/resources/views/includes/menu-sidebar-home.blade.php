@@ -1,4 +1,4 @@
-<ul class="list-unstyled d-lg-block d-none menu-left-home sticky-top">
+<ul class="list-unstyled d-lg-block d-md-block d-none menu-left-home sticky-top">
 	{{-- USER PROFILE HEADER --}}
 	@auth
 	<li class="sidebar-user mb-3">

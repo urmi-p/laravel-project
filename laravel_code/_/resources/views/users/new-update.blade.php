@@ -481,10 +481,10 @@
         @include('includes.header-mobile')
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
             <div class="row">
-                <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+                <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
-                <div class="col-lg-6 col-md-6 p-0">
+                <div class="col-lg-6 col-md-8 p-0">
                         @include('includes.alert-payment-disabled')
                         <div class="progress-wrapper px-3 px-lg-0 display-none mb-3" id="progress">
                             <div class="progress-info">

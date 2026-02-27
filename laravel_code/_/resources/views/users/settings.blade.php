@@ -15,7 +15,7 @@
 
         @include('includes.cards-settings')
 
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
 
           @if (session('status'))
                   <div class="alert alert-success">
