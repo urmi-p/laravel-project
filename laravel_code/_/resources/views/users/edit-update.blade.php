@@ -48,7 +48,7 @@
                                 <div class="blocked display-none"></div>
                                 <div class="pb-3">
                                     @if (!$mediaCount && $data->locked == 'yes')
-                                        <label class="@if (!$data->title) display-none @endif">Title</label>
+                                        <label class="@if (!$data->title) display-none @endif">{{__('general.title')}}</label>
 
                                         <div class="form-group @if (!$data->title) display-none @endif"
                                             id="titlePost">
@@ -78,7 +78,7 @@
                                     @endif
 
 
-                                    <label>Description</label>
+                                    <label>{{__('general.description')}}</label>
                                     <textarea name="description" id="updateDescription" data-post-length="{{ $settings->update_length }}" rows="5"
                                         cols="40" placeholder="{{ __('general.write_something') }}"
                                         class="form-control textareaAutoSize updateDescription emojiArea">{{ $data->description }}</textarea>

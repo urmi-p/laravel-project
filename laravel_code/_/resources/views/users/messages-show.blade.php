@@ -96,7 +96,7 @@
 
                     <!-- Visit Profile Button -->
                     <a href="{{ url($user->username) }}" class="btn visit-profile-btn">
-                      Visit Profile
+                      {{__('general.visit_profile')}}
                     </a>
 
                     @if ($user->active_status_online == 'yes')

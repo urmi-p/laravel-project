@@ -111,7 +111,7 @@
                                 </h2>
 
                                 <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_small_fs center_align mobile_fund_text">
-                                    Amount minimum withdrawal <p class="font_weight_900 fs-32 d-inline mobile_small_fs">20€ EUR</p>
+                                    {{ __('general.amount_min_withdrawal') }} <p class="font_weight_900 fs-32 d-inline mobile_small_fs">20€ EUR</p>
                                 </span>
 
                                 @if ($equivalent_money)
@@ -137,7 +137,7 @@
                     {{-- start form --}}
                     <div class="payment-method-container">
                         <div class="payment-header">
-                            <span>Payment Method</span>
+                            <span>{{__('general.payment_method')}}</span>
                             <div class="input-group-sub">
                                 <select class="payment-select" id="paymentSelect">
                                     <option value="">Please select your payment method</option>
@@ -152,7 +152,7 @@
 
                         <div class="payment-footer">
                             <!-- <button class="btn-back">Go Back</button> -->
-                            <button class="btn-transfer">Transfer Funds</button>
+                            <button class="btn-transfer">{{ __('general.transfer_balance') }}</button>
                         </div>
                     </div>
 

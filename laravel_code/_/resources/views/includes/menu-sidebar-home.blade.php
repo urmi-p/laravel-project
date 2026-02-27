@@ -19,7 +19,7 @@
 				</small>
 			</div>
 			<a href="{{ url(auth()->user()->username) }}" class="btn_profile">
-				My Profile
+				{{ __('general.my_profile') }}
 			</a>
 		</div>
 	</li>
@@ -29,7 +29,7 @@
 			<i class="fas fa-dollar-sign"></i>
 		</div>
 		<div class="card-info">
-			<small>Earnings</small>
+			<small>{{__('general.earnings')}}</small>
 			<strong>{{ Helper::amountFormatDecimal(auth()->user()->myPaymentsReceived()->sum('earning_net_user')) }}</strong>
 		</div>
 	</li>
@@ -45,7 +45,7 @@
 
 		</div>
 		<div class="card-info">
-			<small>Wallet Balance</small>
+			<small>{{__('general.wallet_balance')}}</small>
 			<strong>{{ Helper::userWallet() }}</strong>
 		</div>
 	</li>

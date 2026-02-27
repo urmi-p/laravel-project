@@ -150,8 +150,7 @@
                             @foreach ($subscriptions as $subscription)
                                 <div class="my_subscription_card">
                                     <div class="my_subscription_card_header">
-                                        <strong>Subscriptions Detail</strong>
-                                        {{-- Using Close Only as placeholder text for consistency with your dummy design --}}
+                                        <strong>{{ __('general.subscriptions_detail') }}</strong>
                                         <span style="color: #aaa; cursor: pointer; font-size: 13px;"></span>
                                     </div>
 

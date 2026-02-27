@@ -1491,4 +1491,7 @@ return array(
 	'share_thoughts' => 'Share your thoughts!',
 	'subscriptions_to' => 'subscribed to',
 	'success_added' => 'Successfully added',
+	'wallet_balance' => 'Баланс гаманця',
+	'advanced_settings' => 'Розширені налаштування',
+	'subscriptions_detail' => 'Деталі підписок',
 );
