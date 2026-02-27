@@ -42,7 +42,7 @@
                         <p class="mt-0 font_weight_400 fs-14">{{trans_choice('users.creators_in_this_category', 2 )}}</p>
                     </div>
                 </div>
-                <div class="my-5 text-center no-updates main-no-updates">
+                <div class="text-center no-updates main-no-updates">
                     <div class="sub-no-updates">
                     <span class="btn-block mb-3">
                         <i class="fa fa-user-slash ico-no-result bg_black"></i>
