@@ -481,10 +481,10 @@
         @include('includes.header-mobile')
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
             <div class="row">
-                <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+                <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
-                <div class="col-lg-6 col-md-6 p-0">
+                <div class="col-lg-6 col-md-8 p-0">
                         @include('includes.alert-payment-disabled')
                         <div class="progress-wrapper px-3 px-lg-0 display-none mb-3" id="progress">
                             <div class="progress-info">
@@ -589,7 +589,7 @@
                                                 </button>
                                             </div>
                                             <div class="form-group" id="titlePost">
-                                                <label>Title</label>
+                                                <label>{{__('general.title')}}</label>
                                                 <div class="input-group mb-2">
                                                     <input class="form-control" autocomplete="off" name="title"
                                                     maxlength="100" placeholder="{{ __('admin.title') }}" type="text">
@@ -600,7 +600,7 @@
 
                                             </div><!-- End form-group -->
                                             <div class="description-row">
-                                                <label class="mb-0">Description</label>
+                                                <label class="mb-0">{{__('general.description')}}</label>
                                                 <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                     class="btn btn-post p-bottom-8 btn-tooltip-form e-none @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill"
                                                     title="Emoji">
@@ -614,7 +614,7 @@
                                                 cols="40" placeholder="{{ __('general.write_something') }}"
                                                 class="form-control textareaAutoSize updateDescription emojiArea"></textarea>
                                             <div class="form-group display-none mt-3" id="price">
-                                                <label>Price</label>
+                                                <label>{{ __('general.price') }}</label>
                                                 <div class="input-group mb-2">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">{{ $settings->currency_symbol }}</span>
@@ -637,7 +637,7 @@
                                             <hr class="my-4">
                                             <div class="advanced-settings">
 
-                                                <h4 class="mb-3 fw-bold">Advanced Settings</h4>
+                                                <h4 class="mb-3 fw-bold">{{__('general.advanced_settings')}}</h4>
 
                                                 <!-- Who can see this post -->
                                                 <div class="mb-4">
@@ -693,7 +693,7 @@
 
                                                 <!-- Schedule -->
                                                 <div class="setting-row">
-                                                    <h6>Schedule</h6>
+                                                    <h6>{{__('general.schedule')}}</h6>
                                                     <label class="switch_update">
                                                         <input type="checkbox" id="advScheduleToggle" @if (!$settings->allow_scheduled_posts) disabled @endif>
                                                         <span class="slider_update"></span>
@@ -705,7 +705,7 @@
 
                                                 <!-- Price -->
                                                 <div class="setting-row">
-                                                    <h6>Price</h6>
+                                                    <h6>{{__('general.price')}}</h6>
                                                     <strong id="advancedPriceValue">{{ $settings->currency_symbol }}0</strong>
                                                 </div>
 

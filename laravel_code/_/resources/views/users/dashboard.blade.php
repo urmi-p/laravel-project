@@ -10,7 +10,7 @@
       
       <div class="row">
 			@include('includes.cards-settings')
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-sm-12 col-md-12 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
 				<h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
@@ -21,7 +21,7 @@
           </div>
           <div class="content">
             <div class="row">
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="">
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center" >
 					<div class="dash-content">
@@ -37,7 +37,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="">
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
@@ -56,7 +56,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="">
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
@@ -73,7 +73,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="">
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
@@ -93,7 +93,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="">
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
@@ -112,7 +112,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
 				<div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
 						<small>{{ __('general.earnings_net_ppv') }}</small>
@@ -128,7 +128,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="dash-card-mini">
                   <div class="overflow-hidden position-relative">
                     <h6 class="{{$stat_revenue_today > 0 ? 'text-success' : 'text-danger' }} text-revenue">
@@ -145,7 +145,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2 pb-3">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
                 <div class="dash-card-mini">
                   <div class="overflow-hidden position-relative">
                     <h6 class="{{$stat_revenue_week > 0 ? 'text-success' : 'text-danger' }} text-revenue">
@@ -162,7 +162,7 @@
                 </div><!-- card 1 -->
               </div><!-- col-lg-4 -->
 
-              <div class="col-md-4 col-lg-4 mb-2">
+              <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
                 <div class="dash-card-mini">
                   <div class="overflow-hidden position-relative">
                     <h6 class="{{$stat_revenue_month > 0 ? 'text-success' : 'text-danger' }} text-revenue">
@@ -183,7 +183,7 @@
                  <div class="large-dash-card">
                    <div class="card-body">
 
-                    <div class="d-lg-flex d-block justify-content-between align-items-center mb-4">
+                    <div class="d-flex d-block justify-content-between align-items-center mb-4">
                       <h4 class="mb-4 mb-lg-0">{{ __('general.earnings') }}</h4>
 
                      <select class="custom-select mb-4 mb-lg-0 w-auto d-block filterEarnings">
@@ -205,7 +205,7 @@
                  </div>
               </div>
           
-            <div class="col-md-4 mb-5 mb-lg-0">
+            <div class="col-sm-4 col-md-4 col-lg-4 mb-5 mb-lg-0">
               <div class="sub-main shadow-sm">
                 <div class="d-flex py-1 align-items-center justify-content-between px-3">
                   <span class="px-2 py-3 sub-title">{{ __('admin.recent_subscriptions') }}</span>
@@ -278,7 +278,7 @@
               </div><!-- card -->
             </div><!-- end col-md-6 -->
 
-            <div class="col-md-8 mb-5 mb-lg-0">
+            <div class="col-sm-4 col-md-8 col-lg-8 mb-5 mb-lg-0">
               <div class="pay-head-main shadow-sm">
                 <div class="pay-head d-flex py-1 align-items-center justify-content-between px-3">
                   <span class="px-2 py-2 sub-title">{{ __('general.payments_received') }}</span>

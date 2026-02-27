@@ -164,7 +164,6 @@
 
   .pay-btn-mini {
     background: transparent;
-    /* border: 1px solid #333; */
     border: 1.5px solid #FFFFFF;
     color: #fff;
     border-radius: 6px;
@@ -173,7 +172,11 @@
     font-weight: 500;
     transition: all 0.2s;
   }
-
+  @media (max-width: 480px) {
+    .pay-btn-mini {
+      padding: 6px 16px !important;
+    }
+  }
   [data-bs-theme="light"] .pay-btn-mini {
     border: 1px solid #ddd !important;
     color: #111 !important;
@@ -359,11 +362,11 @@
           @if (auth()->user()->verified_id == 'yes')
             @include('includes.cards-settings')
           @else
-            <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+            <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                 @include('includes.menu-sidebar-home')
             </div>
           @endif
-          <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+          <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
             <div class="row mb-sm">
               <div class="col-lg-8">
                 <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{__('general.wallet')}}</h2>

@@ -10,7 +10,7 @@
       <div class="row">
         @include('includes.cards-settings')
 
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
               <h2 class="mb-0 font-montserrat pb-3 font_weight_700 fs-24">{{__('general.live_streaming_private_requests')}}</h2>

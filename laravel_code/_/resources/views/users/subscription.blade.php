@@ -78,7 +78,7 @@
 
                 @include('includes.cards-settings')
                 @if (auth()->user()->verified_id == 'no')
-                <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+                <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8 py-5">
                             <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-cash-stack mr-2"></i>

@@ -304,12 +304,12 @@
     <div class="container-fluid pt-lg-5 pt-3">
 
         <div class="row">
-            <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+            <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                 @include('includes.menu-sidebar-home')
             </div>
             {{-- @include('includes.cards-settings') --}}
 
-            <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+            <div class="col-md-8 col-lg-9 mb-5 mb-lg-0">
 
                 <div class="commission-wrapper">
                     <h4 class="fw-bold font_weight_700 fs-24">{{ __('general.subscription_fees') }}</h4>

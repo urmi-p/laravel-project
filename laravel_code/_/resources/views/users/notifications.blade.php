@@ -7,7 +7,7 @@
 	<div class="container-fluid pt-lg-5 pt-2 px-lg-5">
 		<div class="row mb-sm">
 			@include('includes.cards-settings')
-			<div class="col-lg-9">
+			<div class="col-lg-9 col-md-12">
 				<div class="row mb-sm">
 					<div class="col-lg-8">
 						<h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">

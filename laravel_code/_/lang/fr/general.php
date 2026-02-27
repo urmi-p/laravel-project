@@ -1483,4 +1483,7 @@ return array(
 	'share_thoughts' => 'Partagez vos pensees !',
 	'subscriptions_to' => 'abonne a',
 	'success_added' => 'Ajoute avec succes',
+	'wallet_balance' => 'Solde du portefeuille',
+	'advanced_settings' => 'Paramètres avancés',
+	'subscriptions_detail' => 'Détail des abonnements',
 );

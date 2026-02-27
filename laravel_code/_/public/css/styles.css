@@ -2564,7 +2564,6 @@ a.btn-category:focus {
 }
 .nav_profile {
     border: 1px solid #303030;
-    /* width: 549px; */
     margin: auto;
     border-radius: 12px;
     background-color: var(--nav_profile_bg);
@@ -4115,6 +4114,9 @@ footer.footer-bg {
     background-color: #f5f5f5 !important;
 }
 @media (min-width: 768px) and (max-width: 1024px) {
+    .nav_link {
+        padding: 8px 8px !important;
+    }
     /* -------------------------
      GLOBAL SPACING ADJUST
     -------------------------- */
@@ -4290,7 +4292,7 @@ footer.footer-bg {
         font-size: 14px !important;
     }
     .go_to_page_btn {
-        padding: 8px 16px !important;
+        padding: 8px 8px !important;
     }
     .payout-method .payment-card-group {
         grid-template-columns: 1fr;
@@ -4477,6 +4479,9 @@ footer.footer-bg {
 }
 /* Frame 75 */
 @media (max-width: 480px) {
+    .go_to_page_btn {
+        padding: 8px 8px !important;
+    }
     .wel_msg_mob_16{
         font-size:16px !important;
     }

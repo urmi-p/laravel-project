@@ -17,10 +17,10 @@
         @include('includes.header-mobile')
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
             <div class="row">
-                <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+                <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
-                <div class="col-lg-6 col-md-6 p-0">
+                <div class="col-lg-6 col-md-8 p-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8">
                             <h4 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
@@ -48,7 +48,7 @@
                                 <div class="blocked display-none"></div>
                                 <div class="pb-3">
                                     @if (!$mediaCount && $data->locked == 'yes')
-                                        <label class="@if (!$data->title) display-none @endif">Title</label>
+                                        <label class="@if (!$data->title) display-none @endif">{{__('general.title')}}</label>
 
                                         <div class="form-group @if (!$data->title) display-none @endif"
                                             id="titlePost">
@@ -78,7 +78,7 @@
                                     @endif
 
 
-                                    <label>Description</label>
+                                    <label>{{__('general.description')}}</label>
                                     <textarea name="description" id="updateDescription" data-post-length="{{ $settings->update_length }}" rows="5"
                                         cols="40" placeholder="{{ __('general.write_something') }}"
                                         class="form-control textareaAutoSize updateDescription emojiArea">{{ $data->description }}</textarea>

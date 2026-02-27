@@ -1584,4 +1584,7 @@ return array(
 	'share_thoughts' => 'Comparte tus pensamientos!',
 	'successfully_added' => 'Agregado exitosamente',
 	'successfully_removed' => 'Eliminado con exito',
+	'wallet_balance' => 'Saldo de billetera',
+	'advanced_settings' => 'Configuración avanzada',
+	'subscriptions_detail' => 'Detalle de suscripciones',
 );

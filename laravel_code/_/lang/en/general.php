@@ -1499,4 +1499,9 @@ return array(
 	'fee_not_applied' => 'Fees have not been applied.',
 	'subscriptions_to' => 'subscribed to',
 	'success_added' => 'Successfully added',
+
+	'wallet_balance' => 'Wallet Balance',
+	'advanced_settings' => 'Advanced Settings',
+	'visit_profile' => 'Visit Profile',
+	'subscriptions_detail' => 'Subscriptions Detail',
 );

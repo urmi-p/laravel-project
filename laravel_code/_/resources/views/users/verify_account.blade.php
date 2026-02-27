@@ -9,7 +9,7 @@
     <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
       <div class="row">
         @include('includes.cards-settings')
-        <div class="col-md-6 col-lg-9 mb-5 mb-lg-0">
+        <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
           <div class="row mb-sm">
             <div class="col-lg-8">
               <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-check-circle mr-2"></i> {{__('general.verify_account')}}</h2>
