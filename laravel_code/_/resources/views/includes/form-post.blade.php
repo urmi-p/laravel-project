@@ -67,15 +67,24 @@
             @endif
 
             <div>
-              <a href="{{ url('new/update') }}" style="border-radius: 8px !important;padding: 4px 6px !important;" class="d-flex align-items-center custom_btn btn-tooltip-form e-none text-white rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
+              <a href="{{ url('new/update') }}" class="d-flex align-items-center custom_btn btn-tooltip-form e-none text-white rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
                 <i class="bi-image f-size-20 align-middle mr-2"></i><span> Photo/Video</span>
               </a>
             </div>
     
+            @php
+              $listItemUrl = $settings->digital_product_sale ? url('add/product') : ($settings->physical_products ? url('add/physical/product') : ($settings->custom_content ? url('add/custom/content') : null));
+            @endphp
             <div>
-              <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn text-white rounded-pill">
-                <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
-              </button>
+              @if ($listItemUrl)
+                <a href="{{ $listItemUrl }}" data-url="{{ $listItemUrl }}" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn btnListItem text-white rounded-pill" onclick="window.location.href='{{ $listItemUrl }}'; return false;" ontouchend="window.location.href='{{ $listItemUrl }}'; return false;">
+                  <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
+                </a>
+              @else
+                <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn text-white rounded-pill" disabled>
+                  <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
+                </button>
+              @endif
             </div>
             @if ($settings->allow_scheduled_posts)
               <div>

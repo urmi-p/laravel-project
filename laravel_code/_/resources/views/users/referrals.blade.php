@@ -198,7 +198,7 @@
 					</div><!-- col-lg-4 -->
 				</div><!-- col-lg-4 -->
 				<div class="ref-card mt-3">
-					<div class="">
+					<div>
 						<div class="d-flex justify-content-between v-div">
 							<h4>
 								{{ __('admin.transactions') }}

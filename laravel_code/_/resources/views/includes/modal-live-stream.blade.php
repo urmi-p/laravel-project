@@ -15,7 +15,7 @@
 
 							@csrf
 
-							<div class="">
+							<div>
 		            <div class="input-group mb-4 input-group-sub">
 		            <div class="input-group-prepend">
 		              <span class="input-sub-text"><i class="bi bi-lightning-charge"></i></span>

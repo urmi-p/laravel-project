@@ -164,7 +164,7 @@
           <form method="POST" action="{{ url('settings/payout/method/paypal') }}" id="PayPal" @if (auth()->user()->payment_gateway != 'PayPal') class="display-none" @endif>
             @csrf
 
-            <div class="">
+            <div>
               <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
                   <span class="input-sub-text"><i class="fab fa-paypal"></i></span>
@@ -199,7 +199,7 @@
               </div>
             </div>
 
-            <div class="">
+            <div>
               <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
                   <span class="input-sub-text"><i class="far fa-envelope"></i></span>
@@ -268,7 +268,7 @@
           <form method="POST" action="{{ url('settings/payout/method/bitcoin') }}" id="Bitcoin" @if (auth()->user()->payment_gateway != 'Bitcoin') class="display-none" @endif>
             @csrf
 
-            <div class="">
+            <div>
               <div class="input-group mb-4 input-group-sub">
                 <div class="input-group-prepend">
                   <span class="input-sub-text"><i class="bi-currency-bitcoin"></i></span>

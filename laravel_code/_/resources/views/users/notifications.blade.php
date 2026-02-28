@@ -298,7 +298,6 @@
 								break;
 						}
 					?>
-						<div style=""></div>
 						<div class="notify-div mb-3">
 							<small class="timeAgo float-right" style="padding:8px;" data="{{date('c', strtotime($key->created_at))}}"></small>
 							<div class="px-3 py-4">

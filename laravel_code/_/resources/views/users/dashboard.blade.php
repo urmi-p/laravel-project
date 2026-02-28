@@ -22,7 +22,7 @@
           <div class="content">
             <div class="row">
               <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
-                <div class="">
+                <div>
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center" >
 					<div class="dash-content">
 						<small>{{ __('admin.earnings_net') }}</small>
@@ -38,7 +38,7 @@
               </div><!-- col-lg-4 -->
 
               <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
-                <div class="">
+                <div>
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
 						<small>{{ __('general.balance') }}
@@ -57,7 +57,7 @@
               </div><!-- col-lg-4 -->
 
               <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
-                <div class="">
+                <div>
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
 						<small>{{ __('general.subscriptions_active') }}</small>
@@ -74,7 +74,7 @@
               </div><!-- col-lg-4 -->
 
               <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
-                <div class="">
+                <div>
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
 						<small>{{ __('general.earnings_net_subscriptions') }}</small>
@@ -94,7 +94,7 @@
               </div><!-- col-lg-4 -->
 
               <div class="col-sm-4 col-md-6 col-lg-4 mb-2 pb-3">
-                <div class="">
+                <div>
                   <div class="dash-card overflow-hidden d-flex justify-content-between align-items-center">
 					<div class="dash-content">
 						<small>{{ __('general.earnings_net_tips') }}</small>
@@ -210,7 +210,7 @@
                 <div class="d-flex py-1 align-items-center justify-content-between px-3">
                   <span class="px-2 py-3 sub-title">{{ __('admin.recent_subscriptions') }}</span>
 					@if ($subscriptions->isNotEmpty())
-						<div class="">
+						<div>
 							<a href="{{ url('my/subscribers') }}" class="d-flex align-items-center justify-content-center arrow">
 								{{ __('general.view_all') }}
 							</a>
@@ -283,7 +283,7 @@
                 <div class="pay-head d-flex py-1 align-items-center justify-content-between px-3">
                   <span class="px-2 py-2 sub-title">{{ __('general.payments_received') }}</span>
 					@if ($transactions->isNotEmpty())
-					<div class="">
+					<div>
 						<a href="{{ url('my/payments/received') }}" class="d-flex align-items-center justify-content-center arrow">
 							{{ __('general.view_all') }}
 						</a>

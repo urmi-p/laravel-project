@@ -702,7 +702,7 @@
 
                                 @if ($likeCount != 0 || $subscriptionsActive != 0)
 
-                                    <span class="">
+                                    <span>
 
                                         @if ($likeCount != 0)
 

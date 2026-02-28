@@ -568,7 +568,7 @@
 
 
 
-                            <div class="">
+                            <div>
                                 <label class="w-100"><i class="fa fa-bullhorn text-muted"></i>
                                     {{ trans('users.your_story') }} *
                                     <span id="the-count" class="float-right d-inline">

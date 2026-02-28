@@ -1,6 +1,51 @@
 @extends('layouts.app')
 @section('css')
     <style>
+        .new-post-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            min-height: 36px;
+        }
+
+        .new-post-back {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: transparent;
+            text-decoration: none !important;
+            flex: 0 0 auto;
+        }
+
+        .new-post-title {
+            margin: 0;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 1.2;
+            color: #fff;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .new-post-header {
+                margin-bottom: 10px;
+            }
+
+            .new-post-title {
+                font-size: 24px;
+            }
+        }
+
         .fileuploader-items {
             white-space: unset !important;
         }
@@ -185,6 +230,15 @@
             display: none !important;
         }
 
+        #formUpdateCreate .post-preview-continue-wrap {
+            display: none;
+            margin-top: 16px;
+        }
+
+        #formUpdateCreate.step-preview .post-preview-continue-wrap {
+            display: block;
+        }
+
         .post-preview-step {
             display: none;
             background: #333438;
@@ -247,8 +301,10 @@
         }
 
         .post-preview-media img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
             transform-origin: center center;
         }
 
@@ -257,6 +313,8 @@
             left: 24px;
             right: 24px;
             bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         .upload-processing-overlay {
@@ -366,6 +424,19 @@
             color: #fff;
             font-weight: 700;
             padding: 12px 14px;
+            margin-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .post-preview-controls {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+            }
+
+            #formUpdateCreate .post-preview-continue-wrap {
+                margin-top: 12px;
+            }
         }
 
         /* .advanced-settings {
@@ -498,16 +569,12 @@
                             </div>
                         </div>
 
-                        <div class="row mb-sm">
-                        <div class="col-lg-8">
-                            <h4 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
-                                <a href="javascript:history.back();" class="text-decoration-none mr-2"
-                                    title="{{ __('general.go_back') }}">
-                                    <i class="fas fa-arrow-left"></i>
-                                </a> <span style="text-align: center">New Post</span>
-                            </h4>
-                        </div>
-                    </div><!-- row -->
+                    <div class="new-post-header">
+                        <a href="javascript:history.back();" class="new-post-back" title="{{ __('general.go_back') }}">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h4 class="new-post-title">New Post</h4>
+                    </div>
 
                     <div class="pb-3 px-3">
                         <form method="POST" action="{{ url('update/create') }}" enctype="multipart/form-data"
@@ -559,7 +626,7 @@
                                         </div>
                                         
                                         <input type="file" name="photo[]" id="filePhoto"
-                                            accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple
+                                            accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3"
                                             class="visibility-hidden filepond">
                                         <div id="uploadProcessingOverlay" class="upload-processing-overlay">
                                             <span class="upload-processing-spinner"></span>
@@ -576,8 +643,10 @@
                                             <div class="post-preview-controls">
                                                 <small id="postPreviewZoomLevel" class="post-preview-zoom-level">100%</small>
                                                 <input id="postPreviewZoom" class="post-preview-range" type="range" min="1" max="100" step="1" value="100">
-                                                <button type="button" id="postPreviewContinue" class="post-preview-continue">Continue</button>
                                             </div>
+                                        </div>
+                                        <div class="post-preview-continue-wrap">
+                                            <button type="button" id="postPreviewContinue" class="post-preview-continue">Continue</button>
                                         </div>
                                         
                                             

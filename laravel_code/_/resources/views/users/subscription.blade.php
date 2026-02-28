@@ -375,7 +375,7 @@
 
                             <div class="form-group">
 
-                                <div class="">
+                                <div>
                                     <div class="mb-4">
                                         <!-- <span class="status-dot-pos {{ auth()->user()->getPlan('weekly', 'status') ? 'bg-success' : 'bg-danger' }}"></span> -->
                                         <label class="fs-16">{{ trans('general.subscription_price_weekly') }}</label>

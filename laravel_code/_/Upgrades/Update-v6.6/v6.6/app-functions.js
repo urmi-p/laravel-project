@@ -5196,6 +5196,16 @@
 
 	});
 
+	// List Item navigation (ensures reliable tap on mobile)
+	$(document).on('touchend click', '.btnListItem', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var url = $(this).attr('data-url') || $(this).attr('href');
+		if (url) {
+			window.location.href = url;
+		}
+	});
+
 
 
 	// Create Live Stream
@@ -7155,4 +7165,3 @@
 
 
 })(jQuery);
-

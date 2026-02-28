@@ -14,6 +14,10 @@
 
 $(document).ready(function() {
 
+	var currentPath = window.location.pathname.replace(/\/+$/, '');
+	var isNewUpdatePage = currentPath === '/new/update';
+	var postUploadLimit = isNewUpdatePage ? 1 : maximum_files_post;
+
 
 
 	// enable fileuploader plugin
@@ -22,7 +26,7 @@ $(document).ready(function() {
 
 		fileMaxSize: maxSizeInMb,
 
-    limit: maximum_files_post,
+    limit: postUploadLimit,
 
     extensions: extensionsPostMessage,
 
@@ -78,7 +82,7 @@ $(document).ready(function() {
 
         enableApi: true,
 
-		addMore: true,
+		addMore: !isNewUpdatePage,
 
         thumbnails: {
             popup: false
