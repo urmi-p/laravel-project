@@ -4,6 +4,24 @@
 {{ $title }} -
 @endsection
 
+@section('css')
+<style>
+@media (max-width: 991px) {
+    .section-sm.creator .menu-left-home {
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        border: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .section-sm.creator .menu-left-home .btn-menu-expand {
+        margin-bottom: 8px !important;
+    }
+}
+</style>
+@endsection
+
 @section('content')
 <section class="section section-sm creator">
 
@@ -28,7 +46,7 @@
 
                         <h2 class="mb-0 text-break font_weight_700 fs-24">{{ $title }}</h2>
 
-                        <p class="mt-0 font_weight_400 fs-14">
+                        <p class="mt-2 font_weight_400 fs-14">
                             {{ __('users.the_best_creators_is_here') }}
 
                             @guest

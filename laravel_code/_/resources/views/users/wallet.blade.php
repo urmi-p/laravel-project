@@ -142,6 +142,8 @@
 
   .payment-info-wrapper {
     flex-grow: 1;
+    min-width: 0;
+    padding-right: 12px;
   }
 
   .payment-name-text {
@@ -160,21 +162,49 @@
     display: block;
     color: #666;
     font-size: 13px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    line-height: 1.35;
   }
 
   .pay-btn-mini {
     background: transparent;
-    border: 1.5px solid #FFFFFF;
+    border: 2px solid #FFFFFF;
     color: #fff;
-    border-radius: 6px;
-    padding: 6px 32px;
+    border-radius: 8px;
+    width: 88px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 1;
     transition: all 0.2s;
   }
+  .payment-action {
+    flex-shrink: 0;
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+  }
   @media (max-width: 480px) {
+    .payment-name-text {
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .payment-desc-text {
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
     .pay-btn-mini {
-      padding: 6px 16px !important;
+      width: 92px;
+      height: 36px;
+      font-size: 14px;
     }
   }
   [data-bs-theme="light"] .pay-btn-mini {

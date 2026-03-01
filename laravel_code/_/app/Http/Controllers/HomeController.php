@@ -664,14 +664,16 @@ class HomeController extends Controller
 
       return response()->json([
         'success' => true,
-        'type' => 'deleted'
+        'type' => 'deleted',
+        'totalBookmarks' => number_format(Bookmarks::where('updates_id', $post->id)->count())
       ]);
     } else {
       $bookmark->save();
 
       return response()->json([
         'success' => true,
-        'type' => 'added'
+        'type' => 'added',
+        'totalBookmarks' => number_format(Bookmarks::where('updates_id', $post->id)->count())
       ]);
     }
   } // End addBookmark

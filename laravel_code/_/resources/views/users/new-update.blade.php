@@ -1001,7 +1001,7 @@
                         </div>
                     @endif
 
-                    <div class="d-lg-block sticky-top" id="">
+                    <div class="d-lg-block" id="">
 
                         @if ($users->count() != 0)
                             @include('includes.explore_creators')

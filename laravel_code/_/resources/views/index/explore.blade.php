@@ -109,7 +109,7 @@
                         </div>
                     @endif
 
-                    <div class="d-lg-block sticky-top" id="">
+                    <div class="d-lg-block" id="">
 
                         @if ($users->isNotEmpty() != 0)
                             @include('includes.explore_creators')

@@ -111,12 +111,12 @@
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
 
             <div class="row app-main-row">
-                <div class="col-lg-3 col-md-2 side_bar_box_shadow">
+                <div class="col-lg-3 col-md-3 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
                 {{-- @include('includes.cards-settings') --}}
 
-                <div class="col-md-8 col-lg-9 mb-5 mb-lg-0">
+                <div class="col-md-9 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
                         <div class="col-lg-8">
                             <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">{{ __('users.my_subscriptions') }}</h2>

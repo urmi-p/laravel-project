@@ -49,18 +49,18 @@
       display: block;
     }
   </style>
-@endsection`
+@endsection
 
 @section('content')
-<section class="section section-sm pb-0 section-msg">
-    <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
+<section class="section section-sm pb-0 section-msg messages-chat-page">
+    <div class="container-fluid pt-lg-5 pt-2">
       <div class="row justify-content-center h-100">
         <div class="col-md-3 d-lg-block d-none side_bar_box_shadow h-100">
           @include('includes.menu-sidebar-message')
         </div>
               
 
-          <div class="col-md-6 h-100 p-0 first">
+          <div class="col-md-6 col-sm-6 h-100 p-0 first messages-middle-col">
 
           <div class="card  border-0  messageDiv">
             <div class="card-header border-0 p-0">
@@ -328,7 +328,7 @@
 
             </div><!-- card -->
           </div><!-- end col-md-8 -->
-        <div class="col-md-3 d-lg-block d-none wrapper-msg-inbox" id="messagesContainer">
+        <div class="col-sm-3 col-md-6 col-lg-3 wrapper-msg-inbox" id="messagesContainer">
                   @include('includes.sidebar-messages-inbox')
                 </div>
           </div><!-- end row -->

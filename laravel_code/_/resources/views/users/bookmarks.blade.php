@@ -9,11 +9,11 @@
     <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
       <div class="row">
 
-        <div class="col-lg-3 col-md-4 side_bar_box_shadow">
+        <div class="col-lg-3 col-md-3 side_bar_box_shadow">
           @include('includes.menu-sidebar-home')
         </div>
 
-        <div class="col-lg-6 col-md-8 p-0 second wrap-post">
+        <div class="col-lg-6 col-md-6 p-0 second wrap-post">
 
           @if($updates->count() != 0)
           <div class="grid-updates position-relative" id="updatesPaginator">
@@ -23,12 +23,13 @@
         @else
           <div class="grid-updates position-relative" id="updatesPaginator"></div>
 
-        <div class="text-center no-updates main-no-updates">
+        <div class="mb-5 text-center no-updates main-no-updates">
           <div class="sub-no-updates">
             <span class="btn-block mb-3">
               <i class="far fa-bookmark ico-no-result bg_black"></i>
             </span>
             <h4 class="font_weight_400 font_size_18">{{trans('general.no_bookmarks')}}</h4>
+            <div class="no-updates-div"></div>
           </div>
         </div>
         <div class="grid-updates position-relative" id="updatesPaginator">
@@ -67,7 +68,7 @@
         	</div>
         @endif
 
-          <div class="d-lg-block sticky-top" id="">
+          <div class="d-lg-block" id="">
 
             @if ($users->count() != 0)
                 @include('includes.explore_creators')

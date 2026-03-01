@@ -20,10 +20,10 @@
                 <div class="col-lg-3 col-md-4 side_bar_box_shadow">
                     @include('includes.menu-sidebar-home')
                 </div>
-                <div class="col-lg-6 col-md-8 p-0">
-                    <div class="row mb-sm">
-                        <div class="col-lg-8">
-                            <h4 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3">
+                <div class="col-lg-6 col-md-8 p-0 edit-post-middle">
+                    <div class="row mb-sm edit-post-header-row">
+                        <div class="col-12">
+                            <h4 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3 edit-post-title">
                                 <a href="javascript:history.back();" class="text-decoration-none mr-2"
                                     title="{{ __('general.go_back') }}">
                                     <i class="fas fa-arrow-left"></i>
@@ -32,7 +32,7 @@
                         </div>
                     </div><!-- row -->
 
-                    <div class="mb-5 mb-lg-0 wrap-post">
+                    <div class="mb-5 mb-lg-0 wrap-post edit-post-card">
                         @if ($settings->moderation_status)
                             <div class="alert alert-info">
                                 <i class="bi bi-info-circle-fill mr-1"></i> {{ __('general.moderation_status_info') }}
@@ -40,13 +40,13 @@
                         @endif
 
                         <form method="POST" action="{{ url('update/edit') }}" enctype="multipart/form-data"
-                            id="formUpdateEdit">
+                            id="formUpdateEdit" class="edit-post-form">
                             @csrf
                             <input type="hidden" name="id" value="{{ $data->id }}" />
 
-                            <div class="mb-4 card-border-0">
+                            <div class="mb-4 card-border-0 edit-post-surface">
                                 <div class="blocked display-none"></div>
-                                <div class="pb-3">
+                                <div class="pb-3 edit-post-fields">
                                     @if (!$mediaCount && $data->locked == 'yes')
                                         <label class="@if (!$data->title) display-none @endif">{{__('general.title')}}</label>
 
@@ -81,7 +81,7 @@
                                     <label>{{__('general.description')}}</label>
                                     <textarea name="description" id="updateDescription" data-post-length="{{ $settings->update_length }}" rows="5"
                                         cols="40" placeholder="{{ __('general.write_something') }}"
-                                        class="form-control textareaAutoSize updateDescription emojiArea">{{ $data->description }}</textarea>
+                                        class="form-control textareaAutoSize updateDescription emojiArea edit-post-description">{{ $data->description }}</textarea>
 
                                     <input class="custom-control-input d-none" id="customCheckLocked" type="checkbox"
                                         {{ $data->locked == 'yes' ? 'checked' : '' }} name="locked" value="yes">
@@ -97,7 +97,7 @@
 
                                 </div><!-- card-body -->
 
-                                <div class="border-0 pt-0 rounded-large">
+                                <div class="border-0 pt-0 rounded-large edit-post-actions">
 
                                     <div class="justify-content-between align-items-center">
 
@@ -185,7 +185,7 @@
                                             );
                                         @endphp
                                         <div>
-                                            <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex justify-content-between align-items-center edit-post-toolbar">
 
                                                 <div class="action-left">
                                                     <div class="action_avatar">
@@ -411,7 +411,7 @@
                 </div><!-- end col-md-6 -->
 
                 <div class="col-lg-3 col-md-4 mb-4 d-lg-block d-none">
-                    <div class="d-lg-block sticky-top" id="">
+                    <div class="d-lg-block" id="">
 
                         @if ($data->count() != 0)
                             @include('includes.explore_creators')

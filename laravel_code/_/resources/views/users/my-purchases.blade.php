@@ -45,7 +45,7 @@
                 </div><!-- end col-md-6 -->
 
                 <div class="col-lg-3 col-md-4 @if ($users->count() != 0) mb-4 @endif d-lg-block d-none">
-                    <div class="d-lg-block sticky-top">
+                    <div class="d-lg-block">
                         @if ($users->count() == 0)
                             <div class="panel panel-default panel-transparent mb-4 d-lg-block d-none">
 

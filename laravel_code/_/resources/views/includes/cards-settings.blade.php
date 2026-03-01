@@ -1,4 +1,4 @@
-<div class="cl-sm-3 col-md-12 col-lg-3">
+<div class="col-sm-3 col-md-3 col-lg-3 side_bar_box_shadow">
 
     <button type="button" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none"
     data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarSettings" aria-expanded="false">

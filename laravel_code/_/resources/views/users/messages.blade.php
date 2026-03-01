@@ -3,7 +3,7 @@
 @section('title'){{trans('general.messages')}} -@endsection
 
 @section('content')
-<section class="section section-sm pb-0  section-msg ">
+<section class="section section-sm pb-0 section-msg messages-landing-page">
   <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
     <div class="row justify-content-center h-100">
 
@@ -11,7 +11,7 @@
         @include('includes.menu-sidebar-message')
       </div>
 
-      <div class="col-md-6 col-sm-6 p-0">
+      <div class="col-md-6 col-sm-6 p-0 messages-middle-col">
         <div class="card border-0 d-lg-block d-md-block d-none messageDiv">
           <div class="content px-4 py-3 d-scrollbars container-msg">
 

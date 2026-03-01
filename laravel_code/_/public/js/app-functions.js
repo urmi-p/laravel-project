@@ -3614,6 +3614,9 @@
 					element.find('i').removeClass('far fa-bookmark').addClass('fas fa-bookmark');
 
 					element.removeClass('text-muted').addClass('text-primary');
+					if (typeof result.totalBookmarks !== 'undefined') {
+						element.find('.action-count').text(result.totalBookmarks);
+					}
 
 				} else {
 
@@ -3632,6 +3635,9 @@
 					element.find('i').removeClass('fas fa-bookmark').addClass('far fa-bookmark');
 
 					element.addClass('text-muted').removeClass('text-primary');
+					if (typeof result.totalBookmarks !== 'undefined') {
+						element.find('.action-count').text(result.totalBookmarks);
+					}
 
 				}
 
