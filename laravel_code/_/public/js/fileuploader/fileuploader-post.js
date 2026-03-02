@@ -14,9 +14,7 @@
 
 $(document).ready(function() {
 
-	var currentPath = window.location.pathname.replace(/\/+$/, '');
-	var isNewUpdatePage = currentPath === '/new/update';
-	var postUploadLimit = isNewUpdatePage ? 1 : maximum_files_post;
+	var postUploadLimit = maximum_files_post;
 
 
 
@@ -73,8 +71,8 @@ $(document).ready(function() {
 		changeInput: '<div class="fileuploader-input">' +
 			'<div class="fileuploader-input-inner">' +
 			'<div class="fileuploader-icon-main"></div>' +
-			'<h3 class="fileuploader-input-caption"><span>Drag and drop an image or click<br>to upload</span></h3>' +
-			'<button type="button" class="fileuploader-input-button"><span>Choose File</span></button>' +
+			'<h3 class="fileuploader-input-caption"><span>Drag and drop files or click<br>to upload</span></h3>' +
+			'<button type="button" class="fileuploader-input-button"><span>Choose Files</span></button>' +
 			'</div>' +
 			'</div>',
 
@@ -82,7 +80,7 @@ $(document).ready(function() {
 
         enableApi: true,
 
-		addMore: !isNewUpdatePage,
+		addMore: true,
 
         thumbnails: {
             popup: false

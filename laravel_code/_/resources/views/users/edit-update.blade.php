@@ -1,12 +1,88 @@
 @extends('layouts.app')
 @section('css')
     <style>
+        [data-bs-theme="dark"] .fileuploader-theme-dragdrop .fileuploader-input{
+            background:#F1F5FE1A !important;
+        }
+        [data-bs-theme="light"] .fileuploader-theme-dragdrop .fileuploader-input{
+            background:#ffffff !important;
+        }
         .fileuploader-items {
             white-space: unset !important;
         }
 
         .fileuploader-item:nth-child(1) {
-            margin-left: 16px !important;
+            margin-left: 10px !important;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-button {
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            color: #e84a5f !important;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-weight: 600;
+            padding: 0 !important;
+            min-height: auto !important;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-icon-main {
+            order: 1;
+            margin-bottom: 0 !important;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-button {
+            order: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto !important;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-caption {
+            order: 3;
+            display: block;
+            margin: 0 !important;
+            width: 100%;
+            text-align: center;
+            color: #5f6574 !important;
+            font-size: 13px !important;
+            line-height: 1.35 !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-caption span {
+            color: inherit !important;
+        }
+
+        .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-button:hover {
+            color: #ff5f74 !important;
+        }
+
+        .edit-post-middle .fileuploader.edit-uploader-has-files .fileuploader-input .fileuploader-input-button {
+            color: #ff3f58 !important;
+        }
+
+        html[data-bs-theme="dark"] .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-button,
+        html[data-bs-theme="dark"] .edit-post-middle .fileuploader.edit-uploader-has-files .fileuploader-input .fileuploader-input-button {
+            color: #ff5a73 !important;
+        }
+
+        html[data-bs-theme="dark"] .edit-post-middle .fileuploader .fileuploader-input .fileuploader-input-caption {
+            color: #ffffff !important;
         }
     </style>
 @endsection
@@ -428,6 +504,52 @@
         $('#maximum').html({{ $settings->update_length }} - $('#updateDescription').val().length);
 
         let postId = {{ $data->id }};
+
+        function syncEditUploaderButtonState() {
+            var $uploader = $('#formUpdateEdit .fileuploader');
+            if (!$uploader.length) {
+                return;
+            }
+
+            var hasFiles = $uploader.find('.fileuploader-items .fileuploader-item').length > 0;
+            $uploader.toggleClass('edit-uploader-has-files', hasFiles);
+
+            var $buttonSpan = $uploader.find('.fileuploader-input .fileuploader-input-button span');
+            if ($buttonSpan.length) {
+                $buttonSpan.text('Browse.');
+            }
+
+            var $captionSpan = $uploader.find('.fileuploader-input .fileuploader-input-caption span');
+            if ($captionSpan.length) {
+                if (!hasFiles) {
+                    $captionSpan.html('No file chosen');
+                } else {
+                    var $items = $uploader.find('.fileuploader-items .fileuploader-item');
+                    if ($items.length > 1) {
+                        $captionSpan.text($items.length + ' files chosen');
+                    } else {
+                        var firstFileName = '';
+                        var $firstTitle = $items.first().find('.column-title div, .content-holder h5').first();
+                        if ($firstTitle.length) {
+                            firstFileName = ($firstTitle.attr('title') || $firstTitle.text() || '').trim();
+                        }
+                        $captionSpan.text(firstFileName || '1 file chosen');
+                    }
+                }
+            }
+        }
+
+        $(document).ready(function() {
+            setTimeout(syncEditUploaderButtonState, 120);
+        });
+
+        $(document).on('post-media-uploaded post-media-removed post-media-upload-failed', function() {
+            setTimeout(syncEditUploaderButtonState, 60);
+        });
+
+        $(document).on('click', '#formUpdateEdit .fileuploader-action-remove', function() {
+            setTimeout(syncEditUploaderButtonState, 60);
+        });
 
         @if ($fileZip || $fileEpub)
 

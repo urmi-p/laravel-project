@@ -32,10 +32,17 @@
             font-weight: 700;
             font-size: 24px;
             line-height: 1.2;
-            color: #fff;
             text-align: center;
         }
-
+        [data-bs-theme="dark"].new-post-title, .new-post-back {
+            color: #fff;
+        }
+        [data-bs-theme="light"].new-post-title, .new-post-back {
+            color: #344054;
+        }
+        [data-bs-theme="light"] #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input {
+            background:#ffffff !important;
+        }
         @media (max-width: 768px) {
             .new-post-header {
                 margin-bottom: 10px;
@@ -48,10 +55,6 @@
 
         .fileuploader-items {
             white-space: unset !important;
-        }
-
-        .fileuploader-item:nth-child(1) {
-            margin-left: 16px !important;
         }
 
         #formUpdateCreate .fileuploader {
@@ -71,7 +74,7 @@
             min-height: 674px !important;
             border: 0 !important;
             border-radius: 20px !important;
-            background: #333438 !important;
+            background: #333438;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -151,10 +154,9 @@
         }
 
         #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3::after {
-            content: "Drag and drop an image or click\Ato upload";
+            content: "Drag and drop files or click\Ato upload";
             white-space: pre-line;
             display: block;
-            color: #fff;
             font-family: Poppins, sans-serif;
             font-weight: 400;
             font-size: 18px;
@@ -162,9 +164,14 @@
             letter-spacing: -0.439453px;
             margin: 0;
         }
-
+        [data-bs-theme="light"] #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3::after {
+            color: black;
+        }
+        [data-bs-theme="dark"] #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3::after {
+            color: #fff;
+        }
         #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button {
-            width: 156px !important;
+            /* width: 156px !important; */
             height: 40px !important;
             border: 0 !important;
             border-radius: 8px !important;
@@ -196,7 +203,7 @@
         }
 
         #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button::after {
-            content: "Choose File";
+            content: "Choose Files";
             color: #fff;
             font-family: Poppins, sans-serif;
             font-weight: 600;
@@ -220,6 +227,139 @@
             display: none !important;
         }
 
+        #formUpdateCreate.step-upload .fileuploader-items {
+            display: block !important;
+            margin-top: 14px;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item {
+            position: relative;
+            width: 100%;
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: #23262f;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+            transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+            cursor: pointer;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item.preview-active {
+            border-color: #e53b54;
+            box-shadow: 0 0 0 2px rgba(229, 59, 84, 0.28);
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.26);
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.24);
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .columns {
+            display: block;
+            min-height: 0;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .column-thumbnail {
+            width: 100%;
+            height: 130px;
+            position: relative;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item-image img,
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item-image canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .column-title,
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .content-holder {
+            padding: 10px 10px 11px !important;
+            color: #fff;
+            background: linear-gradient(180deg, rgba(46, 50, 62, 0.98) 0%, rgba(31, 34, 43, 0.98) 100%);
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .column-title div,
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .content-holder h5 {
+            margin: 0;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .column-title span,
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .content-holder span {
+            display: block;
+            margin-top: 4px;
+            color: #9da5b8;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .column-actions,
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .actions-holder {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 3;
+            margin: 0 !important;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .fileuploader-action-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(9, 10, 12, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            color: #fff;
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .fileuploader-action-remove:hover {
+            background: rgba(229, 59, 84, 0.92);
+            border-color: rgba(229, 59, 84, 0.92);
+        }
+
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .progress-bar2,
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .progress-holder {
+            margin: 0 10px 10px;
+        }
+
+        @media (max-width: 575.98px) {
+            #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list .fileuploader-item .column-thumbnail {
+                height: 108px;
+            }
+        }
+
         #formUpdateCreate.step-preview .fileuploader,
         #formUpdateCreate.step-details .fileuploader {
             display: none !important;
@@ -236,6 +376,10 @@
         }
 
         #formUpdateCreate.step-preview .post-preview-continue-wrap {
+            display: block;
+        }
+
+        #formUpdateCreate.step-upload.has-selected-files .post-preview-continue-wrap {
             display: block;
         }
 
@@ -542,7 +686,14 @@
             justify-content: space-between;
             margin-bottom: 8px;
         }
-
+        @media (max-width: 480px) {
+            .post-preview-step{
+                min-height:300px !important;
+            }
+            .post-preview-media{
+                height:294px !important;
+            }
+        }
     </style>
 @endsection
 
@@ -627,6 +778,7 @@
                                         
                                         <input type="file" name="photo[]" id="filePhoto"
                                             accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3"
+                                            multiple
                                             class="visibility-hidden filepond">
                                         <div id="uploadProcessingOverlay" class="upload-processing-overlay">
                                             <span class="upload-processing-spinner"></span>
@@ -1110,6 +1262,49 @@
                 $detailsStep.addClass('active');
             }
 
+            function getSelectedFilesCount() {
+                var input = $('#filePhoto').get(0);
+                if (input && input.files) {
+                    return input.files.length;
+                }
+
+                return $('#formUpdateCreate .fileuploader-item').length;
+            }
+
+            function updateUploadContinueState() {
+                var count = getSelectedFilesCount();
+                $form.toggleClass('has-selected-files', count > 0);
+            }
+
+            function getPreviewSourceFromItem($item) {
+                if (!$item || !$item.length) {
+                    return '';
+                }
+
+                var $img = $item.find('.fileuploader-item-image img').first();
+                if ($img.length) {
+                    return $img.attr('src') || '';
+                }
+
+                var $canvas = $item.find('.fileuploader-item-image canvas').first();
+                if ($canvas.length) {
+                    return $canvas.get(0).toDataURL('image/png');
+                }
+
+                return '';
+            }
+
+            function openPreviewFromSelectedItem($item) {
+                var src = getPreviewSourceFromItem($item);
+                if (!src) {
+                    return;
+                }
+
+                $('#formUpdateCreate .fileuploader-item').removeClass('preview-active');
+                $item.addClass('preview-active');
+                showPreviewStep(src);
+            }
+
             function updatePriceLabel() {
                 var value = ($priceInput.val() || '').trim();
                 if (!value) {
@@ -1166,6 +1361,7 @@
             }
 
             showUploadStep();
+            updateUploadContinueState();
             if (($priceInput.val() || '').trim() !== '') {
                 applyVisibilityMode('premium');
             } else if ($('#customCheckLocked').is(':checked')) {
@@ -1176,7 +1372,13 @@
             updatePriceLabel();
 
             $(document).on('post-media-uploaded', function(e, payload) {
-                if (!payload || payload.format !== 'image') {
+                var selectedFilesCount = getSelectedFilesCount();
+
+                if (selectedFilesCount > 1 || !payload || payload.format !== 'image') {
+                    $uploadOverlay.removeClass('active');
+                    $uploadOverlayPercent.text('100%');
+                    showUploadStep();
+                    updateUploadContinueState();
                     return;
                 }
 
@@ -1222,6 +1424,10 @@
                 $uploadOverlay.removeClass('active');
                 $uploadOverlayPercent.text('0%');
                 showUploadStep();
+                setTimeout(function() {
+                    updateUploadContinueState();
+                }, 0);
+                $('#formUpdateCreate .fileuploader-item').removeClass('preview-active');
             });
 
             $(document).on('post-media-upload-start', function() {
@@ -1263,10 +1469,21 @@
 
             $('#postDetailsBack').on('click', function() {
                 var currentSrc = $previewImage.attr('src') || '';
+                if (getSelectedFilesCount() > 1 || !currentSrc) {
+                    showUploadStep();
+                    return;
+                }
+
                 showPreviewStep(currentSrc);
             });
 
             $('#postPreviewBack').on('click', function() {
+                if (getSelectedFilesCount() > 0) {
+                    showUploadStep();
+                    updateUploadContinueState();
+                    return;
+                }
+
                 var api = $.fileuploader.getInstance($('input[name="photo[]"]'));
                 if (api) {
                     api.reset();
@@ -1276,6 +1493,15 @@
                     previewUrl = null;
                 }
                 showUploadStep();
+                updateUploadContinueState();
+            });
+
+            $(document).on('click', '#formUpdateCreate.step-upload .fileuploader-item', function(e) {
+                if ($(e.target).closest('.fileuploader-action-remove, .fileuploader-action').length) {
+                    return;
+                }
+
+                openPreviewFromSelectedItem($(this));
             });
 
             $visibilityButtons.on('click', function() {
