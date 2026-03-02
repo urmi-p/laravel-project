@@ -1706,7 +1706,7 @@
 (request()->is('my/bookmarks') && $loop->first && $users->count() != 0) ||
 (request()->is('my/purchases') && $loop->first && $users->count() != 0) ||
 (request()->is('my/likes') && $loop->first && $users->count() != 0))
-<div class="d-lg-none">
+<div class="d-block d-md-none">
 
     @include('includes.explore_creators')
 

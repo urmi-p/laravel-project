@@ -24,7 +24,8 @@
                             style="top: 25px; right: 35px;gap:6px;margin-right:20px">
                             <div class="d-md-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                    data-toggle="collapse" data-target="#mobileCreatorSearch" aria-controls="mobileCreatorSearch"
+                                    data-toggle="collapse" data-target="#mobileCreatorSearch"
+                                    data-bs-toggle="collapse" data-bs-target="#mobileCreatorSearch" aria-controls="mobileCreatorSearch"
                                     aria-expanded="false" role="button">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -39,7 +40,8 @@
                             </div>
                             <div class="d-md-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                    data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                    data-toggle="collapse" data-target="#navbarCollapse"
+                                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
                                     aria-expanded="false" role="button">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +75,8 @@
                         </div>
                         <div class="buttons-mobile-nav d-md-none">
                             <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                data-toggle="collapse" data-target="#navbarCollapse"
+                                data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
                                 aria-expanded="false" role="button">
                                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +99,8 @@
 
             @guest
                 <button class="333 navbar-toggler @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) text-white @endif" type="button"
-                    data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                    data-toggle="collapse" data-target="#navbarCollapse"
+                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
@@ -151,7 +155,8 @@
                     <div class="d-md-none text-right pr-2 mb-2">
 
                         <button type="button" class="navbar-toggler close-menu-mobile" data-toggle="collapse"
-                            data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false">
+                            data-target="#navbarCollapse" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                            aria-controls="navbarCollapse" aria-expanded="false">
                             <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
@@ -827,4 +832,3 @@
 
     </nav>
 </header>
-
