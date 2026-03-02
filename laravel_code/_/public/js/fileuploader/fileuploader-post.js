@@ -14,9 +14,7 @@
 
 $(document).ready(function() {
 
-	var currentPath = window.location.pathname.replace(/\/+$/, '');
-	var isNewUpdatePage = currentPath === '/new/update';
-	var postUploadLimit = isNewUpdatePage ? 1 : maximum_files_post;
+	var postUploadLimit = maximum_files_post;
 
 
 
@@ -82,7 +80,7 @@ $(document).ready(function() {
 
         enableApi: true,
 
-		addMore: !isNewUpdatePage,
+		addMore: true,
 
         thumbnails: {
             popup: false

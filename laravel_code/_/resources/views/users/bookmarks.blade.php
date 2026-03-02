@@ -7,7 +7,7 @@
   {{-- for mobile header --}}
   @include('includes.header-mobile')
     <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
-      <div class="row">
+      <div class="row app-main-row">
 
         <div class="col-lg-3 col-md-3 side_bar_box_shadow">
           @include('includes.menu-sidebar-home')
