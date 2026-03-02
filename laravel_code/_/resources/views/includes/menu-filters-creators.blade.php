@@ -1,6 +1,6 @@
 @if (!request()->get('q') || (request()->get('q') && strlen(request()->get('q')) <= 2))
 
-    <button type="button" class="btn-menu-expand btn btn-primary btn-block mb-4 d-lg-none" type="button"
+    <button type="button" class="btn-menu-expand btn btn-primary btn-block mb-4 mt-5 d-lg-none" type="button"
         data-toggle="collapse" data-target="#navbarFilters" aria-controls="navbarCollapse" aria-expanded="false">
 
         <i class="bi bi-filter-right mr-2"></i> {{ trans('general.filter_by') }}

@@ -245,7 +245,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: 600;
     width: 100%;
     border: none;
@@ -262,12 +262,12 @@
     .transfer_balance {
       background-color: #fff;
       color: #000 !important;
-      border-radius: 18px;
-      height: 60px;
+      border-radius: 12px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 19px;
+      font-size: 16px;
       font-weight: 600;
       width: 100%;
       border: none;

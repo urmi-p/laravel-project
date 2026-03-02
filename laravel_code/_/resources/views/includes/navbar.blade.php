@@ -257,7 +257,7 @@
                                     <small>
                                         {{ Auth::user()->email }}
                                     </small>
-                                    <a href="{{ url(auth()->user()->username) }}" class="btn_profile"
+                                    <a href="{{ url('profile', auth()->user()->username) }}" class="btn_profile"
                                         style="display: inline-block;">
                                         {{ __('general.my_profile') }}
                                     </a>
@@ -339,7 +339,7 @@
                             @endif
 
                             <li class="nav-item dropdown d-md-none @if (auth()->user()->role != 'admin') mt-2 @endif">
-                                <a href="{{ url(auth()->user()->username) }}"
+                                <a href="{{ url('profile', auth()->user()->username) }}"
                                     class="nav-link px-2 link-menu-mobile py-1 url-user">
                                     <div>
                                         <svg class="margin-right-4" width="19" height="19" viewBox="0 0 24 24" fill="none"
@@ -734,7 +734,7 @@
 
 
                                     <a class="dropdown-item dropdown-navbar url-user"
-                                        href="{{ url(auth()->User()->username) }}"><i class="feather icon-user mr-2"></i>
+                                        href="{{ url('profile', auth()->User()->username) }}"><i class="feather icon-user mr-2"></i>
                                         {{ auth()->user()->verified_id == 'yes' ? __('general.my_page') : __('users.my_profile') }}</a>
 
                                     @if (auth()->user()->verified_id == 'yes')

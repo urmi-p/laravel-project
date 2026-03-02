@@ -420,7 +420,8 @@
                     <a class="text-white-force action-pill pulse-btn text-decoration-none" href="javascript:void(0);"
                         title="{{ __('general.share') }}" data-toggle="modal"
                         data-target="#sharePost{{ $response->id }}">
-                        <i class="fas fa-share"></i><span class="action-count">Shares</span>
+                        <i class="fas fa-share"></i>
+                        {{-- <span class="action-count">Shares</span> --}}
                     </a>
                     <!-- Share modal -->
                     <div class="modal fade" id="sharePost{{ $response->id }}" tabindex="-1" role="dialog"

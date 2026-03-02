@@ -634,7 +634,7 @@ class UpdatesController extends Controller
       return response()->json([
         'success' => true,
         'inPostDetail' => true,
-        'url_return' => url(auth()->user()->username)
+        'url_return' => url('profile', auth()->user()->username)
       ]);
     } else {
       return response()->json([

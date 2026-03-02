@@ -241,10 +241,21 @@
 
                             </div>
                         </div>
+                        @if (auth()->check() && auth()->user()->role === 'admin')
+                            <div class="p-3 d-lg-none">
+                                @include('includes.explore_creators')
+                            </div>
+                        @endif
                     @endif
 
                 </div><!-- end col-md-6 -->
-
+                {{-- @if (auth()->check() && auth()->user()->role === 'admin')
+                    <div class="col-lg-3 col-md-4 mb-4 d-lg-block d-none">
+                        <div class="d-lg-block" id="">
+                            @include('includes.explore_creators')
+                        </div>
+                    </div>
+                @endif --}}
             </div>
         </div>
     </section>

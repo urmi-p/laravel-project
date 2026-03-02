@@ -538,7 +538,8 @@
                                     id="dropdownUserShare" role="button" data-toggle="modal"
                                     data-target=".share-modal">
 
-                                    <i class="fas fa-share mr-1"></i> <span>{{ __('general.share') }}</span>
+                                    <i class="fas fa-share mr-1"></i> 
+                                    {{-- <span>{{ __('general.share') }}</span> --}}
 
                                 </button>
                                 <!-- Share modal -->

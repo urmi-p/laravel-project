@@ -1200,7 +1200,7 @@
 
           <ul class="dropdown-menu dropdown-menu-macos arrow-dm" aria-labelledby="dropdownUser2">
 
-            <a class="dropdown-item" href="{{ url(auth()->user()->username) }}">
+            <a class="dropdown-item" href="{{ url('profile', auth()->user()->username) }}">
 
               <i class="bi-person me-2"></i> {{ __('users.my_profile') }}
 

@@ -139,7 +139,7 @@
         }
 
         #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input h3 {
-            width: 283px;
+            width: 309px;
             margin: 0 !important;
             padding: 0 !important;
             font-size: 0 !important;
@@ -164,8 +164,8 @@
         }
 
         #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input-button {
-            width: 157px !important;
-            height: 48px !important;
+            width: 156px !important;
+            height: 40px !important;
             border: 0 !important;
             border-radius: 8px !important;
             background: #191919 !important;
@@ -174,7 +174,7 @@
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 12px;
+            gap: 8px;
             padding: 12px 8px !important;
             margin: 0 !important;
             position: static !important;
@@ -206,7 +206,7 @@
 
         @media (max-width: 768px) {
             #formUpdateCreate .fileuploader-theme-dragdrop .fileuploader-input {
-                min-height: 560px !important;
+                min-height: 294px !important;
                 border-radius: 16px !important;
             }
 
@@ -793,7 +793,7 @@
                                                 <div class="action_avatar">
                                                     <span class="rounded-circle position-relative">
                                                         <a
-                                                            href="{{ $creatorLive ? url('live', auth()->user()->username) : url(auth()->user()->username) }}">
+                                                            href="{{ $creatorLive ? url('live', auth()->user()->username) : url('profile', auth()->user()->username) }}">
                                                             @if (auth()->check() && $creatorLive)
                                                                 <span
                                                                     class="live-span">{{ __('general.live') }}</span>
@@ -807,7 +807,7 @@
                                                 </div>
                                                 <div class="action_user_info">
                                                     <strong>
-                                                        <a href="{{ url(auth()->user()->username) }}">
+                                                        <a href="{{ url('profile', auth()->user()->username) }}">
                                                             {{ auth()->user()->hide_name == 'yes' ? auth()->user()->username : auth()->user()->name }}
                                                         </a>
                                                     </strong>
@@ -969,7 +969,12 @@
                             <a href="{{ url('my/posts') }}" class="link-border text-white">{{ __('general.my_posts') }}</a>
 
                         </div>
-                    </div>                </div><!-- end col-md-6 -->
+                    </div> 
+                    
+                    <div class="p-3 d-lg-none">
+                        @include('includes.explore_creators')
+                    </div>
+                </div><!-- end col-md-6 -->
 
                 <div class="col-lg-3 col-md-4 mb-4 d-lg-block d-none">
                     @if ($users->count() == 0)

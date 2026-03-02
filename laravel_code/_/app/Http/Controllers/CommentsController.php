@@ -144,11 +144,11 @@ class CommentsController extends Controller
 			'total' => trans_choice('general.comment_comments', $totalComments, ['total' => $totalComments]),
 			'data' => '' . $wrapComments . '
 			<div class="comments media li-group pt-3 pb-3 ' . $paddingReply . '" data="' . $idComment . '">
-				<a class="float-left" href="' . url(auth()->user()->username) . '">
+				<a class="float-left" href="' . url('profile', auth()->user()->username) . '">
 					<img class="rounded-circle mr-3" src="' . Helper::getFile(config('path.avatar') . auth()->user()->avatar) . '" width="40"></a>
 					<div class="media-body">
 						<h6 class="media-heading mb-0">
-						<a href="' . url(auth()->user()->username) . '">
+						<a href="' . url('profile', auth()->user()->username) . '">
 							' . $nameUser . '</a>
 							' . $verifiedId . '
 							</h6>

@@ -307,7 +307,7 @@ class UserController extends Controller
 
     //<<<-- * Redirect the user real name * -->>>
     $uri = request()->path();
-    $uriCanonical = $user->username . $media;
+    $uriCanonical = 'profile/' . $user->username . $media;
 
     if ($uri != $uriCanonical) {
       return redirect($uriCanonical);
@@ -487,7 +487,7 @@ class UserController extends Controller
 
     //<<<-- * Redirect the user real name * -->>>
     $uri = request()->path();
-    $uriCanonical = $user->username . '/post/' . $user->updatesPostDetail[0]->id;
+    $uriCanonical = 'profile/' . $user->username . '/post/' . $user->updatesPostDetail[0]->id;
 
     if ($uri != $uriCanonical) {
       return redirect($uriCanonical);
@@ -707,7 +707,8 @@ class UserController extends Controller
       })
       ->paginate(20)->onEachSide(1);
 
-    return view('users.my_subscriptions')->withSubscriptions($subscriptions);
+    $users = $this->userExplore();
+    return view('users.my_subscriptions', ['users' => $users])->withSubscriptions($subscriptions);
   }
 
   public function myPayments()
@@ -1001,7 +1002,7 @@ class UserController extends Controller
 
     return response()->json([
       'success' => true,
-      'url' => url(trim($this->request->username)),
+      'url' => url('profile', trim($this->request->username)),
       'locale' => $this->request->language != '' && config('app.locale') != $this->request->language ? true : false,
     ]);
   }

@@ -677,6 +677,11 @@ Route::group(['middleware' => 'private.content'], function() {
 	// Category
 	Route::get('category/{slug}/{type?}',[HomeController::class, 'category'])->name('seo');
 
+	// Profile User (prefixed route to avoid path collisions like /admin, /css, /js)
+	Route::get('profile/{slug}', [UserController::class, 'profile'])->where('slug','[A-Za-z0-9\_-]+');
+	Route::get('profile/{slug}/{media}', [UserController::class, 'profile'])->where('media', '(photos|videos|audio|shop|files|epub|reels)$');
+	Route::get('profile/{slug}/post/{id}', [UserController::class, 'postDetail'])->where('slug','[A-Za-z0-9\_-]+');
+
 	// Profile User
 	Route::get('{slug}', [UserController::class, 'profile'])->where('slug','[A-Za-z0-9\_-]+')->name('profile');
 	Route::get('{slug}/{media}', [UserController::class, 'profile'])->where('media', '(photos|videos|audio|shop|files|epub|reels)$')->name('profile');

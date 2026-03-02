@@ -7,9 +7,9 @@
 			</a>
 		</li>
 		<li class="flex-fill bd-highlight">
-			<a href="{{url(auth()->user()->username)}}" class="btn-mobile position-relative @if (request()->is(auth()->user()->username . '*')) active disabled @endif ">
+			<a href="{{ url('profile', auth()->user()->username) }}" class="btn-mobile position-relative @if (request()->is('profile/' . auth()->user()->username . '*') || request()->is(auth()->user()->username . '*')) active disabled @endif ">
 				<i class="far fa-user icon-navbar"></i>
-				@if (request()->is(auth()->user()->username . '*')) <span class="font_weight_400 fs-14">Profile</span> @endif
+				@if (request()->is('profile/' . auth()->user()->username . '*') || request()->is(auth()->user()->username . '*')) <span class="font_weight_400 fs-14">Profile</span> @endif
 			</a>
 		</li>
 		{{-- <li class="flex-fill bd-highlight">

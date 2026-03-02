@@ -4928,9 +4928,9 @@ footer.footer-bg {
     .wrapper-msg-inbox {
         margin: 84px 20px 20px 20px;
     }
-    .section-msg .messageDiv {
-        margin: 84px 20px 20px 20px;
-    }
+     .section-msg .messageDiv {
+        margin-right: 0;
+    } 
     /* Wallet */
     /* Frame 2147226778 */
 

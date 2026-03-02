@@ -32,7 +32,7 @@
                 </a>
                 @endif
 
-                <a href="{{ url(auth()->user()->username) }}"
+                <a href="{{ url('profile', auth()->user()->username) }}"
                     class="list-group-item list-group-item-action d-flex justify-content-between url-user">
                     <div>
                         <i class="feather icon-user mr-2 fs-22"></i>

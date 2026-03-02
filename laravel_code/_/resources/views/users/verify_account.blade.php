@@ -140,13 +140,13 @@
 
             @if (auth()->user()->avatar == $settings->avatar)
               <li>
-                <i class="far fa-times-circle"></i> {{ __('general.set_avatar') }} <a href="{{ url(auth()->user()->username) }}" class="text-white link-border">{{ __('general.upload') }} <i class="feather icon-arrow-right"></i></a>
+                <i class="far fa-times-circle"></i> {{ __('general.set_avatar') }} <a href="{{ url('profile', auth()->user()->username) }}" class="text-white link-border">{{ __('general.upload') }} <i class="feather icon-arrow-right"></i></a>
               </li>
             @endif
 
             @if (auth()->user()->cover == '' || auth()->user()->cover == $settings->cover_default)
             <li>
-              <i class="far fa-times-circle"></i> {{ __('general.set_cover') }} <a href="{{ url(auth()->user()->username) }}" class="text-white link-border">{{ __('general.upload') }} <i class="feather icon-arrow-right"></i></a>
+              <i class="far fa-times-circle"></i> {{ __('general.set_cover') }} <a href="{{ url('profile', auth()->user()->username) }}" class="text-white link-border">{{ __('general.upload') }} <i class="feather icon-arrow-right"></i></a>
             </li>
           @endif
 

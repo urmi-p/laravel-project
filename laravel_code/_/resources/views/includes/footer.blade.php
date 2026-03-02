@@ -1,7 +1,7 @@
 <!-- FOOTER -->
 
 <footer class="py-3 link-footer  footer-bg @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest() ) footer_background_color @endif text-center">
-	<div class="container">
+	
 		<div class="col-md-12 text-center">
 
 				<a href="{{url('/')}}">
@@ -43,10 +43,10 @@
 			</div>
 
 		</div>
-	</div>
+	
 </footer>
 <div class="py-4 footer-bg @auth d-none d-lg-block @endauth @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest()) footer_background_color footer_text_color @else bg-white @endif @if (auth()->check() && auth()->user()->dark_mode == 'off' && $settings->footer_background_color == '#ffffff' || auth()->guest() && $settings->footer_background_color == '#ffffff' ) border-top @endif">
-	<footer class="container">
+	<footer class="">
 		<div class="row">
 
 			

@@ -55,10 +55,15 @@
 <section class="section section-sm pb-0 section-msg messages-chat-page">
     <div class="container-fluid pt-lg-5 pt-2">
       <div class="row justify-content-center h-100">
-        <div class="col-md-3 d-lg-block d-none side_bar_box_shadow h-100">
-          @include('includes.menu-sidebar-message')
-        </div>
-              
+        @if (auth()->check() && auth()->user()->role === 'admin')
+          <div class="col-lg-3 col-md-3 side_bar_box_shadow">
+            @include('includes.menu-sidebar-home')
+          </div>
+        @else
+          <div class="col-md-3 d-lg-block d-none side_bar_box_shadow h-100">
+            @include('includes.menu-sidebar-message')
+          </div>
+        @endif     
 
           <div class="col-md-6 col-sm-6 h-100 p-0 first messages-middle-col">
 
@@ -120,7 +125,7 @@
                     && auth()->user()->price_audio_call
                     && !auth()->user()->isRestricted($user->id)
                     )
-                <a href="javascript:void(0);" class="float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
+                <a href="javascript:void(0);" class="float-right vertical-ellipsis mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
                   <i class="feather icon-phone"></i>
                 </a>
                 @endif
@@ -130,7 +135,7 @@
                     && auth()->user()->price_video_call
                     && !auth()->user()->isRestricted($user->id)
                     )
-                <a href="javascript:void(0);" class="float-right mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
+                <a href="javascript:void(0);" class="float-right vertical-ellipsis mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
                   <i class="feather icon-video"></i>
                 </a>
                 @endif
@@ -178,7 +183,7 @@
 
             </div>
 
-            <div class="content px-4 py-3 custom-scrollbar container-msg" id="contentDIV" data="{{$user->id}}">
+            <div class="content py-3 custom-scrollbar container-msg" id="contentDIV" data="{{$user->id}}">
 
               @if ($messages->count() != 0)
               <div class="flex-column d-flex justify-content-center text-center h-100">

@@ -826,7 +826,7 @@ class ProductsController extends Controller
 
     return response()->json([
       'success' => true,
-      'url' => url(auth()->user()->username)
+      'url' => url('profile', auth()->user()->username)
     ]);
   } // End method download
 
