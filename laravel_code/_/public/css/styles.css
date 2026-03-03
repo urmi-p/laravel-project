@@ -7735,7 +7735,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 
     .app-auth-shell .app-mobile-top-tabs .nav-link {
-        /* padding: 0 0 0.25rem !important; */
+        padding: 0 0 0.25rem !important;
         font-size: 0.875rem !important;
         line-height: 1.15rem;
         letter-spacing: -0.0094rem;

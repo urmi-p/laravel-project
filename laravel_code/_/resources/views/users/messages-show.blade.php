@@ -48,6 +48,38 @@
     .desc-break {
       display: block;
     }
+    .message-composer-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-send-wrap {
+      margin-left: auto;
+    }
+    @media (max-width: 767.98px) {
+      .messages-chat-page .card-footer .btn-upload {
+        width: 40px;
+        height: 40px;
+      }
+      .messages-chat-page .message-composer-toolbar {
+        gap: 6px;
+      }
+      .messages-chat-page .message-send-wrap {
+        margin-left: auto;
+      }
+      .messages-chat-page #button-reply-msg {
+        width: auto !important;
+        min-width: 64px;
+        float: none !important;
+      }
+      .messages-chat-page #message {
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        padding-right: 40px;
+      }
+    }
   </style>
 @endsection
 
@@ -252,7 +284,7 @@
 
                       <input type="file" name="media[]" id="file" accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple class="visibility-hidden filepond input-fileuploader">
 
-                      <div class="justify-content-between mt-3 align-items-center">
+                      <div class="message-composer-toolbar justify-content-between mt-3 align-items-center">
 
                             <button type="button" class="btnMultipleUpload btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
                               <i class="feather icon-image align-middle f-size-25"></i>
@@ -300,7 +332,7 @@
                         </button>
                         @endif
 
-                  <div class="d-inline-block float-right rounded-pill mt-1 position-relative">
+                  <div class="d-inline-block message-send-wrap rounded-pill mt-1 position-relative">
                     <div class="btn-blocked display-none"></div>
                     <button type="submit" id="button-reply-msg" disabled data-send="{{ __('auth.send') }}" data-wait="{{ __('general.send_wait') }}" class="btn btn-sm btn-primary rounded-pill float-right e-none w-100-mobile">
                       <i class="far fa-paper-plane"></i>
