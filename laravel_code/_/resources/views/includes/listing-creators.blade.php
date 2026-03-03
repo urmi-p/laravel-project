@@ -10,7 +10,7 @@
 			<div class="live-pulse"></div>
 
 		@endif
-		<a href="{{url($response->username)}}">
+		<a href="{{url('profile', $response->username)}}">
 
 		<img src="{{Helper::getFile(config('path.avatar').$response->avatar)}}" width="95" height="95" alt="{{$response->name}}" class="img-user-small">
 
@@ -20,7 +20,7 @@
 
 	<div class="card-body text-center">
 
-			<h6 class="card-title font_weight_400 fs-18 @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) pt-5 mt-2 mb-1 @else pt-5 @endif">
+			<h6 class="card-title text-break font_weight_400 fs-18 @if (Helper::isCreatorLive($getCurrentLiveCreators, $response->id)) pt-5 mt-2 mb-1 @else pt-5 @endif">
 
 				{{$response->hide_name == 'yes' ? $response->username : $response->name}}
 
@@ -77,16 +77,16 @@
 
 
 
-			<p class="m-0 py-3 text-muted card-text text-truncate">
+			<p class="m-0 py-3 text-muted card-text text-break">
 
 				{{ Str::limit($response->story, 100, '...') }}
 
 			</p>
 
 			<div class="d-flex" style="gap: 10px">
-			<a href="{{url($response->username)}}" class="w-100 btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
+			<a href="{{url('profile', $response->username)}}" class="w-100 btn btn-1 btn-sm go_to_page_btn">{{trans('general.go_to_page')}}</a>
 
-			<a href="{{url($response->username)}}" class="w-100 btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
+			<a href="{{url('profile', $response->username)}}" class="w-100 btn btn-1 btn-sm btn-outline-primary px-3 active" style="border-radius:8px !important;">
 
 				@if ($response->plans->where('status', '1')->first() && $response->free_subscription == 'no')
 

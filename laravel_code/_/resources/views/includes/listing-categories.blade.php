@@ -1,4 +1,4 @@
-<button type="button" class="btn-menu-expand btn btn-primary btn-block mb-4 d-lg-none mt-2" type="button"
+<button type="button" class="btn-menu-expand btn btn-primary btn-block mb-4 d-lg-none mt-2 brd-8" type="button"
     data-toggle="collapse" data-target="#navbarUserHome" aria-controls="navbarCollapse" aria-expanded="false">
 
     <i class="fa fa-bars mr-2"></i> {{ trans('general.categories') }}

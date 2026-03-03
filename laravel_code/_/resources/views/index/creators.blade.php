@@ -18,6 +18,44 @@
     .section-sm.creator .menu-left-home .btn-menu-expand {
         margin-bottom: 8px !important;
     }
+
+    html[data-bs-theme="light"] .app-auth-shell .section-sm.creator .menu-left-home.side_bar_box_shadow {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .section-sm.creator .col-md-9 > .row,
+    .section-sm.creator #containerWrapCreators {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .section-sm.creator .menu-left-home .btn-category {
+        width: 100%;
+        white-space: normal;
+        word-break: break-word;
+        text-align: left;
+    }
+
+    .section-sm.creator {
+        overflow-x: hidden;
+    }
+
+    .section-sm.creator .card-user-profile {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .section-sm.creator .card-user-profile .card-title,
+    .section-sm.creator .card-user-profile .card-text,
+    .section-sm.creator .card-user-profile .list-inline,
+    .section-sm.creator .card-user-profile .list-inline-item {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
 }
 </style>
 @endsection

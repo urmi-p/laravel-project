@@ -628,7 +628,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
             padding: 14px 5px;
+            min-width: 0;
+        }
+
+        .setting-row > div {
+            flex: 1 1 auto;
+            min-width: 0;
         }
 
         /* Toggle Switch */
@@ -692,6 +699,17 @@
             }
             .post-preview-media{
                 height:294px !important;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+                gap: 10px;
+                padding-inline: 0;
+            }
+
+            .switch_update {
+                flex: 0 0 auto;
+                margin-top: 2px;
             }
         }
     </style>

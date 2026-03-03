@@ -180,7 +180,7 @@
 
     			  <div class="d-flex my-2 align-items-center">
 
-              <a href="{{ url($product->user()->username) }}">
+              <a href="{{ url('profile', $product->user()->username) }}">
 
     			      <img class="rounded-circle mr-2" src="{{ Helper::getFile(config('path.avatar').$product->user()->avatar) }}" width="60" height="60">
 

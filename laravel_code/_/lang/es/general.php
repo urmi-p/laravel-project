@@ -15,6 +15,7 @@ return array(
 	'start_my_page' => 'Iniciar mi página',
 	'edit_my_page' => 'Editar mi página',
 	'my_page' => 'Mi página',
+	'my_profile' => 'Perfil',
 	'subtitle_welcome' => 'Sponzy está diseñado para ayudar a los creadores de contenido en la web, crear una cuenta gratuita y comienza a ganar dinero ahora.',
 	'install_success' => '¡La instalación se completó correctamente!',
 
@@ -1587,5 +1588,6 @@ return array(
 	'successfully_removed' => 'Eliminado con exito',
 	'wallet_balance' => 'Saldo de billetera',
 	'advanced_settings' => 'Configuración avanzada',
+	'visit_profile' => 'Visitar perfil',
 	'subscriptions_detail' => 'Detalle de suscripciones',
 );

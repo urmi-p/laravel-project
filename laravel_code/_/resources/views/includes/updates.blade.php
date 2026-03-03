@@ -323,7 +323,7 @@
                 <div class="action_avatar">
                     <span class="rounded-circle position-relative">
                         <a
-                            href="{{ $creatorLive ? url('live', $response->creator->username) : url($response->creator->username) }}">
+                            href="{{ $creatorLive ? url('live', $response->creator->username) : url('profile',$response->creator->username) }}">
                             @if (auth()->check() && $creatorLive)
                             <span class="live-span">{{ __('general.live') }}</span>
                             @endif
@@ -335,7 +335,7 @@
                 </div>
                 <div class="action_user_info">
                     <strong>
-                        <a href="{{ url($response->creator->username) }}">
+                        <a href="{{ url('profile',$response->creator->username) }}">
                             {{ $response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name }}
                         </a>
                     </strong>

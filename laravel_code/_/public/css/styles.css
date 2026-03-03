@@ -2638,7 +2638,7 @@ a.btn-category:focus {
 
 /* Profile tabs (2 posts / photos / videos / shop) */
 .top_side_profile {
-    max-width: 34.3125rem; /* 549px */
+    /*max-width: 3.3125rem; /* 549px */
     min-height: 3.75rem; /* 60px */
     padding: 0.75rem 1.5rem !important;
     gap: 0.75rem;
@@ -7564,8 +7564,8 @@ html[data-bs-theme="dark"] .app-auth-shell {
 }
 
 .app-auth-shell .dashboard_story {
-    width: 6.25rem;
-    height: 6.25rem;
+    /* width: 6.25rem; */
+    /* height: 6.25rem; */
     border-radius: 1rem !important;
 }
 
@@ -7728,34 +7728,41 @@ html[data-bs-theme="dark"] .app-auth-shell {
         padding: 0 var(--app-mobile-gutter);
         gap: 0.5rem;
         justify-content: space-between !important;
-        align-items: flex-end;
+        align-items: stretch;
         overflow: visible;
         white-space: normal;
         display: flex !important;
     }
 
     .app-auth-shell .app-mobile-top-tabs .nav-link {
-        padding: 0 0 0.25rem !important;
+        /* padding: 0 0 0.25rem !important; */
         font-size: 0.875rem !important;
-        line-height: 1.25rem;
+        line-height: 1.15rem;
         letter-spacing: -0.0094rem;
         flex: 1 1 0;
-        text-align: center;
         min-width: 0;
-        white-space: nowrap;
+        max-width: 100%;
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        min-height: 2.5rem;
     }
 
-    .app-auth-shell .app-mobile-top-tabs .nav-link:nth-child(2) {
+    /* .app-auth-shell .app-mobile-top-tabs .nav-link:nth-child(2) {
         font-size: 0.8125rem !important;
-    }
+    } */
 
-    .app-auth-shell .font_mobile_bold {
+    /* .app-auth-shell .font_mobile_bold {
         font-size: 0.875rem !important;
         line-height: 1.25rem;
         font-weight: 700 !important;
         color: #ffffff !important;
         border-bottom: 0.125rem solid #ffffff !important;
-    }
+    } */
 
     .app-auth-shell .font_mobile_normal {
         font-size: 0.875rem !important;

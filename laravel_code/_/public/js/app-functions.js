@@ -1066,7 +1066,7 @@
 
 
 
-	$(".navbar-toggler, .navbar-toggler-mobile").on('click', function () {
+	$(".navbar-toggler, .navbar-toggler-mobile[data-target='#navbarCollapse'], .navbar-toggler-mobile[data-bs-target='#navbarCollapse']").on('click', function () {
 
 		$('.collapsing').toggleClass('show');
 

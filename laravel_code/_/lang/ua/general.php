@@ -15,6 +15,7 @@ return array(
 'start_my_page' => 'Створити мою сторінку',
 'edit_my_page' => 'Редагувати мою сторінку',
 'my_page' => 'Моя сторінка',
+'my_profile' => 'профіль',
 'subtitle_welcome' => 'Sponzy створений для того, щоб допомогти авторам контенту заробляти. Створіть безкоштовний акаунт та починайте заробляти вже зараз.',
 'install_success' => 'Встановлення успішно завершено!',
 
@@ -1494,5 +1495,6 @@ return array(
 	'success_added' => 'Successfully added',
 	'wallet_balance' => 'Баланс гаманця',
 	'advanced_settings' => 'Розширені налаштування',
+	'visit_profile' => 'Відвідати профіль',
 	'subscriptions_detail' => 'Деталі підписок',
 );

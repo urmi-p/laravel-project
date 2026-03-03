@@ -267,7 +267,7 @@
                                                     <div class="action_avatar">
                                                         <span class="rounded-circle position-relative">
                                                             <a
-                                                                href="{{ $creatorLive ? url('live', $data->creator->username) : url($data->creator->username) }}">
+                                                                href="{{ $creatorLive ? url('live', $data->creator->username) : url('profile', $data->creator->username) }}">
                                                                 @if (auth()->check() && $creatorLive)
                                                                     <span
                                                                         class="live-span">{{ __('general.live') }}</span>
