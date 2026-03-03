@@ -7840,7 +7840,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 
     .app-auth-shell .menuMobile .list-inline {
-        width: min(100%, var(--app-mobile-frame));
+        /* width: min(100%, var(--app-mobile-frame)); */
         margin: 0 auto;
         min-height: 3.625rem; /* 58px */
         padding: 0.75rem 1rem 0.375rem;
@@ -8229,9 +8229,9 @@ html[data-bs-theme="light"] .edit-post-middle {
         border-radius: 1rem !important;
     }
 
-    .app-auth-shell .menuMobile .list-inline {
+    /* .app-auth-shell .menuMobile .list-inline {
         max-width: var(--app-mobile-frame);
-    }
+    } */
 
     .app-auth-shell footer.footer-bg > .container {
         max-width: var(--app-mobile-content);
