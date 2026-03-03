@@ -20,7 +20,6 @@ use App\Models\MediaMessages;
 use App\Models\Notifications;
 use League\Glide\ServerFactory;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use League\Glide\Responses\SymfonyResponseFactory;
 
@@ -146,13 +145,8 @@ class UpdatesController extends Controller
     $post->can_media_edit = true;
     $post->ip = request()->ip();
 
-    if (Schema::hasColumn('updates', 'hide_likes_count')) {
-      $post->hide_likes_count = $hideLikesCount;
-    }
-
-    if (Schema::hasColumn('updates', 'turn_off_comments')) {
-      $post->turn_off_comments = $turnOffComments;
-    }
+    $post->hide_likes_count = $hideLikesCount;
+    $post->turn_off_comments = $turnOffComments;
 
     $post->save();
 
@@ -433,13 +427,8 @@ class UpdatesController extends Controller
     $post->locked       = $this->settings->disable_free_post ? 'yes' : $this->request->locked;
     $post->price        = $this->request->price;
 
-    if (Schema::hasColumn('updates', 'hide_likes_count')) {
-      $post->hide_likes_count = $hideLikesCount;
-    }
-
-    if (Schema::hasColumn('updates', 'turn_off_comments')) {
-      $post->turn_off_comments = $turnOffComments;
-    }
+    $post->hide_likes_count = $hideLikesCount;
+    $post->turn_off_comments = $turnOffComments;
 
     $post->save();
 
@@ -1118,3 +1107,4 @@ class UpdatesController extends Controller
     ]);
   }
 }
+

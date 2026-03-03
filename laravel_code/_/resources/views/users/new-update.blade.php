@@ -365,6 +365,10 @@
             display: none !important;
         }
 
+        #formUpdateCreate.step-upload .fileuploader-theme-dragdrop .fileuploader-items-list {
+            display: none !important;
+        }
+
         #formUpdateCreate.step-upload #postPreviewStep,
         #formUpdateCreate.step-upload #postDetailsStep {
             display: none !important;
@@ -379,15 +383,11 @@
             display: block;
         }
 
-        #formUpdateCreate.step-upload.has-selected-files .post-preview-continue-wrap {
-            display: block;
-        }
-
         .post-preview-step {
             display: none;
-            background: #333438;
+            background: #d7d7d9;
             border-radius: 20px;
-            padding: 24px;
+            padding: 0;
             min-height: 674px;
             position: relative;
             overflow: hidden;
@@ -397,16 +397,13 @@
             display: block;
         }
 
-        .post-preview-back {
-            width: 36px;
-            height: 36px;
-            border: 0;
-            border-radius: 10px;
-            background: rgba(25, 25, 25, 0.5);
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .post-preview-frame {
+            margin-top: 0;
+            border-radius: 20px;
+            background: #ececf0;
+            position: relative;
+            overflow: hidden;
+            min-height: 674px;
         }
 
         .post-details-step {
@@ -434,31 +431,99 @@
         }
 
         .post-preview-media {
-            margin-top: 12px;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            height: 560px;
-            background: #2d2f36;
+            height: 674px;
+            background: #e8e8eb;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .post-preview-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             display: block;
             transform-origin: center center;
         }
 
+        .post-preview-thumbs {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 2px;
+            margin: 10px 14px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .post-preview-thumbs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .post-preview-thumb {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            overflow: hidden;
+            background: #f3f3f5;
+            padding: 0;
+            flex: 0 0 auto;
+        }
+
+        .post-preview-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-preview-thumb.active {
+            border-color: #e53b54;
+        }
+
+        html[data-bs-theme="dark"] .post-preview-step {
+            background: #333438 !important;
+        }
+
+        html[data-bs-theme="dark"] .post-preview-frame {
+            background: #333438 !important;
+        }
+
+        html[data-bs-theme="dark"] .post-preview-media {
+            background: #333438 !important;
+        }
+
+        html[data-bs-theme="dark"] .post-preview-thumb {
+            background: #3b3d44;
+        }
+
+        html[data-bs-theme="light"] .post-preview-step {
+            background: #ffffff;
+        }
+
+        html[data-bs-theme="light"] .post-preview-frame {
+            background: #ffffff;
+        }
+
+        html[data-bs-theme="light"] .post-preview-media {
+            background: #ffffff;
+        }
+
         .post-preview-controls {
             position: absolute;
-            left: 24px;
-            right: 24px;
+            left: 30px;
+            right: 30px;
             bottom: 20px;
             display: flex;
             flex-direction: column;
+            z-index: 4;
         }
 
         .upload-processing-overlay {
@@ -552,14 +617,6 @@
             cursor: pointer;
         }
 
-        .post-preview-zoom-level {
-            display: block;
-            color: #fff;
-            font-size: 13px;
-            margin-bottom: 10px;
-            text-align: right;
-        }
-
         .post-preview-continue {
             width: 100%;
             border: 0;
@@ -576,6 +633,16 @@
                 left: 16px;
                 right: 16px;
                 bottom: 16px;
+            }
+
+            .post-preview-frame,
+            .post-preview-media {
+                min-height: 500px;
+                height: 500px;
+            }
+
+            .post-preview-thumbs {
+                margin: 8px 10px 0;
             }
 
             #formUpdateCreate .post-preview-continue-wrap {
@@ -739,7 +806,7 @@
                         </div>
 
                     <div class="new-post-header">
-                        <a href="javascript:history.back();" class="new-post-back" title="{{ __('general.go_back') }}">
+                        <a href="javascript:void(0);" id="newPostHeaderBack" class="new-post-back" title="{{ __('general.go_back') }}">
                             <i class="fas fa-arrow-left"></i>
                         </a>
                         <h4 class="new-post-title">New Post</h4>
@@ -804,16 +871,15 @@
                                         </div>
 
                                         <div id="postPreviewStep" class="post-preview-step">
-                                            <button type="button" id="postPreviewBack" class="post-preview-back">
-                                                <i class="fas fa-arrow-left"></i>
-                                            </button>
-                                            <div class="post-preview-media">
-                                                <img id="postPreviewImage" src="" alt="Preview">
+                                            <div class="post-preview-frame">
+                                                <div class="post-preview-media">
+                                                    <img id="postPreviewImage" src="" alt="Preview">
+                                                </div>
+                                                <div class="post-preview-controls">
+                                                    <input id="postPreviewZoom" class="post-preview-range" type="range" min="0" max="100" step="1" value="25">
+                                                </div>
                                             </div>
-                                            <div class="post-preview-controls">
-                                                <small id="postPreviewZoomLevel" class="post-preview-zoom-level">100%</small>
-                                                <input id="postPreviewZoom" class="post-preview-range" type="range" min="1" max="100" step="1" value="100">
-                                            </div>
+                                            <div id="postPreviewThumbs" class="post-preview-thumbs"></div>
                                         </div>
                                         <div class="post-preview-continue-wrap">
                                             <button type="button" id="postPreviewContinue" class="post-preview-continue">Continue</button>
@@ -1197,8 +1263,8 @@
             var $previewStep = $('#postPreviewStep');
             var $detailsStep = $('#postDetailsStep');
             var $previewImage = $('#postPreviewImage');
+            var $previewThumbs = $('#postPreviewThumbs');
             var $zoom = $('#postPreviewZoom');
-            var $zoomLevel = $('#postPreviewZoomLevel');
             var $form = $('#formUpdateCreate');
             var $visibilityButtons = $('.visibility-btn[data-visibility]');
             var $visibilityMode = $('#visibilityMode');
@@ -1208,40 +1274,35 @@
             var $uploadOverlay = $('#uploadProcessingOverlay');
             var $uploadOverlayPercent = $('#uploadProcessingPercent');
             var previewUrl = null;
-            var zoomBase = 100;
+            var zoomMin = 25;
+            var zoomMax = 100;
             var currencySymbol = @json($settings->currency_symbol);
             function syncZoomSliderFill() {
-                var min = parseFloat($zoom.attr('min')) || 1;
-                var max = parseFloat($zoom.attr('max')) || 100;
+                var min = parseFloat($zoom.attr('min')) || zoomMin;
+                var max = parseFloat($zoom.attr('max')) || zoomMax;
                 var val = parseFloat($zoom.val()) || min;
-                var pct = ((val - min) / Math.max(1, (max - min))) * 100;
+                var pct = Math.max(0, Math.min(100, val));
                 $zoom.css('--zoom-value', pct + '%');
+            }
+
+            function setPreviewScale(percentValue) {
+                var percent = Math.max(zoomMin, Math.min(zoomMax, parseFloat(percentValue) || zoomMin));
+                $zoom.val(percent);
+                syncZoomSliderFill();
+                $previewImage.css('transform', 'scale(' + (percent / 100) + ')');
             }
 
             function setupAutoZoom() {
                 var imgEl = $previewImage.get(0);
                 var containerEl = $('.post-preview-media').get(0);
                 if (!imgEl || !containerEl || !imgEl.naturalWidth || !imgEl.naturalHeight) {
-                    zoomBase = 100;
-                    $zoom.attr({ min: 1, max: 100, step: 1 }).val(100).prop('disabled', true);
-                    syncZoomSliderFill();
-                    $zoomLevel.text('100%');
-                    $previewImage.css('transform', 'scale(1)');
+                    $zoom.attr({ min: 0, max: 100, step: 1 }).prop('disabled', true);
+                    setPreviewScale(zoomMin);
                     return;
                 }
 
-                var fitScale = Math.min(
-                    containerEl.clientWidth / imgEl.naturalWidth,
-                    containerEl.clientHeight / imgEl.naturalHeight
-                );
-
-                // Keep behavior similar to previous popup zoom: start at fitted scale.
-                zoomBase = Math.max(25, Math.min(100, Math.round(fitScale * 100)));
-                var zoomMax = 100;
-                $zoom.attr({ min: 1, max: zoomMax, step: 1 }).val(zoomBase).prop('disabled', zoomBase >= zoomMax);
-                syncZoomSliderFill();
-                $zoomLevel.text(zoomBase + '%');
-                $previewImage.css('transform', 'scale(1)');
+                $zoom.attr({ min: 0, max: 100, step: 1 }).prop('disabled', false);
+                setPreviewScale($zoom.val() || zoomMin);
             }
 
             function showUploadStep() {
@@ -1249,28 +1310,68 @@
                 $uploadStep.show();
                 $previewStep.removeClass('active');
                 $detailsStep.removeClass('active');
-                $zoom.val(zoomBase);
-                syncZoomSliderFill();
-                $zoomLevel.text(zoomBase + '%');
-                $previewImage.css('transform', 'scale(1)');
+                setPreviewScale(zoomMin);
             }
 
-            function showPreviewStep(src) {
+            function loadPreviewImage(src) {
                 $form.removeClass('step-upload step-details').addClass('step-preview');
                 $uploadStep.hide();
                 $detailsStep.removeClass('active');
-                $previewImage.attr('src', src || '');
                 $previewStep.addClass('active');
 
                 $previewImage.off('load.stepzoom').on('load.stepzoom', function() {
                     setupAutoZoom();
                 });
+                $previewImage.attr('src', src || '');
 
                 if ($previewImage.get(0).complete) {
                     setTimeout(function() {
                         setupAutoZoom();
                     }, 30);
                 }
+            }
+
+            function collectPreviewSources() {
+                var sources = [];
+                $('#formUpdateCreate .fileuploader-item').each(function() {
+                    var src = getPreviewSourceFromItem($(this));
+                    if (src) {
+                        // Keep one preview per selected item (do not dedupe by src).
+                        sources.push(src);
+                    }
+                });
+                return sources;
+            }
+
+            function renderPreviewThumbnails(activeSrc) {
+                var sources = collectPreviewSources();
+                if (activeSrc && sources.indexOf(activeSrc) === -1) {
+                    sources.unshift(activeSrc);
+                }
+                $previewThumbs.empty();
+
+                if (!sources.length) {
+                    $previewThumbs.hide();
+                    return;
+                }
+
+                sources.forEach(function(src) {
+                    var $btn = $('<button type="button" class="post-preview-thumb" />').attr('data-src', src);
+                    var $img = $('<img alt="Thumbnail">').attr('src', src);
+                    $btn.append($img);
+                    if (src === activeSrc) {
+                        $btn.addClass('active');
+                    }
+                    $previewThumbs.append($btn);
+                });
+
+                $previewThumbs.show();
+            }
+
+            function showPreviewStep(src) {
+                var previewSrc = src || collectPreviewSources()[0] || '';
+                renderPreviewThumbnails(previewSrc);
+                loadPreviewImage(previewSrc);
             }
 
             function showDetailsStep() {
@@ -1297,6 +1398,11 @@
             function getPreviewSourceFromItem($item) {
                 if (!$item || !$item.length) {
                     return '';
+                }
+
+                var localSrc = $item.attr('data-local-preview-src') || '';
+                if (localSrc) {
+                    return localSrc;
                 }
 
                 var $img = $item.find('.fileuploader-item-image img').first();
@@ -1390,55 +1496,24 @@
             updatePriceLabel();
 
             $(document).on('post-media-uploaded', function(e, payload) {
-                var selectedFilesCount = getSelectedFilesCount();
-
-                if (selectedFilesCount > 1 || !payload || payload.format !== 'image') {
-                    $uploadOverlay.removeClass('active');
-                    $uploadOverlayPercent.text('100%');
-                    showUploadStep();
-                    updateUploadContinueState();
-                    return;
-                }
-
                 $uploadOverlay.removeClass('active');
                 $uploadOverlayPercent.text('100%');
 
-                if (previewUrl) {
-                    URL.revokeObjectURL(previewUrl);
-                    previewUrl = null;
-                }
+                previewUrl = null;
 
-                if (payload.file) {
-                    previewUrl = URL.createObjectURL(payload.file);
+                if (payload && payload.previewSrc) {
+                    previewUrl = payload.previewSrc;
                 }
 
                 if (!previewUrl) {
-                    var inputFile = ($('#filePhoto').get(0) && $('#filePhoto').get(0).files && $('#filePhoto').get(0).files[0]) ? $('#filePhoto').get(0).files[0] : null;
-                    if (inputFile) {
-                        previewUrl = URL.createObjectURL(inputFile);
-                    }
+                    previewUrl = collectPreviewSources()[0] || '';
                 }
-
-                if (!previewUrl) {
-                    var fallbackSrc = $('#formUpdateCreate .fileuploader-item-image img').first().attr('src') || '';
-                    if (!fallbackSrc) {
-                        var fallbackCanvas = $('#formUpdateCreate .fileuploader-item-image canvas').first();
-                        if (fallbackCanvas.length) {
-                            fallbackSrc = fallbackCanvas.get(0).toDataURL('image/png');
-                        }
-                    }
-                    showPreviewStep(fallbackSrc || '');
-                    return;
-                }
-
-                showPreviewStep(previewUrl);
+                showPreviewStep(previewUrl || '');
+                updateUploadContinueState();
             });
 
             $(document).on('post-media-removed', function() {
-                if (previewUrl) {
-                    URL.revokeObjectURL(previewUrl);
-                    previewUrl = null;
-                }
+                previewUrl = null;
                 $uploadOverlay.removeClass('active');
                 $uploadOverlayPercent.text('0%');
                 showUploadStep();
@@ -1464,15 +1539,7 @@
             });
 
             $zoom.on('input change', function() {
-                var rawValue = parseFloat($(this).val() || zoomBase);
-                var value = Math.max(zoomBase, rawValue);
-                if (rawValue < zoomBase) {
-                    $(this).val(zoomBase);
-                }
-                syncZoomSliderFill();
-                var scale = value / zoomBase;
-                $previewImage.css('transform', 'scale(' + scale + ')');
-                $zoomLevel.text(Math.round(value) + '%');
+                setPreviewScale($(this).val());
             });
 
             $(window).on('resize', function() {
@@ -1495,23 +1562,22 @@
                 showPreviewStep(currentSrc);
             });
 
-            $('#postPreviewBack').on('click', function() {
-                if (getSelectedFilesCount() > 0) {
+            $('#newPostHeaderBack').on('click', function(e) {
+                e.preventDefault();
+
+                if ($form.hasClass('step-details')) {
+                    var currentSrc = $previewImage.attr('src') || collectPreviewSources()[0] || '';
+                    showPreviewStep(currentSrc);
+                    return;
+                }
+
+                if ($form.hasClass('step-preview')) {
                     showUploadStep();
                     updateUploadContinueState();
                     return;
                 }
 
-                var api = $.fileuploader.getInstance($('input[name="photo[]"]'));
-                if (api) {
-                    api.reset();
-                }
-                if (previewUrl) {
-                    URL.revokeObjectURL(previewUrl);
-                    previewUrl = null;
-                }
-                showUploadStep();
-                updateUploadContinueState();
+                window.history.back();
             });
 
             $(document).on('click', '#formUpdateCreate.step-upload .fileuploader-item', function(e) {
@@ -1520,6 +1586,16 @@
                 }
 
                 openPreviewFromSelectedItem($(this));
+            });
+
+            $(document).on('click', '#postPreviewThumbs .post-preview-thumb', function() {
+                var src = $(this).data('src') || '';
+                if (!src) {
+                    return;
+                }
+                $('#postPreviewThumbs .post-preview-thumb').removeClass('active');
+                $(this).addClass('active');
+                loadPreviewImage(src);
             });
 
             $visibilityButtons.on('click', function() {
@@ -1568,3 +1644,6 @@
         });
     </script>
 @endsection
+
+
+
