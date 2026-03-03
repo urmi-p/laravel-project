@@ -2159,6 +2159,12 @@ a:hover.button-avatar-upload {
         margin-right: 0 !important;
         font-size: 1rem !important;
     }
+    .post-composer-dark .btn_position a,
+    .post-composer-dark .btn_position button {
+        position: relative;
+        z-index: 5;
+        pointer-events: auto;
+    }
     .post-composer-dark .btn_position .btnListItem {
         position: relative;
         z-index: 5;

@@ -5100,7 +5100,9 @@
 
 	// Open modal Create Live Stream
 
-	$('.btnCreateLive').on('click', function () {
+	$('.btnCreateLive').on('touchend click', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
 
 		$(this).blur();
 
@@ -5108,8 +5110,8 @@
 
 	});
 
-	// List Item navigation (ensures reliable tap on mobile)
-	$(document).on('touchend click', '.btnListItem', function (e) {
+	// Reliable mobile navigation for action-row anchors
+	$(document).on('touchend click', '.btnListItem, .btnMediaUpload', function (e) {
 		e.preventDefault();
 		e.stopPropagation();
 		var url = $(this).attr('data-url') || $(this).attr('href');
@@ -6238,7 +6240,9 @@
 
 	// Open modal Schedule Post
 
-	$('.btnSchedulePost').on('click', function () {
+	$('.btnSchedulePost').on('touchend click', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
 
 		$(this).blur();
 

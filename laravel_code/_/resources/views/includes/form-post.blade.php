@@ -67,7 +67,7 @@
             @endif
 
             <div>
-              <a href="{{ url('new/update') }}" class="d-flex align-items-center custom_btn btn-tooltip-form e-none text-white rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
+              <a href="{{ url('new/update') }}" data-url="{{ url('new/update') }}" class="d-flex align-items-center custom_btn btn-tooltip-form btnMediaUpload e-none text-white rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
                 <i class="bi-image f-size-20 align-middle mr-2"></i><span> Photo/Video</span>
               </a>
             </div>
