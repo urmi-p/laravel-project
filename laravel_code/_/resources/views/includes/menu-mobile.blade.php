@@ -20,10 +20,12 @@
 
 		<li class="flex-fill bd-highlight">
 			<a href="{{url('messages')}}" class="btn-mobile position-relative @if (request()->is('messages*')) active disabled @endif" title="{{ trans('general.messages') }}">
-				<span class="noti_msg notify @if (auth()->user()->messagesInbox() != 0) d-block @endif">
-					{{ auth()->user()->messagesInbox() }}
+				<span class="mobile-nav-icon-wrap">
+					<i class="feather icon-send icon-navbar"></i>
+					<span class="noti_msg notify @if (auth()->user()->messagesInbox() != 0) d-block @endif">
+						{{ auth()->user()->messagesInbox() }}
+					</span>
 				</span>
-				<i class="feather icon-send icon-navbar"></i>
 				@if (request()->is('messages*')) <span class="font_weight_400 fs-14">Message</span> @endif
 			</a>
 		</li>

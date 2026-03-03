@@ -7899,6 +7899,27 @@ html[data-bs-theme="dark"] .app-auth-shell {
         line-height: 1;
     }
 
+    .app-auth-shell .menuMobile .mobile-nav-icon-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
+    /* Keep message badge pinned to icon corner, even when active label is shown */
+    .app-auth-shell .menuMobile .mobile-nav-icon-wrap .noti_msg.notify {
+        top: -0.45rem !important;
+        right: -0.55rem !important;
+        transform: none;
+        min-width: 1.05rem;
+        height: 1.05rem;
+        padding: 2px 0.25rem;
+        align-items: center;
+        line-height: 1.5;
+        font-size: 0.625rem;
+    }
+
     .app-auth-shell footer.footer-bg {
         width: 100%;
         max-width: none;
