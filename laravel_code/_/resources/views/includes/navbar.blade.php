@@ -39,21 +39,35 @@
                                 </a>
                             </div>
                             <div class="d-md-none">
-                                <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                    data-toggle="collapse" data-target="#navbarCollapse"
-                                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
-                                    aria-expanded="false" role="button">
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
-                                            stroke="#A3A3A3" stroke-width="1.125" />
-                                        <path
-                                            d="M11.0336 7.54582C10.9593 6.97383 10.3025 6.04966 9.12157 6.04964C7.74937 6.04962 7.17199 6.80959 7.05484 7.18958C6.87206 7.69785 6.90862 8.74282 8.517 8.85675C10.5275 8.99925 11.3329 9.23655 11.2305 10.467C11.128 11.6974 10.0072 11.9632 9.12157 11.9347C8.23582 11.9062 6.7867 11.4994 6.73047 10.405M8.98102 5.24854V6.05236M8.98102 11.9273V12.7485"
-                                            stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round" />
-                                    </svg>
-
-                                </a>
+                                @if (auth()->user()->verified_id == 'yes')
+                                    <a class="btn-mobile-nav btn_mobile_nav @if (request()->is('my/commission')) active disabled @endif"
+                                        href="{{ url('my/commission') }}" title="{{ __('admin.commission') }}">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
+                                                stroke="#A3A3A3" stroke-width="1.125" />
+                                            <path
+                                                d="M11.0336 7.54582C10.9593 6.97383 10.3025 6.04966 9.12157 6.04964C7.74937 6.04962 7.17199 6.80959 7.05484 7.18958C6.87206 7.69785 6.90862 8.74282 8.517 8.85675C10.5275 8.99925 11.3329 9.23655 11.2305 10.467C11.128 11.6974 10.0072 11.9632 9.12157 11.9347C8.23582 11.9062 6.7867 11.4994 6.73047 10.405M8.98102 5.24854V6.05236M8.98102 11.9273V12.7485"
+                                                stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round" />
+                                        </svg>
+                                    </a>
+                                @else
+                                    <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                        data-toggle="collapse" data-target="#navbarCollapse"
+                                        data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                        aria-expanded="false" role="button">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
+                                                stroke="#A3A3A3" stroke-width="1.125" />
+                                            <path
+                                                d="M11.0336 7.54582C10.9593 6.97383 10.3025 6.04966 9.12157 6.04964C7.74937 6.04962 7.17199 6.80959 7.05484 7.18958C6.87206 7.69785 6.90862 8.74282 8.517 8.85675C10.5275 8.99925 11.3329 9.23655 11.2305 10.467C11.128 11.6974 10.0072 11.9632 9.12157 11.9347C8.23582 11.9062 6.7867 11.4994 6.73047 10.405M8.98102 5.24854V6.05236M8.98102 11.9273V12.7485"
+                                                stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round" />
+                                        </svg>
+                                    </a>
+                                @endif
                             </div>
                             <div class="d-md-none">
                                 <a href="{{ url('notifications') }}" class="position-relative btn_mobile_nav"
