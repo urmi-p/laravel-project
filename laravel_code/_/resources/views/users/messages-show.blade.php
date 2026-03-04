@@ -132,7 +132,7 @@
                     </p>
 
                     <!-- Visit Profile Button -->
-                    <a href="{{ url($user->username) }}" class="btn visit-profile-btn">
+                    <a href="{{ url('profile',$user->username) }}" class="btn visit-profile-btn">
                       {{__('general.visit_profile')}}
                     </a>
 
