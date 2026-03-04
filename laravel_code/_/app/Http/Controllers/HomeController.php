@@ -53,62 +53,7 @@ class HomeController extends Controller
 
     // Home Guest
     if (auth()->guest()) {
-      if (config('settings.home_style') == 0) {
-        $users = User::where('featured', 'yes')
-          ->where('status', 'active')
-          ->whereVerifiedId('yes')
-          ->whereHideProfile('no')
-          ->whereHas('plans', function ($query) {
-            $query->where('status', '1');
-          })
-          ->where('id', '<>', config('settings.hide_admin_profile') == 'on' ? 1 : 0)
-          ->where('blocked_countries', 'NOT LIKE', '%' . Helper::userCountry() . '%')
-          ->with([
-            'media' => fn($q) =>
-            $q->select('type')
-          ])
-          ->orWhere('featured', 'yes')
-          ->where('status', 'active')
-          ->whereVerifiedId('yes')
-          ->whereHideProfile('no')
-          ->whereFreeSubscription('yes')
-          ->where('id', '<>', config('settings.hide_admin_profile') == 'on' ? 1 : 0)
-          ->where('blocked_countries', 'NOT LIKE', '%' . Helper::userCountry() . '%')
-          ->inRandomOrder()
-          ->with([
-            'media' => fn($q) =>
-            $q->select('type')
-          ])
-          ->paginate(6);
-
-        $home = 'home';
-      }
-
-      // Total creators
-      $usersTotal = User::whereStatus('active')
-        ->whereVerifiedId('yes')
-        ->whereHas('plans', function ($query) {
-          $query->where('status', '1');
-        })
-        ->whereHideProfile('no')
-        ->orWhere('status', 'active')
-        ->whereVerifiedId('yes')
-        ->whereFreeSubscription('yes')
-        ->whereHideProfile('no')
-        ->count();
-
-      if (config('settings.home_style') == 1) {
-        $home = 'home-login';
-      }
-
-      if (config('settings.home_style') == 2) {
-        return $this->homeExplore();
-      }
-
-      return view('index.' . $home, [
-        'users' => $users ?? null,
-        'usersTotal' => $usersTotal
-      ]);
+      return view('landing_page');
     } else {
 
       $users = $this->userExplore();
@@ -138,6 +83,16 @@ class HomeController extends Controller
         'payPerViewsUser' => $payPerViewsUser ?? null
       ]);
     }
+  }
+
+  /**
+   * Guest Login/Register landing (old root behavior).
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function guestAuth()
+  {
+    return view('index.home-login');
   }
 
   public function homeExplore()
@@ -840,3 +795,4 @@ class HomeController extends Controller
     }
   }
 }
+

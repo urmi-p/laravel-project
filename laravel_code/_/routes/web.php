@@ -98,6 +98,7 @@ Route::get('home', function() {
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'logout']);
+Route::get('guest/auth', [HomeController::class, 'guestAuth'])->name('guest.auth')->middleware('guest');
 
 // Admin login when Disable registration/Email login is enabled
 Route::get('login/admin', [LoginController::class, 'showLoginForm'])->name('login.admin');
