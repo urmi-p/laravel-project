@@ -28,11 +28,11 @@
         ->get();
 
         if ($getFirstFile && $getFirstFile->type == 'image' && $getFirstFile->img_type != 'gif') {
-        $urlMedia = url('media/storage/focus/photo', $getFirstFile->id);
+        $urlMedia = Helper::getFile(config('path.images') . $getFirstFile->image);
         $backgroundPostLocked = '--bg: url('.$urlMedia.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
         $textWhite = 'text-white';
         } elseif ($getFirstFile && $getFirstFile->type == 'video' && $getFirstFile->video_poster) {
-        $videoPoster = url('media/storage/focus/video', $getFirstFile->video_poster);
+        $videoPoster = Helper::getFile(config('path.videos') . $getFirstFile->video_poster);
         $backgroundPostLocked = '--bg: url('.$videoPoster.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
         $textWhite = 'text-white';
         } else {
@@ -226,7 +226,7 @@
                 @if (
                 ($response->creator->planActive() && $response->price == 0.0) ||
                 ($response->creator->free_subscription == 'yes' && $response->price == 0.0))
-                    <a href="{{ request()->route()->named('profile') ? 'javascript:void(0);' : url($response->creator->username) }}"
+                    <a href="{{ request()->route()->named('profile') ? 'javascript:void(0);' : url('profile',$response->creator->username) }}"
                         @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($response->creator->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest
                         class="btn btn-primary w-100">
 
