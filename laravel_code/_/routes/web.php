@@ -1121,20 +1121,20 @@ Route::get('assets/{path}/{size}/{file}', [HomeController::class, 'resizeImage']
 	->name('resize');
 
 // Coconut Video Encoding
-Route::post('webhook/storage/{id}/{data}', [StorageCoconutController::class, 'storage']);
-Route::any('webhook/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhook'])->name('webhook.coco');
+//Route::post('webhook/storage/{id}/{data}', [StorageCoconutController::class, 'storage']);
+//Route::any('webhook/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhook'])->name('webhook.coco');
 
-Route::post('webhook/storage/message/{id}/{data}', [StorageCoconutController::class, 'storageMessage']);
-Route::any('webhook/message/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhookMessage'])->name('webhook.message.coco');
+//Route::post('webhook/storage/message/{id}/{data}', [StorageCoconutController::class, 'storageMessage']);
+//Route::any('webhook/message/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhookMessage'])->name('webhook.message.coco');
 
-Route::post('webhook/storage/welcome/message/{id}/{data}', [StorageCoconutController::class, 'storageWelcomeMessage']);
-Route::any('webhook/welcome/message/coco/{mediaId}', [WebhookCoconutController::class, 'webhookWelcomeMessage'])->name('webhook.welcome.message.coco');
+//Route::post('webhook/storage/welcome/message/{id}/{data}', [StorageCoconutController::class, 'storageWelcomeMessage']);
+//Route::any('webhook/welcome/message/coco/{mediaId}', [WebhookCoconutController::class, 'webhookWelcomeMessage'])->name('webhook.welcome.message.coco');
 
-Route::post('webhook/storage/story/{id}/{data}', [StorageCoconutController::class, 'storageStory']);
-Route::any('webhook/story/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhookStory'])->name('webhook.story.coco');
+// Route::post('webhook/storage/story/{id}/{data}', [StorageCoconutController::class, 'storageStory']);
+// Route::any('webhook/story/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhookStory'])->name('webhook.story.coco');
 
-Route::post('webhook/storage/reel/{id}/{data}', [StorageCoconutController::class, 'storageReel']);
-Route::any('webhook/reel/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhookReel'])->name('webhook.reel.coco');
+// Route::post('webhook/storage/reel/{id}/{data}', [StorageCoconutController::class, 'storageReel']);
+// Route::any('webhook/reel/coco/{mediaId}/{resourceId}', [WebhookCoconutController::class, 'webhookReel'])->name('webhook.reel.coco');
 
 // Clicks Ads
 Route::get('click/ad/{ad}', [AdvertisingController::class, 'clicksAds'])->name('clicks');
@@ -1181,8 +1181,8 @@ Route::get('media/storage/blur/{path}', [HomeController::class, 'imageBlur'])->w
 Route::post('webhook/sightengine/video-moderation/{videoId}', [WebhookSightengineController::class, 'receive'])->name('webhook.sightengine');
 
 // Coconut Video Encoding Vault
-Route::post('webhook/storage/vault/{id}/{data}', [StorageCoconutController::class, 'storageVault']);
-Route::any('webhook/vault/coco/{mediaId}', [WebhookCoconutController::class, 'webhookVault'])->name('webhook.vault.coco');
+// Route::post('webhook/storage/vault/{id}/{data}', [StorageCoconutController::class, 'storageVault']);
+// Route::any('webhook/vault/coco/{mediaId}', [WebhookCoconutController::class, 'webhookVault'])->name('webhook.vault.coco');
 
 // Customization
 Route::view('/settings/user', 'users.all-settings')->name('user.settings')->middleware('auth');

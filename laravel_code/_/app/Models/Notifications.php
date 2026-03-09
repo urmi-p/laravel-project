@@ -182,7 +182,7 @@ class Notifications extends Model
 					break;
 
 				case 28:
-					$msg             = __('general.error_video_encoding_reel');
+					$msg             = __('general.error_occurred');
 					$linkDestination = url('my/reels');
 					break;
 

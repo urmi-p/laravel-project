@@ -5,7 +5,11 @@
 		$isVaultFile = $media->vault_id ? 'vault=1' : null;
 		$pathFiles = $media->vault_id ? config('path.vault') : config('path.messages');
 
-		$urlImg = url('files/messages', [$msg->id, $media->file]);
+		$urlImg = Helper::messageImageUrl($media, $msg->id);
+		$isLocalMessageImage = !$media->vault_id && str_contains($urlImg, '/files/messages/');
+		$imageThumb = $media->vault_id
+			? $urlImg
+			: ($isLocalMessageImage ? ($urlImg . '?w=960&h=980&' . $isVaultFile) : $urlImg);
 
 		if ($media->width && $media->height > $media->width) {
 			$styleImgVertical = 'img-vertical-lg';
@@ -16,16 +20,20 @@
 
 	@if ($media->type == 'image')
 		<div class="media-grid-1">
-			<a href="{{ $urlImg . '?'. $isVaultFile }}" class="media-wrapper glightbox {{$styleImgVertical}}" data-gallery="gallery{{$msg->id}}" style="background-image: url('{{$urlImg}}?w=960&h=980&{{ $isVaultFile }}')">
-					<img src="{{$urlImg}}?w=960&h=980&{{ $isVaultFile }}" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} class="post-img-grid">
+			<a href="{{ $urlImg }}" class="media-wrapper glightbox {{$styleImgVertical}}" data-gallery="gallery{{$msg->id}}" style="background-image: url('{{ $imageThumb }}')">
+					<img src="{{ $imageThumb }}" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} class="post-img-grid">
 			</a>
 		</div>
 @endif
 
 @if ($media->type == 'video')
 	<div class="container-media-msg h-auto">
-		<video class="js-player {{$classInvisible}}" controls @if (!$media->video_poster) preload="metadata" @endif @if ($media->video_poster) preload="none" data-poster="{{ Helper::getFile($pathFiles.$media->video_poster) }}" @endif>
-		<source src="{{Helper::getFile($pathFiles.$media->file)}}" type="video/mp4" />
+		@php
+			$messagePoster = Helper::messageThumbnailUrl($media);
+			$messagePlayback = Helper::messagePlaybackUrl($media);
+		@endphp
+		<video class="js-player {{$classInvisible}}" controls @if (!$messagePoster) preload="metadata" @endif @if ($messagePoster) preload="none" data-poster="{{ $messagePoster }}" @endif>
+		<source src="{{ $messagePlayback }}" type="video/mp4" />
 	</video>
 </div>
 @endif
@@ -45,18 +53,22 @@
 	$pathFiles = $media->vault_id ? config('path.vault') : config('path.messages');
 
 	if ($media->type == 'video') {
-		$urlMedia =  Helper::getFile($pathFiles.$media->file);
-		$videoPoster = $media->video_poster ? Helper::getFile($pathFiles.$media->video_poster) : false;
+		$urlMedia =  Helper::messagePlaybackUrl($media);
+		$videoPoster = Helper::messageThumbnailUrl($media);
 	} else {
-		$urlMedia =  url('files/messages', [$msg->id, $media->file]);
+		$urlMedia = Helper::messageImageUrl($media, $msg->id);
 		$videoPoster = null;
 	}
 
 	if ($media->type == 'video') {
 		$urlMedia = $urlMedia;
-	} else {
+	} elseif (!$media->vault_id && str_contains($urlMedia, '/files/messages/')) {
 		$urlMedia = $urlMedia . '?'. $isVaultFile;
 	}
+
+	$imageThumb = $videoPoster
+		? ($videoPoster . '?w=960&h=980&' . $isVaultFile)
+		: ($media->vault_id ? $urlMedia : ($urlMedia . '?w=960&h=980&' . $isVaultFile));
 
 
 		$nth++;
@@ -64,7 +76,7 @@
 
 		@if ($media->type == 'image' || $media->type == 'video')
 
-			<a href="{{ $urlMedia }}" class="media-wrapper glightbox" data-gallery="gallery{{$msg->id}}" style="background-image: url('{{ $videoPoster ?? $urlMedia }}?w=960&h=980&{{ $isVaultFile }}')">
+			<a href="{{ $urlMedia }}" class="media-wrapper glightbox" data-gallery="gallery{{$msg->id}}" style="background-image: url('{{ $imageThumb }}')">
 
 				@if ($nth == 4 && $mediaImageVideoTotal > 4)
 		        <span class="more-media">
@@ -85,7 +97,7 @@
 				@endif
 
 				@if ($videoPoster)
-					<img src="{{ $videoPoster ?? $urlMedia }}?w=960&h=980&{{ $isVaultFile }}" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} class="post-img-grid">
+					<img src="{{ $imageThumb }}" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} class="post-img-grid">
 				@endif
 			</a>
 
@@ -178,7 +190,7 @@
 	<div class="card border-0">
 		@if (isset($msg->gift->id))
           <span class="d-block text-center">
-            <img src="{{ url('public/img/gifts', $msg->gift->image) }}" width="100">
+            <img src="{{ Helper::giftImageUrl($msg->gift->image) }}" width="100">
           </span>
         @endif
 

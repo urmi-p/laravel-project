@@ -356,9 +356,9 @@
 
                                         length: {{ $media->type == 'photo' ? 5 : ($media->video_length ?: $settings->story_max_videos_length) }}, // photo timeout or video length in seconds - uses 3 seconds timeout for images if not set
 
-                                        src: "{{ Helper::getFile(config('path.stories') . $media->name) }}", // photo or video src
+                                        src: "{{ Helper::storyPlaybackUrl($media) }}", // photo or video src
 
-                                        preview: "{{ $media->type == 'photo' ? route('resize', ['path' => 'stories', 'file' => $media->name, 'size' => 280]) : ($media->video_poster ? route('resize', ['path' => 'stories', 'file' => $media->video_poster, 'size' => 280]) : route('resize', ['path' => 'avatar', 'file' => $story->user->avatar, 'size' => 200])) }}", // optional - item thumbnail to show in the story carousel instead of the story defined image
+                                        preview: "{{ Helper::storyThumbnailUrl($media, route('resize', ['path' => 'avatar', 'file' => $story->user->avatar, 'size' => 200])) }}", // optional - item thumbnail to show in the story carousel instead of the story defined image
 
                                         link: "", // a link to click on story
 

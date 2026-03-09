@@ -7,19 +7,26 @@ use FileUploader;
 use App\Models\Vault;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use App\Jobs\EncodeVideoVault;
 use Illuminate\Http\JsonResponse;
-use App\Services\CoconutVideoService;
+use App\Models\Notifications;
+use App\Services\BunnyStorageService;
+use App\Services\BunnyStreamService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Typography\FontFactory;
 
 class UploadMediaVaultController extends Controller
 {
-    public function __construct(Request $request)
+    protected $bunnyStreamService;
+    protected $bunnyStorageService;
+    protected $request, $path;
+    public function __construct(Request $request, BunnyStreamService $bunnyStreamService, BunnyStorageService $bunnyStorageService)
     {
         $this->request = $request;
         $this->path = config('path.vault');
+        $this->bunnyStreamService = $bunnyStreamService;
+        $this->bunnyStorageService = $bunnyStorageService;
     }
 
     public function store()
@@ -27,26 +34,26 @@ class UploadMediaVaultController extends Controller
         $publicPath = public_path('temp/');
         $file = strtolower(auth()->id() . uniqid() . time() . str_random(20));
 
-        if (config('settings.video_encoding') == 'off') {
-            $extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4'];
-        } else {
-            $extensions = [
-                'png',
-                'jpeg',
-                'jpg',
-                'gif',
-                'ief',
-                'video/mp4',
-                'video/quicktime',
-                'video/3gpp',
-                'video/mpeg',
-                'video/x-matroska',
-                'video/x-ms-wmv',
-                'video/vnd.avi',
-                'video/avi',
-                'video/x-flv'
-            ];
-        }
+        // if (config('settings.video_encoding') == 'off') {
+        //     $extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4'];
+        // } else {
+        $extensions = [
+            'png',
+            'jpeg',
+            'jpg',
+            'gif',
+            'ief',
+            'video/mp4',
+            'video/quicktime',
+            'video/3gpp',
+            'video/mpeg',
+            'video/x-matroska',
+            'video/x-ms-wmv',
+            'video/vnd.avi',
+            'video/avi',
+            'video/x-flv'
+        ];
+        // }
 
         // initialize FileUploader
         $fileUploader = new FileUploader('files', array(
@@ -78,7 +85,13 @@ class UploadMediaVaultController extends Controller
                         break;
 
                     case 'video':
-                        $this->uploadVideo($item);
+                        try {
+                            $this->uploadVideo($item);
+                        } catch (\Exception $e) {
+                            $upload['hasWarnings'] = true;
+                            $upload['isSuccess'] = false;
+                            $upload['warnings'][] = $e->getMessage();
+                        }
                         break;
                 }
             }
@@ -174,28 +187,78 @@ class UploadMediaVaultController extends Controller
             'file_name' => $videoItem['old_name'],
             'bytes' => $videoItem['size'],
             'mime' => $videoItem['type'],
-            'status' => 'active',
+            'status' => 'pending',
             'created_at' => now()
         ]);
 
-        // Move file to Storage 
-        if (config('settings.video_encoding') == 'off') {
-            $this->moveFileStorage($videoItem['name'], $this->path);
-        } else {
-            $this->encodeVideo($video);
+        if (!$this->bunnyStreamService->isConfigured()) {
+            throw new \Exception('Bunny Stream is not configured.');
         }
-    }
 
-    protected function encodeVideo($video): void
-    {
-        $video->update([
-            'status' => 'pending'
-        ]);
+        $bunnyVideoId = null;
+        $localFile = public_path('temp/' . $video->file);
 
-        if (config('settings.encoding_method') == 'ffmpeg') {
-            dispatch(new EncodeVideoVault($video));
-        } else {
-            CoconutVideoService::handle($video, 'vault');
+        try {
+            $syncResult = $this->bunnyStreamService->syncLibrarySettingsFromApp();
+            if (config('settings.watermark_on_videos') == 'on' && empty($syncResult['synced'])) {
+                throw new \Exception('Bunny watermark sync failed. Configure BUNNY_API_KEY and ensure video library watermark access is enabled.');
+            }
+
+            if (!file_exists($localFile)) {
+                throw new \Exception(__('general.error_occurred'));
+            }
+
+            $collectionId = $this->bunnyStreamService->getOrCreateCollection('Vault');
+            $bunnyVideoId = $this->bunnyStreamService->uploadVideo(
+                $localFile,
+                $video->file_name ?: ('Vault #' . $video->id),
+                $collectionId
+            );
+            $videoData = $this->bunnyStreamService->getVideoWithRetry($bunnyVideoId, 6, 1000);
+            $this->bunnyStreamService->ensureMp4FallbackEnabled($videoData);
+
+            $status = (int) ($videoData['status'] ?? $videoData['Status'] ?? 0);
+            if ($status === 5) {
+                $readableError = $this->bunnyStreamService->getReadableTranscodingError($videoData) ?? 'Bunny transcoding failed.';
+                throw new \Exception($readableError);
+            }
+
+            $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);
+            $durationText = $durationSeconds > 0 ? Helper::getDurationInMinutes($durationSeconds) : null;
+            $videoWidth = (int) ($videoData['width'] ?? $videoData['Width'] ?? 0);
+            $qualityVideo = $videoWidth > 0 ? Helper::getResolutionVideo($videoWidth) : null;
+
+            if (file_exists($localFile)) {
+                unlink($localFile);
+            }
+
+            $video->update([
+                'bunny_video_id' => $bunnyVideoId,
+                'video_poster' => $this->bunnyStreamService->getPosterUrl($bunnyVideoId),
+                'duration_video' => $durationText,
+                'quality_video' => $qualityVideo,
+                'encoded' => 'yes',
+                'status' => 'active'
+            ]);
+
+            Notifications::send($video->user_id, $video->user_id, 35, $video->id, $video->file_name);
+        } catch (\Exception $e) {
+            if ($bunnyVideoId && $this->bunnyStreamService->isConfigured()) {
+                try {
+                    $this->bunnyStreamService->deleteVideo($bunnyVideoId);
+                } catch (\Exception $deleteException) {
+                    Log::info('Error deleting orphan Bunny vault video: ' . $deleteException->getMessage());
+                }
+            }
+
+            if (file_exists($localFile)) {
+                unlink($localFile);
+            }
+
+            Notifications::send($video->user_id, $video->user_id, 36, $video->id, $video->file_name);
+            $video->delete();
+
+            throw $e;
         }
     }
 
@@ -203,11 +266,19 @@ class UploadMediaVaultController extends Controller
     {
         $localFile = public_path('temp/' . $file);
 
-        // Move the file...
-        Storage::putFileAs($path, new File($localFile), $file);
+        if ($path == config('path.vault') && $this->bunnyStorageService->isConfigured()) {
+            $uploaded = $this->bunnyStorageService->uploadFromLocal($localFile, $path . $file);
+            if (!$uploaded) {
+                Storage::putFileAs($path, new File($localFile), $file);
+            }
+        } else {
+            Storage::putFileAs($path, new File($localFile), $file);
+        }
 
         // Delete temp file
-        unlink($localFile);
+        if (file_exists($localFile)) {
+            unlink($localFile);
+        }
     }
 
     public function preload()
@@ -220,12 +291,12 @@ class UploadMediaVaultController extends Controller
 
                 switch ($file->type) {
                     case 'image':
-                        $pathFile = Helper::getFile(config('path.vault') . $file->file);
+                        $pathFile = Helper::vaultFileUrl($file->file);
                         $name = $file->file_name;
                         break;
 
                     case 'video':
-                        $pathFile = Helper::getFile(config('path.vault') . $file->file);
+                        $pathFile = Helper::vaultPlaybackUrl($file);
                         $name = $file->file_name;
                         break;
                 }
@@ -258,7 +329,11 @@ class UploadMediaVaultController extends Controller
             $localFile = 'temp/' . $media->file;
 
             Storage::delete($path . $media->file);
-            Storage::delete($path . $media->video_poster);
+            $this->bunnyStorageService->delete($path . $media->file);
+            if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+                Storage::delete($path . $media->video_poster);
+                $this->bunnyStorageService->delete($path . $media->video_poster);
+            }
 
             // Delete local file (if exist)
             Storage::disk('default')->delete($localFile);

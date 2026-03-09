@@ -7,16 +7,24 @@ use FileUploader;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use App\Models\MediaWelcomeMessage;
+use App\Services\BunnyStorageService;
+use App\Services\BunnyStreamService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Typography\FontFactory;
 
 class UploadMediaWelcomeMessageController extends Controller
 {
-	public function __construct(Request $request)
+	protected $bunnyStreamService;
+	protected $bunnyStorageService;
+	protected $request, $path;
+	public function __construct(Request $request, BunnyStreamService $bunnyStreamService, BunnyStorageService $bunnyStorageService)
 	{
 		$this->request = $request;
 		$this->path = config('path.welcome_messages');
+		$this->bunnyStreamService = $bunnyStreamService;
+		$this->bunnyStorageService = $bunnyStorageService;
 	}
 
 	/**
@@ -29,28 +37,28 @@ class UploadMediaWelcomeMessageController extends Controller
 		$publicPath = public_path('temp/');
 		$file = strtolower(auth()->id() . uniqid() . time() . str_random(20));
 
-		if (config('settings.video_encoding') == 'off') {
-			$extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4', 'audio/x-matroska', 'audio/mpeg'];
-		} else {
-			$extensions = [
-				'png',
-				'jpeg',
-				'jpg',
-				'gif',
-				'ief',
-				'video/mp4',
-				'video/quicktime',
-				'video/3gpp',
-				'video/mpeg',
-				'video/x-matroska',
-				'video/x-ms-wmv',
-				'video/vnd.avi',
-				'video/avi',
-				'video/x-flv',
-				'audio/x-matroska',
-				'audio/mpeg'
-			];
-		}
+		// if (config('settings.video_encoding') == 'off') {
+		// 	$extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4', 'audio/x-matroska', 'audio/mpeg'];
+		// } else {
+		$extensions = [
+			'png',
+			'jpeg',
+			'jpg',
+			'gif',
+			'ief',
+			'video/mp4',
+			'video/quicktime',
+			'video/3gpp',
+			'video/mpeg',
+			'video/x-matroska',
+			'video/x-ms-wmv',
+			'video/vnd.avi',
+			'video/avi',
+			'video/x-flv',
+			'audio/x-matroska',
+			'audio/mpeg'
+		];
+		// }
 
 		// initialize FileUploader
 		$FileUploader = new FileUploader('media', [
@@ -194,9 +202,9 @@ class UploadMediaWelcomeMessageController extends Controller
 		]);
 
 		// Move file to Storage
-		if (config('settings.video_encoding') == 'off') {
-			$this->moveFileStorage($video['name'], $this->path);
-		}
+		// if (config('settings.video_encoding') == 'off') {
+		// 	$this->moveFileStorage($video['name'], $this->path);
+		// }
 	}
 
 	/**
@@ -231,11 +239,19 @@ class UploadMediaWelcomeMessageController extends Controller
 	{
 		$localFile = public_path('temp/' . $file);
 
-		// Move the file...
-		Storage::putFileAs($path, new File($localFile), $file);
+		if ($path == config('path.welcome_messages') && $this->bunnyStorageService->isConfigured()) {
+			$uploaded = $this->bunnyStorageService->uploadFromLocal($localFile, $path . $file);
+			if (!$uploaded) {
+				Storage::putFileAs($path, new File($localFile), $file);
+			}
+		} else {
+			Storage::putFileAs($path, new File($localFile), $file);
+		}
 
 		// Delete temp file
-		unlink($localFile);
+		if (file_exists($localFile)) {
+			unlink($localFile);
+		}
 	}
 
 	/**
@@ -249,9 +265,21 @@ class UploadMediaWelcomeMessageController extends Controller
 		$media = MediaWelcomeMessage::whereFile($this->request->file)->first();
 
 		if ($media) {
+			if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+				$this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+			}
+
 			$localFile = 'temp/' . $media->file;
-			Storage::delete($path . $media->file);
-			Storage::delete($path . $media->video_poster);
+			if ($media->file && Storage::exists($path . $media->file)) {
+				Storage::delete($path . $media->file);
+			}
+			if ($media->file) {
+				$this->bunnyStorageService->delete($path . $media->file);
+			}
+			if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+				Storage::delete($path . $media->video_poster);
+				$this->bunnyStorageService->delete($path . $media->video_poster);
+			}
 
 			// Delete local file (if exist)
 			Storage::disk('default')->delete($localFile);
@@ -271,7 +299,19 @@ class UploadMediaWelcomeMessageController extends Controller
 			->first();
 
 		if ($media) {
-			Storage::delete([$this->path . $media->file, $this->path . $media->video_poster]);
+			if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+				$this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+			}
+			if ($media->file && Storage::exists($this->path . $media->file)) {
+				Storage::delete($this->path . $media->file);
+			}
+			if ($media->file) {
+				$this->bunnyStorageService->delete($this->path . $media->file);
+			}
+			if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+				Storage::delete($this->path . $media->video_poster);
+				$this->bunnyStorageService->delete($this->path . $media->video_poster);
+			}
 
 			$media->delete();
 		}

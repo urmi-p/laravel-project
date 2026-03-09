@@ -6,13 +6,21 @@ use Illuminate\View\View;
 use App\Models\Advertising;
 use Illuminate\Http\Request;
 use App\Models\AdClickImpression;
+use App\Services\BunnyStorageService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
 final class AdvertisingController extends Controller
 {
     public $pathFolder = 'uploads/ads/';
+    protected BunnyStorageService $bunnyStorageService;
+
+    public function __construct()
+    {
+        $this->bunnyStorageService = app(BunnyStorageService::class);
+    }
 
     public function show(): View
     {
@@ -36,10 +44,8 @@ final class AdvertisingController extends Controller
             $imageFile = $request->file('image');
             $extension  = $request->file('image')->getClientOriginalExtension();
             $image = time() . '-' . str_random(32) . '.' . $extension;
-            
-            $imageResize = Image::read($imageFile)->scale(width: 400)->encodeByExtension($extension);
 
-            Storage::put($this->pathFolder . $image, $imageResize);
+            $this->storeAdImage($imageFile, $extension, $image);
         }
 
         $sql = new Advertising();
@@ -77,11 +83,10 @@ final class AdvertisingController extends Controller
             $extension  = $request->file('image')->getClientOriginalExtension();
             $image = time() . '-' . str_random(32) . '.' . $extension;
 
-            $imageResize = Image::read($imageFile)->scale(width: 400)->encodeByExtension($extension);
-
-            Storage::put($this->pathFolder . $image, $imageResize);
+            $this->storeAdImage($imageFile, $extension, $image);
 
             Storage::delete($this->pathFolder . $ad->image);
+            $this->bunnyStorageService->delete($this->pathFolder . $ad->image);
         }
 
         $ad->title = $request->title;
@@ -95,10 +100,11 @@ final class AdvertisingController extends Controller
         return redirect('panel/admin/advertising')->withSuccessMessage(__('general.success_update'));
     }
 
-    public function destroy(Advertising $ad): RedirectResponse
+	public function destroy(Advertising $ad): RedirectResponse
 	{
 		// Delete image
 		Storage::delete($this->pathFolder . $ad->image);
+        $this->bunnyStorageService->delete($this->pathFolder . $ad->image);
 
         $ad->delete();
 
@@ -122,5 +128,34 @@ final class AdvertisingController extends Controller
           }
 
         return redirect($ad->url);
+    }
+
+    private function storeAdImage($imageFile, string $extension, string $imageName): void
+    {
+        $imageResize = Image::read($imageFile)->scale(width: 400)->encodeByExtension($extension);
+        $remotePath = $this->pathFolder . $imageName;
+
+        if ($this->bunnyStorageService->isConfigured()) {
+            $tempFile = tempnam(sys_get_temp_dir(), 'ad_');
+
+            if ($tempFile !== false) {
+                try {
+                    file_put_contents($tempFile, (string) $imageResize);
+                    $uploaded = $this->bunnyStorageService->uploadFromLocal($tempFile, $remotePath);
+                    if ($uploaded) {
+                        return;
+                    }
+                } catch (\Throwable $e) {
+                    Log::warning('Advertising image Bunny upload failed', [
+                        'file' => $imageName,
+                        'error' => $e->getMessage(),
+                    ]);
+                } finally {
+                    @unlink($tempFile);
+                }
+            }
+        }
+
+        Storage::put($remotePath, $imageResize);
     }
 }

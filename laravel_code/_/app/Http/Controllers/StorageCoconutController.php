@@ -51,13 +51,13 @@ final class StorageCoconutController extends Controller
         return response('success', 200);
     }
 
-    public function storageReel(): Response
-    {
-        $media = MediaReel::select(['id', 'name'])->whereId($this->request->id)->first();
-        $this->upload($media, 'name', $media->name, config('path.reels'), $this->request);
+    // public function storageReel(): Response
+    // {
+    //     $media = MediaReel::select(['id', 'name'])->whereId($this->request->id)->first();
+    //     $this->upload($media, 'name', $media->name, config('path.reels'), $this->request);
 
-        return response('success', 200);
-    }
+    //     return response('success', 200);
+    // }
 
     public function storageVault(): Response
     {

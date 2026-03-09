@@ -11,6 +11,7 @@ use App\Helper;
 
 class CountriesStatesController extends Controller
 {
+  protected $settings;
   public function __construct(AdminSettings $settings)
   {
     $this->settings = $settings::first();

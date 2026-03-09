@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use App\Helper;
 use App\Models\Reel;
 use App\Models\MediaReel;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use App\Jobs\EncodeVideoReel;
 use App\Models\Notifications;
 use App\Models\Reports;
-use App\Services\CoconutVideoService;
+use App\Services\BunnyStreamService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ReelController extends Controller
 {
+    protected $bunnyStreamService;
+
+    public function __construct(BunnyStreamService $bunnyStreamService)
+    {
+        $this->bunnyStreamService = $bunnyStreamService;
+    }
+
     public function create()
     {
         abort_if(auth()->user()->verified_id != 'yes' || !config('settings.allow_reels'), 404);
@@ -63,53 +69,109 @@ class ReelController extends Controller
         }
 
         $video = MediaReel::whereReelsId($reel->id)->first();
+        if (!$video) {
+            $this->deleteReelError($reel->id);
 
-        if ($video && config('settings.video_encoding') == 'on') {
-            try {
-                if (config('settings.encoding_method') == 'ffmpeg') {
-                    $this->dispatch(new EncodeVideoReel($video));
-                } else {
-                    CoconutVideoService::handle($video, 'reel');
-                }
+            return response()->json([
+                'success' => false,
+                'failed' => true,
+                'errors' => ['error' => __('general.error_occurred')],
+            ]);
+        }
 
-                // Change status Pending to Encode
-                Reel::whereId($reel->id)->update([
-                    'status' => 'encode'
-                ]);
+        if (!$this->bunnyStreamService->isConfigured()) {
+            $this->deleteReelError($reel->id);
 
-                return response()->json([
-                    'success' => true,
-                    'encode' => true
-                ]);
-            } catch (\Exception $e) {
-                info('Error creating Reel: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'failed' => true,
+                'errors' => ['error' => 'Bunny Stream is not configured.'],
+            ]);
+        }
 
-                $this->deleteReelError($reel->id);
+        $bunnyVideoId = null;
 
-                return response()->json([
-                    'success' => false,
-                    'failed' => true,
-                    'errors' => ['error' => $e->getMessage()],
-                ]);
+        try {
+            $syncResult = $this->bunnyStreamService->syncLibrarySettingsFromApp();
+            if (config('settings.watermark_on_videos') == 'on' && empty($syncResult['synced'])) {
+                throw new \Exception('Bunny watermark sync failed. Configure BUNNY_API_KEY and ensure video library watermark access is enabled.');
             }
-        } else {
+
+            $localFile = public_path('temp/' . $video->name);
+
+            if (!file_exists($localFile)) {
+                throw new \Exception(__('general.error_occurred'));
+            }
+
+            $collectionId = $this->bunnyStreamService->getOrCreateCollection('Reels');
+            $bunnyVideoId = $this->bunnyStreamService->uploadVideo(
+                $localFile,
+                $request->title ?: ('Reel #' . $reel->id),
+                $collectionId
+            );
+
+            $customPosterPath = null;
+            if ($request->video_thumbnail) {
+                $customPosterPath = public_path('temp/' . $request->video_thumbnail);
+                if (file_exists($customPosterPath)) {
+                    $this->bunnyStreamService->setVideoThumbnailFromFile($bunnyVideoId, $customPosterPath);
+                }
+            }
+
+            $videoData = $this->bunnyStreamService->getVideoWithRetry($bunnyVideoId, 6, 1000);
+            $this->bunnyStreamService->ensureMp4FallbackEnabled($videoData);
+
+            $status = (int) ($videoData['status'] ?? $videoData['Status'] ?? 0);
+            if ($status === 5) {
+                $readableError = $this->bunnyStreamService->getReadableTranscodingError($videoData) ?? 'Bunny transcoding failed.';
+                throw new \Exception($readableError);
+            }
+
+            $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);
+            $durationText = $durationSeconds > 0
+                ? Helper::getDurationInMinutes($durationSeconds)
+                : ($request->duration ? Helper::getDurationInMinutes($request->duration) : null);
+
+            if (file_exists($localFile)) {
+                unlink($localFile);
+            }
+
+            if ($customPosterPath && file_exists($customPosterPath)) {
+                unlink($customPosterPath);
+            }
+
+            $video->update([
+                'bunny_video_id' => $bunnyVideoId,
+                'video_poster' => $this->bunnyStreamService->getPosterUrl($bunnyVideoId),
+                'duration_video' => $durationText,
+                'status' => true
+            ]);
+
             $reel->update([
                 'status' => 'active'
             ]);
 
-            $this->moveFileStorage($video->name, config('path.reels'));
-
-            if ($request->video_thumbnail) {
-                $this->moveFileStorage($request->video_thumbnail, config('path.reels'));
-
-                $video->update([
-                    'video_poster' => $request->video_thumbnail
-                ]);
-            }
-
             return response()->json([
                 'success' => true,
                 'url' => route('reels.section.show', $reel->id)
+            ]);
+        } catch (\Exception $e) {
+            Log::info('Error creating Reel in Bunny: ' . $e->getMessage());
+
+            if ($bunnyVideoId && $this->bunnyStreamService->isConfigured()) {
+                try {
+                    $this->bunnyStreamService->deleteVideo($bunnyVideoId);
+                } catch (\Exception $deleteException) {
+                    Log::info('Error deleting orphan Bunny video: ' . $deleteException->getMessage());
+                }
+            }
+
+            $this->deleteReelError($reel->id);
+
+            return response()->json([
+                'success' => false,
+                'failed' => true,
+                'errors' => ['error' => $e->getMessage()],
             ]);
         }
     }
@@ -121,23 +183,14 @@ class ReelController extends Controller
         if ($reel->media) {
             $localFile = public_path('temp/' . $reel->media->name);
 
-            unlink($localFile);
+            if (file_exists($localFile)) {
+                unlink($localFile);
+            }
 
             $reel->media->delete();
         }
 
         $reel->delete();
-    }
-
-    protected function moveFileStorage($file, $path): void
-    {
-        $localFile = public_path('temp/' . $file);
-
-        // Move the file...
-        Storage::putFileAs($path, new File($localFile), $file);
-
-        // Delete temp file
-        unlink($localFile);
     }
 
     public function destroy($id)
@@ -146,8 +199,22 @@ class ReelController extends Controller
         $reel = Reel::with(['media'])->whereUserId(auth()->id())->whereId($id)->firstOrFail();
 
         if ($reel->media) {
-            Storage::delete($pathReels . $reel->media->name);
-            Storage::delete($pathReels . $reel->media->video_poster);
+            if ($reel->media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+                try{
+                    $this->bunnyStreamService->deleteVideo($reel->media->bunny_video_id);
+                } catch (\Exception $e) {
+                    Log::error('Bunny delete failed for reel in destroy', [
+                        'video_id' => $reel->media->bunny_video_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            }
+            if ($reel->media->name && Storage::exists($pathReels . $reel->media->name)) {
+                Storage::delete($pathReels . $reel->media->name);
+            }
+            if ($reel->media->video_poster && !filter_var($reel->media->video_poster, FILTER_VALIDATE_URL)) {
+                Storage::delete($pathReels . $reel->media->video_poster);
+            }
 
             $reel->media->delete();
         }
@@ -257,8 +324,8 @@ class ReelController extends Controller
                 return [
                     'id' => $reel->id,
                     'media' => [
-                        'video' => Helper::getFile(config('path.reels') . $reel->media->name),
-                        'video_poster' => Helper::getFile(config('path.reels') . $reel->media->video_poster),
+                        'video' => $this->getReelVideoUrl($reel->media),
+                        'video_poster' => $this->getReelThumbnailUrl($reel->media),
                         'duration_video' => $reel->media->duration_video
                     ],
                     'user' => [
@@ -273,6 +340,16 @@ class ReelController extends Controller
             'reels' => $formattedReels,
             'has_more' => $hasMore
         ]);
+    }
+
+    protected function getReelVideoUrl($media): string
+    {
+        return Helper::reelPlaybackUrl($media);
+    }
+
+    protected function getReelThumbnailUrl($media): string
+    {
+        return Helper::reelThumbnailUrl($media);
     }
 
     public function update(Request $request, $id)

@@ -234,7 +234,8 @@
                                 <span class="btn-block mb-3">
                                     <i class="feather icon-user-check ico-no-result bg_black"></i>
                                 </span>
-                                <h4 class="font_weight_400 font_size_18 text_color_white">{{ __('users.not_subscribed') }} <a
+                                <h4 class="font_weight_400 font_size_18 text_color_white">{{ __('users.not_subscribed') }} 
+                                    <a
                                         href="{{ url('creators') }}"
                                        class="text_color_white text_decor_underline" >{{ __('general.explore_creators') }}</a>
                                 </h4>

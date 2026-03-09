@@ -15,6 +15,7 @@ use App\Models\MediaProducts;
 use App\Models\Notifications;
 use App\Models\ShopCategories;
 use App\Notifications\NewSale;
+use App\Services\BunnyStorageService;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -22,11 +23,14 @@ use Illuminate\Support\Facades\Validator;
 class ProductsController extends Controller
 {
   use Traits\Functions;
-
+  protected $settings;
+  protected $request;
+  protected $bunnyStorageService;
   public function __construct(AdminSettings $settings, Request $request)
   {
     $this->settings = $settings::first();
     $this->request = $request;
+    $this->bunnyStorageService = app(BunnyStorageService::class);
   }
 
   public function index()
@@ -210,7 +214,7 @@ class ProductsController extends Controller
         ]);
 
         // Move file to Storage
-        $this->moveFileStorage($media['file'], $path);
+        $this->movePreviewFileStorage($media['file']);
       }
     } // Insert Images Previews
 
@@ -322,7 +326,7 @@ class ProductsController extends Controller
         ]);
 
         // Move file to Storage
-        $this->moveFileStorage($media['file'], $path);
+        $this->movePreviewFileStorage($media['file']);
       }
     } // Insert Images Previews
 
@@ -454,7 +458,7 @@ class ProductsController extends Controller
         ]);
 
         // Move file to Storage
-        $this->moveFileStorage($media['file'], $path);
+        $this->movePreviewFileStorage($media['file']);
       }
     } // Insert Images Previews
 
@@ -475,8 +479,29 @@ class ProductsController extends Controller
     Storage::putFileAs($path, new File($localFile), $file);
 
     // Delete temp file
-    unlink($localFile);
+    if (file_exists($localFile)) {
+      unlink($localFile);
+    }
   } // end method moveFileStorage
+
+  protected function movePreviewFileStorage($file): void
+  {
+    $path = config('path.shop');
+    $localFile = public_path('temp/' . $file);
+
+    if ($this->bunnyStorageService->isConfigured()) {
+      $uploaded = $this->bunnyStorageService->uploadFromLocal($localFile, $path . $file);
+      if (!$uploaded) {
+        Storage::putFileAs($path, new File($localFile), $file);
+      }
+    } else {
+      Storage::putFileAs($path, new File($localFile), $file);
+    }
+
+    if (file_exists($localFile)) {
+      unlink($localFile);
+    }
+  }
 
   public function update()
   {
@@ -810,6 +835,7 @@ class ProductsController extends Controller
     // Delete Preview
     foreach ($item->previews as $previews) {
       Storage::delete($path . $previews->name);
+      $this->bunnyStorageService->delete($path . $previews->name);
 
       // Delete previews
       $previews->delete();
@@ -817,6 +843,7 @@ class ProductsController extends Controller
 
     // Delete file
     Storage::delete($path . $item->file);
+    $this->bunnyStorageService->delete($path . $item->file);
 
     // Delete purchases
     $item->purchases()->delete();

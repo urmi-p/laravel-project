@@ -256,49 +256,49 @@ final class WebhookCoconutController extends Controller
         }
     }
 
-    public function webhookReel()
-    {
-        $body = file_get_contents("php://input");
-        $webhook = json_decode($body, true);
+    // public function webhookReel()
+    // {
+    //     $body = file_get_contents("php://input");
+    //     $webhook = json_decode($body, true);
 
-        $reel = Reel::with(['user'])->whereId($this->request->resourceId)->first();
+    //     $reel = Reel::with(['user'])->whereId($this->request->resourceId)->first();
 
-        if ($webhook['event'] == 'job.completed') {
-            $duration = (int) $webhook['data']['input']['metadata']['streams'][0]['duration'] ?? null;
+    //     if ($webhook['event'] == 'job.completed') {
+    //         $duration = (int) $webhook['data']['input']['metadata']['streams'][0]['duration'] ?? null;
 
-            if ($duration) {
-                $durationVideo = round($duration, 0, PHP_ROUND_HALF_DOWN);
-            }
+    //         if ($duration) {
+    //             $durationVideo = round($duration, 0, PHP_ROUND_HALF_DOWN);
+    //         }
 
-            // Update name video on Media table
-            MediaReel::whereId($this->request->mediaId)->update([
-                'duration_video' => $durationVideo ? Helper::getDurationInMinutes($durationVideo) : null,
-                'status' => true,
-            ]);
+    //         // Update name video on Media table
+    //         MediaReel::whereId($this->request->mediaId)->update([
+    //             'duration_video' => $durationVideo ? Helper::getDurationInMinutes($durationVideo) : null,
+    //             'status' => true,
+    //         ]);
 
-            // Update date the story and status
-            $reel->update([
-                'created_at' => now(),
-                'status' => 'active'
-            ]);
+    //         // Update date the story and status
+    //         $reel->update([
+    //             'created_at' => now(),
+    //             'status' => 'active'
+    //         ]);
 
-            // Notify to user - destination, author, type, target
-            Notifications::send($reel->user->id, $reel->user->id, 27, $reel->id);
-        } else {
-            $reel->delete();
+    //         // Notify to user - destination, author, type, target
+    //         Notifications::send($reel->user->id, $reel->user->id, 27, $reel->id);
+    //     } else {
+    //         $reel->delete();
 
-            // Delete Media
-            $mediaError = MediaReel::find($this->request->mediaId);
+    //         // Delete Media
+    //         $mediaError = MediaReel::find($this->request->mediaId);
 
-            // Delete file
-            $this->deleteFile($mediaError->name);
+    //         // Delete file
+    //         $this->deleteFile($mediaError->name);
 
-            $mediaError->delete();
+    //         $mediaError->delete();
 
-            // Notify to user (ERROR) - destination, author, type, target
-            Notifications::send($reel->user->id, $reel->user->id, 28, 0);
-        }
-    }
+    //         // Notify to user (ERROR) - destination, author, type, target
+    //         Notifications::send($reel->user->id, $reel->user->id, 28, 0);
+    //     }
+    // }
 
     public function webhookVault()
     {

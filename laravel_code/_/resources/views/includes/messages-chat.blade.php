@@ -22,12 +22,12 @@
   $isVaultFile = $getFirstFile && $getFirstFile->vault_id ? '?vault=1' : null;
 
   if ($getFirstFile && $getFirstFile->type == 'image') {
-    $urlMedia =  url('media/storage/focus/message', $getFirstFile->id) . $isVaultFile;
+    $urlMedia = Helper::messageImageUrl($getFirstFile, $msg->id);
     $backgroundPostLocked = 'background: url('.$urlMedia.') no-repeat center center #b9b9b9; background-size: cover;';
     $textWhite = 'text-white';
 
-  } elseif ($getFirstFile && $getFirstFile->type == 'video' && $getFirstFile->video_poster) {
-      $videoPoster = url('media/storage/focus/message', $getFirstFile->id) . $isVaultFile;
+  } elseif ($getFirstFile && $getFirstFile->type == 'video') {
+      $videoPoster = Helper::messageThumbnailUrl($getFirstFile, url('media/storage/focus/message', $getFirstFile->id) . $isVaultFile);
       $backgroundPostLocked = 'background: url('.$videoPoster.') no-repeat center center #b9b9b9; background-size: cover;';
       $textWhite = 'text-white';
 

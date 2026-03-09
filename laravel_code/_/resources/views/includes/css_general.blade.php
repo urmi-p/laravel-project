@@ -529,7 +529,7 @@
 
   var extensionsStories = ['png','jpeg','jpg','gif','ief','video/mp4'];
 
-  var extensionsReels = ['video/mp4'];
+  var extensionsReels = ['video/mp4','video/quicktime','video/3gpp','video/mpeg','video/x-matroska','video/x-ms-wmv','video/vnd.avi','video/avi','video/x-flv'];
 
   <?php else: ?>
 
@@ -644,8 +644,6 @@
   var userAuthId = "<?php echo e(auth()->id(), false); ?>";
 
   var errorProportionVideoReel = "<?php echo e(__('general.error_proportion_video_reel'), false); ?>";
-
-  var statusVideoEncoding = <?php echo e($settings->video_encoding == 'on' ? 'true' : 'false', false); ?>;
 
   var add = "<?php echo e(__('general.add'), false); ?>";
 

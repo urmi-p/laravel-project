@@ -36,7 +36,7 @@
                             <label class="col-sm-2 col-form-label text-lg-end">{{ __('general.image') }}</label>
                             <div class="col-lg-5 col-sm-10">
                           <div class="d-block mb-2">
-                            <img src="{{url('img/gifts', $gift->image)}}" style="width:100px">
+                            <img src="{{ Helper::giftImageUrl($gift->image) }}" style="width:100px">
                           </div>
           
                           <div class="input-group mb-1">

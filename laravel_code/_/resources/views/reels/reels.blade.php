@@ -12,13 +12,12 @@
 
     <script>
       let videoData = [
-
       @if (isset($reelSingle))
         {
             id: {{ $reelSingle->id }},
             canSeeUser: true,
-            src: "{{ Helper::getFile(config('path.reels') . $reelSingle->media->name) }}",
-            thumbnail: "{{ $reelSingle->media->video_poster ? Helper::getFile(config('path.reels') . $reelSingle->media->video_poster) : Helper::getFile(config('path.avatar') . $reelSingle->user->avatar) }}",
+            src: "{{ Helper::reelPlaybackUrl($reelSingle->media) }}",
+            thumbnail: "{{ Helper::reelThumbnailUrl($reelSingle->media, Helper::getFile(config('path.avatar') . $reelSingle->user->avatar)) }}",
             duration: "{{ $reelSingle->media->duration_video }}",
             user: {
                 id: {{ $reelSingle->user->id }},
@@ -40,8 +39,8 @@
       {
               id: {{ $reel->id }},
               canSeeUser: true,
-              src: "{{ Helper::getFile(config('path.reels') . $reel->media->name) }}",
-              thumbnail: "{{ $reel->media->video_poster ? Helper::getFile(config('path.reels') . $reel->media->video_poster) : Helper::getFile(config('path.avatar') . $reel->user->avatar) }}",
+              src: "{{ Helper::reelPlaybackUrl($reel->media) }}",
+              thumbnail: "{{ Helper::reelThumbnailUrl($reel->media, Helper::getFile(config('path.avatar') . $reel->user->avatar)) }}",
               duration: "{{ $reel->media->duration_video }}",
               user: {
                   id: {{ $reel->user->id }},

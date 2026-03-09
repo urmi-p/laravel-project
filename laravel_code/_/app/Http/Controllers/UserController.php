@@ -35,6 +35,9 @@ use App\Models\VerificationRequests;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CoconutVideoService;
 use App\Jobs\EncodeVideoWelcomeMessage;
+use App\Jobs\BunnyUploadWelcomeMessageVideo;
+use App\Services\BunnyStreamService;
+use App\Services\BunnyStorageService;
 use Illuminate\Support\Facades\Storage;
 use App\Events\SubscriptionDisabledEvent;
 use Illuminate\Support\Facades\Validator;
@@ -50,7 +53,7 @@ use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
   use Traits\UserDelete, Traits\Functions;
-
+  protected $request, $settings;
   public function __construct(Request $request, AdminSettings $settings)
   {
     $this->request = $request;
@@ -1251,13 +1254,34 @@ class UserController extends Controller
       $avatar    = strtolower(auth()->user()->username . '-' . auth()->id() . time() . str_random(10) . '.' . $extension);
 
       $imgAvatar = Image::read($photo)->cover(200, 200)->encodeByExtension($extension);
+      $bunnyStorageService = app(BunnyStorageService::class);
+      $remotePath = $path . $avatar;
+
+      if ($bunnyStorageService->isConfigured()) {
+        $tempFile = tempnam(sys_get_temp_dir(), 'avatar_');
+        if ($tempFile !== false) {
+          try {
+            file_put_contents($tempFile, (string) $imgAvatar);
+            $bunnyStorageService->uploadFromLocal($tempFile, $remotePath);
+          } catch (\Throwable $e) {
+            \Log::warning('User avatar Bunny upload failed', [
+              'file' => $avatar,
+              'error' => $e->getMessage(),
+            ]);
+          } finally {
+            @unlink($tempFile);
+          }
+        }
+      }
 
       // Copy folder
       Storage::put($path . $avatar, $imgAvatar);
 
       //<<<-- Delete old image -->>>/
       if (auth()->user()->avatar != $this->settings->avatar) {
-        Storage::delete(config('path.avatar') . auth()->user()->avatar);
+        $oldAvatar = config('path.avatar') . auth()->user()->avatar;
+        Storage::delete($oldAvatar);
+        $bunnyStorageService->delete($oldAvatar);
       }
 
       // Update Database
@@ -1295,12 +1319,33 @@ class UserController extends Controller
       // Process the image
       $imgCover = $image->scale(width: $maxWidth)
         ->encodeByExtension($extension);
+      $bunnyStorageService = app(BunnyStorageService::class);
+      $remotePath = config('path.cover') . $cover;
+
+      if ($bunnyStorageService->isConfigured()) {
+        $tempFile = tempnam(sys_get_temp_dir(), 'cover_');
+        if ($tempFile !== false) {
+          try {
+            file_put_contents($tempFile, (string) $imgCover);
+            $bunnyStorageService->uploadFromLocal($tempFile, $remotePath);
+          } catch (\Throwable $e) {
+            \Log::warning('User cover Bunny upload failed', [
+              'file' => $cover,
+              'error' => $e->getMessage(),
+            ]);
+          } finally {
+            @unlink($tempFile);
+          }
+        }
+      }
 
       // Copy folder
       Storage::put(config('path.cover') . $cover, $imgCover);
 
       if (auth()->user()->cover != $this->settings->cover_default) {
-        Storage::delete(config('path.cover') . auth()->user()->cover);
+        $oldCover = config('path.cover') . auth()->user()->cover;
+        Storage::delete($oldCover);
+        $bunnyStorageService->delete($oldCover);
       }
 
       // Update Database
@@ -1459,7 +1504,9 @@ class UserController extends Controller
     }
 
     if ($cover !== $coverDefault) {
-      \Storage::delete(config('path.cover') . $cover);
+      $coverPath = config('path.cover') . $cover;
+      \Storage::delete($coverPath);
+      app(BunnyStorageService::class)->delete($coverPath);
     }
 
     $user->update(['cover' => '']);
@@ -1683,12 +1730,20 @@ class UserController extends Controller
     $path = config('path.verification');
     // Disk
     $disk = config('filesystems.default');
+    $bunnyStorageService = app(BunnyStorageService::class);
 
     // Image ID (Front)
     if ($this->request->hasFile('image')) {
       $extension = $this->request->file('image')->extension();
       $fileImage = strtolower(auth()->id() . time() . Str::random(40) . '.' . $extension);
       Storage::disk($disk)->putFileAs($path, $this->request->file('image'), $fileImage);
+      if ($bunnyStorageService->isConfigured()) {
+        try {
+          $bunnyStorageService->uploadFromLocal($this->request->file('image')->getRealPath(), $path . $fileImage);
+        } catch (\Throwable $e) {
+          \Log::warning('Verification front image Bunny upload failed', ['error' => $e->getMessage()]);
+        }
+      }
     } //<====== End HasFile
 
     // Image ID (Reverse)
@@ -1696,6 +1751,13 @@ class UserController extends Controller
       $extension = $this->request->file('image_reverse')->extension();
       $fileImageReverse = 'reverse-' . strtolower(auth()->id() . time() . Str::random(40) . '.' . $extension);
       Storage::disk($disk)->putFileAs($path, $this->request->file('image_reverse'), $fileImageReverse);
+      if ($bunnyStorageService->isConfigured()) {
+        try {
+          $bunnyStorageService->uploadFromLocal($this->request->file('image_reverse')->getRealPath(), $path . $fileImageReverse);
+        } catch (\Throwable $e) {
+          \Log::warning('Verification reverse image Bunny upload failed', ['error' => $e->getMessage()]);
+        }
+      }
     } //<====== End HasFile
 
     // Image ID (Selfie)
@@ -1703,6 +1765,13 @@ class UserController extends Controller
       $extension = $this->request->file('image_selfie')->extension();
       $fileImageSelfie = 'selfie-' . strtolower(auth()->id() . time() . Str::random(40) . '.' . $extension);
       Storage::disk($disk)->putFileAs($path, $this->request->file('image_selfie'), $fileImageSelfie);
+      if ($bunnyStorageService->isConfigured()) {
+        try {
+          $bunnyStorageService->uploadFromLocal($this->request->file('image_selfie')->getRealPath(), $path . $fileImageSelfie);
+        } catch (\Throwable $e) {
+          \Log::warning('Verification selfie Bunny upload failed', ['error' => $e->getMessage()]);
+        }
+      }
     } //<====== End HasFile
 
     // Form W9 US citizen
@@ -1710,6 +1779,13 @@ class UserController extends Controller
       $extension = $this->request->file('form_w9')->extension();
       $fileFormW9 = strtolower(auth()->id() . time() . Str::random(40) . '.' . $extension);
       Storage::disk($disk)->putFileAs($path, $this->request->file('form_w9'), $fileFormW9);
+      if ($bunnyStorageService->isConfigured()) {
+        try {
+          $bunnyStorageService->uploadFromLocal($this->request->file('form_w9')->getRealPath(), $path . $fileFormW9);
+        } catch (\Throwable $e) {
+          \Log::warning('Verification W9 Bunny upload failed', ['error' => $e->getMessage()]);
+        }
+      }
     } //<====== End HasFile
 
     $sql          = new VerificationRequests();
@@ -2494,10 +2570,23 @@ class UserController extends Controller
     $preloadedFile = false;
 
     if ($filePreload) {
-      $pathFile =
-        $filePreload->status == 'encode' || $filePreload->status == 'pending'
-        ? url('public/temp', $filePreload->file)
-        : Helper::getFile(config('path.welcome_messages') . $filePreload->file);
+      if ($filePreload->status == 'encode' || $filePreload->status == 'pending') {
+        $pathFile = url('public/temp', $filePreload->file);
+        $thumbnailFile = '';
+        $downloadFile = $pathFile;
+      } elseif ($filePreload->type === 'video') {
+        $pathFile = Helper::welcomeMessagePlaybackUrl($filePreload);
+        $thumbnailFile = Helper::welcomeMessageThumbnailUrl($filePreload);
+        if (!empty($filePreload->bunny_video_id) && env('BUNNY_STREAM_CDN_HOSTNAME')) {
+          $downloadFile = 'https://' . env('BUNNY_STREAM_CDN_HOSTNAME') . '/' . $filePreload->bunny_video_id . '/original';
+        } else {
+          $downloadFile = Helper::welcomeMessageFileUrl($filePreload->file);
+        }
+      } else {
+        $pathFile = Helper::welcomeMessageFileUrl($filePreload->file);
+        $thumbnailFile = '';
+        $downloadFile = $pathFile;
+      }
 
       $preloadedFile[] = [
         "name" => $filePreload->file,
@@ -2505,7 +2594,9 @@ class UserController extends Controller
         "size" => $filePreload->file_size_bytes,
         "file" => $pathFile,
         "data" => [
-          "readerForce" => true
+          "readerForce" => true,
+          "thumbnail" => $thumbnailFile,
+          "url" => $downloadFile
         ],
       ];
 
@@ -2556,12 +2647,12 @@ class UserController extends Controller
       ->whereType('video')
       ->first();
 
-    if ($video && $video->encoded == 'no' && config('settings.video_encoding') == 'on') {
+    if ($video) {
       try {
-        if (config('settings.encoding_method') == 'ffmpeg') {
-          $this->dispatch(new EncodeVideoWelcomeMessage($video));
-        } else {
-          CoconutVideoService::handle($video, 'welcomeMessage');
+        $bunnyStreamService = app(BunnyStreamService::class);
+
+        if ($bunnyStreamService->isConfigured()) {
+          dispatch(new BunnyUploadWelcomeMessageVideo($video->id));
         }
 
         $video->update([
@@ -2575,10 +2666,6 @@ class UserController extends Controller
             'errors' => $e->getMessage(),
           ]);
       }
-    } elseif ($video && config('settings.video_encoding') == 'off') {
-      $video->update([
-        'status' => 'active'
-      ]);
     }
 
     return redirect()->back()->withStatus(__('admin.success_update'));
@@ -2658,7 +2745,7 @@ class UserController extends Controller
       ->when(request('q') && strlen(request('q')) >= 3, function ($query) {
         $query->where('title', 'like', '%' . request('q') . '%');
       })
-      ->with(['media:id,reels_id,video_poster'])
+      ->with(['media:id,reels_id,video_poster,bunny_video_id'])
       ->latest()
       ->paginate(15)
       ->withQueryString();

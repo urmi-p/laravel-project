@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class LiveStreamingsController extends Controller
 {
   use Traits\Functions;
-
+  protected $request;
   public function __construct(Request $request)
   {
     $this->request = $request;

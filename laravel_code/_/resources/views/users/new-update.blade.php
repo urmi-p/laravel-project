@@ -861,10 +861,13 @@
 
                                         </div>
                                         
+                                        @php
+                                            $postUploadAccept = $settings->video_encoding == 'off'
+                                                ? 'image/*,video/mp4,audio/mp3'
+                                                : 'image/*,video/mp4,video/quicktime,video/3gpp,video/mpeg,video/x-matroska,video/x-ms-wmv,video/vnd.avi,video/avi,video/x-flv,audio/mp3';
+                                        @endphp
                                         <input type="file" name="photo[]" id="filePhoto"
-                                            accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3"
-                                            multiple
-                                            class="visibility-hidden filepond">
+                                            accept="{{ $postUploadAccept }}" multiple class="visibility-hidden filepond">
                                         <div id="uploadProcessingOverlay" class="upload-processing-overlay">
                                             <span class="upload-processing-spinner"></span>
                                             <span class="upload-processing-text">Uploading... <strong id="uploadProcessingPercent">0%</strong></span>

@@ -16,7 +16,7 @@ use App\Models\LiveStreamingPrivateRequest;
 class LiveStreamingPrivateController extends Controller
 {
     use Traits\Functions;
-
+    protected $request;
     public function __construct(Request $request)
     {
         $this->request = $request;

@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Helper;
 use FileUploader;
 use App\Models\MediaReel;
-use Illuminate\Http\File;
+use App\Services\BunnyStreamService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class UploadMediaReelController extends Controller
 {
-	public function __construct(Request $request)
+	protected $bunnyStreamService, $request;
+	public function __construct(Request $request, BunnyStreamService $bunnyStreamService)
 	{
 		$this->request = $request;
+		$this->bunnyStreamService = $bunnyStreamService;
 	}
 
 	public function store()
@@ -21,21 +23,21 @@ class UploadMediaReelController extends Controller
 		$publicPath = public_path('temp/');
 		$file = strtolower(auth()->id() . uniqid() . time() . str_random(20));
 
-		if (config('settings.video_encoding') == 'off') {
-			$extensions = ['video/mp4'];
-		} else {
-			$extensions = [
-				'video/mp4',
-				'video/quicktime',
-				'video/3gpp',
-				'video/mpeg',
-				'video/x-matroska',
-				'video/x-ms-wmv',
-				'video/vnd.avi',
-				'video/avi',
-				'video/x-flv'
-			];
-		}
+		// if (config('settings.video_encoding') == 'off') {
+		// 	$extensions = ['video/mp4'];
+		// } else {
+		$extensions = [
+			'video/mp4',
+			'video/quicktime',
+			'video/3gpp',
+			'video/mpeg',
+			'video/x-matroska',
+			'video/x-ms-wmv',
+			'video/vnd.avi',
+			'video/avi',
+			'video/x-flv'
+		];
+		// }
 
 		// initialize FileUploader
 		$FileUploader = new FileUploader('media', array(
@@ -78,20 +80,6 @@ class UploadMediaReelController extends Controller
 	}
 
 	/**
-	 * Move file to Storage
-	 */
-	protected function moveFileStorage($file, $path): void
-	{
-		$localFile = public_path('temp/' . $file);
-
-		// Move the file...
-		Storage::putFileAs($path, new File($localFile), $file);
-
-		// Delete temp file
-		unlink($localFile);
-	}
-
-	/**
 	 * Delete a file
 	 */
 	public function delete()
@@ -99,7 +87,15 @@ class UploadMediaReelController extends Controller
 		$local = 'temp/';
 		$pathVideo = config('path.reels');
 
-		MediaReel::whereName($this->request->file)->delete();
+		$mediaReel = MediaReel::whereName($this->request->file)->first();
+
+		if ($mediaReel && $mediaReel->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+			$this->bunnyStreamService->deleteVideo($mediaReel->bunny_video_id);
+		}
+
+		if ($mediaReel) {
+			$mediaReel->delete();
+		}
 
 		// Delete local file
 		Storage::disk('default')->delete($local . $this->request->file);

@@ -10,6 +10,8 @@ use App\Models\Notifications;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AdminSettings as Setting;
+use App\Services\BunnyStreamService;
+use App\Services\BunnyStorageService;
 
 class SightEngineService
 {
@@ -30,7 +32,7 @@ class SightEngineService
     {
         try {
             $pathFile = config('path.images') . $media->image;
-            $imageUrl = Helper::getFile($pathFile);
+            $imageUrl = Helper::postImageUrl($media);
             // Get post
             $getPost = Updates::with(['media'])->whereId($media->updates_id)->first();
 
@@ -95,8 +97,8 @@ class SightEngineService
     public function checkVideo(Media $media)
     {
         try {
-            $pathFile = config('path.videos') . $media->video;
-            $videoPath = Helper::getFile($pathFile);
+            $pathFile = Helper::postPlaybackUrl($media);
+            $videoPath = $pathFile;
 
             $this->videoValidation->processVideo(videoPath: $videoPath, videoId: $media->id);
 
@@ -125,7 +127,23 @@ class SightEngineService
 
     protected function deleteMedia(Media $media, Updates $post, string $pathFile, $statusFinalPost)
     {
-        Storage::delete($pathFile);
+        $bunnyStorageService = app(BunnyStorageService::class);
+        if ($media->type === 'video' && $media->bunny_video_id) {
+            $bunnyStreamService = app(BunnyStreamService::class);
+            if ($bunnyStreamService->isConfigured()) {
+                $bunnyStreamService->deleteVideo($media->bunny_video_id);
+            }
+        } elseif ($media->type === 'image' && $media->image) {
+            $bunnyStorageService->delete(config('path.images') . $media->image);
+        }
+
+        if ($pathFile && !filter_var($pathFile, FILTER_VALIDATE_URL)) {
+            Storage::delete($pathFile);
+        }
+
+        if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+            Storage::delete(config('path.videos') . $media->video_poster);
+        }
 
         $getMediaPending = $post->media->where('status', 'pending')->count();
 

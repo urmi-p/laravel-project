@@ -12,7 +12,7 @@
 
 @php
 
-$urlImg = $media->img_type == 'gif' ? Helper::getFile(config('path.images').$media->image) : url("files/storage", $response->id).'/'.$media->image;
+$urlImg = Helper::postImageUrl($media);
 
 $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-block w-100 post-image';
 
@@ -34,10 +34,8 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 
 	@if ($media->video != '')
 
-	<video class="js-player w-100 @if (!request()->ajax())invisible @endif" controls @if (!$media->video_poster) preload="metadata" @endif @if ($media->video_poster) preload="none" data-poster="{{ Helper::getFile(config('path.videos').$media->video_poster) }}" @endif>
-
-		<source src="{{ Helper::getFile(config('path.videos').$media->video) }}" type="video/mp4" />
-
+	<video class="js-player w-100 @if (!request()->ajax())invisible @endif" controls @if (!Helper::postThumbnailUrl($media)) preload="metadata" @endif @if (Helper::postThumbnailUrl($media)) preload="none" data-poster="{{ Helper::postThumbnailUrl($media) }}" @endif>
+		<source src="{{ Helper::postPlaybackUrl($media) }}" type="video/mp4" />
 	</video>
 
 	@endif
@@ -62,14 +60,11 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 			@php
 
 			if ($media->type == 'video') {
-
-			$urlMedia = Helper::getFile(config('path.videos').$media->video);
-
-			$videoPoster = $media->video_poster ? Helper::getFile(config('path.videos').$media->video_poster) : false;
-
+			$urlMedia = Helper::postPlaybackUrl($media);
+			$videoPoster = Helper::postThumbnailUrl($media);
 			} else {
 
-			$urlMedia = $media->img_type == 'gif' ? Helper::getFile(config('path.images').$media->image) : url("files/storage", $response->id).'/'.$media->image;
+			$urlMedia = Helper::postImageUrl($media);
 
 			$videoPoster = null;
 

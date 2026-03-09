@@ -31,7 +31,7 @@
             <div class="item-add-story">
               <span class="add-story-preview">
                 <div class="text-story-preview user-select-none" style="z-index: 5; font-family:{{ $media->font }}; color:{{ $media->font_color }};">{{ $media->text }}</div>
-                <img lazy="eager" width="100" src="{{ $media->type == 'photo' ? Helper::getFile(config('path.stories').$media->name) : ($media->video_poster ? Helper::getFile(config('path.stories').$media->video_poster) : Helper::getFile(config('path.avatar').auth()->user()->avatar)) }}">
+                <img lazy="eager" width="100" src="{{ Helper::storyThumbnailUrl($media, Helper::getFile(config('path.avatar').auth()->user()->avatar)) }}">
               </span>
               <span class="info py-2 text-center text-white bg-dark-transparent c-pointer getViews" data-id="{{ $media->id }}" data-total="{{ $media->views()->count()}}" data-toggle="modal" data-target="#storyViews" title="{{ __('general.people_seen_story') }}">
                 <strong class="name" style="text-shadow: none;"><i class="bi-eye mr-1"></i> {{ $media->views()->count() }}</strong>

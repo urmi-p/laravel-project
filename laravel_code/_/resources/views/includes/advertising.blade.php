@@ -6,7 +6,7 @@
             <div class="d-flex">
                 <div class="flex-shrink-0">
                     <img class="img-fluid rounded img-thanks-share" width="150"
-                        src="{{ Helper::getFile(config('path.ads').$ad->image) }}">
+                        src="{{ Helper::adsFileUrl($ad->image) }}">
                 </div>
                 <div class="flex-grow-1 ml-3">
                     <h5 class="mb-1">{{ $ad->title }}</h5>

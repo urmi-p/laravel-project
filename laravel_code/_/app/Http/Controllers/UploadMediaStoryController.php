@@ -8,22 +8,24 @@ use Illuminate\Http\File;
 use App\Models\MediaStories;
 use Illuminate\Http\Request;
 use App\Models\AdminSettings;
+use App\Services\BunnyStorageService;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Typography\FontFactory;
 
 class UploadMediaStoryController extends Controller
 {
-
+	protected $bunnyStorageService;
+	protected $request, $settings;
 	public function __construct(AdminSettings $settings, Request $request)
 	{
 		$this->settings = $settings::select(
 			'maximum_files_post',
 			'file_size_allowed',
-			'watermark',
-			'video_encoding'
+			'watermark'
 			)->first();
 		$this->request = $request;
+		$this->bunnyStorageService = app(BunnyStorageService::class);
 	}
 
 	/**
@@ -36,26 +38,22 @@ class UploadMediaStoryController extends Controller
 		$publicPath = public_path('temp/');
 		$file = strtolower(auth()->id().uniqid().time().str_random(20));
 
-		if ($this->settings->video_encoding == 'off') {
-			$extensions = ['png','jpeg','jpg','gif','ief','video/mp4'];
-		} else {
-			$extensions = [
-				'png',
-				'jpeg',
-				'jpg',
-				'gif',
-				'ief',
-				'video/mp4',
-				'video/quicktime',
-				'video/3gpp',
-				'video/mpeg',
-				'video/x-matroska',
-				'video/x-ms-wmv',
-				'video/vnd.avi',
-				'video/avi',
-				'video/x-flv'
-	    	];
-		}
+		$extensions = [
+			'png',
+			'jpeg',
+			'jpg',
+			'gif',
+			'ief',
+			'video/mp4',
+			'video/quicktime',
+			'video/3gpp',
+			'video/mpeg',
+			'video/x-matroska',
+			'video/x-ms-wmv',
+			'video/vnd.avi',
+			'video/avi',
+			'video/x-flv'
+		];
 
 		// initialize FileUploader
 		$FileUploader = new FileUploader('media', array(
@@ -176,8 +174,6 @@ class UploadMediaStoryController extends Controller
 	*/
 	protected function uploadVideo($video)
 	{
-		$path = config('path.stories');
-		
 		MediaStories::create([
 			'stories_id' => 0,
 			'name' => $video,
@@ -186,11 +182,6 @@ class UploadMediaStoryController extends Controller
 			'video_poster' => '',
 			'created_at' => now()
 		  ]);
-
-		  // Move file to Storage
-		  if ($this->settings->video_encoding == 'off') {
-			$this->moveFileStorage($video, $path);
-		}
 	}
 
 	/**
@@ -201,12 +192,18 @@ class UploadMediaStoryController extends Controller
 	protected function moveFileStorage($file, $path)
 	{
 		$localFile = public_path('temp/'.$file);
-		
-		// Move the file...
-		Storage::putFileAs($path, new File($localFile), $file);
-		
+
+		if ($path == config('path.stories') && $this->bunnyStorageService->isConfigured()) {
+			$this->bunnyStorageService->uploadFromLocal($localFile, $path . $file);
+		} else {
+			// Move the file...
+			Storage::putFileAs($path, new File($localFile), $file);
+		}
+
 		// Delete temp file
-		unlink($localFile);
+		if (file_exists($localFile)) {
+			unlink($localFile);
+		}
 
 	} // end method moveFileStorage
 
@@ -219,8 +216,24 @@ class UploadMediaStoryController extends Controller
 	{
 		// PATH
 		$local = 'temp/';
+		$pathStories = config('path.stories');
 
-		MediaStories::whereName($this->request->file)->delete();
+		$media = MediaStories::whereName($this->request->file)->first();
+
+		if ($media && $media->bunny_video_id) {
+			$bunnyStreamService = app(\App\Services\BunnyStreamService::class);
+			if ($bunnyStreamService->isConfigured()) {
+				$bunnyStreamService->deleteVideo($media->bunny_video_id);
+			}
+		}
+
+		if ($media) {
+			if ($media->name) {
+				Storage::delete($pathStories . $media->name);
+				$this->bunnyStorageService->delete(config('path.stories') . $media->name);
+			}
+			$media->delete();
+		}
 
 		// Delete local file
 		Storage::disk('default')->delete($local.$this->request->file);

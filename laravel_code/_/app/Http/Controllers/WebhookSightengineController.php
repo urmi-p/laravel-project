@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper;
 use App\Models\Media;
 use App\Models\Updates;
 use Illuminate\Http\Request;
 use App\Models\Notifications;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AdminSettings as Setting;
+use App\Services\BunnyStreamService;
 use App\Services\SightEngineVideoValidatorService;
 
 class WebhookSightengineController extends Controller
@@ -29,7 +31,7 @@ class WebhookSightengineController extends Controller
             }
 
             $post = $media->updates;
-            $pathFile = config('path.videos') . $media->video;
+            $pathFile = Helper::postPlaybackUrl($media);
 
             $date = $post->editing ? $post->date : now();
 
@@ -91,9 +93,20 @@ class WebhookSightengineController extends Controller
 
     protected function deleteMedia(Media $media, Updates $post, string $pathFile, $statusFinalPost)
     {
-        $poster = config('path.videos') . $media->video_poster;
+        if ($media->bunny_video_id) {
+            $bunnyStreamService = app(BunnyStreamService::class);
+            if ($bunnyStreamService->isConfigured()) {
+                $bunnyStreamService->deleteVideo($media->bunny_video_id);
+            }
+        }
 
-        Storage::delete([$pathFile, $poster]);
+        if ($pathFile && !filter_var($pathFile, FILTER_VALIDATE_URL)) {
+            Storage::delete($pathFile);
+        }
+
+        if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+            Storage::delete(config('path.videos') . $media->video_poster);
+        }
 
         $getMediaPending = $post->media->where('status', 'pending')->count();
 

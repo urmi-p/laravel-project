@@ -5,7 +5,7 @@
     <div class="col-lg-3 col-md-6 mb-3 vault-item"
     data-id="{{ $file->id }}"
     data-name="{{ $file->file_name }}"
-    data-url="{{ Helper::getFile(config('path.vault') . $file->file) }}" 
+    data-url="{{ $file->type == 'video' ? Helper::vaultPlaybackUrl($file) : Helper::vaultFileUrl($file->file) }}" 
     data-type="{{ $file->mime }}"
     data-size="{{ $file->bytes }}"
     data-local="{{ $file->file }}?vault=1">

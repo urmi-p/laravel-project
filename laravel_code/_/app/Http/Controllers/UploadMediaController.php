@@ -9,17 +9,25 @@ use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use App\Jobs\MediaModeration;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Typography\FontFactory;
+use App\Services\BunnyStreamService;
+use App\Services\BunnyStorageService;
 
 class UploadMediaController extends Controller
 {
-	public function __construct(Request $request)
+	protected $bunnyStreamService;
+	protected $bunnyStorageService;
+	protected $request, $status, $postId;
+	public function __construct(Request $request, BunnyStreamService $bunnyStreamService, BunnyStorageService $bunnyStorageService)
 	{
 		$this->request = $request;
 		$this->status = $this->request->postId ? 'active' : 'pending';
 		$this->postId = $this->request->postId ?: 0;
+		$this->bunnyStreamService = $bunnyStreamService;
+		$this->bunnyStorageService = $bunnyStorageService;
 	}
 
 	/**
@@ -29,29 +37,29 @@ class UploadMediaController extends Controller
 	{
 		$publicPath = public_path('temp/');
 		$file = strtolower(auth()->id() . uniqid() . time() . str_random(20));
-
-		if (config('settings.video_encoding') == 'off') {
-			$extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4', 'audio/x-matroska', 'audio/mpeg'];
-		} else {
-			$extensions = [
-				'png',
-				'jpeg',
-				'jpg',
-				'gif',
-				'ief',
-				'video/mp4',
-				'video/quicktime',
-				'video/3gpp',
-				'video/mpeg',
-				'video/x-matroska',
-				'video/x-ms-wmv',
-				'video/vnd.avi',
-				'video/avi',
-				'video/x-flv',
-				'audio/x-matroska',
-				'audio/mpeg'
-			];
-		}
+		
+		// if (config('settings.video_encoding') == 'off') {
+		// 	$extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4', 'audio/x-matroska', 'audio/mpeg'];
+		// } else {
+		$extensions = [
+			'png',
+			'jpeg',
+			'jpg',
+			'gif',
+			'ief',
+			'video/mp4',
+			'video/quicktime',
+			'video/3gpp',
+			'video/mpeg',
+			'video/x-matroska',
+			'video/x-ms-wmv',
+			'video/vnd.avi',
+			'video/avi',
+			'video/x-flv',
+			'audio/x-matroska',
+			'audio/mpeg'
+		];
+		// }
 
 		// initialize FileUploader
 		$FileUploader = new FileUploader('photo', array(
@@ -191,7 +199,7 @@ class UploadMediaController extends Controller
 	 */
 	protected function uploadVideo($video): void
 	{
-		$status = config('settings.video_encoding') == 'off' ? $this->status : 'pending';
+		$status = $this->status;
 
 		Media::create([
 			'updates_id' => $this->postId,
@@ -214,9 +222,9 @@ class UploadMediaController extends Controller
 		]);
 
 		// Move file to Storage
-		if (config('settings.video_encoding') == 'off') {
-			$this->moveFileStorage($video['name'], config('path.videos'));
-		}
+		// if (config('settings.video_encoding') == 'off') {
+		// 	$this->moveFileStorage($video['name'], config('path.videos'));
+		// }
 	}
 
 	/**
@@ -254,11 +262,19 @@ class UploadMediaController extends Controller
 	{
 		$localFile = public_path('temp/' . $file);
 
-		// Move the file...
-		Storage::putFileAs($path, new File($localFile), $file);
+		if ($path == config('path.images') && $this->bunnyStorageService->isConfigured()) {
+			$uploaded = $this->bunnyStorageService->uploadFromLocal($localFile, $path . $file);
+			if (!$uploaded) {
+				Storage::putFileAs($path, new File($localFile), $file);
+			}
+		} else {
+			Storage::putFileAs($path, new File($localFile), $file);
+		}
 
 		// Delete temp file
-		unlink($localFile);
+		if (file_exists($localFile)) {
+			unlink($localFile);
+		}
 	}
 
 	protected function getToken(): mixed
@@ -293,6 +309,7 @@ class UploadMediaController extends Controller
 
 		if ($media->image) {
 			Storage::delete($path . $media->image);
+			$this->bunnyStorageService->delete($path . $media->image);
 			// Delete local file (if exist)
 			Storage::disk('default')->delete($local . $media->image);
 
@@ -300,8 +317,18 @@ class UploadMediaController extends Controller
 		}
 
 		if ($media->video) {
-			Storage::delete($pathVideo . $media->video);
-			Storage::delete($pathVideo . $media->video_poster);
+			if ($media && $media->bunny_video_id) {
+				$bunnyStreamService = app(\App\Services\BunnyStreamService::class);
+				if ($bunnyStreamService->isConfigured()) {
+					$bunnyStreamService->deleteVideo($media->bunny_video_id);
+				}
+			}
+			if ($media->video && Storage::exists($pathVideo . $media->video)) {
+				Storage::delete($pathVideo . $media->video);
+			}
+			if($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)){
+				Storage::delete($pathVideo . $media->video_poster);
+			}
 			// Delete local file (if exist)
 			Storage::disk('default')->delete($local . $media->video);
 

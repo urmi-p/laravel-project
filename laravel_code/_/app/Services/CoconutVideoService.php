@@ -84,23 +84,19 @@ class CoconutVideoService
 
                 break;
 
+                // case 'reel':
 
+                // $urlMedia = $model->name;
 
-                case 'reel':
+                // $urlStorage = url('webhook/storage/reel', $model->id);
 
-                $urlMedia = $model->name;
-
-                $urlStorage = url('webhook/storage/reel', $model->id);
-
-                $urlWebhook = route('webhook.reel.coco', ['mediaId' => $model->id, 'resourceId' => $model->reels_id]);
+                // $urlWebhook = route('webhook.reel.coco', ['mediaId' => $model->id, 'resourceId' => $model->reels_id]);
 
 
 
-                self::job($model, $urlMedia, $urlStorage, $urlWebhook);
+                // self::job($model, $urlMedia, $urlStorage, $urlWebhook);
 
-                break;
-
-
+                // break;
 
                 case 'vault':
 

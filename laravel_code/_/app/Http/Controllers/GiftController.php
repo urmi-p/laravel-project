@@ -9,7 +9,9 @@ use App\Models\Messages;
 use App\Models\LiveComments;
 use Illuminate\Http\Request;
 use App\Models\Notifications;
+use App\Services\BunnyStorageService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 final class GiftController extends Controller
@@ -36,6 +38,20 @@ final class GiftController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image')->hashName();
+            $bunnyStorageService = app(BunnyStorageService::class);
+            $remotePath = ltrim($this->path, '/') . $file;
+
+            if ($bunnyStorageService->isConfigured()) {
+                try {
+                    $bunnyStorageService->uploadFromLocal($request->file('image')->getRealPath(), $remotePath);
+                } catch (\Throwable $e) {
+                    Log::warning('Gift image Bunny upload failed', [
+                        'file' => $file,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+
             $request->file('image')->move($this->path, $file);
 
             Gift::create([
@@ -66,9 +82,24 @@ final class GiftController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image')->hashName();
+            $bunnyStorageService = app(BunnyStorageService::class);
+            $remotePath = ltrim($this->path, '/') . $file;
+
+            if ($bunnyStorageService->isConfigured()) {
+                try {
+                    $bunnyStorageService->uploadFromLocal($request->file('image')->getRealPath(), $remotePath);
+                } catch (\Throwable $e) {
+                    Log::warning('Gift image Bunny upload failed', [
+                        'file' => $file,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+
             $request->file('image')->move($this->path, $file);
 
             \File::delete($this->path . $gift->image);
+            $bunnyStorageService->delete(ltrim($this->path, '/') . $gift->image);
         }
 
         $gift->update([
@@ -84,6 +115,7 @@ final class GiftController extends Controller
     public function destroy(Gift $gift): RedirectResponse
     {
         \File::delete($this->path . $gift->image);
+        app(BunnyStorageService::class)->delete(ltrim($this->path, '/') . $gift->image);
 
         $gift->delete();
 

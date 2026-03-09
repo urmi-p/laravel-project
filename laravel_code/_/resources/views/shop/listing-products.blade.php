@@ -18,7 +18,7 @@
 
 		</span>
 
-	<div class="card-cover position-relative" style="background: url({{ isset($product->previews[0]) ? route('resize', ['path' => 'shop', 'file' => $product->previews[0]->name, 'size' => 480]) : '' }}) #efefef center center; background-size: cover; height:300px;">
+	<div class="card-cover position-relative" style="background: url({{ isset($product->previews[0]) ? Helper::shopFileUrl($product->previews[0]->name) : '' }}) #efefef center center; background-size: cover; height:300px;">
 
 		<span @class(['price-shop', 'bg-danger' => $product->type == 'physical' && $product->quantity == 0])>
 

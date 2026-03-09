@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentsController extends Controller
 {
+	protected $request;
 	public function __construct(Request $request)
 	{
 		$this->request = $request;
@@ -172,7 +173,7 @@ class CommentsController extends Controller
 							</div>
 							</div>
 							<span class="likeComment c-pointer float-right pulse-btn" data-id="' . $commentReplyId . '" data-type="' . $typeComment . '">
-							<i class="far fa-heart mr-1"></i> <span class="countCommentsLikes"></span>
+							<i class="bi bi-hand-thumbs-up-fill mr-1"></i> <span class="countCommentsLikes"></span>
 							</span>
 						</div><!-- media-body -->
 					</div>

@@ -12,19 +12,24 @@ use App\Models\MediaStories;
 use Illuminate\Http\Request;
 use App\Models\AdminSettings;
 use App\Models\Notifications;
-use App\Jobs\EncodeVideoStory;
 use Illuminate\Validation\Rule;
 use App\Models\StoryBackgrounds;
-use App\Services\CoconutVideoService;
+use App\Services\BunnyStorageService;
+use App\Services\BunnyStreamService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class StoriesController extends Controller
 {
+    protected $bunnyStreamService, $bunnyStorageService, $request, $settings;
+
     public function __construct(AdminSettings $settings, Request $request)
     {
         $this->settings = $settings::first();
         $this->request = $request;
+        $this->bunnyStreamService = app(BunnyStreamService::class);
+        $this->bunnyStorageService = app(BunnyStorageService::class);
     }
 
     public function createStoryImage()
@@ -106,8 +111,21 @@ class StoriesController extends Controller
         $fileName     = time() . str_random(50) . '.' . $extension;
         $img          = Image::read($image)->encodeByExtension($extension);
 
-        // Copy folder
-        Storage::put($path . $fileName, $img, 'public');
+        $localTempPath = public_path('temp/' . $fileName);
+        file_put_contents($localTempPath, (string) $img);
+
+        $storedInBunny = false;
+        if ($this->bunnyStorageService->isConfigured()) {
+            $storedInBunny = $this->bunnyStorageService->uploadFromLocal($localTempPath, $path . $fileName);
+        }
+
+        if (!$storedInBunny) {
+            Storage::put($path . $fileName, (string) $img, 'public');
+        }
+
+        if (file_exists($localTempPath)) {
+            unlink($localTempPath);
+        }
 
         $story = new Stories();
         $story->user_id = auth()->id();
@@ -175,25 +193,76 @@ class StoriesController extends Controller
 
         $video = MediaStories::whereStoriesId($story->id)->whereType('video')->first();
 
-        if ($video && $this->settings->video_encoding == 'on') {
-            try {
-                if ($this->settings->encoding_method == 'ffmpeg') {
-                    $this->dispatch(new EncodeVideoStory($video));
-                } else {
-                    CoconutVideoService::handle($video, 'story');
-                }
-
-                // Change status Pending to Encode
-                Stories::whereId($story->id)->update([
-                    'status' => 'encode'
-                ]);
+        if ($video) {
+            if (!$this->bunnyStreamService->isConfigured()) {
+                $this->deleteStoryError($story->id);
 
                 return response()->json([
-                    'success' => true,
-                    'encode' => true
+                    'success' => false,
+                    'errors' => ['error' => 'Bunny Stream is not configured.'],
                 ]);
+            }
+
+            $bunnyVideoId = null;
+
+            try {
+                $syncResult = $this->bunnyStreamService->syncLibrarySettingsFromApp();
+                if (config('settings.watermark_on_videos') == 'on' && empty($syncResult['synced'])) {
+                    throw new \Exception('Bunny watermark sync failed. Configure BUNNY_API_KEY and ensure video library watermark access is enabled.');
+                }
+
+                $localFile = public_path('temp/' . $video->name);
+
+                if (!file_exists($localFile)) {
+                    throw new \Exception(__('general.error_occurred'));
+                }
+
+                $collectionId = $this->bunnyStreamService->getOrCreateCollection('Stories');
+                $bunnyVideoId = $this->bunnyStreamService->uploadVideo(
+                    $localFile,
+                    $this->request->title ?: ('Story #' . $story->id),
+                    $collectionId
+                );
+                $videoData = $this->bunnyStreamService->getVideoWithRetry($bunnyVideoId, 6, 1000);
+                $this->bunnyStreamService->ensureMp4FallbackEnabled($videoData);
+
+                $status = (int) ($videoData['status'] ?? $videoData['Status'] ?? 0);
+                if ($status === 5) {
+                    $readableError = $this->bunnyStreamService->getReadableTranscodingError($videoData) ?? 'Bunny transcoding failed.';
+                    throw new \Exception($readableError);
+                }
+
+                $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);
+
+                if (file_exists($localFile)) {
+                    unlink($localFile);
+                }
+
+                $video->update([
+                    'bunny_video_id' => $bunnyVideoId,
+                    'video_poster' => $this->bunnyStreamService->getPosterUrl($bunnyVideoId),
+                    'video_length' => $durationSeconds > 0 ? $durationSeconds : null,
+                    'status' => true,
+                ]);
+
+                Notifications::send($story->user_id, $story->user_id, 17, 0);
             } catch (\Exception $e) {
-                \Log::info($e->getMessage());
+                Log::info('Error creating Story in Bunny: ' . $e->getMessage());
+
+                if ($bunnyVideoId && $this->bunnyStreamService->isConfigured()) {
+                    try {
+                        $this->bunnyStreamService->deleteVideo($bunnyVideoId);
+                    } catch (\Exception $deleteException) {
+                        Log::info('Error deleting orphan Bunny video: ' . $deleteException->getMessage());
+                    }
+                }
+
+                $this->deleteStoryError($story->id);
+
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['error' => $e->getMessage()],
+                ]);
             }
         }
 
@@ -217,9 +286,29 @@ class StoriesController extends Controller
             // Delete Views 
             foreach ($story->media as $media) {
                 $media->views()->delete();
+
+                if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+                    try{
+                        $this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+                    } catch (\Exception $e) {
+                        Log::error('Bunny delete failed for story media in destroy', [
+                            'video_id' => $media->bunny_video_id,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                }
+
                 // Delete Media files
-                Storage::delete($pathStories . $media->name);
-                Storage::delete($pathStories . $media->video_poster);
+                if ($media->name) {
+                    $this->bunnyStorageService->delete($pathStories . $media->name);
+                }
+                if ($media->name && Storage::exists($pathStories . $media->name)) {
+                    Storage::delete($pathStories . $media->name);
+                }
+                if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+                    $this->bunnyStorageService->delete($pathStories . $media->video_poster);
+                    Storage::delete($pathStories . $media->video_poster);
+                }
                 $media->delete();
             }
         }
@@ -235,6 +324,38 @@ class StoriesController extends Controller
         return response()->json([
             'success' => true
         ]);
+    }
+
+    protected function deleteStoryError($id): void
+    {
+        $pathStories = config('path.stories');
+        $story = Stories::with(['media'])->whereId($id)->first();
+
+        if (!$story) {
+            return;
+        }
+
+        foreach ($story->media as $media) {
+            $localFile = public_path('temp/' . $media->name);
+
+            if (file_exists($localFile)) {
+                unlink($localFile);
+            }
+            if ($media->name && Storage::exists($pathStories . $media->name)) {
+                Storage::delete($pathStories . $media->name);
+            }
+            if ($media->name) {
+                $this->bunnyStorageService->delete($pathStories . $media->name);
+            }
+            if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+                $this->bunnyStorageService->delete($pathStories . $media->video_poster);
+                Storage::delete($pathStories . $media->video_poster);
+            }
+
+            $media->delete();
+        }
+
+        $story->delete();
     }
 
     /**

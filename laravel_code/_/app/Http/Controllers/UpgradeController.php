@@ -10079,7 +10079,7 @@ Route::post('comment/like','CommentsController@like')->middleware('auth');",
 				'DeleteInactiveUsers.php' => $JOBS, //6.0
 				'PostScheduled.php' => $JOBS, //6.0
 				'RebillCardinity.php' => $JOBS, //6.0
-				'EncodeVideoReel.php' => $JOBS, //6.0
+				// 'EncodeVideoReel.php' => $JOBS, //6.0
 				'EncodeVideoStory.php' => $JOBS, //6.0	
 
 				'AdminController.php' => $CONTROLLERS, //6.0
@@ -10579,7 +10579,7 @@ Route::post('comment/like','CommentsController@like')->middleware('auth');",
 			$files = [
 				'web.php' => $ROUTES, //6.1
 
-				'EncodeVideoReel.php' => $JOBS, //6.1
+				// 'EncodeVideoReel.php' => $JOBS, //6.1
 
 				'CoconutVideoService.php' => $SERVICES, //6.1
 
@@ -11219,7 +11219,7 @@ Route::post('comment/like','CommentsController@like')->middleware('auth');",
 
 				'NoCache.php' => $MIDDLEWARE, //6.6
 
-				'EncodeVideoReel.php' => $JOBS, //6.6
+				// 'EncodeVideoReel.php' => $JOBS, //6.6
 
 				'GiphyService.php' => $SERVICES, //6.6
 
@@ -11724,7 +11724,7 @@ Route::post('comment/like','CommentsController@like')->middleware('auth');",
 				'EncodeVideoMessages.php' => $JOBS, //6.9
 				'EncodeVideoWelcomeMessage.php' => $JOBS, //6.9
 				'EncodeVideoStory.php' => $JOBS, //6.9
-				'EncodeVideoReel.php' => $JOBS, //6.9
+				// 'EncodeVideoReel.php' => $JOBS, //6.9
 
 				'AudioCallController.php' => $CONTROLLERS, //6.9
 				'AtlosWebhookController.php' => $CONTROLLERS, //6.9
@@ -11809,7 +11809,7 @@ Route::post('comment/like','CommentsController@like')->middleware('auth');",
 				'MassMessagesListener.php' => $LISTENERS, // 7.0
 
 				'EncodeVideoVault.php' => $JOBS, //7.0
-				'EncodeVideoReel.php' => $JOBS, //7.0
+				// 'EncodeVideoReel.php' => $JOBS, //7.0
 				'EncodeVideoStory.php' => $JOBS, //7.0
 				'EncodeVideoMessages.php' => $JOBS, //7.0
 				'EncodeVideoWelcomeMessage.php' => $JOBS, //7.0
@@ -12309,7 +12309,7 @@ Route::post('comment/like','CommentsController@like')->middleware('auth');",
 			$files = [
 				'filesystems.php' => $CONFIG, //7.4
 
-				'EncodeVideoReel.php' => $JOBS, //7.4
+				// 'EncodeVideoReel.php' => $JOBS, //7.4
 
 				'AgeVerificationService.php' => $SERVICES, //7.4
 				'DiditService.php' => $SERVICES, //7.4

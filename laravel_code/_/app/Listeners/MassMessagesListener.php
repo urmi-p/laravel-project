@@ -90,6 +90,7 @@ class MassMessagesListener implements ShouldQueue
                 'messages_id' => $message->id,
                 'type' => $vaultFile->type,
                 'file' => $vaultFile->file,
+                'bunny_video_id' => $vaultFile->bunny_video_id,
                 'width' => $vaultFile->width,
                 'height' => $vaultFile->height,
                 'video_poster' => $vaultFile->video_poster,
@@ -113,6 +114,7 @@ class MassMessagesListener implements ShouldQueue
               $mediaMessages->messages_id = $message->id;
               $mediaMessages->type = $key->type;
               $mediaMessages->file = $key->file;
+              $mediaMessages->bunny_video_id = $key->bunny_video_id;
               $mediaMessages->video_poster = $key->video_poster;
               $mediaMessages->width = $key->width;
               $mediaMessages->height = $key->height;

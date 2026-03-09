@@ -154,7 +154,7 @@
 
 											@if (! $media->text)
 
-											<a href="{{ Helper::getFile(config('path.stories').$media->name) }}" class="btn btn-success btn-sm rounded-pill me-2 glightbox" data-gallery="gallery{{$media->id}}">
+											<a href="{{ Helper::storyPlaybackUrl($media) }}" class="btn btn-success btn-sm rounded-pill me-2 glightbox" data-gallery="gallery{{$media->id}}">
 
 												<i class="bi-eye"></i>
 

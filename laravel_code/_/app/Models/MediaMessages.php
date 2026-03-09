@@ -10,6 +10,7 @@ class MediaMessages extends Model
     'messages_id',
     'type',
     'file',
+    'bunny_video_id',
     'width',
     'height',
     'video_poster',

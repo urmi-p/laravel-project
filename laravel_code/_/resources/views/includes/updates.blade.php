@@ -28,16 +28,16 @@
         ->get();
 
         if ($getFirstFile && $getFirstFile->type == 'image' && $getFirstFile->img_type != 'gif') {
-        $urlMedia = Helper::getFile(config('path.images') . $getFirstFile->image);
-        $backgroundPostLocked = '--bg: url('.$urlMedia.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
-        $textWhite = 'text-white';
+            $urlMedia = Helper::postImageUrl($getFirstFile);
+            $backgroundPostLocked = '--bg: url('.$urlMedia.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
+            $textWhite = 'text-white';
         } elseif ($getFirstFile && $getFirstFile->type == 'video' && $getFirstFile->video_poster) {
-        $videoPoster = Helper::getFile(config('path.videos') . $getFirstFile->video_poster);
-        $backgroundPostLocked = '--bg: url('.$videoPoster.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
-        $textWhite = 'text-white';
+            $videoPoster = Helper::postThumbnailUrl($getFirstFile);
+            $backgroundPostLocked = '--bg: url('.$videoPoster.'); background: var(--bg) no-repeat center center #b9b9b9; background-size: cover;';
+            $textWhite = 'text-white';
         } else {
-        $backgroundPostLocked = null;
-        $textWhite = null;
+            $backgroundPostLocked = null;
+            $textWhite = null;
         }
 
         $countFilesImage = $response->media->where('type', 'image')->count();
@@ -63,11 +63,11 @@
             $response->locked == 'no';
     @endphp
 
-<div class="card mb-3 mt-3 mt-md-5 w-100 card-updates views rounded-large shadow-large card-border-0 border-0 remove_bg_white @if ($response->status == 'pending') post-pending @endif @if (
+<div class="card mb-3 mt-3 mt-md-5 w-100 card-updates views shadow-large card-border-0 border-0 remove_bg_white @if ($response->status == 'pending') post-pending @endif @if (
         ($response->fixed_post == '1' && request()->path() == $response->creator->username) ||
             (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id)) pinned-post @endif"
     data="{{ $response->id }}">
-    <div class="card-updates-cover-image">
+    <div class="card-updates-cover-image top_left_right_brd">
         {{-- <img src="{{Helper::getFile(config('path.cover').$response->creator->cover)}}" class="post_img"> --}}
         {{-- added new content start --}}
         @if ($canViewContent)

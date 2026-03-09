@@ -13,19 +13,25 @@ use App\Models\MediaMessages;
 use App\Models\Notifications;
 use App\Events\MassMessagesEvent;
 use App\Jobs\EncodeVideoMessages;
+use App\Jobs\BunnyUploadMessageVideo;
 use App\Notifications\NewMessage;
 use App\Services\CoconutVideoService;
+use App\Services\BunnyStorageService;
+use App\Services\BunnyStreamService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Traits\PushNotificationTrait;
+use Illuminate\Support\Facades\Log;
 
 class MessagesController extends Controller
 {
   use Traits\Functions;
+  protected $bunnyStreamService;
 
   public function __construct()
   {
     $this->middleware('auth');
+    $this->bunnyStreamService = app(BunnyStreamService::class);
   }
 
   // Subscribed to your Content
@@ -353,6 +359,7 @@ class MessagesController extends Controller
               'messages_id' => $message->id,
               'type' => $vaultFile->type,
               'file' => $vaultFile->file,
+              'bunny_video_id' => $vaultFile->bunny_video_id,
               'width' => $vaultFile->width,
               'height' => $vaultFile->height,
               'video_poster' => $vaultFile->video_poster,
@@ -385,22 +392,29 @@ class MessagesController extends Controller
     }
 
     // Get all videos of the message
-    $videos = MediaMessages::whereMessagesId($message->id)->whereType('video')->whereNull('vault_id')->get();
+    $videos = MediaMessages::whereMessagesId($message->id)
+      ->whereType('video')
+      ->whereNull('vault_id')
+      ->where('encoded', 'no')
+      ->get();
 
-    if ($videos->count() && config('settings.video_encoding') == 'on') {
+    if ($videos->count()) {
       try {
+        $didEncode = false;
+
         foreach ($videos as $video) {
-          if (config('settings.encoding_method') == 'ffmpeg') {
-            dispatch(new EncodeVideoMessages($video));
-          } else {
-            CoconutVideoService::handle($video, 'message');
+          if ($this->bunnyStreamService->isConfigured()) {
+            dispatch(new BunnyUploadMessageVideo($video->id));
+            $didEncode = true;
           }
         }
 
-        return response()->json([
-          'success' => true,
-          'encode' => true
-        ]);
+        if ($didEncode) {
+          return response()->json([
+            'success' => true,
+            'encode' => true
+          ]);
+        }
       } catch (\Exception $e) {
         \Log::info($e->getMessage());
 
@@ -452,6 +466,7 @@ class MessagesController extends Controller
   {
     $message_id = $request->get('message_id');
     $path   = config('path.messages');
+    $bunnyStorageService = app(BunnyStorageService::class);
 
     $data = Messages::where('from_user_id', auth()->id())
       ->where('id', $message_id)
@@ -472,8 +487,26 @@ class MessagesController extends Controller
           ->count();
 
         if ($messageWithSameFile == 0) {
-          Storage::delete($path . $media->file);
-          Storage::delete($path . $media->video_poster);
+          if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+            try{
+              $this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+            } catch (\Exception $e) {
+              Log::error('Bunny delete failed for message media in Delete', [
+                'video_id' => $media->bunny_video_id,
+                'error' => $e->getMessage()
+              ]);
+            }
+          }
+          if ($media->file && Storage::exists($path . $media->file)) {
+            Storage::delete($path . $media->file);
+          }
+          if ($media->file) {
+            $bunnyStorageService->delete($path . $media->file);
+          }
+          if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+            Storage::delete($path . $media->video_poster);
+            $bunnyStorageService->delete($path . $media->video_poster);
+          }
         }
 
         $media->delete();
@@ -574,6 +607,7 @@ class MessagesController extends Controller
   public function deleteChat($id)
   {
     $path = config('path.messages');
+    $bunnyStorageService = app(BunnyStorageService::class);
 
     $messages = Messages::where('to_user_id', auth()->id())
       ->where('from_user_id', $id)
@@ -591,8 +625,26 @@ class MessagesController extends Controller
             ->count();
 
           if ($messageWithSameFile == 0) {
-            Storage::delete($path . $media->file);
-            Storage::delete($path . $media->video_poster);
+            if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+              try{
+                $this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+              } catch (\Exception $e) {
+                Log::error('Bunny delete failed for message media in DeleteChat', [
+                  'video_id' => $media->bunny_video_id,
+                  'error' => $e->getMessage()
+                ]);
+              }
+            }
+            if ($media->file && Storage::exists($path . $media->file)) {
+              Storage::delete($path . $media->file);
+            }
+            if ($media->file) {
+              $bunnyStorageService->delete($path . $media->file);
+            }
+            if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+              Storage::delete($path . $media->video_poster);
+              $bunnyStorageService->delete($path . $media->video_poster);
+            }
           }
 
           $media->delete();

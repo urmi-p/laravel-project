@@ -102,15 +102,17 @@
                 @endif
 
                 @if ($files->isEmpty() && request('q') || $files->isEmpty() && request('sort'))
-                <div class="my-5 text-center">
-                    <span class="btn-block mb-3">
-                        <i class="feather icon-archive ico-no-result"></i>
-                    </span>
+                <div class="my-5 text-center main-no-updates">
+                    <div class="sub-no-updates">
+                        <span class="btn-block mb-3">
+                            <i class="feather icon-archive ico-no-result bg_black"></i>
+                        </span>
 
-                    <h4 class="font-weight-light">{{__('general.no_results_found')}}</h4>
-                    <a href="{{ url('my/vault') }}" class="btn btn-primary btn-sm mt-3">
-                        <i class="bi-arrow-left mr-1"></i> {{ __('general.go_back') }}
-                    </a>
+                        <h4 class="font_weight_400 font_size_18 text_color_white">{{__('general.no_results_found')}}</h4>
+                        <a href="{{ url('my/vault') }}" class="btn btn-primary btn-sm mt-3 text_color_white text_decor_underline">
+                            <i class="bi-arrow-left mr-1"></i> {{ __('general.go_back') }}
+                        </a>
+                    </div>
                 </div>
                 @endif
             </div><!-- end col-md-6 -->

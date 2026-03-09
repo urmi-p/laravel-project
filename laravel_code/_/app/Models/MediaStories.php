@@ -10,6 +10,7 @@ class MediaStories extends Model
     protected $fillable = [
         'stories_id',
         'name',
+        'bunny_video_id',
         'type',
         'video_length',
         'video_poster',

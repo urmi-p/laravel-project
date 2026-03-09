@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helper;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\BunnyStreamService;
 
 class Vault extends Model
 {
@@ -22,6 +23,7 @@ class Vault extends Model
     'video_embed',
     'music',
     'file',
+    'bunny_video_id',
     'file_name',
     'file_size',
     'bytes',
@@ -41,6 +43,21 @@ class Vault extends Model
     parent::boot();
 
     static::deleting(function ($vault) {
+      if (!empty($vault->bunny_video_id)) {
+        try {
+          $bunnyStreamService = app(BunnyStreamService::class);
+          if ($bunnyStreamService->isConfigured()) {
+            $bunnyStreamService->deleteVideo($vault->bunny_video_id);
+          }
+        } catch (\Exception $e) {
+          \Log::warning('Error deleting Bunny vault video', [
+            'vault_id' => $vault->id,
+            'video_id' => $vault->bunny_video_id,
+            'error' => $e->getMessage(),
+          ]);
+        }
+      }
+
       MediaMessages::where('vault_id', $vault->id)->delete();
     });
   }
@@ -52,7 +69,9 @@ class Vault extends Model
       ? $this->file
       : ($this->video_poster ?? null);
 
-    $previewFile = $preview ? Helper::getFile(config('path.vault') . $preview) : $previewDefault;
+    $previewFile = $this->type == 'video'
+      ? Helper::vaultThumbnailUrl($this, $previewDefault)
+      : ($preview ? Helper::vaultFileUrl($preview) : $previewDefault);
 
     return $previewFile;
   }

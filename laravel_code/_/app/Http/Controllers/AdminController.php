@@ -67,6 +67,7 @@ use App\Models\AdminSettings;
 use App\Models\Notifications;
 
 use App\Models\Subscriptions;
+use App\Models\MediaStories;
 
 use App\Models\ShopCategories;
 
@@ -85,11 +86,14 @@ use App\Models\ReferralTransactions;
 use App\Models\VerificationRequests;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\LiveStreamingPrivateRequest;
-
+use App\Services\BunnyStreamService;
+use App\Services\BunnyStorageService;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Laravel\Facades\Image;
 
 
@@ -97,15 +101,13 @@ use Intervention\Image\Laravel\Facades\Image;
 
 
 class AdminController extends Controller
-
 {
 
 	use Traits\UserDelete, Traits\Functions;
 
 
-
+	protected AdminSettings $settings;
 	public function __construct(AdminSettings $settings)
-
 	{
 
 		$this->settings = $settings::first();
@@ -1873,6 +1875,8 @@ class AdminController extends Controller
 		$pathMusic = config('path.music');
 
 		$pathFile  = config('path.files');
+		$bunnyStreamService = app(BunnyStreamService::class);
+		$bunnyStorageService = app(BunnyStorageService::class);
 
 
 
@@ -1903,6 +1907,7 @@ class AdminController extends Controller
 			if ($media->image) {
 
 				Storage::delete($path . $media->image);
+				$bunnyStorageService->delete($path . $media->image);
 
 				$media->delete();
 
@@ -1912,9 +1917,22 @@ class AdminController extends Controller
 
 			if ($media->video) {
 
-				Storage::delete($pathVideo . $media->video);
-
-				Storage::delete($pathVideo . $media->video_poster);
+				if ($media->bunny_video_id && $bunnyStreamService->isConfigured()) {
+					try {
+						$bunnyStreamService->deleteVideo($media->bunny_video_id);
+					} catch (\Exception $e) {
+						Log::error('Bunny delete failed', [
+							'video_id' => $media->bunny_video_id,
+							'error' => $e->getMessage()
+						]);
+					}
+				}
+				if ($media->video && Storage::exists($pathVideo . $media->video)) {
+					Storage::delete($pathVideo . $media->video);
+				}
+				if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+					Storage::delete($pathVideo . $media->video_poster);
+				}
 
 				$media->delete();
 
@@ -2825,6 +2843,7 @@ class AdminController extends Controller
 		$member = User::find($user);
 
 		$pathImage = config('path.verification');
+		$bunnyStorageService = app(BunnyStorageService::class);
 
 
 
@@ -2845,6 +2864,10 @@ class AdminController extends Controller
 				$pathImage . $sql->form_w9
 
 			]);
+			$bunnyStorageService->delete($pathImage . $sql->image);
+			$bunnyStorageService->delete($pathImage . $sql->image_reverse);
+			$bunnyStorageService->delete($pathImage . $sql->image_selfie);
+			$bunnyStorageService->delete($pathImage . $sql->form_w9);
 
 
 
@@ -2957,6 +2980,10 @@ class AdminController extends Controller
 				$pathImage . $sql->form_w9
 
 			]);
+			$bunnyStorageService->delete($pathImage . $sql->image);
+			$bunnyStorageService->delete($pathImage . $sql->image_reverse);
+			$bunnyStorageService->delete($pathImage . $sql->image_selfie);
+			$bunnyStorageService->delete($pathImage . $sql->form_w9);
 
 
 
@@ -3902,11 +3929,32 @@ class AdminController extends Controller
 
 	{
 
-		$filename = config('path.verification') . $filename;
+		$path = config('path.verification') . $filename;
 
+		if (Storage::exists($path)) {
+			return Storage::download($path, null, [], null);
+		}
 
+		$bunnyStorageService = app(BunnyStorageService::class);
+		if ($bunnyStorageService->isConfigured()) {
+			try {
+				$response = Http::timeout(20)->get($bunnyStorageService->publicUrl($path));
+				if ($response->successful()) {
+					$mimeType = $response->header('Content-Type') ?: 'application/octet-stream';
+					return response($response->body(), 200, [
+						'Content-Type' => $mimeType,
+						'Content-Disposition' => 'attachment; filename="' . basename($filename) . '"',
+					]);
+				}
+			} catch (\Throwable $e) {
+				Log::warning('Verification file Bunny fetch failed', [
+					'path' => $path,
+					'error' => $e->getMessage(),
+				]);
+			}
+		}
 
-		return Storage::download($filename, null, [], null);
+		abort(404);
 
 	}
 
@@ -4201,6 +4249,7 @@ class AdminController extends Controller
 
 
 		$path = config('path.shop');
+		$bunnyStorageService = app(BunnyStorageService::class);
 
 
 
@@ -4215,6 +4264,7 @@ class AdminController extends Controller
 		foreach ($item->previews as $previews) {
 
 			Storage::delete($path . $previews->name);
+			$bunnyStorageService->delete($path . $previews->name);
 
 		}
 
@@ -4223,6 +4273,7 @@ class AdminController extends Controller
 		// Delete file
 
 		Storage::delete($path . $item->file);
+		$bunnyStorageService->delete($path . $item->file);
 
 
 
@@ -4837,61 +4888,61 @@ class AdminController extends Controller
 
 
 	public function deleteStory($id)
-
 	{
-
 		$pathStories = config('path.stories');
-
-		$story = Stories::with(['media.views'])->whereId($id)->firstOrFail();
-
-
-
-		if ($story->media->count()) {
+		$bunnyStreamService = app(BunnyStreamService::class);
+		$bunnyStorageService = app(BunnyStorageService::class);
+		$story = Stories::whereId($id)->firstOrFail();
+		$storyMedia = MediaStories::with(['views'])->whereStoriesId($story->id)->get();
+		if ($storyMedia->count()) {
 
 			// Delete Views 
-
-			foreach ($story->media as $media) {
-
+			foreach ($storyMedia as $media) {
 				$media->views()->delete();
 
+				if ($media->bunny_video_id && $bunnyStreamService->isConfigured()) {
+					try{
+						$bunnyStreamService->deleteVideo($media->bunny_video_id);
+					}catch (\Exception $e) {
+						Log::error('Bunny delete failed', [
+							'video_id' => $media->bunny_video_id,
+							'error' => $e->getMessage()
+						]);
+					}
+				}
+
 				// Delete Media files
+				if ($media->name && Storage::exists($pathStories . $media->name)) {
+					Storage::delete($pathStories . $media->name);
+				}
+				if ($media->name) {
+					$bunnyStorageService->delete($pathStories . $media->name);
+				}
+				$localFile = public_path('temp/' . $media->name);
+				if ($media->name && file_exists($localFile)) {
+					unlink($localFile);
+				}
 
-				Storage::delete($pathStories . $media->name);
-
-				Storage::delete($pathStories . $media->video_poster);
+				if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+					$bunnyStorageService->delete($pathStories . $media->video_poster);
+					Storage::delete($pathStories . $media->video_poster);
+				}
 
 				$media->delete();
-
 			}
-
 		}
 
-
-
 		// Delete Notifications
-
 		Notifications::where('type', 17)
-
 			->where('target', $story->id)
-
 			->delete();
 
-
-
 		//Delete Story
-
 		$story->delete();
-
-
-
 		return back()->withSuccessMessage(__('general.success_removed'));
-
 	}
 
-
-
 	public function storiesBackgrounds()
-
 	{
 
 		return view('admin.stories-backgrounds', [
@@ -5166,23 +5217,16 @@ class AdminController extends Controller
 
 		$sql->video_encoding = $request->video_encoding ?? 'off';
 
-		$sql->encoding_method = $request->encoding_method;
-
-		$sql->coconut_key = $request->coconut_key;
-
-		$sql->coconut_region = $request->coconut_region;
-
 		$sql->watermark_position = $request->watermark_position;
 
 		$sql->save();
 
 
-
-		// Save path FFMPEG
-
-		Helper::updateEnvFile('FFMPEG_BINARIES', $request->ffmpeg_path);
-
-		Helper::updateEnvFile('FFPROBE_BINARIES', $request->ffprobe_path);
+		// Save Bunny Stream credentials
+		Helper::updateEnvFile('BUNNY_STREAM_API_KEY', $request->bunny_stream_api_key);
+		Helper::updateEnvFile('BUNNY_STREAM_LIBRARY_ID', $request->bunny_stream_library_id);
+		Helper::updateEnvFile('BUNNY_STREAM_CDN_HOSTNAME', $request->bunny_stream_cdn_hostname);
+		Helper::updateEnvFile('BUNNY_API_KEY', $request->bunny_api_key);
 
 
 
@@ -5327,7 +5371,6 @@ class AdminController extends Controller
 
 
 	public function saveVideoCallSettings()
-
 	{
 
 		$this->settings->agora_app_id = request('agora_app_id');
@@ -5351,7 +5394,6 @@ class AdminController extends Controller
 
 
 	public function saveWebsockets(Request $request)
-
 	{
 
 		foreach ($request->except(['_token']) as $key => $value) {
@@ -5377,32 +5419,36 @@ class AdminController extends Controller
 
 
 	public function showReels()
-
 	{
 
 		return view('admin.reels', ['data' => Reel::with(['media'])->orderBy('id', 'desc')->paginate(20)]);
 
 	}
 
-
-
 	public function destroyReel($id)
-
 	{
-
 		$reel = Reel::findOrFail($id);
-
+		$bunnyStreamService = app(BunnyStreamService::class);
 		$pathReels = config('path.reels');
-
-
-
 		if ($reel->media) {
+			if ($reel->media->bunny_video_id && $bunnyStreamService->isConfigured()) {
+				try{
+					$bunnyStreamService->deleteVideo($reel->media->bunny_video_id);
+				}catch (\Exception $e) {
+					Log::error('Bunny delete failed', [
+						'video_id' => $reel->media->bunny_video_id,
+						'error' => $e->getMessage()
+					]);
+				}
+			}
 
-			Storage::delete($pathReels . $reel->media->name);
+			if ($reel->media->name && Storage::exists($pathReels . $reel->media->name)) {
+				Storage::delete($pathReels . $reel->media->name);
+			}
 
-			Storage::delete($pathReels . $reel->media->video_poster);
-
-
+			if ($reel->media->video_poster && !filter_var($reel->media->video_poster, FILTER_VALIDATE_URL)) {
+				Storage::delete($pathReels . $reel->media->video_poster);
+			}
 
 			// Local if is pending
 
@@ -5410,44 +5456,26 @@ class AdminController extends Controller
 
 				$localFile = public_path('temp/' . $reel->media->name);
 
-				unlink($localFile);
+				if (file_exists($localFile)) {
+					unlink($localFile);
+				}
 
 			}
-
-
-
 			$reel->media->delete();
-
 		}
 
-
-
 		// Delete Notifications
-
 		Notifications::whereIn('type', [27, 29, 30, 31, 32])
-
 			->where('target', $reel->id)
-
 			->delete();
-
-
 
 		$reel->delete();
 
-
-
 		return back()->withSuccessMessage(__('general.successfully_removed'));
-
-
-
 		return redirect('panel/admin/reels');
-
 	}
 
-
-
 	public function addLikesExtras()
-
 	{
 
 		$likes = request('likes');
@@ -5626,11 +5654,38 @@ class AdminController extends Controller
 
         
 
-        $file = Storage::get($path);
+        if (Storage::exists($path)) {
+			$file = Storage::get($path);
+			$mimeType = Storage::mimeType($path);
+			$size = Storage::size($path);
+		} else {
+			$file = null;
+			$mimeType = null;
+			$size = null;
 
-        $mimeType = Storage::mimeType($path);
+			if ($type === 'verification') {
+				$bunnyStorageService = app(BunnyStorageService::class);
+				if ($bunnyStorageService->isConfigured()) {
+					try {
+						$response = Http::timeout(20)->get($bunnyStorageService->publicUrl($path));
+						if ($response->successful()) {
+							$file = $response->body();
+							$mimeType = $response->header('Content-Type') ?: 'application/octet-stream';
+							$size = strlen($file);
+						}
+					} catch (\Throwable $e) {
+						Log::warning('Private verification Bunny fetch failed', [
+							'path' => $path,
+							'error' => $e->getMessage(),
+						]);
+					}
+				}
+			}
 
-        $size = Storage::size($path);
+			if ($file === null) {
+				abort(404);
+			}
+		}
 
 
 
@@ -5685,4 +5740,3 @@ class AdminController extends Controller
 	}
 
 }
-

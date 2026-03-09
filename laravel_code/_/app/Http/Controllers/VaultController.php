@@ -28,8 +28,11 @@ class VaultController extends Controller
 
         if ($files->count()) {
             foreach ($files as $file) {
-
-                $pathFile = Helper::getFile(config('path.vault') . $file->file);
+                if ($file->type === 'video') {
+                    $pathFile = Helper::vaultPlaybackUrl($file);
+                } else {
+                    $pathFile = Helper::vaultFileUrl($file->file);
+                }
                 
                 $preloadedFiles[] = [
                     'name' => $file->file_name,

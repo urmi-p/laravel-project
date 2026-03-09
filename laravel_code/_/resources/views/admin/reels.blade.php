@@ -84,7 +84,7 @@
                                         <div class="d-flex">
 
                                             @if ($reel->status == 'active')
-                                            <a href="{{ Helper::getFile(config('path.reels').$reel->media->name) }}" class="btn btn-success btn-sm rounded-pill me-2 glightbox" data-gallery="gallery{{$reel->media->id}}">
+                                            <a href="{{ Helper::reelPlaybackUrl($reel->media) }}" class="btn btn-success btn-sm rounded-pill me-2 glightbox" data-gallery="gallery{{$reel->media->id}}">
                                                 <i class="bi-eye"></i>
                                             </a>
                                             @endif

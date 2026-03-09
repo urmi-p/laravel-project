@@ -1573,10 +1573,7 @@
                 @foreach ($photosMedia as $mediaPhotos)
                     @php
 
-                        $urlImg =
-                            $mediaPhotos->img_type == 'gif'
-                                ? Helper::getFile(config('path.images') . $mediaPhotos->image)
-                                : url('files/storage', $mediaPhotos->updates_id) . '/' . $mediaPhotos->image;
+                        $urlImg = Helper::postImageUrl($mediaPhotos);
 
                         if (auth()->check()) {
                             $checkUserSubscription = auth()->user()->checkSubscription($mediaPhotos->user());
@@ -1719,13 +1716,13 @@
 
 
 
-                                <img src="{{ Helper::getFile(config('path.videos') . $mediaVideos->video_poster) }}"
+                                <img src="{{ Helper::postThumbnailUrl($mediaVideos) }}"
                                     class="grid-img">
                             @else
                                 <a href="javascript:void(0);"
                                     @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($mediaVideos->user()->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest>
 
-                                    <img src="{{ url('public/img/locked-media.png') }}" class="grid-img">
+                                    <img src="{{ url('img/locked-media.png') }}" class="grid-img">
 
                                 </a>
                             @endif
@@ -2764,9 +2761,9 @@
 
                         canSeeUser: {{ $checkSubscription || auth()->id() == $reel->user->id || auth()->user()->isSuperAdmin() ? 'true' : 'false' }},
 
-                        src: "{{ Helper::getFile(config('path.reels') . $reel->media->name) }}",
+                        src: "{{ Helper::reelPlaybackUrl($reel->media) }}",
 
-                        thumbnail: "{{ $reel->media->video_poster ? Helper::getFile(config('path.reels') . $reel->media->video_poster) : Helper::getFile(config('path.avatar') . $reel->user->avatar) }}",
+                        thumbnail: "{{ Helper::reelThumbnailUrl($reel->media, Helper::getFile(config('path.avatar') . $reel->user->avatar)) }}",
 
                         duration: "{{ $reel->media->duration_video }}",
 

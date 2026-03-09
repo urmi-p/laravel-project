@@ -38,7 +38,7 @@
 
     <meta property="og:url" content="{{url()->current()}}"/>
 
-    <meta property="og:image" content="{{Helper::getFile(config('path.shop').$product->previews[0]->name)}}"/>
+    <meta property="og:image" content="{{ Helper::shopFileUrl($product->previews[0]->name) }}"/>
 
 
 
@@ -48,7 +48,7 @@
 
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="twitter:image" content="{{Helper::getFile(config('path.shop').$product->previews[0]->name)}}" />
+    <meta name="twitter:image" content="{{ Helper::shopFileUrl($product->previews[0]->name) }}" />
 
     <meta name="twitter:title" content="{{ $product->name }}" />
 
@@ -80,9 +80,9 @@
 
           <div class="text-center mb-4 position-relative bg-light rounded-large shadow-large">
 
-            <a href="{{ Helper::getFile(config('path.shop').$product->previews[0]->name) }}" class="glightbox w-100" data-gallery="gallery{{$product->id}}">
+            <a href="{{ Helper::shopFileUrl($product->previews[0]->name) }}" class="glightbox w-100" data-gallery="gallery{{$product->id}}">
 
-              <img class="img-fluid rounded-large" src="{{ Helper::getFile(config('path.shop').$product->previews[0]->name) }}" style="max-height:600px; cursor: zoom-in;">
+              <img class="img-fluid rounded-large" src="{{ Helper::shopFileUrl($product->previews[0]->name) }}" style="max-height:600px; cursor: zoom-in;">
 
             </a>
 
@@ -104,9 +104,9 @@
 
                 <li class="splide__slide">
 
-                  <a href="{{ Helper::getFile(config('path.shop').$product->previews[$i]->name) }}" class="glightbox" data-gallery="gallery{{$product->id}}">
+                  <a href="{{ Helper::shopFileUrl($product->previews[$i]->name) }}" class="glightbox" data-gallery="gallery{{$product->id}}">
 
-                    <img class="img-fluid rounded-large" src="{{ route('resize', ['path' => 'shop', 'file' => $product->previews[$i]->name, 'size' => 600, 'crop' => 'fit']) }}" style="cursor: zoom-in;">
+                    <img class="img-fluid rounded-large" src="{{ Helper::shopFileUrl($product->previews[$i]->name) }}" style="cursor: zoom-in;">
 
                   </a>
 
@@ -128,7 +128,7 @@
 
             <li class="thumbnail-shop">
 
-              <img class="img-fluid rounded" src="{{ route('resize', ['path' => 'shop', 'file' => $product->previews[$i]->name, 'size' => 80, 'crop' => 'fit']) }}">
+              <img class="img-fluid rounded" src="{{ Helper::shopFileUrl($product->previews[$i]->name) }}">
 
             </li>
 
@@ -767,4 +767,3 @@
   @endif
 
 @endsection
-

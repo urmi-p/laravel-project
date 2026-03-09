@@ -16,6 +16,7 @@ use App\Jobs\UpcomingRenewals;
 use App\Models\LiveStreamings;
 use League\Glide\ServerFactory;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +26,8 @@ use League\Glide\Responses\SymfonyResponseFactory;
 class HomeController extends Controller
 {
   use Traits\Functions;
-
+  protected $settings;
+  protected $request;
   public function __construct(Request $request, AdminSettings $settings)
   {
     $this->request = $request;
@@ -770,17 +772,51 @@ class HomeController extends Controller
   public function imageBlur($path)
   {
     try {
+      $decodedPath = rawurldecode($path);
+      $relativePath = ltrim(str_replace('\\', '/', $decodedPath), '/');
+
+      // Basic traversal guard for dynamic path parameter.
+      if (
+        $relativePath === '' ||
+        str_contains($relativePath, '../') ||
+        str_starts_with($relativePath, '..')
+      ) {
+        abort(404);
+      }
+
+      $sourcePrefix = 'uploads/updates/images/';
+      $storagePath = $sourcePrefix . $relativePath;
+      $glidePath = $relativePath;
+
+      // Resolution order:
+      // 1) Bunny pull zone (if configured)
+      // 2) Local storage fallback
+      if (env('BUNNY_PULL_ZONE_URL')) {
+        $remoteUrl = rtrim(env('BUNNY_PULL_ZONE_URL'), '/') . '/' . ltrim($storagePath, '/');
+        $remoteImage = Http::timeout(10)->get($remoteUrl);
+
+        if ($remoteImage->successful()) {
+          $mimeType = strtolower((string) $remoteImage->header('Content-Type', ''));
+          if (str_starts_with($mimeType, 'image/')) {
+            $ext = pathinfo($relativePath, PATHINFO_EXTENSION) ?: 'jpg';
+            $cachedRemotePath = '__bunny_blur_cache/' . sha1($relativePath) . '.' . $ext;
+            Storage::put($sourcePrefix . $cachedRemotePath, $remoteImage->body());
+            $glidePath = $cachedRemotePath;
+          }
+        }
+      }
+
       $server = ServerFactory::create([
         'response' => new SymfonyResponseFactory(app('request')),
         'source' => Storage::disk()->getDriver(),
         'cache' => Storage::disk()->getDriver(),
-        'source_path_prefix' => '/uploads/updates/images/',
+        'source_path_prefix' => $sourcePrefix,
         'cache_path_prefix' => '.cache',
-        'base_url' => '/uploads/updates/images/',
+        'base_url' => $sourcePrefix,
         'group_cache_in_folders' => true
       ]);
 
-      return $server->getImageResponse($path, [
+      return $server->getImageResponse($glidePath, [
         'w' => 150,
         'h' => 150,
         'fit' => 'crop',

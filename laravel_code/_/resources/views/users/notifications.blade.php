@@ -225,7 +225,7 @@
 								break;
 
 							case 28:
-								$action          = __('general.error_video_encoding_reel');
+								$action          = __('general.error_occurred');
 								$linkDestination = false;
 								$iconNotify      = 'bi-bug';
 								$notyNormal      = false;

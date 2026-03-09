@@ -19,18 +19,25 @@ use App\Models\AdminSettings;
 use App\Models\MediaMessages;
 use App\Models\Notifications;
 use League\Glide\ServerFactory;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use League\Glide\Responses\SymfonyResponseFactory;
-
+use App\Services\BunnyStreamService;
+use App\Services\BunnyStorageService;
 class UpdatesController extends Controller
 {
   use Traits\Functions;
-
+  protected $bunnyStreamService;
+  protected $bunnyStorageService;
+  protected $settings;
+  protected $request;
   public function __construct(AdminSettings $settings, Request $request)
   {
     $this->settings = $settings::first();
     $this->request = $request;
+    $this->bunnyStreamService = app(BunnyStreamService::class);
+    $this->bunnyStorageService = app(BunnyStorageService::class);
   }
   public function newUpdate()
   {
@@ -217,8 +224,14 @@ class UpdatesController extends Controller
 
     // Get all videos of the post
     $videos = Media::whereUpdatesId($post->id)->where('video', '<>', '')->get();
-
-    if ($videos->count() && config('settings.video_encoding') == 'on') {
+    if ($videos->count() && !$this->bunnyStreamService->isConfigured()) {
+      $this->deletePostError($post->id);
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => 'Bunny Stream is not configured.'],
+      ]);
+    }
+    if ($videos->count()) {
       return $this->getAllVideosEncode($videos, $post->id);
     }
 
@@ -291,12 +304,12 @@ class UpdatesController extends Controller
       foreach ($filePreload as $file) {
         switch ($file->type) {
           case 'image':
-            $pathFile = Helper::getFile(config('path.images') . $file->image);
+            $pathFile = Helper::postImageUrl($file);
             $name = $file->image;
             break;
 
           case 'video':
-            $pathFile = Helper::getFile(config('path.videos') . $file->video);
+            $pathFile = Helper::postPlaybackUrl($file);
             $name = $file->video;
             break;
 
@@ -507,8 +520,14 @@ class UpdatesController extends Controller
 
     // Get all videos of the post
     $videos = Media::whereUpdatesId($post->id)->where('video', '<>', '')->where('encoded', 'no')->get();
-
-    if ($videos->count() && config('settings.video_encoding') == 'on') {
+    if ($videos->count() && !$this->bunnyStreamService->isConfigured()) {
+      $this->deletePostError($post->id);
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => 'Bunny Stream is not configured.'],
+      ]);
+    }
+    if ($videos->count()) {
       return $this->getAllVideosEncode($videos, $post->id, true);
     }
 
@@ -550,12 +569,20 @@ class UpdatesController extends Controller
 
       if ($media->image) {
         Storage::delete($path . $media->image);
+        $this->bunnyStorageService->delete($path . $media->image);
         $media->delete();
       }
 
       if ($media->video) {
-        Storage::delete($pathVideo . $media->video);
-        Storage::delete($pathVideo . $media->video_poster);
+        if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+          $this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+        }
+        if ($media->video && Storage::exists($pathVideo . $media->video)) {
+          Storage::delete($pathVideo . $media->video);
+        }
+        if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+          Storage::delete($pathVideo . $media->video_poster);
+        }
         $media->delete();
       }
 
@@ -630,6 +657,63 @@ class UpdatesController extends Controller
         'success' => true
       ]);
     }
+  }
+
+  protected function deletePostError($id): void
+  {
+    $path = config('path.images');
+    $pathVideo = config('path.videos');
+    $pathMusic = config('path.music');
+    $pathFile = config('path.files');
+    $post = Updates::with(['media'])->whereId($id)->first();
+
+    if (!$post) {
+      return;
+    }
+
+    foreach ($post->media as $media) {
+      $localImage = public_path('temp/' . $media->image);
+      $localVideo = public_path('temp/' . $media->video);
+      $localMusic = public_path('temp/' . $media->music);
+
+      if ($media->image) {
+        Storage::delete($path . $media->image);
+        $this->bunnyStorageService->delete($path . $media->image);
+        if (file_exists($localImage)) {
+          unlink($localImage);
+        }
+      }
+
+      if ($media->video) {
+        if ($media->bunny_video_id && $this->bunnyStreamService->isConfigured()) {
+          $this->bunnyStreamService->deleteVideo($media->bunny_video_id);
+        }
+        if ($media->video && Storage::exists($pathVideo . $media->video)) {
+          Storage::delete($pathVideo . $media->video);
+        }
+        if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+          Storage::delete($pathVideo . $media->video_poster);
+        }
+        if (file_exists($localVideo)) {
+          unlink($localVideo);
+        }
+      }
+
+      if ($media->music) {
+        Storage::delete($pathMusic . $media->music);
+        if (file_exists($localMusic)) {
+          unlink($localMusic);
+        }
+      }
+
+      if ($media->file) {
+        Storage::delete($pathFile . $media->file);
+      }
+
+      $media->delete();
+    }
+
+    $post->delete();
   }
 
   public function ajaxUpdates()
@@ -752,20 +836,51 @@ class UpdatesController extends Controller
   public function image($id, $path)
   {
     try {
+      $decodedPath = rawurldecode($path);
+      $relativePath = ltrim(str_replace('\\', '/', $decodedPath), '/');
+
+      if (
+        $relativePath === '' ||
+        str_contains($relativePath, '../') ||
+        str_starts_with($relativePath, '..')
+      ) {
+        abort(404);
+      }
+
+      $sourcePrefix = 'uploads/updates/images/';
+      $storagePath = $sourcePrefix . $relativePath;
+      $glidePath = $relativePath;
+
+      // Prefer Bunny pull zone when configured; fallback to local storage.
+      if (env('BUNNY_PULL_ZONE_URL')) {
+        $remoteUrl = rtrim(env('BUNNY_PULL_ZONE_URL'), '/') . '/' . ltrim($storagePath, '/');
+        $remoteImage = Http::timeout(10)->get($remoteUrl);
+
+        if ($remoteImage->successful()) {
+          $mimeType = strtolower((string) $remoteImage->header('Content-Type', ''));
+          if (str_starts_with($mimeType, 'image/')) {
+            $ext = pathinfo($relativePath, PATHINFO_EXTENSION) ?: 'jpg';
+            $cachedRemotePath = '__bunny_files_cache/' . sha1($relativePath) . '.' . $ext;
+            Storage::put($sourcePrefix . $cachedRemotePath, $remoteImage->body());
+            $glidePath = $cachedRemotePath;
+          }
+        }
+      }
+
       $server = ServerFactory::create([
         'response' => new SymfonyResponseFactory(app('request')),
         'source' => Storage::disk()->getDriver(),
         'cache' => Storage::disk()->getDriver(),
-        'source_path_prefix' => '/uploads/updates/images/',
+        'source_path_prefix' => $sourcePrefix,
         'cache_path_prefix' => '.cache',
-        'base_url' => '/uploads/updates/images/',
+        'base_url' => $sourcePrefix,
         'group_cache_in_folders' => true,
       ]);
 
-      return $server->getImageResponse($path, $this->request->all());
+      return $server->getImageResponse($glidePath, $this->request->all());
     } catch (\Exception $e) {
       if (isset($server)) {
-        $server->deleteCache($path);
+        $server->deleteCache($glidePath ?? $path);
       }
 
       abort(404);
@@ -853,7 +968,7 @@ class UpdatesController extends Controller
 
     switch ($typeMedia) {
       case 'video':
-        $pathFile = config('path.videos') . $response->video;
+        $pathFile = Helper::postPlaybackUrl($response);
         $type = 'video/mp4';
         break;
 
@@ -885,6 +1000,10 @@ class UpdatesController extends Controller
       && auth()->user()->role == 'admin' && auth()->user()->permission == 'all'
       || $response->updates->locked == 'no'
     ) {
+      if ($typeMedia === 'video' && filter_var($pathFile, FILTER_VALIDATE_URL)) {
+        return redirect()->away($pathFile);
+      }
+
       $path = Helper::getFile($pathFile);
 
       try {
@@ -1107,4 +1226,3 @@ class UpdatesController extends Controller
     ]);
   }
 }
-

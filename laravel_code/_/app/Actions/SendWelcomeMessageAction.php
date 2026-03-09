@@ -9,6 +9,9 @@ use App\Models\MediaMessages;
 use App\Models\Subscriptions;
 use App\Models\MediaWelcomeMessage;
 use App\Models\SubscriptionDeleted;
+use App\Services\BunnyStorageService;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 final class SendWelcomeMessageAction
@@ -38,6 +41,7 @@ final class SendWelcomeMessageAction
                         'messages_id' => $message->id,
                         'type' => $media->type,
                         'file' => $media->file,
+                        'bunny_video_id' => $media->bunny_video_id,
                         'token' => $media->token,
                         'width' => $media->width,
                         'height' => $media->height,
@@ -50,15 +54,65 @@ final class SendWelcomeMessageAction
                         'created_at' => now()
                     ]);
 
-                    Storage::copy(config('path.welcome_messages') . $media->file, config('path.messages') . $media->file);
+                    if (!$media->bunny_video_id) {
+                        $this->copyWelcomeMediaToMessagePath($media->file);
+                    }
 
-                    if ($media->video_poster) {
-                        Storage::copy(config('path.welcome_messages') . $media->video_poster, config('path.messages') . $media->video_poster);
+                    if ($media->video_poster && !filter_var($media->video_poster, FILTER_VALIDATE_URL)) {
+                        $this->copyWelcomeMediaToMessagePath($media->video_poster);
                     }
                 }
             } catch (\Exception $e) {
                 info('Error SendWelcomeMessageAction - ' . $e->getMessage());
             }
+        }
+    }
+
+    private function copyWelcomeMediaToMessagePath(string $fileName): void
+    {
+        if (empty($fileName)) {
+            return;
+        }
+
+        $sourcePath = config('path.welcome_messages') . $fileName;
+        $targetPath = config('path.messages') . $fileName;
+
+        if (Storage::exists($sourcePath)) {
+            Storage::copy($sourcePath, $targetPath);
+            return;
+        }
+
+        $bunnyStorageService = app(BunnyStorageService::class);
+        if (!$bunnyStorageService->isConfigured()) {
+            return;
+        }
+
+        try {
+            $response = Http::timeout(30)->get($bunnyStorageService->publicUrl($sourcePath));
+            if (!$response->successful()) {
+                return;
+            }
+
+            $tempFile = tempnam(sys_get_temp_dir(), 'wm_');
+            if ($tempFile === false) {
+                return;
+            }
+
+            try {
+                file_put_contents($tempFile, $response->body());
+                $uploaded = $bunnyStorageService->uploadFromLocal($tempFile, $targetPath);
+
+                if (!$uploaded) {
+                    Storage::put($targetPath, $response->body());
+                }
+            } finally {
+                @unlink($tempFile);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('SendWelcomeMessageAction copy failed', [
+                'file' => $fileName,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 }
