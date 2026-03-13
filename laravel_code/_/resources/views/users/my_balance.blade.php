@@ -111,7 +111,8 @@
                                 </h2>
 
                                 <span class="w-100 d-block font_weight_400 fs-24 text_color_white mobile_small_fs center_align mobile_fund_text">
-                                    {{ __('general.amount_min_withdrawal') }} <p class="font_weight_900 fs-32 d-inline mobile_small_fs">20€ EUR</p>
+                                    {{ __('general.amount_min_withdrawal') }}
+                                    <p class="font_weight_900 fs-32 d-inline mobile_small_fs">{{ Helper::amountWithoutFormat($settings->amount_min_withdrawal) }} {{ $settings->currency_code }}</p>
                                 </span>
 
                                 @if ($equivalent_money)
@@ -121,7 +122,9 @@
                                 @endif
 
                                 <span class="w-100 d-block mt-2 center_align mobile_fund_text">
-                                    <p class="fs-24 font_weight_400 mobile_small_fs">your payment would be avaliable in 4 business day’s</p>
+                                    <p class="fs-24 font_weight_400 mobile_small_fs">
+                                        {{ __('general.payment_process_days', ['days' => $settings->days_process_withdrawals]) }}
+                                    </p>
                                     {{-- @if (auth()->user()->balance != 0.0)
                                         <a href="#" data-toggle="modal" data-target="#modalTransfer"
                                             class="btn btn-1 btn-success mb-2 text-decoration-none">
@@ -140,7 +143,7 @@
                             <span>{{__('general.payment_method')}}</span>
                             <div class="input-group-sub">
                                 <select class="payment-select" id="paymentSelect">
-                                    <option value="">Please select your payment method</option>
+                                    <option value="">{{ __('general.payment_method_info') }}</option>
                                     @foreach (PaymentGateways::where('enabled', '1')->orderBy('type', 'DESC')->get() as $payment)
                                         <option value="{{ $payment->name }}">
                                             {{ ucfirst($payment->type) }} - {{ $payment->name }}

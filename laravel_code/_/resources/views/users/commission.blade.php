@@ -335,9 +335,9 @@
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <span class="label">Creator take-home</span>
+                                <span class="label">{{ __('general.commission_creator_take_home') }}</span>
                                 <h2>{{ number_format(100 - ($commission + $tax), 1) }}%</h2>
-                                <p>You currently retain {{ number_format(100 - ($commission + $tax), 1) }}% from each subscription.</p>
+                                <p>{{ __('general.commission_creator_take_home_desc', ['percent' => number_format(100 - ($commission + $tax), 1)]) }}</p>
                             </div>
                         </div>
 
@@ -354,9 +354,9 @@
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <span class="label">Platform maintenance</span>
+                                <span class="label">{{ __('general.commission_platform_maintenance') }}</span>
                                 <h2>{{ $commission }}%</h2>
-                                <p>Allocated to infrastructure, moderation and support.</p>
+                                <p>{{ __('general.commission_platform_maintenance_desc_top') }}</p>
                             </div>
                         </div>
 
@@ -367,9 +367,9 @@
                                     <path d="M21.3281 11.3334H10.6615C9.92508 11.3334 9.32812 11.9303 9.32812 12.6667V19.3334C9.32812 20.0698 9.92508 20.6667 10.6615 20.6667H21.3281C22.0645 20.6667 22.6615 20.0698 22.6615 19.3334V12.6667C22.6615 11.9303 22.0645 11.3334 21.3281 11.3334Z" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.32812 14.6666H22.6615" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
-                                <span class="label">Payment processing tax</span>
+                                <span class="label">{{ __('general.commission_payment_processing_tax') }}</span>
                                 <h2>{{ $tax }}%</h2>
-                                <p>Used to cover gateway fees and compliance.</p>
+                                <p>{{ __('general.commission_payment_processing_tax_desc_top') }}</p>
                             </div>
                         </div>
 
@@ -394,11 +394,11 @@
                                     </defs>
                                 </svg>
                             </div>
-                            <span class="calc-title">Revenue split</span>
+                            <span class="calc-title">{{ __('general.commission_revenue_split') }}</span>
                         </div>
                         <!-- DESCRIPTION -->
                         <p class="calc-desc">
-                            Percentages are calculated from your current platform settings.
+                            {{ __('general.commission_revenue_split_desc') }}
                         </p>
 
                         <!-- CARDS -->
@@ -420,11 +420,11 @@
                                                     </clipPath>
                                                 </defs>
                                             </svg>
-                                            <span class="rev-label">Creator take-home</span>
+                                            <span class="rev-label">{{ __('general.commission_creator_take_home') }}</span>
                                         </div>
                                         <span class="rev-percent" data-value="{{ 100 - ($commission + $tax) }}">{{ number_format(100 - ($commission + $tax), 1) }}%</span>
                                     </div>
-                                    <p>Sent to you before payment income taxes are applied.</p>
+                                    <p>{{ __('general.commission_creator_take_home_card_desc') }}</p>
                                 </div>
                             </div>
 
@@ -442,11 +442,11 @@
                                                     </clipPath>
                                                 </defs>
                                             </svg>
-                                            <span class="rev-label">Platform maintenance</span>
+                                            <span class="rev-label">{{ __('general.commission_platform_maintenance') }}</span>
                                         </div>
                                         <span class="rev-percent" data-value="{{ $commission }}">{{ $commission }}%</span>
                                     </div>
-                                    <p>Supports product development, hosting, and member support.</p>
+                                    <p>{{ __('general.commission_platform_maintenance_card_desc') }}</p>
                                 </div>
                             </div>
 
@@ -458,11 +458,11 @@
                                                 <path d="M13.3359 3.33337H2.66927C1.93289 3.33337 1.33594 3.93033 1.33594 4.66671V11.3334C1.33594 12.0698 1.93289 12.6667 2.66927 12.6667H13.3359C14.0723 12.6667 14.6693 12.0698 14.6693 11.3334V4.66671C14.6693 3.93033 14.0723 3.33337 13.3359 3.33337Z" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                                 <path d="M1.33594 6.66663H14.6693" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
-                                            <span class="rev-label">Payment processing tax</span>
+                                            <span class="rev-label">{{ __('general.commission_payment_processing_tax') }}</span>
                                         </div>
                                         <span class="rev-percent" data-value="{{ $tax }}">{{ $tax }}%</span>
                                     </div>
-                                    <p>Reserved for payment processors and tax authorities.</p>
+                                    <p>{{ __('general.commission_payment_processing_tax_card_desc') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -475,9 +475,7 @@
                             </div>
                         </div>
 
-                        <p class="calc-desc pt-2">
-                            Adjust payout settings to rebalance these allocations.
-                        </p>
+                        <p class="calc-desc pt-2">{{ __('general.commission_adjust_payout_settings') }}</p>
                     </div>
 
                     {{-- EARNINGS CALCULATOR --}}
@@ -505,21 +503,21 @@
                                     </defs>
                                 </svg>
                             </div>
-                            <span class="calc-title">EARNINGS CALCULATOR</span>
+                            <span class="calc-title">{{ __('general.commission_earnings_calculator') }}</span>
                         </div>
                         <!-- DESCRIPTION -->
                         <p class="calc-desc">
-                            Estimate how much you keep from each subscriber at different price points.
+                            {{ __('general.commission_earnings_calculator_desc') }}
                         </p>
                         <div class="mb-2 input-group-sub">
-                            <label class="form-label calc-label">Plan price</label>
+                            <label class="form-label calc-label">{{ __('general.commission_plan_price') }}</label>
                             <input type="number" class="form-control calc-input" value="10.00">
                             <small class="calc-help">
-                                Enter a price between 5 and 1000 to see your payout currency.
+                                {{ __('general.commission_plan_price_help') }}
                             </small>
                         </div>
                         <button class="btn btn-danger calc-btn mt-3">
-                            Recalculate
+                            {{ __('general.commission_recalculate') }}
                         </button>
                     </div>
 
@@ -542,10 +540,10 @@
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <span class="label">Creator keeps</span>
+                                <span class="label">{{ __('general.commission_creator_keeps') }}</span>
                                 <h4 id="calc-creator-keeps">$9.29</h4>
                                 <p>{{ number_format(100 - ($commission + $tax), 1) }}%</p>
-                                <p>Estimated payout to you per subscriber at this price</p>
+                                <p>{{ __('general.commission_creator_keeps_desc') }}</p>
                             </div>
                         </div>
 
@@ -562,10 +560,10 @@
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <span class="label">Platform keeps</span>
+                                <span class="label">{{ __('general.commission_platform_keeps') }}</span>
                                 <h4 id="calc-platform-keeps">$0.50</h4>
                                 <p>{{ $commission }}%</p>
-                                <p>Helps sustain operations, moderation, and creator programs</p>
+                                <p>{{ __('general.commission_platform_keeps_desc') }}</p>
                             </div>
                         </div>
 
@@ -576,10 +574,10 @@
                                     <path d="M21.3281 11.3334H10.6615C9.92508 11.3334 9.32812 11.9303 9.32812 12.6667V19.3334C9.32812 20.0698 9.92508 20.6667 10.6615 20.6667H21.3281C22.0645 20.6667 22.6615 20.0698 22.6615 19.3334V12.6667C22.6615 11.9303 22.0645 11.3334 21.3281 11.3334Z" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.32812 14.6666H22.6615" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
-                                <span class="label">Processing tax</span>
+                                <span class="label">{{ __('general.commission_processing_tax') }}</span>
                                 <h4 id="calc-processing-tax">$0.20</h4>
                                 <p>{{ $tax }}% + {{ $tax_cents }}</p>
-                                <p>Set aside for gateways, VAT, and sales tax obligations</p>
+                                <p>{{ __('general.commission_processing_tax_desc') }}</p>
                             </div>
                         </div>
 

@@ -357,7 +357,7 @@
                                 </li>
                             @endif
 
-                            <li class="nav-item dropdown d-md-none @if (auth()->user()->role != 'admin') mt-2 @endif">
+                            {{-- <li class="nav-item dropdown d-md-none @if (auth()->user()->role != 'admin') mt-2 @endif">
                                 <a href="{{ url('profile', auth()->user()->username) }}"
                                     class="nav-link px-2 link-menu-mobile py-1 url-user">
                                     <div>
@@ -370,7 +370,7 @@
                                         <span class="d-md-none">{{ __('users.my_profile') }}</span>
                                     </div>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             @if (auth()->user()->verified_id == 'yes')
                                 <li class="nav-item dropdown d-md-none menu_mobile_active_link">
@@ -398,7 +398,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
+                            {{-- <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('messages') }}"
                                     @if (request()->is('messages')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
                                     <div>
@@ -406,7 +406,7 @@
                                         <span class="d-md-none">{{ __('general.messages') }}</span>
                                     </div>
                                 </a>
-                            </li>
+                            </li> --}}
                             @if ($settings->disable_wallet == 'off')
                                 <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                     <a href="{{ url('my/wallet') }}"
@@ -418,17 +418,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if (!$settings->disable_explore_section)
-                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
-                                    <a href="{{ url('explore') }}"
-                                        @if (request()->is('explore')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
-                                        <div>
-                                            <i class="bi-compass mr-2"></i>
-                                            <span class="d-md-none">{{ __('general.explore') }}</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endif
+                            
 
                             <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('my/subscriptions') }}"
@@ -439,27 +429,33 @@
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
-                                <a href="{{ url('my/commission') }}"
-                                    @if (request()->is('my/commission')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
-                                    <div>
-                                        <svg class="margin-right-4" width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentcolor" stroke-width="1.5"/>
-                                            <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentcolor" stroke-width="1.5" stroke-linecap="round"/>
-                                        </svg>
-                                        <span class="d-md-none">{{ __('admin.commission') }}</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
-                                <a href="{{ url('my/balance') }}"
-                                    @if (request()->is('my/balance')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
-                                    <div>
-                                        <i class="bi bi-credit-card mr-2"></i>
-                                        <span class="d-md-none">{{ __('general.balance') }}</span>
-                                    </div>
-                                </a>
-                            </li>
+
+                            @if (auth()->user()->verified_id == 'yes')
+                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
+                                    <a href="{{ url('my/commission') }}"
+                                        @if (request()->is('my/commission')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
+                                        <div>
+                                            <svg class="margin-right-4" width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentcolor" stroke-width="1.5"/>
+                                                <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentcolor" stroke-width="1.5" stroke-linecap="round"/>
+                                            </svg>
+                                            <span class="d-md-none">{{ __('admin.commission') }}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if (auth()->user()->verified_id == 'yes')
+                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
+                                    <a href="{{ url('my/balance') }}"
+                                        @if (request()->is('my/balance')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
+                                        <div>
+                                            <i class="bi bi-credit-card mr-2"></i>
+                                            <span class="d-md-none">{{ __('general.balance') }}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('my/bookmarks') }}"
                                     class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/bookmarks')) active disabled @endif">
@@ -524,14 +520,14 @@
                             @endif
 
                             
-                            {{-- <li class="nav-item dropdown d-md-none">
-                            <a href="{{ url('my/likes') }}" class="nav-link px-2 link-menu-mobile py-1">
-                                <div>
-                                    <i class="feather icon-heart mr-2"></i>
-                                    <span class="d-md-none">{{ __('general.likes') }}</span>
-                                </div>
-                            </a>
-                        </li> --}}
+                            <li class="nav-item dropdown d-md-none menu_mobile_active_link">
+                                <a href="{{ url('my/likes') }}" class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/likes')) active disabled @endif">
+                                    <div>
+                                        <i class="feather icon-heart mr-2"></i>
+                                        <span class="d-md-none">{{ __('general.likes') }}</span>
+                                    </div>
+                                </a>
+                            </li>
 
                             {{-- for mobile menu --}}
                            

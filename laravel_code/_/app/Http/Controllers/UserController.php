@@ -68,7 +68,8 @@ class UserController extends Controller
   public function dashboard()
   {
     if (auth()->user()->verified_id != 'yes') {
-      abort(404);
+      return redirect('/')->with('error', 'You must be verified to access the dashboard.');
+      // abort(403);
     }
 
     $dates = $this->generateDates(Carbon::parse('now')->startOfMonth(), Carbon::parse('now')->endOfMonth());

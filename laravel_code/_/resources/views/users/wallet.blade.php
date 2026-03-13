@@ -466,7 +466,7 @@
                 @csrf
 
                 <div class="form-group mb-0">
-                  <label class="payment-label">Amount *</label>
+                  <label class="payment-label">{{__('admin.amount')}} *</label>
                   <div class="amt-input-container">
                     {{-- <div class="input-group-prepend">
                       <span class="input-group-text">{{$settings->currency_symbol}}</span>
