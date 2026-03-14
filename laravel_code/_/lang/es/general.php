@@ -135,7 +135,7 @@ return array(
 	'expired' => 'Caducado',
 	'incomplete' => 'Incompleto',
 	'type' => 'Tipo',
-	'balance' => 'Balance',
+	'balance' => 'Saldo',
 	'total' => 'Total',
 	'active_ad' => 'Activar',
 	'price' => 'Precio',
@@ -156,7 +156,7 @@ return array(
 	'yes_confirm' => '¡Sí, eliminar!',
 	'recent' => 'Reciente',
 	'recent_uploaded' => 'Recientes subidos',
-	'online' => 'Online',
+	'online' => 'En línea',
 	'view_all' => 'Ver todo',
 	'add_tag' => 'Agrega una etiqueta y presiona Enter o coma',
 	'add_tags_guide' => 'Presione Enter o coma para agregar una etiqueta',
@@ -166,7 +166,7 @@ return array(
 	'featured_on' => 'Destacado en',
 	'sort' => 'Ordenar',
 	'all_countries' => 'Todos los países...',
-	'reset' => 'Reset',
+	'reset' => 'Reiniciar',
 	'member_since' => 'Miembro desde',
 	'menu' => 'Menú',
 	'already_sent_report' => 'Ya se envió un reporte',
@@ -182,7 +182,7 @@ return array(
 	'change_avatar' => 'Cambiar Avatar',
 	'change_cover' => 'Cambiar portada',
 	'back_profile' => 'Volver al perfil',
-	'feed' => 'Feed',
+	'feed' => 'Alimentar',
 	'support' => 'Soporte',
 	'coffee' => 'Café',
 	'buy_coffee' => 'Comprar café',
@@ -260,8 +260,8 @@ return array(
 	'write_comment' => 'Escribe un comentario y presiona enter...',
 	'confirm_delete_comment' => '¿Seguro que desea eliminar este comentario?',
 	'confirm_delete_message' => '¿Seguro que desea eliminar este mensaje?',
-	'posts' => 'Posts',
-	'post' => 'Post',
+	'posts' => 'Publicaciones',
+	'post' => 'Publicación',
 	'photos' => 'Fotos',
 	'videos' => 'Videos',
 	'upload_media' => 'Subir media',
@@ -1537,15 +1537,6 @@ return array(
 	'welcome_message_registered_subject' => 'Bienvenido a :title',// Not translate :title
 	'welcome_message_registered_body' => 'Bienvenido y gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte a bordo.',
 	'send_welcome_email_new_users' => 'Enviar correo de bienvenida a los nuevos usuarios',
-
-	// Version 7.3
-	'upcoming_renewals' => 'Próximas renovaciones',
-	'upcoming_renewal_for' => 'Próxima renovación para @:creator',// Not translate @:creator
-	'detail_upcoming_renewal' => 'Tu suscripción a @:creator renovará en las próximas 24 horas. Asegúrate de que tu método de pago está actualizado para que no pierdas el acceso a su contenido.', // Not translate @:creator
-	'manage_subscriptions' => 'Administrar suscripciones',
-	'welcome_message_registered_subject' => 'Bienvenido a :title',// Not translate :title
-	'welcome_message_registered_body' => 'Bienvenido y gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte a bordo.',
-	'send_welcome_email_new_users' => 'Enviar correo de bienvenida a los nuevos usuarios',
 	'age_verification' => 'Verificación de edad',
 	'age_verification_desc' => 'Para poder usar nuestra plataforma necesitamos que verifiques tu edad, haz clic en botón de abajo y serás redirigido al servicio de verificacion.',
 	'verify_age' => 'Verificar edad',
@@ -1613,4 +1604,6 @@ return array(
 	'advanced_settings' => 'Configuración avanzada',
 	'visit_profile' => 'Visitar perfil',
 	'subscriptions_detail' => 'Detalle de suscripciones',
+	'request_account_deletion' => 'Solicitar eliminación de la cuenta',
+	'request_account_deletion_alert' => 'Para eliminar su cuenta, por favor contáctenos y procesaremos su solicitud.',
 );

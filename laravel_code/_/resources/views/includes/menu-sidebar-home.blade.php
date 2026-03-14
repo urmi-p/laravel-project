@@ -109,14 +109,7 @@
 		</a>	
 	</li>
 	@endif
-	@if (!$settings->disable_explore_section)
-	<li class="sidebar_li">
-		<a href="{{ url('explore') }}" @if (request()->is('explore')) class="active disabled" @endif>
-			<i class="bi-compass"></i>
-			<span class="ml-2">{{ __('general.explore') }}</span>
-		</a>
-	</li>
-	@endif
+	
 
 	<li class="sidebar_li">
 		<a href="{{ url('my/subscriptions') }}" @if (request()->is('my/subscriptions')) class="active disabled" @endif>
@@ -161,12 +154,7 @@
 
 		</a>
 	</li>
-	<li class="sidebar_li">
-		<a href="{{auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light')}}">
-			<i class="feather icon-{{ auth()->user()->dark_mode == 'off' ? 'moon' : 'sun'  }}"></i>
-			<span class="ml-2">{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }} </span>
-		</a>
-	</li>
+	
 	<li class="sidebar_li">
 		<a href="{{route('user.settings')}}" @if (request()->is('settings/user')) class="active disabled" @endif>
 			<i class="bi bi-gear"></i>

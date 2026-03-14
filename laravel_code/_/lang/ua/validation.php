@@ -113,6 +113,12 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
+    'password' => [
+      'min' => 'Поле :attribute має містити щонайменше :min символів.',
+      'mixed' => 'Поле :attribute має містити хоча б одну велику й одну малу літеру.',
+      'numbers' => 'Поле :attribute має містити хоча б одну цифру.',
+      'symbols' => 'Поле :attribute має містити хоча б один символ.',
+    ],
     "account_not_confirmed" => "Your account is not confirmed, please check your email",
   	"user_suspended"        => "Your account has been suspended, please contact us if an error",
   	"letters"              => "The :attribute must contain at least one letter or number",

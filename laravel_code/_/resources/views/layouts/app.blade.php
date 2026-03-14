@@ -182,6 +182,10 @@
      @include('includes.modal-gifts')
    @endif
 
+    @if (! request()->is('my/wallet'))
+      @include('includes.modal-topup-wallet')
+    @endif
+
     @include('includes.modal-payperview')
 
     @if ($settings->live_streaming_status == 'on')

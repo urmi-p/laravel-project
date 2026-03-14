@@ -13,7 +13,7 @@
         </div>
       @else
         <div class="col-lg-3">
-          @include('includes.menu-sidebar-message')
+          @include('includes.menu-sidebar-home')
         </div>
       @endif
       <div class="col-md-6 col-sm-6 p-0 messages-middle-col">

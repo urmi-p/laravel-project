@@ -93,7 +93,7 @@
           </div>
         @else
           <div class="col-md-3 d-lg-block d-none side_bar_box_shadow h-100">
-            @include('includes.menu-sidebar-message')
+            @include('includes.menu-sidebar-home')
           </div>
         @endif     
 

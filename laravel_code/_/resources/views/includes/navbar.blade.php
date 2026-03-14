@@ -53,10 +53,15 @@
                                         </svg>
                                     </a>
                                 @else
-                                    <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                        data-toggle="collapse" data-target="#navbarCollapse"
-                                        data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
-                                        aria-expanded="false" role="button">
+                                    <a class="topup-wallet btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                        @if (! request()->is('my/wallet'))
+                                            data-toggle="modal" data-target="#modalTopupWallet"
+                                            data-bs-toggle="modal" data-bs-target="#modalTopupWallet"
+                                        @else
+                                            data-toggle="collapse" data-target="#navbarCollapse"
+                                            data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                                        @endif
+                                        aria-controls="navbarCollapse" aria-expanded="false" role="button">
                                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -823,22 +828,6 @@
                                             href="{{ url('settings/verify/account') }}"><i
                                                 class="feather icon-star mr-2"></i> {{ __('general.become_creator') }}</a>
                                     @endif
-
-
-
-                                    <div class="dropdown-divider"></div>
-
-
-
-                                    @if (auth()->user()->dark_mode == 'off')
-                                        <a class="dropdown-item dropdown-navbar" href="{{ url('mode/dark') }}"><i
-                                                class="feather icon-moon mr-2"></i> {{ __('general.dark_mode') }}</a>
-                                    @else
-                                        <a class="dropdown-item dropdown-navbar" href="{{ url('mode/light') }}"><i
-                                                class="feather icon-sun mr-2"></i> {{ __('general.light_mode') }}</a>
-                                    @endif
-
-
 
                                     <div class="dropdown-divider dropdown-navbar"></div>
 

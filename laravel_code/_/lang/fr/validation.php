@@ -113,6 +113,12 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
+    'password' => [
+      'min' => 'Le champ :attribute doit contenir au moins :min caractères.',
+      'mixed' => 'Le champ :attribute doit contenir au moins une lettre majuscule et une lettre minuscule.',
+      'numbers' => 'Le champ :attribute doit contenir au moins un chiffre.',
+      'symbols' => 'Le champ :attribute doit contenir au moins un symbole.',
+    ],
     "account_not_confirmed" => "Your account is not confirmed, please check your email",
   	"user_suspended"        => "Your account has been suspended, please contact us if an error",
   	"letters"              => "The :attribute must contain at least one letter or number",

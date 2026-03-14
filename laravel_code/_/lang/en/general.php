@@ -437,6 +437,7 @@ return array(
 	'others_posts' => 'Others posts',
 	'date_paid' => 'Date paid',
 	'delete_account' => 'Delete account',
+	'request_account_deletion' => 'Request account deletion',
 	'subtitle_delete_account' => 'Confirm deletion of your account',
 	'enter_password' => 'Enter your password',
 	'notice_delete_account' => 'We are sorry that you want to delete your account, this action cannot be reversed, all your data, posts and your subscriptions will be deleted, if you decide to do so enter your password in the following field.',
@@ -793,6 +794,7 @@ return array(
 	'resend_code_success' => 'We have sent you a new code to your email',
 	'please_enter_code' => 'Please enter the code',
 	'delete_account_alert' => 'Watch out! This will permanently delete your account, and all your files, subscriptions, etc, and you will not be able to enter the site again.',
+	'request_account_deletion_alert' => 'To delete your account, please contact us and we will process your request.',
 	'chats' => 'Chats',
 	'no_chats' => 'You don\'t have any chat',
 	'error_active_system_referrals' => 'You cannot activate the Referral System if your commission fee is equal to 0',
@@ -1445,15 +1447,6 @@ return array(
 	'following_files_already_added' => 'The following files are already added:',
 	'new_files_have_been_added_following_already_existed' => 'New files have been added. The following already existed:',
 	'video_encoding_warning' => 'Videos will be encoded, so it may take a little while to be available in the vault',
-
-	// Version 7.3
-	'upcoming_renewals' => 'Upcoming renewals',
-	'upcoming_renewal_for' => 'Upcoming renewal for @:creator', // Not translate @:creator
-	'detail_upcoming_renewal' => 'Your subscription to @:creator will renew in the next 24 hours. Make sure your payment method is up to date so you don\'t lose access to their content.', // Not translate @:creator
-	'manage_subscriptions' => 'Manage subscriptions',
-	'welcome_message_registered_subject' => 'Welcome to :title', // Not translate :title
-	'welcome_message_registered_body' => 'Welcome and thank you for registering on our platform. We are excited to have you on board.',
-	'send_welcome_email_new_users' => 'Send welcome email to new users',
 
 	// Version 7.3
 	'upcoming_renewals' => 'Upcoming renewals',

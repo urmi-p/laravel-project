@@ -113,6 +113,12 @@ return [
     'unique'               => ':attribute ya se ha tomado.',
     'uploaded'             => ':attribute no se pudo cargar.',
     'url'                  => ':attribute formato no es válido.',
+    'password' => [
+      'min' => 'La :attribute debe tener al menos :min caracteres.',
+      'mixed' => 'La :attribute debe contener al menos una letra mayúscula y una minúscula.',
+      'numbers' => 'La :attribute debe contener al menos un número.',
+      'symbols' => 'La :attribute debe contener al menos un símbolo.',
+    ],
     "account_not_confirmed" => "Su cuenta no está confirmada, consulte su correo electrónico",
   	"user_suspended"        => "Su cuenta ha sido suspendida, contáctenos si es un error.",
   	"letters"              => ":attribute debe contener al menos una letra o un número",
