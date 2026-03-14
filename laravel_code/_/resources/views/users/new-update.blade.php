@@ -809,7 +809,7 @@
                         <a href="javascript:void(0);" id="newPostHeaderBack" class="new-post-back" title="{{ __('general.go_back') }}">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <h4 class="new-post-title">New Post</h4>
+                        <h4 class="new-post-title">{{ __('general.new_post') }}</h4>
                     </div>
 
                     <div class="pb-3 px-3">
@@ -870,13 +870,13 @@
                                             accept="{{ $postUploadAccept }}" multiple class="visibility-hidden filepond">
                                         <div id="uploadProcessingOverlay" class="upload-processing-overlay">
                                             <span class="upload-processing-spinner"></span>
-                                            <span class="upload-processing-text">Uploading... <strong id="uploadProcessingPercent">0%</strong></span>
+                                            <span class="upload-processing-text">{{ __('users.uploading') }} <strong id="uploadProcessingPercent">0%</strong></span>
                                         </div>
 
                                         <div id="postPreviewStep" class="post-preview-step">
                                             <div class="post-preview-frame">
                                                 <div class="post-preview-media">
-                                                    <img id="postPreviewImage" src="" alt="Preview">
+                                                    <img id="postPreviewImage" src="" alt="{{ __('general.preview') }}">
                                                 </div>
                                                 <div class="post-preview-controls">
                                                     <input id="postPreviewZoom" class="post-preview-range" type="range" min="0" max="100" step="1" value="25">
@@ -885,7 +885,7 @@
                                             <div id="postPreviewThumbs" class="post-preview-thumbs"></div>
                                         </div>
                                         <div class="post-preview-continue-wrap">
-                                            <button type="button" id="postPreviewContinue" class="post-preview-continue">Continue</button>
+                                            <button type="button" id="postPreviewContinue" class="post-preview-continue">{{ __('general.continue_action') }}</button>
                                         </div>
                                         
                                             
@@ -949,34 +949,34 @@
 
                                                 <!-- Who can see this post -->
                                                 <div class="mb-4">
-                                                    <label class="setting-label">Who can see this post</label>
+                                                    <label class="setting-label">{{ __('general.who_can_see_this_post') }}</label>
 
                                                     <div class="visibility-options">
                                                         <button type="button" class="visibility-btn active" data-visibility="everyone">
-                                                            Everyone
+                                                            {{ __('general.everyone') }}
                                                         </button>
 
                                                         <button type="button" class="visibility-btn is-disabled" data-visibility="followers" disabled>
-                                                            Followers Only
+                                                            {{ __('general.followers_only') }}
                                                         </button>
 
                                                         <button type="button" class="visibility-btn" data-visibility="subscribers">
-                                                            Subscribers Only
+                                                            {{ __('general.subscribers_only') }}
                                                         </button>
 
                                                         <button type="button" class="visibility-btn" data-visibility="premium">
-                                                            Premium Post ($)
+                                                            {{ __('general.premium_post') }}
                                                         </button>
                                                     </div>
-                                                    <small class="setting-help">Followers-only is not available in current backend; Subscribers and Premium are supported.</small>
+                                                    <small class="setting-help">{{ __('general.followers_only_not_available') }}</small>
                                                 </div>
 
                                                 <!-- Hide likes -->
                                                 <div class="setting-row">
                                                     <div>
-                                                        <h6>Hide like and counts on this post</h6>
+                                                        <h6>{{ __('general.hide_like_counts_post') }}</h6>
                                                         <small class="text-muted">
-                                                            Only you will see the total number of likes on this post.
+                                                            {{ __('general.hide_like_counts_post_help') }}
                                                         </small>
                                                     </div>
                                                     <label class="switch_update">
@@ -988,9 +988,9 @@
                                                 <!-- Turn off commenting -->
                                                 <div class="setting-row">
                                                     <div>
-                                                        <h6>Turn off commenting</h6>
+                                                        <h6>{{ __('general.turn_off_commenting') }}</h6>
                                                         <small class="text-muted">
-                                                            You can change this later from post menu.
+                                                            {{ __('general.turn_off_commenting_help') }}
                                                         </small>
                                                     </div>
                                                     <label class="switch_update">
@@ -1008,7 +1008,7 @@
                                                     </label>
                                                 </div>
                                                 @if (!$settings->allow_scheduled_posts)
-                                                    <small class="setting-help">Scheduling is disabled by admin settings.</small>
+                                                    <small class="setting-help">{{ __('general.scheduling_disabled_by_admin') }}</small>
                                                 @endif
 
                                                 <!-- Price -->
@@ -1149,7 +1149,7 @@
                                                     id="btnCreateUpdate">
 
                                                     <i></i> <span
-                                                        id="textPostPublish">Confirm & Publish</span>
+                                                        id="textPostPublish">{{ __('general.confirm_publish') }}</span>
 
                                                 </button>
 
@@ -1647,6 +1647,4 @@
         });
     </script>
 @endsection
-
-
 

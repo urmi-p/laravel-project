@@ -60,7 +60,7 @@
             <table class="table table-striped m-0">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">{{ __('general.id') }}</th>
                   <th scope="col">{{__('admin.content')}}</th>
                   <th scope="col">{{__('admin.description')}}</th>
                   <th scope="col">{{__('admin.type')}}</th>

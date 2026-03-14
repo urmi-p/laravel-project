@@ -50,7 +50,7 @@
             <table class="table table-striped m-0">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">{{ __('general.id') }}</th>
                   <th scope="col">{{trans('admin.name')}}</th>
                   <th scope="col">{{trans('admin.type')}}</th>
                   <th scope="col">{{trans('general.price')}}</th>

@@ -52,9 +52,9 @@
             <div class="strength-bar">
               <div id="strengthFill" class="strength-fill"></div>
             </div>
-            <div id="strengthText" class="strength-text">Very Weak</div>
+            <div id="strengthText" class="strength-text">{{ __('general.very_weak') }}</div>
             <div id="strengthHint" class="strength-hint">
-              Please enter strong password include Capital Letters, Numbers and signs
+              {{ __('general.strong_password_hint') }}
             </div>
           </div>
 

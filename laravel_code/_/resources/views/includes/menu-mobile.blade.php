@@ -3,13 +3,13 @@
 		<li class="flex-fill bd-highlight">
 			<a class="btn-mobile @if (request()->is('/')) active disabled @endif" href="{{url('/')}}" title="{{trans('admin.home')}}">
 				<i class="feather icon-home icon-navbar"></i>
-				@if (request()->is('/')) <span class="font_weight_400 fs-14">Home</span> @endif
+				@if (request()->is('/')) <span class="font_weight_400 fs-14">{{ __('admin.home') }}</span> @endif
 			</a>
 		</li>
 		<li class="flex-fill bd-highlight">
 			<a href="{{ url('profile', auth()->user()->username) }}" class="btn-mobile position-relative @if (request()->is('profile/' . auth()->user()->username . '*') || request()->is(auth()->user()->username . '*')) active disabled @endif ">
 				<i class="far fa-user icon-navbar"></i>
-				@if (request()->is('profile/' . auth()->user()->username . '*') || request()->is(auth()->user()->username . '*')) <span class="font_weight_400 fs-14">Profile</span> @endif
+				@if (request()->is('profile/' . auth()->user()->username . '*') || request()->is(auth()->user()->username . '*')) <span class="font_weight_400 fs-14">{{ __('users.my_profile') }}</span> @endif
 			</a>
 		</li>
 		{{-- <li class="flex-fill bd-highlight">
@@ -26,7 +26,7 @@
 						{{ auth()->user()->messagesInbox() }}
 					</span>
 				</span>
-				@if (request()->is('messages*')) <span class="font_weight_400 fs-14">Message</span> @endif
+				@if (request()->is('messages*')) <span class="font_weight_400 fs-14">{{ __('general.message') }}</span> @endif
 			</a>
 		</li>
 
@@ -34,7 +34,7 @@
 			<li class="flex-fill bd-highlight">
 				<a class="btn-mobile @if (request()->is('creators*')) active disabled @endif" href="{{url('creators')}}" title="{{trans('general.explore')}}">
 					<i class="far fa-compass icon-navbar"></i>
-					@if (request()->is('creators*')) <span class="font_weight_400 fs-14">Explore</span> @endif
+					@if (request()->is('creators*')) <span class="font_weight_400 fs-14">{{ __('general.explore') }}</span> @endif
 				</a>
 			</li>
 		@endif
@@ -53,7 +53,7 @@
 			<li class="flex-fill bd-highlight">
 				<a class="btn-mobile @if (request()->is('shop*')) active disabled @endif" href="{{url('shop')}}" title="{{trans('general.shop')}}">
 					<i class="feather icon-shopping-bag icon-navbar"></i>
-					@if (request()->is('shop*')) <span class="font_weight_400 fs-14">Shop</span> @endif
+					@if (request()->is('shop*')) <span class="font_weight_400 fs-14">{{ __('general.shop') }}</span> @endif
 				</a>
 			</li>
 		@endif

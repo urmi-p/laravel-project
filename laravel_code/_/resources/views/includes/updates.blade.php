@@ -453,12 +453,12 @@
                                             <div class="col-md-3 col-6 mb-3">
 
                                                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
-                                                    title="Facebook" target="_blank"
+                                                    title="{{ __('general.facebook') }}" target="_blank"
                                                     class="social-share text-muted d-block text-center h6">
 
                                                     <i class="fab fa-facebook-square facebook-btn"></i>
 
-                                                    <span class="btn-block mt-3">Facebook</span>
+                                                    <span class="btn-block mt-3">{{ __('general.facebook') }}</span>
 
                                                 </a>
 
@@ -469,10 +469,10 @@
                                                 <a href="https://twitter.com/intent/tweet?url={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}&text={{ e($response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name) }}"
                                                     data-url="{{ url($response->creator->username . '/post', $response->id) }}"
                                                     class="social-share text-muted d-block text-center h6"
-                                                    target="_blank" title="Twitter">
+                                                    target="_blank" title="{{ __('general.twitter') }}">
 
                                                     <i class="bi-twitter-x text-dark"></i> <span
-                                                        class="btn-block mt-3">Twitter</span>
+                                                        class="btn-block mt-3">{{ __('general.twitter') }}</span>
 
                                                 </a>
 
@@ -483,10 +483,10 @@
                                                 <a href="whatsapp://send?text={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
                                                     data-action="share/whatsapp/share"
                                                     class="social-share text-muted d-block text-center h6"
-                                                    title="WhatsApp">
+                                                    title="{{ __('general.whatsapp') }}">
 
                                                     <i class="fab fa-whatsapp btn-whatsapp"></i> <span
-                                                        class="btn-block mt-3">WhatsApp</span>
+                                                        class="btn-block mt-3">{{ __('general.whatsapp') }}</span>
 
                                                 </a>
 
@@ -1350,12 +1350,12 @@
                         <div class="col-md-3 col-6 mb-3">
 
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
-                                title="Facebook" target="_blank"
+                                title="{{ __('general.facebook') }}" target="_blank"
                                 class="social-share text-muted d-block text-center h6">
 
                                 <i class="fab fa-facebook-square facebook-btn"></i>
 
-                                <span class="btn-block mt-3">Facebook</span>
+                                <span class="btn-block mt-3">{{ __('general.facebook') }}</span>
 
                             </a>
 
@@ -1366,10 +1366,10 @@
                             <a href="https://twitter.com/intent/tweet?url={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}&text={{ e($response->creator->hide_name == 'yes' ? $response->creator->username : $response->creator->name) }}"
                                 data-url="{{ url($response->creator->username . '/post', $response->id) }}"
                                 class="social-share text-muted d-block text-center h6"
-                                target="_blank" title="Twitter">
+                                target="_blank" title="{{ __('general.twitter') }}">
 
                                 <i class="bi-twitter-x text-dark"></i> <span
-                                    class="btn-block mt-3">Twitter</span>
+                                    class="btn-block mt-3">{{ __('general.twitter') }}</span>
 
                             </a>
 
@@ -1380,10 +1380,10 @@
                             <a href="whatsapp://send?text={{ url($response->creator->username . '/post', $response->id) . Helper::referralLink() }}"
                                 data-action="share/whatsapp/share"
                                 class="social-share text-muted d-block text-center h6"
-                                title="WhatsApp">
+                                title="{{ __('general.whatsapp') }}">
 
                                 <i class="fab fa-whatsapp btn-whatsapp"></i> <span
-                                    class="btn-block mt-3">WhatsApp</span>
+                                    class="btn-block mt-3">{{ __('general.whatsapp') }}</span>
 
                             </a>
 

@@ -61,14 +61,14 @@
             @if ($settings->live_streaming_status == 'on')
             <div>
               <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.stream_live')}}" class="d-flex align-items-center custom_btn btnCreateLive text-white rounded-pill">
-                <i class="bi-camera-video f-size-20 align-middle mr-2"></i><span> Live Video</span>
+                <i class="bi-camera-video f-size-20 align-middle mr-2"></i><span>{{ __('general.live_video') }}</span>
               </button>
             </div>
             @endif
 
             <div>
               <a href="{{ url('new/update') }}" data-url="{{ url('new/update') }}" class="d-flex align-items-center custom_btn btn-tooltip-form btnMediaUpload e-none text-white rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
-                <i class="bi-image f-size-20 align-middle mr-2"></i><span> Photo/Video</span>
+                <i class="bi-image f-size-20 align-middle mr-2"></i><span>{{ __('general.photo_video') }}</span>
               </a>
             </div>
     
@@ -77,19 +77,19 @@
             @endphp
             <div>
               @if ($listItemUrl)
-                <a href="{{ $listItemUrl }}" data-url="{{ $listItemUrl }}" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn btnListItem text-white rounded-pill" onclick="window.location.href='{{ $listItemUrl }}'; return false;" ontouchend="window.location.href='{{ $listItemUrl }}'; return false;">
-                  <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
+                <a href="{{ $listItemUrl }}" data-url="{{ $listItemUrl }}" data-toggle="tooltip" data-placement="top" title="{{ __('general.list_item') }}" class="d-flex align-items-center custom_btn btnListItem text-white rounded-pill" onclick="window.location.href='{{ $listItemUrl }}'; return false;" ontouchend="window.location.href='{{ $listItemUrl }}'; return false;">
+                  <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span>{{ __('general.list_item') }}</span>
                 </a>
               @else
-                <button type="button" data-toggle="tooltip" data-placement="top" title="List Item" class="d-flex align-items-center custom_btn text-white rounded-pill" disabled>
-                  <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span> List Item</span>
+                <button type="button" data-toggle="tooltip" data-placement="top" title="{{ __('general.list_item') }}" class="d-flex align-items-center custom_btn text-white rounded-pill" disabled>
+                  <i class="bi bi-shop f-size-20 align-middle mr-2"></i><span>{{ __('general.list_item') }}</span>
                 </button>
               @endif
             </div>
             @if ($settings->allow_scheduled_posts)
               <div>
                 <button type="button" data-toggle="tooltip" data-placement="top" title="{{__('general.schedule')}}" class="d-flex align-items-center custom_btn btn-tooltip-form e-none btnSchedulePost text-white rounded-pill">
-                  <i class="bi-bar-chart f-size-20 align-middle mr-2"></i><span> Schedule Post</span>
+                  <i class="bi-bar-chart f-size-20 align-middle mr-2"></i><span>{{ __('general.schedule_post') }}</span>
                 </button>
                 <input type="hidden" name="scheduled_date" id="inputScheduled" value="">
               </div>

@@ -82,7 +82,7 @@
               <div class="payment-icon">
                 <img src="{{ url('img/payments', auth()->user()->dark_mode == 'off' ? 'paypal.png' : 'paypal-white.png') }}" alt="PayPal" />
               </div>
-              <div class="payment-text">Paypal</div>
+              <div class="payment-text">{{ __('general.paypal') }}</div>
             </div>
           </label>
           <!--============ END PAYPAL ============-->
@@ -95,7 +95,7 @@
               <div class="payment-icon">
                 <img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'payoneer.png' : 'payoneer-white.png')}}" width="110" />
               </div>
-              <div class="payment-text">Payoneer</div>
+              <div class="payment-text">{{ __('general.payoneer') }}</div>
             </div>
           </label>
           <!--============ END PAYONEER ============-->
@@ -107,7 +107,7 @@
             <div class="payment-card-ui">
               <div class="payment-icon"><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'zelle.png' : 'zelle-white.png')}}" width="50" />
               </div>
-              <div class="payment-text">Zelle</div>
+              <div class="payment-text">{{ __('general.zelle') }}</div>
             </div>
           </label>
           <!--============ END ZELLE ============-->
@@ -120,7 +120,7 @@
             <div class="payment-card-ui">
               <div class="payment-icon"><img src="{{url('img/payments/western.png')}}" width="150" />
               </div>
-              <div class="payment-text">Western</div>
+              <div class="payment-text">{{ __('general.western_union') }}</div>
             </div>
           </label>
           <!--============ END WESTERN ============-->
@@ -131,7 +131,7 @@
             <input name="payment_gateway" value="Bitcoin" id="BitcoinInput" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Bitcoin') checked @endif type="radio">
             <div class="payment-card-ui">
               <div class="payment-icon"><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'bitcoin.png' : 'bitcoin-white.png')}}" width="100" /> </div>
-              <div class="payment-text">Bitcoin</div>
+              <div class="payment-text">{{ __('general.bitcoin') }}</div>
             </div>
           </label> <!--============ END BITCOIN ============-->
           @endif
@@ -141,7 +141,7 @@
             <input name="payment_gateway" value="Mercadopago" id="radioMP" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Mercado Pago') checked @endif type="radio">
             <div class="payment-card-ui">
               <div class="payment-icon"><img src="{{ auth()->user()->dark_mode == 'off' ? url('img/payments/mercadopago.png') : url('img/payments/mercadopago-white.png') }}" width="150" /> </div>
-              <div class="payment-text">Mercadopago</div>
+              <div class="payment-text">{{ __('general.mercadopago') }}</div>
             </div>
           </label>
           <!--============ END Mercadopago ============-->

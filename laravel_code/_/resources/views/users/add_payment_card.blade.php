@@ -65,7 +65,7 @@
 
 
           <div class="pb-2">
-            <span class="lbl-card">Enter your card details</span>
+            <span class="lbl-card">{{ trans('general.enter_your_card_details') }}</span>
           </div>
           <!-- Stripe Elements Placeholder -->
           <div id="card-element"></div>

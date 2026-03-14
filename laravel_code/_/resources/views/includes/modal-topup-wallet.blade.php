@@ -39,23 +39,23 @@
                 if ($payment->type == 'card' ) {
                   $paymentLogo = '<i class="far fa-credit-card"></i>';
                   $paymentNameShow = __('general.debit_credit_card');
-                  $paymentDescription = 'Powered by ' . $payment->name;
+                  $paymentDescription = __('general.powered_by') . ' ' . $payment->name;
                 } elseif ($payment->type == 'bank') {
                   $paymentLogo = '<i class="fa fa-university"></i>';
                   $paymentNameShow = __('general.bank_transfer');
                   $paymentDescription = __('general.make_payment_bank');
                 } else if ($payment->name == 'PayPal') {
                   $paymentLogo = '<img src="'.url('img/payments', auth()->user()->dark_mode == 'off' ? $payment->logo : 'paypal-white.png').'"/>';
-                  $paymentDescription = 'You will be redirected to the PayPal website';
+                  $paymentDescription = __('general.redirected_to_paypal_website');
                 } else if ($payment->name == 'Coinpayments') {
                   $paymentLogo = '<img src="'.url('img/payments', auth()->user()->dark_mode == 'off' ? $payment->logo : 'coinpayments-white.png').'"/>';
-                  $paymentDescription = 'Pay with Cryptocurrency';
+                  $paymentDescription = __('general.pay_with_cryptocurrency');
                 } else if ($payment->name == 'Coinbase') {
                   $paymentLogo = '<img src="'.url('img/payments', auth()->user()->dark_mode == 'off' ? $payment->logo : 'coinbase-white.png').'"/>';
-                  $paymentDescription = 'Pay with Cryptocurrency';
+                  $paymentDescription = __('general.pay_with_cryptocurrency');
                 } else if ($payment->name == 'NowPayments') {
                   $paymentLogo = '<img src="'.url('public/img/payments', auth()->user()->dark_mode == 'off' ? $payment->logo : 'nowpayments-white.png').'"/>';
-                  $paymentDescription = 'Pay with Cryptocurrency';
+                  $paymentDescription = __('general.pay_with_cryptocurrency');
                 } else if ($payment->name == 'Mercadopago') {
                   $paymentLogo = '<img src="'.url('img/payments', auth()->user()->dark_mode == 'off' ? $payment->logo : 'mercadopago-white.png').'"/>';
                 } else if ($payment->name == 'Flutterwave') {
@@ -90,7 +90,7 @@
                       </span>
                     </div>
                     <div class="payment-action">
-                      <span class="pay-btn-mini">Pay</span>
+                      <span class="pay-btn-mini">{{ __('general.pay') }}</span>
                     </div>
                   </label>
                 </div>

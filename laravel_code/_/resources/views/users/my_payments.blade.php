@@ -54,7 +54,7 @@
             <table class="table table-striped m-0">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">{{ __('general.id') }}</th>
                   @if (request()->is('my/payments'))
                   <th scope="col">{{trans('general.paid_to')}}</th>
                   <th scope="col">{{trans('general.payment_gateway')}}</th>

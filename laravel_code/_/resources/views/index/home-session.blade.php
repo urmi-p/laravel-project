@@ -30,8 +30,7 @@
 
                                         <div class="d-flex align-items-center justify-content-between py-2">
                                             <span class="my_flash_main">
-
-                                                My Flash
+                                                {{ __('general.my_flash') }}
                                             </span>
                                             <span class="plus_icon">
                                                 <i class="bi-plus bg-primary"></i>

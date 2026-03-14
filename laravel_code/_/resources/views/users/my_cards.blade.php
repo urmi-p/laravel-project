@@ -63,11 +63,11 @@
             <!-- Bottom Info -->
             <div class="card-footer">
               <div>
-                <span class="label">Card Holder name</span>
-                <span class="value">Noman Manzoor</span>
+                <span class="label">{{ __('general.card_holder_name') }}</span>
+                <span class="value">{{ auth()->user()->name }}</span>
               </div>
               <div>
-                <span class="label">Expiry Date</span>
+                <span class="label">{{ __('general.expiry_date') }}</span>
                 <span class="value">{{ $expiration }}</span>
               </div>
             </div>
