@@ -778,15 +778,13 @@ class AdminController extends Controller
 
 		if (file_exists($path)) {
 
-			file_put_contents($path, str_replace(
+			$envContents = file_get_contents($path);
 
-				$APP_DEBUG,
-
-				'APP_DE/imgequest->app_debug',
-
-				file_get_contents($path)
-
-			));
+			// Fix corrupted APP_DEBUG key if it exists
+			if (strpos($envContents, 'APP_DE/imgequest->app_debug') !== false) {
+				$envContents = str_replace('APP_DE/imgequest->app_debug', $APP_DEBUG, $envContents);
+				file_put_contents($path, $envContents);
+			}
 
 		}
 
@@ -3256,6 +3254,12 @@ class AdminController extends Controller
 			'IDRIVE_BUCKET' => 'required_if:FILESYSTEM_DRIVER,==,idrive',
 
 			'IDRIVE_ENDPOINT' => 'required_if:FILESYSTEM_DRIVER,==,idrive',
+
+			'BUNNY_API_KEY' => 'required_if:FILESYSTEM_DRIVER,==,bunny',
+			'BUNNY_STORAGE_ZONE' => 'required_if:FILESYSTEM_DRIVER,==,bunny',
+			'BUNNY_STORAGE_PASSWORD' => 'required_if:FILESYSTEM_DRIVER,==,bunny',
+			'BUNNY_STORAGE_REGION' => 'required_if:FILESYSTEM_DRIVER,==,bunny',
+			'BUNNY_PULL_ZONE_URL' => 'required_if:FILESYSTEM_DRIVER,==,bunny',
 
 		], $messages);
 

@@ -409,7 +409,9 @@
                         @auth data-id="{{ $response->id }}" @endauth>
 
                         <i class="@if ($likeActive) bi @else bi @endif bi-hand-thumbs-up-fill"></i>
+                        @if ($showLikesCount)
                         <span class="action-count">{{ $totalLikes }}</span>
+                        @endif
                     </a>
 
                     @if (!$settings->hide_comments)

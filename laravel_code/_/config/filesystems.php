@@ -137,6 +137,18 @@ return [
             'endpoint' => env('IDRIVE_ENDPOINT'),
             'use_path_style_endpoint' => true,
         ],
+
+        'bunny' => [
+            'driver' => 's3',
+            'key' => env('BUNNY_STORAGE_ZONE'),
+            'secret' => env('BUNNY_STORAGE_PASSWORD'),
+            'region' => env('BUNNY_STORAGE_REGION'),
+            'bucket' => env('BUNNY_STORAGE_ZONE'),
+            'url' => env('BUNNY_PULL_ZONE_URL'),
+            'endpoint' => 'https://' . env('BUNNY_STORAGE_REGION') . '.storage.bunnycdn.com',
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
+        ],
     ],
 
     /*

@@ -1725,12 +1725,27 @@ class Helper
 			return 'https://' . env('DOS_BUCKET') . '.' . env('DOS_DEFAULT_REGION') . '.cdn.digitaloceanspaces.com/' . $path;
 
 		}
+		$disk = config('filesystems.default', 'default');
 
-		if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
-			return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
+		try {
+			if (Storage::disk($disk)->exists($path)) {
+				return Storage::disk($disk)->url($path);
+			}
+		} catch (\Throwable $e) {
+			// If remote disk check fails, fall back to local.
 		}
 
-		return Storage::url($path);
+		if ($disk !== 'default') {
+			try {
+				if (Storage::disk('default')->exists($path)) {
+					return Storage::disk('default')->url($path);
+				}
+			} catch (\Throwable $e) {
+				// Ignore fallback errors and continue.
+			}
+		}
+
+		return Storage::disk($disk)->url($path);
 
 	}
 

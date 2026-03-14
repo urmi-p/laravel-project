@@ -98,7 +98,9 @@
                     </td>
                     <td>{{ Helper::amountFormatDecimal($post->price) }}</td>
                     <td>
+                      @if (!$settings->hide_total_likes)
                       <i class="far fa-heart"></i> {{ $post->likes_count }} 
+                      @endif
                       <i class="far fa-comment ml-1"></i> {{ ($post->comments_count + $post->replies_count) }}
                       <i class="feather icon-bookmark ml-1"></i> {{ $post->bookmarks_count }}
                     </td>
