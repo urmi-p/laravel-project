@@ -630,7 +630,7 @@
 
             <label>{{trans('admin.please_reason')}}</label>
 
-              <select name="reason" class="form-control custom-select">
+              <select name="reason" class="form-control custom-select report-modal-select">
 
                 @if ($verifyPurchaseUser && $product->type != 'digital')
 

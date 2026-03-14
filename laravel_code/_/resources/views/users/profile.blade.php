@@ -2131,7 +2131,7 @@
 
                                 <label>{{ __('admin.please_reason') }}</label>
 
-                                <select name="reason" class="form-control custom-select">
+                                <select name="reason" class="form-control custom-select report-modal-select">
 
                                     <option value="spoofing">{{ __('admin.spoofing') }}</option>
 

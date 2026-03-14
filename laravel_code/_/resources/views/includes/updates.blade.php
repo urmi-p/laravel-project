@@ -710,7 +710,7 @@
 
                                                     <label>{{ __('admin.please_reason') }}</label>
 
-                                                    <select name="reason" class="form-control custom-select">
+                                                    <select name="reason" class="form-control custom-select report-modal-select">
 
                                                         <option value="copyright">{{ __('admin.copyright') }}</option>
 
@@ -927,7 +927,7 @@
 
                                                 <label>{{ __('admin.please_reason') }}</label>
 
-                                                <select name="reason" class="form-control custom-select">
+                                                <select name="reason" class="form-control custom-select report-modal-select">
 
                                                     <option value="copyright">{{ __('admin.copyright') }}</option>
 

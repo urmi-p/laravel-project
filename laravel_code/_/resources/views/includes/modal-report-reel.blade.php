@@ -13,7 +13,7 @@
                 <!-- Start Form Group -->
                 <div class="form-group">
                     <label>{{__('admin.please_reason')}}</label>
-                    <select name="reason" id="reportReason" class="form-control custom-select">
+                    <select name="reason" id="reportReason" class="form-control custom-select report-modal-select">
                         <option value="spoofing">{{__('admin.spoofing')}}</option>
                         <option value="copyright">{{__('admin.copyright')}}</option>
                         <option value="privacy_issue">{{__('admin.privacy_issue')}}</option>

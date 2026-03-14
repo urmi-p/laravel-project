@@ -54,8 +54,8 @@
 
                                                         <a href="{{url('password/reset', $token)}}"
                                                             style="font-family: Arial, &#039;Helvetica Neue&#039;, Helvetica, sans-serif; display: block; display: inline-block; width: 200px; min-height: 20px; padding: 10px;
-                 background-color: #3869D4; border-radius: 3px; color: #ffffff; font-size: 15px; line-height: 25px;
-                 text-align: center; text-decoration: none; -webkit-text-size-adjust: none; background-color: #3869D4;"
+                 background-color: #3b63d8; border-radius: 3px; color: #ffffff; font-size: 15px; line-height: 25px;
+                 text-align: center; text-decoration: none; -webkit-text-size-adjust: none; background-color: #3b63d8;"
                                                             class="button"
                                                             target="_blank">
                                                             {{trans('emails.password_reset')}}
@@ -83,7 +83,7 @@
                                                         </p>
 
                                                         <p style="margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em;">
-                                                            <a style="color: #3869D4;" href="{{url('password/reset', $token)}}" target="_blank">
+                                                            <a style="color: #3b63d8;" href="{{url('password/reset', $token)}}" target="_blank">
                                                                 {{url('password/reset', $token)}}
                                                             </a>
                                                         </p>
@@ -104,7 +104,7 @@
                                     <td style="font-family: Arial, &#039;Helvetica Neue&#039;, Helvetica, sans-serif; color: #AEAEAE; padding: 35px; text-align: center;">
                                         <p style="margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em;">
                                             &copy; <?php echo date('Y'); ?>
-                                            <a style="color: #3869D4;" href="{{url('/')}}" target="_blank">{{$settings->title}}</a>.
+                                            <a style="color: #3b63d8;" href="{{url('/')}}" target="_blank">{{$settings->title}}</a>.
                                             {{trans('emails.rights_reserved')}}
                                         </p>
                                     </td>
