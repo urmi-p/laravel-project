@@ -115,6 +115,25 @@
 					{{__('general.referrals_welcome_desc', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
 				</p>
 
+				<div class="card border-0 shadow-sm mb-3">
+					<div class="card-body">
+						<label for="copy_link" class="form-label fw-bold mb-2">
+							{{ __('general.your_referral_link') }}
+						</label>
+						<div class="input-group">
+							<input
+								type="text"
+								id="copy_link"
+								class="form-control"
+								readonly
+								value="{{ url('register') . '?ref=' . auth()->id() }}">
+							<button class="btn btn-dark" type="button" id="btn_copy_url">
+								<i class="fas fa-link"></i> <span class="btn-block mt-3">{{ __('general.copy_link') }}</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
 				@else
 				<div class="alert alert-danger mt-3">
 					<span class="alert-inner--text">

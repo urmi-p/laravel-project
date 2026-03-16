@@ -39,6 +39,17 @@
                                 </a>
                             </div>
                             <div class="d-md-none">
+                                <a href="{{ auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light') }}"
+                                    class="btn-mobile-nav btn_mobile_nav"
+                                    title="{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}">
+                                    @if (auth()->user()->dark_mode == 'off')
+                                        <i class="feather icon-moon"></i>
+                                    @else
+                                        <i class="feather icon-sun"></i>
+                                    @endif
+                                </a>
+                            </div>
+                            <div class="d-md-none">
                                 @if (auth()->user()->verified_id == 'yes')
                                     <a class="btn-mobile-nav btn_mobile_nav @if (request()->is('my/commission')) active disabled @endif"
                                         href="{{ url('my/commission') }}" title="{{ __('admin.commission') }}">
@@ -89,6 +100,12 @@
                                             stroke-linejoin="round" />
                                     </svg>
 
+                                </a>
+                            </div>
+                            <div class="d-md-none">
+                                <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav"
+                                    title="{{ __('auth.logout') }}">
+                                    <i class="feather icon-log-out"></i>
                                 </a>
                             </div>
                         </div>
@@ -470,20 +487,6 @@
                                     </div>
                                 </a>
                             </li>
-                             <li class="nav-item dropdown d-md-none">
-
-                                <a href="{{ auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light') }}"
-                                    class="nav-link px-2 link-menu-mobile py-1">
-                                    <div>
-                                        <i
-                                            class="feather icon-{{ auth()->user()->dark_mode == 'off' ? 'moon' : 'sun' }} mr-2"></i>
-                                        <span
-                                            class="d-md-none">{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}
-                                        </span>
-
-                                    </div>
-                                </a>
-                            </li>
                             <li class="nav-item dropdown d-md-none menu_mobile_active_link">
 
                                 <a href="{{ route('user.settings') }}"
@@ -597,15 +600,6 @@
                                     </a>
                                 </li>
                             @endif
-
-                            <li class="nav-item dropdown d-md-none">
-                                <a href="{{ url('logout') }}" class="nav-link px-2 link-menu-mobile py-1">
-                                    <div>
-                                        <i class="feather icon-log-out mr-2"></i>
-                                        <span class="d-md-none">{{ __('auth.logout') }}</span>
-                                    </div>
-                                </a>
-                            </li>
 
                             <!-- =========== End Menu Mobile ============-->
 
