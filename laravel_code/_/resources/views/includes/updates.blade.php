@@ -972,11 +972,11 @@
                     </div> --}}
 
                     <div class="containerLikeComment ">
-                        @if ($showLikesCount)
+                        {{-- @if ($showLikesCount)
                         <span class="countLikes text-muted dot-item action-pill">
                             {{ trans_choice('general.like_likes', $totalLikes, ['total' => $totalLikes]) }}
                         </span>
-                        @endif
+                        @endif --}}
 
                         @if ($response->video_views)
                         <span class="text-muted dot-item action-pill">

@@ -124,10 +124,10 @@
                     </h6>
                     <!-- Description line -->
                     <p class="profile-desc">
-                      Chat with 
+                      {{ __('general.chat_with') }}
                       {{ $user->hide_name == 'yes' ? $user->username : $user->name }},
                       <span class="desc-break">
-                        you follow each other & share a community together
+                        {{ __('general.mutual_follow') }}
                       </span>
                     </p>
 

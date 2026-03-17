@@ -1556,4 +1556,6 @@ return array(
 	'western_union' => 'Western',
 	'bitcoin' => 'Bitcoin',
 	'mercadopago' => 'Mercadopago',
+	'chat_with' => 'Спілкуйтеся з',
+	'mutual_follow' => 'ви підписані один на одного та маєте спільну спільноту',
 );

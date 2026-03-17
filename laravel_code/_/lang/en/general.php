@@ -1555,4 +1555,6 @@ return array(
 	'advanced_settings' => 'Advanced Settings',
 	'visit_profile' => 'Visit Profile',
 	'subscriptions_detail' => 'Subscriptions Detail',
+	'chat_with' => 'Chat with',
+	'mutual_follow' => 'you follow each other & share a community together',
 );

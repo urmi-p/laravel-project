@@ -2783,6 +2783,7 @@ class UserController extends Controller
 
   public function myCommission()
   {
+    abort_if(auth()->user()->verified_id != 'yes', 403);
     $purchases = auth()->user()->payPerView()->orderBy('pay_per_views.id', 'desc')->paginate($this->settings->number_posts_show);
 
     $users = $this->userExplore();

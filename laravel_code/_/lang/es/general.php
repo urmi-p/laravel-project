@@ -1640,4 +1640,6 @@ return array(
 	'subscriptions_detail' => 'Detalle de suscripciones',
 	'request_account_deletion' => 'Solicitar eliminación de la cuenta',
 	'request_account_deletion_alert' => 'Para eliminar su cuenta, por favor contáctenos y procesaremos su solicitud.',
+	'chat_with' => 'Chatea con',
+	'mutual_follow' => 'se siguen mutuamente y comparten una comunidad',
 );

@@ -455,12 +455,7 @@
                 <span class="icon_wrap"><img src="{{url('/img/wallet-bg.png')}}" /></span>
 
             </div><!-- /alert -->
-            {{-- 
-            <div class="mb-3 wallet_ac_detail">
-              <p>Wallet Account No:</p>
-              <p>KM2231391031038108310481903819023830913803123</p>
-            </div>
-            --}}
+            
             <div class="payment-card-custom mt-4">
               <form method="POST" action="{{ url('add/funds') }}" id="formAddFunds">
                 @csrf

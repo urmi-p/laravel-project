@@ -1458,6 +1458,7 @@ class AddFundsController extends Controller
 
   public function myBalanceView()
   {
+    abort_if(auth()->user()->verified_id != 'yes', 403);
     if ($this->settings->disable_wallet == 'on') {
       abort(404);
     }

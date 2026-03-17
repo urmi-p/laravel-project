@@ -1,4 +1,49 @@
 <header class=" @if (request()->is('password/reset')) forgotpwd @endif">
+    <style>
+        @media (max-width: 767.98px) {
+            .mobile-footer-actions {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 10px 6px 0;
+            }
+            .mobile-footer-actions .mode-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 8px;
+                border-radius: 12px;
+                background: #1b1b1b;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+            }
+            .mobile-footer-actions .mode-pill .btn_mobile_nav {
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: #131313;
+                color: #d9d9d9;
+            }
+            .mobile-footer-actions .mode-pill .btn_mobile_nav.active {
+                background: #232323;
+                color: #fcac56 !important;
+            }
+            .mobile-footer-actions .logout-btn {
+                width: 42px;
+                height: 42px;
+                border-radius: 50% !important;
+                background: #1b1b1b;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+                margin-left: auto;
+            }
+        }
+    </style>
     <nav
         class="navbar navbar-expand-md navbar-inverse modern-navbar site-header p-nav @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
         <div class="container-fluid d-flex align-items-center">
@@ -38,7 +83,7 @@
                                     </svg>
                                 </a>
                             </div>
-                            <div class="d-md-none">
+                            {{-- <div class="d-md-none">
                                 <a href="{{ auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light') }}"
                                     class="btn-mobile-nav btn_mobile_nav"
                                     title="{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}">
@@ -48,42 +93,27 @@
                                         <i class="feather icon-sun"></i>
                                     @endif
                                 </a>
-                            </div>
+                            </div> --}}
                             <div class="d-md-none">
-                                @if (auth()->user()->verified_id == 'yes')
-                                    <a class="btn-mobile-nav btn_mobile_nav @if (request()->is('my/commission')) active disabled @endif"
-                                        href="{{ url('my/commission') }}" title="{{ __('admin.commission') }}">
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
-                                                stroke="#A3A3A3" stroke-width="1.125" />
-                                            <path
-                                                d="M11.0336 7.54582C10.9593 6.97383 10.3025 6.04966 9.12157 6.04964C7.74937 6.04962 7.17199 6.80959 7.05484 7.18958C6.87206 7.69785 6.90862 8.74282 8.517 8.85675C10.5275 8.99925 11.3329 9.23655 11.2305 10.467C11.128 11.6974 10.0072 11.9632 9.12157 11.9347C8.23582 11.9062 6.7867 11.4994 6.73047 10.405M8.98102 5.24854V6.05236M8.98102 11.9273V12.7485"
-                                                stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round" />
-                                        </svg>
-                                    </a>
-                                @else
-                                    <a class="topup-wallet btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                        @if (! request()->is('my/wallet'))
-                                            data-toggle="modal" data-target="#modalTopupWallet"
-                                            data-bs-toggle="modal" data-bs-target="#modalTopupWallet"
-                                        @else
-                                            data-toggle="collapse" data-target="#navbarCollapse"
-                                            data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                                        @endif
-                                        aria-controls="navbarCollapse" aria-expanded="false" role="button">
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
-                                                stroke="#A3A3A3" stroke-width="1.125" />
-                                            <path
-                                                d="M11.0336 7.54582C10.9593 6.97383 10.3025 6.04966 9.12157 6.04964C7.74937 6.04962 7.17199 6.80959 7.05484 7.18958C6.87206 7.69785 6.90862 8.74282 8.517 8.85675C10.5275 8.99925 11.3329 9.23655 11.2305 10.467C11.128 11.6974 10.0072 11.9632 9.12157 11.9347C8.23582 11.9062 6.7867 11.4994 6.73047 10.405M8.98102 5.24854V6.05236M8.98102 11.9273V12.7485"
-                                                stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round" />
-                                        </svg>
-                                    </a>
-                                @endif
+                                <a class="topup-wallet btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                    @if (! request()->is('my/wallet'))
+                                        data-toggle="modal" data-target="#modalTopupWallet"
+                                        data-bs-toggle="modal" data-bs-target="#modalTopupWallet"
+                                    @else
+                                        data-toggle="collapse" data-target="#navbarCollapse"
+                                        data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                                    @endif
+                                    aria-controls="navbarCollapse" aria-expanded="false" role="button">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
+                                            stroke="#A3A3A3" stroke-width="1.125" />
+                                        <path
+                                            d="M11.0336 7.54582C10.9593 6.97383 10.3025 6.04966 9.12157 6.04964C7.74937 6.04962 7.17199 6.80959 7.05484 7.18958C6.87206 7.69785 6.90862 8.74282 8.517 8.85675C10.5275 8.99925 11.3329 9.23655 11.2305 10.467C11.128 11.6974 10.0072 11.9632 9.12157 11.9347C8.23582 11.9062 6.7867 11.4994 6.73047 10.405M8.98102 5.24854V6.05236M8.98102 11.9273V12.7485"
+                                            stroke="#A3A3A3" stroke-width="1.125" stroke-linecap="round" />
+                                    </svg>
+                                </a>
                             </div>
                             <div class="d-md-none">
                                 <a href="{{ url('notifications') }}" class="position-relative btn_mobile_nav"
@@ -102,12 +132,12 @@
 
                                 </a>
                             </div>
-                            <div class="d-md-none">
+                            {{-- <div class="d-md-none">
                                 <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav"
                                     title="{{ __('auth.logout') }}">
                                     <i class="feather icon-log-out"></i>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="buttons-mobile-nav d-md-none">
                             <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
@@ -600,6 +630,27 @@
                                     </a>
                                 </li>
                             @endif
+
+                            <li class="nav-item dropdown d-md-none">
+                                <div class="mobile-footer-actions">
+                                    <div class="mode-pill">
+                                    <a href="{{ url('mode/light') }}"
+                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
+                                        title="{{ __('general.light_mode') }}">
+                                        <i class="feather icon-sun"></i>
+                                    </a>
+                                    <a href="{{ url('mode/dark') }}"
+                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'on' ? 'active' : '' }}"
+                                        title="{{ __('general.dark_mode') }}">
+                                        <i class="feather icon-moon"></i>
+                                    </a>
+                                    </div>
+                                    <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav logout-btn"
+                                        title="{{ __('auth.logout') }}">
+                                        <i class="feather icon-log-out"></i>
+                                    </a>
+                                </div>
+                            </li>
 
                             <!-- =========== End Menu Mobile ============-->
 
