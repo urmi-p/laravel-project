@@ -1,11 +1,11 @@
 <div class="col-sm-3 col-md-3 col-lg-3 side_bar_box_shadow">
 
-    <button type="button" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none"
+    {{-- <button type="button" class="btn-menu-expand btn btn-primary btn-block mb-2 d-lg-none"
     data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarSettings" aria-expanded="false">
 
     <i class="fa fa-cog mr-2"></i> {{ __('general.settings') }}
 
-</button>
+</button> --}}
 
 <div class="d-lg-block left-settings-sidebar navbar-collapse collapse" id="navbarSettings">
 
