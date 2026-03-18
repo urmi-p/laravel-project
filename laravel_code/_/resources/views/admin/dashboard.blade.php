@@ -422,7 +422,7 @@
 
 							    <h6 class="m-0 fw-light text-break">
 
-										<a href="{{ url($user->username) }}" target="_blank">
+										<a href="{{ url('profile',$user->username) }}" target="_blank">
 
 											{{ $user->name ?: $user->username }}
 

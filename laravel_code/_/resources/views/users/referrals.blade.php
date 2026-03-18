@@ -115,7 +115,7 @@
 					{{__('general.referrals_welcome_desc', ['percentage' => auth()->user()->custom_profit_referral ?: $settings->percentage_referred])}}
 				</p>
 
-				<div class="card border-0 shadow-sm mb-3">
+				<div class="card border-0 shadow-sm mb-3 referral-link-card">
 					<div class="card-body">
 						<label for="copy_link" class="form-label fw-bold mb-2">
 							{{ __('general.your_referral_link') }}
@@ -127,8 +127,8 @@
 								class="form-control"
 								readonly
 								value="{{ url('register') . '?ref=' . auth()->id() }}">
-							<button class="btn btn-dark" type="button" id="btn_copy_url">
-								<i class="fas fa-link"></i> <span class="btn-block mt-3">{{ __('general.copy_link') }}</span>
+							<button class="btn btn-dark referrals-copy-btn" type="button" id="btn_copy_url">
+								<i class="fas fa-link"></i> <span class="referrals-copy-btn-text">{{ __('general.copy_link') }}</span>
 							</button>
 						</div>
 					</div>
@@ -142,12 +142,12 @@
 				</div>
 				@endif
 				
-				<div class="row">
+				<div class="row ref-stats-row">
 					<div class="col-lg-3 mb-2">
 						<div class="ref-card">
 							<div class="ref-card-body current_balance">
-								<span class="small-text mb-2">{{ __('general.current_balance') }}</span>
-								<h5 class="my-2 py-2 fs-24">
+								<span class="small-text mb-2 ref-stat-title">{{ __('general.current_balance') }}</span>
+								<h5 class="my-2 py-2 fs-24 ref-stat-value">
 									{{Helper::amountFormatDecimal(auth()->user()->balance)}}
 								</h5>
 								<!-- <small>{{ __('general.balance') }}</small> -->
@@ -173,8 +173,8 @@
 									<ellipse cx="22" cy="24.5" rx="3.5" ry="2" stroke="#D96E30" stroke-width="0.75" />
 								</svg>
 								<div class="mt-2 d-flex flex-column gap-4">
-									<span class="mt-2">{{ __('general.total_registered_users') }}</span>
-									<h5 class="mt-2">
+									<span class="mt-2 ref-stat-title">{{ __('general.total_registered_users') }}</span>
+									<h5 class="mt-2 ref-stat-value">
 										{{ number_format(auth()->user()->referrals()->count()) }}
 									</h5>
 								</div>
@@ -192,8 +192,8 @@
 									<ellipse cx="22" cy="24.9546" rx="3.5" ry="2" stroke="#17971E" stroke-width="0.75" />
 								</svg>
 								<div class="mt-2 d-flex flex-column gap-4">
-									<span class="mt-2">{{ __('general.total_transactions') }}</span>
-									<h5 class="mt-2">{{ number_format(auth()->user()->referralTransactions()->count()) }}</h5>
+									<span class="mt-2 ref-stat-title">{{ __('general.total_transactions') }}</span>
+									<h5 class="mt-2 ref-stat-value">{{ number_format(auth()->user()->referralTransactions()->count()) }}</h5>
 								</div>
 							</div>
 						</div><!-- card 1 -->
@@ -209,8 +209,8 @@
 									<ellipse cx="22" cy="24.5" rx="3.5" ry="2" stroke="#D92D20" stroke-width="0.75" />
 								</svg>
 								<div class="mt-2 d-flex flex-column gap-4">
-									<span class="mt-2">{{ __('general.earnings_total') }}</span>
-									<h5 class="mt-2"> {{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</h5>
+									<span class="mt-2 ref-stat-title">{{ __('general.earnings_total') }}</span>
+									<h5 class="mt-2 ref-stat-value"> {{ Helper::amountFormatDecimal(auth()->user()->referralTransactions()->sum('earnings')) }}</h5>
 								</div>
 							</div>
 						</div><!-- card 1 -->
@@ -222,7 +222,7 @@
 							<h4>
 								{{ __('admin.transactions') }}
 							</h4>
-							<a href="#" class="view-all" style=" display:flex; align-items:center; gap:6px; font-size:12px; white-space:nowrap; ">
+							<a href="{{ request()->fullUrlWithQuery(['per_page' => 100, 'page' => 1]) }}" class="view-all" style=" display:flex; align-items:center; gap:6px; font-size:12px; white-space:nowrap; ">
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path d="M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z"
@@ -266,7 +266,7 @@
 				</div><!-- card -->
 
 				@if ($transactions->hasPages())
-				{{ $transactions->links() }}
+				{{ $transactions->appends(request()->query())->links() }}
 				@endif
 			</div>
 		</div>

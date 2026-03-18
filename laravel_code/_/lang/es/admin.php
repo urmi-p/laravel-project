@@ -11,7 +11,7 @@ return array(
 
 	'admin'                     =>      'Panel Admin',
 	'role_admin'                =>      'Admin',
-	'dashboard'                 =>      'Dashboard',
+	'dashboard'                 =>      'Panel de control',
 	'home'                      =>      'Home',
 	'categories'                =>      'Categorías',
 	'subcategories'             =>      'Subcategorias',

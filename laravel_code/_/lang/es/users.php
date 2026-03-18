@@ -57,7 +57,7 @@ return array(
 	'admin' => 'Admin',
 	'user_suspended' => 'Este usuario ha sido suspendido',
 	'registered' => 'Registrado',
-	'dashboard' => 'Dashboard',
+	'dashboard' => 'Panel de control',
 	'upload' => 'Subir',
 
 	'settings_desc' => 'Seleccione su país y díganos su profesión/ocupación.',

@@ -19,5 +19,6 @@ return [
 'token' => 'Цей токен для скидання пароля є недійсним.',
 'user' => "Ми не можемо знайти користувача з цією адресою e-mail.",
 'subject' => "Скидання пароля.",
+'throttled' => 'Buds laska, zachykayte pered povtornoyu sproboyu.',
 
 ];

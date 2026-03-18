@@ -104,7 +104,7 @@
               <div class="media">
                 <a href="{{url()->previous()}}" class="mr-3"><i class="fa fa-arrow-left"></i></a>
                 <div class="media-message-profile-center">
-                  <a href="{{url($user->username)}}" class="mr-3">
+                  <a href="{{url('profile', $user->username)}}" class="mr-3">
                     <span class="position-relative user-status @if ($user->active_status_online == 'yes') @if (Helper::isOnline($user->id)) user-online @else user-offline @endif @endif d-block">
                       <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle" width="95" height="95">
                     </span>
@@ -112,7 +112,7 @@
 
                   <div class="media-body profile-card">
                     <h6 class="m-0 fs-24 font_weight_500">
-                      <a href="{{url($user->username)}}">
+                      <a href="{{url('profile', $user->username)}}">
                         {{$user->hide_name == 'yes' ? $user->username : $user->name}}
                       </a>
 
@@ -347,7 +347,7 @@
                   @php
                     $nameUser = $user->hide_name == 'yes' ? $user->username : $user->first_name;
                   @endphp
-                {!! __('general.show_form_msg_error_subscription_', ['user' => '<a href="'.url($user->username).'" class="link-border text-white">'.$nameUser.'</a>']) !!}
+                {!! __('general.show_form_msg_error_subscription_', ['user' => '<a href="'.url('profile',$user->username).'" class="link-border text-white">'.$nameUser.'</a>']) !!}
               </div>
                 @endif
 

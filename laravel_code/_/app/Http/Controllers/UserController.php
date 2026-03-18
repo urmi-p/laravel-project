@@ -2183,9 +2183,12 @@ class UserController extends Controller
 
   public function myReferrals()
   {
+    $perPage = (int) $this->request->query('per_page', 20);
+    $perPage = max(1, min($perPage, 100));
+
     $transactions = ReferralTransactions::whereReferredBy(auth()->id())
       ->orderBy('id', 'desc')
-      ->paginate(20);
+      ->paginate($perPage);
 
     return view('users.referrals', ['transactions' => $transactions]);
   }

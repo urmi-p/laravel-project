@@ -687,7 +687,7 @@ class HomeController extends Controller
 
           $data .= '<div class="card border-0">
   							<div class="list-group list-group-sm list-group-flush">
-                 <a href="' . url($user->username) . '" class="list-group-item list-group-item-action text-decoration-none py-2 px-3 bg-autocomplete">
+                 <a href="' . url('profile', $user->username) . '" class="list-group-item list-group-item-action text-decoration-none py-2 px-3 bg-autocomplete">
                    <div class="media">
                     <div class="media-left mr-3 position-relative">
                         <img class="media-object rounded-circle" src="' . Helper::getFile(config('path.avatar') . $user->avatar) . '" width="30" height="30">

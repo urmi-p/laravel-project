@@ -168,11 +168,11 @@
 
 			navigator.clipboard.writeText(text).then(function() {
 
-				$(btn).html('<i class="fa fa-check"></i> <span class="btn-block mt-3">' + copied + '</span>');
+				$(btn).html('<i class="fa fa-check"></i> <span class="referrals-copy-btn-text">' + copied + '</span>');
 
 				setTimeout(function () {
 
-					$(btn).html('<i class="fas fa-link"></i> <span class="btn-block mt-3">' + copy_link + '</span>');
+					$(btn).html('<i class="fas fa-link"></i> <span class="referrals-copy-btn-text">' + copy_link + '</span>');
 
 				}, 1000);
 
@@ -196,11 +196,11 @@
 
 			
 
-			$(btn).html('<i class="fa fa-check"></i> <span class="btn-block mt-3">' + copied + '</span>');
+			$(btn).html('<i class="fa fa-check"></i> <span class="referrals-copy-btn-text">' + copied + '</span>');
 
 			setTimeout(function () {
 
-				$(btn).html('<i class="fas fa-link"></i> <span class="btn-block mt-3">' + copy_link + '</span>');
+				$(btn).html('<i class="fas fa-link"></i> <span class="referrals-copy-btn-text">' + copy_link + '</span>');
 
 			}, 1000);
 

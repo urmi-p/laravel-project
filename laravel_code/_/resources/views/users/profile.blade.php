@@ -679,7 +679,7 @@
 
                                                             <input type="hidden" readonly="readonly" id="copy_link"
                                                                 class="form-control"
-                                                                value="{{ url($user->username) . Helper::referralLink() }}">
+                                                                value="{{ url('profile',$user->username) . Helper::referralLink() }}">
 
                                                         </div>
 
@@ -821,7 +821,7 @@
                 @if ($user->verified_id == 'yes')
                     <ul class="nav nav_profile justify-content-center nav-fill mx-auto top_side_profile">
                         <li class="nav-link nav_link @if (request()->path() == $user->username) active @endif navbar-user-mobile fs-16">
-                            <a href="{{ request()->path() == $user->username ? 'javascript:;' : url($user->username) }}"
+                            <a href="{{ request()->path() == $user->username ? 'javascript:;' : url('profile',$user->username) }}"
                                 title="{{ __('general.posts') }}">
                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.418 0H1.58203C0.709805 0 0 0.709805 0 1.58203V2.28516H18V1.58203C18 0.709805 17.2902 0 16.418 0ZM7.09724 8.32187L8.97595 9.96578L11.7208 7.22088C11.9382 7.00351 12.2889 7.01954 12.4879 7.24342L13.8164 8.73798V5.87109H4.18359V10.3392L6.39527 8.32855C6.59355 8.14823 6.89555 8.14539 7.09724 8.32187Z" fill="currentcolor"/>

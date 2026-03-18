@@ -19,5 +19,6 @@ return [
 'token'    => 'Ce jeton de réinitialisation de mot de passe est invalide.',
 'user'     => "Nous ne trouvons aucun utilisateur avec cette adresse e-mail.",
 'subject'  => "Réinitialisation du mot de passe.",
+'throttled' => 'Veuillez patienter avant de reessayer.',
 
 ];
