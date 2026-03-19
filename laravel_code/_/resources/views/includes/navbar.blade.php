@@ -1,65 +1,96 @@
 <header class=" @if (request()->is('password/reset')) forgotpwd @endif">
     <style>
         @media (max-width: 767.98px) {
-            .mobile-footer-actions {
+            .navbar-brand {
+                margin-right: 0 !important;
+            }
+            .navbar-brand .logo {
+                width: 92px !important;
+                max-width: 92px !important;
+                max-height: 30px !important;
+            }
+            .navbar-left {
+                max-width: 96px;
+                overflow: hidden;
+            }
+            .main_head_search {
+                top: 16px !important;
+                right: 8px !important;
+                margin-right: 0 !important;
+                gap: 3px !important;
+                max-width: calc(100vw - 104px);
+            }
+            .mobile-header-mode-actions {
                 display: flex;
                 align-items: center;
-                gap: 14px;
-                padding: 10px 6px 0;
+                gap: 3px;
             }
-            .mobile-footer-actions .mode-pill {
+            .mobile-header-mode-actions .mode-pill {
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
-                padding: 6px 8px;
-                border-radius: 12px;
+                gap: 3px;
+                padding: 0;
+                border-radius: 7px;
                 background: #1b1b1b;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+                box-shadow: none;
             }
-            .mobile-footer-actions .mode-pill .btn_mobile_nav {
-                width: 34px;
-                height: 34px;
-                border-radius: 9px;
+            .mobile-header-mode-actions .mode-pill .btn_mobile_nav {
+                width: 26px;
+                height: 26px;
+                min-width: 26px;
+                min-height: 26px;
+                border-radius: 6px;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 background: #131313;
                 color: #d9d9d9;
+                padding: 0 !important;
             }
-            .mobile-footer-actions .mode-pill .btn_mobile_nav.active {
-                background: #232323;
-                color: #fcac56 !important;
+            .mobile-header-mode-actions .mode-pill .btn_mobile_nav.active {
+                background: #e2394c;
+                color: #ffffff !important;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
             }
-            .mobile-footer-actions .logout-btn {
-                width: 42px;
-                height: 42px;
-                border-radius: 50% !important;
+            html[data-bs-theme="light"] .mobile-header-mode-actions .mode-pill .btn_mobile_nav[data-mode="light"],
+            html[data-bs-theme="dark"] .mobile-header-mode-actions .mode-pill .btn_mobile_nav[data-mode="dark"] {
+                background: #e2394c !important;
+                color: #ffffff !important;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+            }
+            .mobile-header-mode-actions .logout-btn {
+                width: 26px;
+                height: 26px;
+                min-width: 26px;
+                min-height: 26px;
+                border-radius: 7px !important;
                 background: #1b1b1b;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 color: #ffffff;
                 box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-                margin-left: auto;
+                padding: 0 !important;
             }
-            html[data-bs-theme="light"] .mobile-footer-actions .mode-pill {
-                background: #ffffff;
-                box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08),
-                    0 12px 30px rgba(15, 23, 42, 0.08);
+            .mobile-header-mode-actions .btn_mobile_nav i {
+                font-size: 12px !important;
+                line-height: 1 !important;
             }
-            html[data-bs-theme="light"] .mobile-footer-actions .mode-pill .btn_mobile_nav {
-                background: #f8fafc;
-                color: #64748b;
+            .main_head_search > .d-md-none > .btn_mobile_nav,
+            .main_head_search > .d-md-none > a.btn_mobile_nav,
+            .main_head_search > .d-md-none > a.btn-mobile-nav {
+                width: 26px !important;
+                height: 26px !important;
+                min-width: 26px !important;
+                min-height: 26px !important;
+                padding: 0 !important;
+                border-radius: 7px !important;
             }
-            html[data-bs-theme="light"] .mobile-footer-actions .mode-pill .btn_mobile_nav.active {
-                background: #fdecef;
-                color: #e2394c !important;
-            }
-            html[data-bs-theme="light"] .mobile-footer-actions .logout-btn {
-                background: #ffffff;
-                color: #1f2937;
-                box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08),
-                    0 12px 30px rgba(15, 23, 42, 0.08);
+            .main_head_search > .d-md-none > .btn_mobile_nav svg,
+            .main_head_search > .d-md-none > a.btn_mobile_nav svg,
+            .main_head_search > .d-md-none > a.btn-mobile-nav svg {
+                width: 14px;
+                height: 14px;
             }
         }
     </style>
@@ -85,7 +116,7 @@
                 @auth
                     <div>
                         <div class="position-absolute d-flex d-md-none main_head_search"
-                            style="top: 25px; right: 35px;gap:6px;margin-right:20px">
+                            style="top: 16px; right: 8px; gap: 3px; margin-right: 0;">
                             <div class="d-md-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     data-toggle="collapse" data-target="#mobileCreatorSearch"
@@ -102,17 +133,22 @@
                                     </svg>
                                 </a>
                             </div>
-                            {{-- <div class="d-md-none">
-                                <a href="{{ auth()->user()->dark_mode == 'off' ? url('mode/dark') : url('mode/light') }}"
-                                    class="btn-mobile-nav btn_mobile_nav"
-                                    title="{{ auth()->user()->dark_mode == 'off' ? __('general.dark_mode') : __('general.light_mode') }}">
-                                    @if (auth()->user()->dark_mode == 'off')
-                                        <i class="feather icon-moon"></i>
-                                    @else
+                            <div class="d-md-none mobile-header-mode-actions">
+                                <div class="mode-pill">
+                                    <a href="{{ url('mode/light') }}"
+                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
+                                        data-mode="light"
+                                        title="{{ __('general.light_mode') }}">
                                         <i class="feather icon-sun"></i>
-                                    @endif
-                                </a>
-                            </div> --}}
+                                    </a>
+                                    <a href="{{ url('mode/dark') }}"
+                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'on' ? 'active' : '' }}"
+                                        data-mode="dark"
+                                        title="{{ __('general.dark_mode') }}">
+                                        <i class="feather icon-moon"></i>
+                                    </a>
+                                </div>
+                            </div>
                             <div class="d-md-none">
                                 <a class="topup-wallet btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     @if (! request()->is('my/wallet'))
@@ -151,29 +187,28 @@
 
                                 </a>
                             </div>
-                            {{-- <div class="d-md-none">
-                                <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav"
+                            <div class="d-md-none">
+                                <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
+                                    data-toggle="collapse" data-target="#navbarCollapse"
+                                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                                    aria-expanded="false" role="button">
+                                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3.42578 4.28571H17.1401" stroke="#A3A3A3" stroke-width="1.2"
+                                            stroke-linecap="round" />
+                                        <path d="M3.42578 10.2857H17.1401" stroke="#A3A3A3" stroke-width="1.2"
+                                            stroke-linecap="round" />
+                                        <path d="M3.42578 16.2857H17.1401" stroke="#A3A3A3" stroke-width="1.2"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="d-md-none">
+                                <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav logout-btn"
                                     title="{{ __('auth.logout') }}">
                                     <i class="feather icon-log-out"></i>
                                 </a>
-                            </div> --}}
-                        </div>
-                        <div class="buttons-mobile-nav d-md-none">
-                            <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
-                                data-toggle="collapse" data-target="#navbarCollapse"
-                                data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
-                                aria-expanded="false" role="button">
-                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3.42578 4.28571H17.1401" stroke="#A3A3A3" stroke-width="1.2"
-                                        stroke-linecap="round" />
-                                    <path d="M3.42578 10.2857H17.1401" stroke="#A3A3A3" stroke-width="1.2"
-                                        stroke-linecap="round" />
-                                    <path d="M3.42578 16.2857H17.1401" stroke="#A3A3A3" stroke-width="1.2"
-                                        stroke-linecap="round" />
-                                </svg>
-
-                            </a>
+                            </div>
                         </div>
                     </div>
                 @endauth
@@ -650,39 +685,20 @@
                                 </li>
                             @endif
 
-                            <li class="nav-item dropdown d-md-none">
-                                <div class="mobile-footer-actions">
-                                    <div class="mode-pill">
-                                    <a href="{{ url('mode/light') }}"
-                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
-                                        title="{{ __('general.light_mode') }}">
-                                        <i class="feather icon-sun"></i>
-                                    </a>
-                                    <a href="{{ url('mode/dark') }}"
-                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'on' ? 'active' : '' }}"
-                                        title="{{ __('general.dark_mode') }}">
-                                        <i class="feather icon-moon"></i>
-                                    </a>
-                                    </div>
-                                    <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav logout-btn"
-                                        title="{{ __('auth.logout') }}">
-                                        <i class="feather icon-log-out"></i>
-                                    </a>
-                                </div>
-                            </li>
-
                             <!-- =========== End Menu Mobile ============-->
 
                             <li class="nav-item dropdown d-md-block d-none">
                                 <div class="theme-toggle-group">
                                     <a href="{{ url('mode/light') }}"
                                         class="theme-toggle-btn {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
+                                        data-mode="light"
                                         title="Light mode">
                                         <i class="feather icon-sun icon-navbar"></i>
                                     </a>
 
                                     <a href="{{ url('mode/dark') }}"
                                         class="theme-toggle-btn {{ auth()->user()->dark_mode == 'on' ? 'active' : '' }}"
+                                        data-mode="dark"
                                         title="Dark mode">
                                         <i class="feather icon-moon icon-navbar"></i>
                                     </a>

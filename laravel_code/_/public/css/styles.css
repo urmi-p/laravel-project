@@ -168,17 +168,6 @@ input[type="file"] {
 .lh-inherit {
     line-height: inherit !important;
 }
-input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    outline: none;
-    cursor: inherit;
-    font-size: 100px;
-}
 .text-featured {
     color: #ffc107 !important;
 }
@@ -526,20 +515,6 @@ button:active.button-search {
     background: rgba(5, 5, 5, 0.2);
     left: 0;
     top: 0;
-}
-.dropdown-toggle::after {
-    margin-left: 0.1em;
-    -webkit-transition: all 200ms linear;
-    -moz-transition: all 200ms linear;
-    -o-transition: all 200ms linear;
-    -ms-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-.dropdown-toggle[aria-expanded="true"]:after {
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
-    -webkit-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    transform: rotate(180deg);
 }
 .p-nav a.nav-link:not(.btn) {
     color: #fff;
@@ -1687,6 +1662,7 @@ a:hover.button-avatar-upload {
 .custom-switch-lg .custom-control-label::before {
     left: -2.25rem;
     width: 3rem;
+    height: 1.5rem;
     border-radius: 1.5rem;
 }
 .custom-switch-lg .custom-control-label::after {
@@ -1698,9 +1674,6 @@ a:hover.button-avatar-upload {
 }
 .custom-switch-lg .custom-control-input:checked ~ .custom-control-label::after {
     transform: translateX(1.4rem);
-}
-.custom-switch-lg .custom-control-label::before {
-    height: 1.5rem;
 }
 .custom-switch-lg .custom-control-label {
     padding-left: 1.5rem;
@@ -1983,16 +1956,30 @@ a:hover.button-avatar-upload {
 
 /* ACTIVE */
 .theme-toggle-btn.active {
-    background: #1f1f1f;
-    color: #fcac56 !important;
+    background: #e2394c;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.14);
 
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.05),
-        0 4px 12px rgba(0, 0, 0, 0.5);
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 6px 16px rgba(226, 57, 76, 0.35);
 }
 .theme-toggle-btn.active .icon-sun,
 .theme-toggle-btn.active .icon-moon {
-    color: #fcac56 !important;
+    color: #ffffff !important;
+}
+html[data-bs-theme="light"] .theme-toggle-btn[data-mode="light"],
+html[data-bs-theme="dark"] .theme-toggle-btn[data-mode="dark"] {
+    background: #e2394c !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 6px 16px rgba(226, 57, 76, 0.35);
+}
+html[data-bs-theme="light"] .theme-toggle-btn[data-mode="light"] .icon-sun,
+html[data-bs-theme="dark"] .theme-toggle-btn[data-mode="dark"] .icon-moon {
+    color: #ffffff !important;
 }
 /* INACTIVE HOVER */
 .theme-toggle-btn:not(.active):hover {
@@ -2526,29 +2513,8 @@ a.btn-category:focus {
     vertical-align: unset;
     gap: 6px !important;
 }
-.post_img {
-    width: fit-content;
-}
-
 .myhover_btn a.btn {
     border-radius: 8px !important;
-}
-
-.nav_profile li.active {
-    border-bottom: none !important;
-}
-.nav_profile li.active a {
-    background-color: #000;
-    padding: 6px !important;
-    border-radius: 12px;
-    border: 1px solid #e2394c;
-}
-
-.nav_link {
-    padding: 12px 24px !important;
-}
-.nav_link a:hover {
-    text-decoration: none !important;
 }
 
 [data-bs-theme="dark"] .text_color_white {
@@ -3004,10 +2970,6 @@ a.btn-category:focus {
     color: #333 !important;
 }
 
-[data-bs-theme="light"] .top_side_profile .nav_link a:active {
-    color: #333 !important;
-}
-
 [data-bs-theme="light"] .top_side_profile .nav_link.active > a,
 [data-bs-theme="light"] .top_side_profile .nav_link.active > a:hover,
 [data-bs-theme="light"] .top_side_profile .nav_link.active > a:focus,
@@ -3068,9 +3030,6 @@ a.btn-category:focus {
     text-decoration: none !important;
 }
 
-.text-red {
-    color: #e2394c;
-}
 #btnLoginRegister {
     border-radius: 8px;
 }
@@ -3133,6 +3092,9 @@ a.btn-category:focus {
     line-height: 20px;
 }
 
+/* =========================
+   Auth Shell: Shared Base
+   ========================= */
 /* Auth screens: login/signup/forgot/reset */
 .auth-shell {
     background: #000;
@@ -4125,21 +4087,6 @@ div.media-post {
 } */
 .input-sub-text {
     transition: box-shadow 0.15s ease;
-    border: 0;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    box-shadow:
-        0 1px 3px rgba(50, 50, 93, 0.15),
-        0 1px 0 rgba(0, 0, 0, 0.02);
-}
-
-.list-group-item-action {
-    color: #222;
-}
-.list-group-item-action:hover {
-    color: #222;
-}
-.input-sub-text {
     border: 1px solid #ced4da;
     font-size: 1rem;
     font-weight: 400;
@@ -4154,6 +4101,16 @@ div.media-post {
     border-bottom-left-radius: 8px;
     background-color: #fff;
     align-items: center;
+    box-shadow:
+        0 1px 3px rgba(50, 50, 93, 0.15),
+        0 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.list-group-item-action {
+    color: #222;
+}
+.list-group-item-action:hover {
+    color: #222;
 }
 .sub-span-text {
     color: #a3a3a3;
@@ -5341,6 +5298,9 @@ footer.footer-bg {
     }
 }
 
+/* =========================
+   Auth Page: Login Theme
+   ========================= */
 /* Login page: figma-aligned dark theme only */
 .login-page-theme {
     --login-bg: #000000;
@@ -5516,6 +5476,9 @@ footer.footer-bg {
     color: var(--login-primary) !important;
 }
 
+/* =========================
+   Auth Page: Home Login Shell
+   ========================= */
 /* Hide global chrome on home login page to match figma */
 .home-login-page .site-header,
 .home-login-page #mobileMenuOverlay,
@@ -5738,6 +5701,9 @@ footer.footer-bg {
     }
 }
 
+/* =========================
+   Auth Page: Login Theme Forms
+   ========================= */
 /* Auth form optimization: shared login + signup field system */
 .login-page-theme .login-figma-field {
     margin-bottom: 1rem;
@@ -5777,6 +5743,9 @@ footer.footer-bg {
     color: var(--login-primary);
 }
 
+/* =========================
+   Auth Page: Home Login Desktop Alignment
+   ========================= */
 /* Left column alignment fix (login + signup) */
 @media (min-width: 75rem) {
     .home-login-page .login-page-theme .login-figma-row {
@@ -5827,6 +5796,9 @@ footer.footer-bg {
     }
 }
 
+/* =========================
+   Auth Page: Home Login Right Panel
+   ========================= */
 /* Right panel alignment fix (login) */
 @media (min-width: 75rem) {
     .home-login-page .login-page-theme .login-figma-right-col {
@@ -6104,6 +6076,9 @@ footer.footer-bg {
         line-height: 1.22;
     }
 }
+/* =========================
+   Auth Shell: Shared Responsive
+   ========================= */
 /* Mobile (phones) */
 @media screen and (max-width: 575px) {
     .forgotpwd {
@@ -6162,6 +6137,9 @@ footer.footer-bg {
         font-size: 13px;
     }
 }
+/* =========================
+   Auth Legacy / Shared Layout
+   ========================= */
 /* Desktop */
 /*@media (min-width: 1025px) {*/
 .forgotpwd .navbar {
@@ -6237,6 +6215,9 @@ footer.footer-bg {
     z-index: 0;
 }
 
+/* =========================
+   Settings / My Card
+   ========================= */
 /* My Card */
 .left-settings-sidebar {
     /* Frame 1618873641 */
@@ -6524,6 +6505,9 @@ footer.footer-bg {
     /* Hide 'Shares' text on very small screens if needed, or just let it shrink */
 }
 
+/* =========================
+   Auth Page: Home Login
+   ========================= */
 /* Home login page: consolidated and in-use styles only */
 .home-login-page {
     --hl-bg: #000000;
@@ -6798,6 +6782,9 @@ footer.footer-bg {
     }
 }
 
+/* =========================
+   Auth Page: Forgot Password
+   ========================= */
 /* Forgot password: dark-only figma alignment */
 .forgot-password-page {
     --fp-bg: #000000;
@@ -7082,6 +7069,9 @@ footer.footer-bg {
     }
 }
 
+/* =========================
+   Auth Page: Reset Password
+   ========================= */
 /* Reset password page: figma-aligned dark mode only */
 .reset-password-page {
     --rp-bg: #000000;
@@ -7388,6 +7378,9 @@ footer.footer-bg {
     --co-radius-md: 1rem;
 }
 
+/* =========================
+   App Shell: Base Tokens
+   ========================= */
 .app-auth-shell {
     --co-bg: var(--co-light-bg);
     --co-surface: var(--co-light-surface);
@@ -7412,6 +7405,9 @@ html[data-bs-theme="dark"] .app-auth-shell {
     --co-footer: var(--co-dark-footer);
 }
 
+/* =========================
+   App Shell: Shared Layout
+   ========================= */
 .app-auth-shell .modern-navbar.site-header {
     width: calc(100% - 4rem);
     max-width: 92rem;
@@ -7476,6 +7472,9 @@ html[data-bs-theme="dark"] .app-auth-shell {
     padding-right: 0 !important;
 }
 
+/* =========================
+   App Shell: Tablet Layout
+   ========================= */
 @media (min-width: 48rem) and (max-width: 61.99875rem) {
     .app-auth-shell .modern-navbar.site-header {
         width: calc(100% - 4rem);
@@ -7592,6 +7591,9 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 }
 
+/* =========================
+   App Shell: Small Desktop Layout
+   ========================= */
 @media (min-width: 62rem) and (max-width: 74.99875rem) {
     .app-auth-shell .modern-navbar.site-header {
         width: calc(100% - 3rem);
@@ -7678,6 +7680,9 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 }
 
+/* =========================
+   App Shell: Desktop Column Ratios
+   ========================= */
 @media (min-width: 75rem) {
     .app-auth-shell
         .app-main-row:not(.dashboard-main-row)
@@ -7695,6 +7700,9 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 }
 
+/* =========================
+   App Shell: Shared Surface Styles
+   ========================= */
 .app-auth-shell main .container-fluid.pt-lg-5,
 .app-auth-shell main .container-fluid.pt-2,
 .app-auth-shell main .container-fluid.pt-3,
@@ -7801,6 +7809,9 @@ html[data-bs-theme="dark"] .app-auth-shell {
     color: var(--co-text) !important;
 }
 
+/* =========================
+   App Shell: Mobile Layout
+   ========================= */
 @media (max-width: 47.99875rem) {
     .app-auth-shell {
         --app-mobile-gutter: 1.25rem;
@@ -7873,8 +7884,8 @@ html[data-bs-theme="dark"] .app-auth-shell {
         .modern-navbar.site-header
         .main_head_search
         .btn_mobile_nav {
-        inline-size: 2.25rem;
-        block-size: 2.25rem;
+        inline-size: 1.75rem;
+        block-size: 1.75rem;
         border-radius: 0.5rem;
         display: inline-flex;
         align-items: center;
@@ -7929,6 +7940,75 @@ html[data-bs-theme="dark"] .app-auth-shell {
         display: block !important;
         right: 0;
         height: 100% !important;
+    }
+
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .sidebar-card,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .sidebar-card,
+    html[data-bs-theme="light"]
+        .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .sidebar-card,
+    html[data-bs-theme="light"]
+        .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .sidebar-card {
+        background: #151515 !important;
+        background-color: #151515 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        color: #ffffff !important;
+        box-shadow: none !important;
+    }
+
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .sidebar-card
+        .card-icon,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .sidebar-card
+        .card-icon {
+        background: rgba(255, 255, 255, 0.08) !important;
+        color: #ffffff !important;
+    }
+
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .sidebar-card
+        .card-info
+        small,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .sidebar-card
+        .card-info
+        small {
+        color: #a3a3a3 !important;
+    }
+
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .sidebar-card
+        .card-info
+        strong,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .sidebar-card
+        .card-info
+        strong {
+        color: #ffffff !important;
     }
 
     .app-auth-shell .modern-navbar.site-header .btn_mobile_nav svg,
@@ -8394,11 +8474,6 @@ html[data-bs-theme="light"] .edit-post-middle {
 
 /* Mobile dashboard baseline (project-wide, authenticated shell only) */
 @media (max-width: 47.99875rem) {
-    .app-auth-shell {
-        --app-mobile-gutter: 1.25rem;
-        --app-mobile-frame: 24.375rem;
-        --app-mobile-content: 21.875rem;
-    }
     /*
     .app-auth-shell main[role="main"] .section.section-sm {
         min-height: auto !important;
@@ -8481,7 +8556,9 @@ html[data-bs-theme="light"] .edit-post-middle {
     }
 }
 
-/* Light mode alignment */
+/* =========================
+   App Shell: Light Theme
+   ========================= */
 html[data-bs-theme="light"] .app-auth-shell {
     --co-bg: #f5f7fb;
     --co-surface: #ffffff;
@@ -8494,6 +8571,7 @@ html[data-bs-theme="light"] .app-auth-shell {
     color: var(--co-text);
 }
 
+/* App Shell: Light Theme Navbar */
 html[data-bs-theme="light"] .app-auth-shell .modern-navbar.site-header {
     background: #0b0d11 !important;
     border-color: #0b0d11 !important;
@@ -8515,6 +8593,7 @@ html[data-bs-theme="light"]
     color: #ffffff !important;
 }
 
+/* App Shell: Light Theme Search + Header Actions */
 html[data-bs-theme="light"] .app-auth-shell .search-bar,
 html[data-bs-theme="light"]
     .app-auth-shell
@@ -8554,6 +8633,7 @@ html[data-bs-theme="light"]
     color: #ffffff !important;
 }
 
+/* App Shell: Light Theme Dropdowns */
 html[data-bs-theme="light"] .app-auth-shell .dd-menu-user,
 html[data-bs-theme="light"] .app-auth-shell .dropdown-menu.dd-menu-user {
     background: var(--light-surface) !important;
@@ -8582,6 +8662,7 @@ html[data-bs-theme="light"] .app-auth-shell .dropdown-divider {
     border-top-color: rgba(15, 23, 42, 0.08) !important;
 }
 
+/* App Shell: Light Theme Surfaces */
 html[data-bs-theme="light"] .app-auth-shell .section,
 html[data-bs-theme="light"] .app-auth-shell main[role="main"] {
     background: var(--co-bg) !important;
@@ -8601,6 +8682,7 @@ html[data-bs-theme="light"] .app-auth-shell div.media-post {
     box-shadow: 0 0.375rem 1.5rem rgba(15, 23, 42, 0.06) !important;
 }
 
+/* App Shell: Light Theme Navigation */
 html[data-bs-theme="light"] .app-auth-shell .menu-left-home li a,
 html[data-bs-theme="light"] .app-auth-shell .sidebar_li a,
 html[data-bs-theme="light"]
@@ -8649,6 +8731,7 @@ html[data-bs-theme="light"] .app-auth-shell .action-pill.text-primary {
     color: #e2394c !important;
 }
 
+/* App Shell: Light Theme Typography */
 html[data-bs-theme="light"] .app-auth-shell .text-muted,
 html[data-bs-theme="light"] .app-auth-shell small,
 html[data-bs-theme="light"] .app-auth-shell .lead {
@@ -8679,282 +8762,160 @@ html[data-bs-theme="light"] .app-auth-shell footer.footer-bg a:hover {
     color: #1f2937 !important;
 }
 
-/* Shared light-theme normalization for content surfaces and readable copy */
-html[data-bs-theme="light"] body {
-    background: #f5f7fb;
-    color: #1f2937;
-}
-
-html[data-bs-theme="light"] .section {
-    background:
-        radial-gradient(
-            50% 30% at 85% 1%,
-            rgba(226, 57, 76, 0.18) 0%,
-            rgba(226, 57, 76, 0.08) 32%,
-            rgba(0, 0, 0, 0) 70%
-        ),
-        #f5f7fb;
-}
-
-html[data-bs-theme="light"] main h1,
-html[data-bs-theme="light"] main h2,
-html[data-bs-theme="light"] main h3,
-html[data-bs-theme="light"] main h4,
-html[data-bs-theme="light"] main h5,
-html[data-bs-theme="light"] main h6,
-html[data-bs-theme="light"] main .card-title,
-html[data-bs-theme="light"] main .modal-title,
-html[data-bs-theme="light"] main label,
-html[data-bs-theme="light"] main .title,
-html[data-bs-theme="light"] main .title-login,
-html[data-bs-theme="light"] main .title_login {
+/* App Shell: Light Theme Headings + Copy */
+html[data-bs-theme="light"] .app-auth-shell main h1,
+html[data-bs-theme="light"] .app-auth-shell main h2,
+html[data-bs-theme="light"] .app-auth-shell main h3,
+html[data-bs-theme="light"] .app-auth-shell main h4,
+html[data-bs-theme="light"] .app-auth-shell main h5,
+html[data-bs-theme="light"] .app-auth-shell main h6,
+html[data-bs-theme="light"] .app-auth-shell main .card-title,
+html[data-bs-theme="light"] .app-auth-shell main .modal-title,
+html[data-bs-theme="light"] .app-auth-shell main label,
+html[data-bs-theme="light"] .app-auth-shell main .title,
+html[data-bs-theme="light"] .app-auth-shell main .title-login,
+html[data-bs-theme="light"] .app-auth-shell main .title_login {
     color: #111827;
 }
 
-html[data-bs-theme="light"] main p,
-html[data-bs-theme="light"] main li,
-html[data-bs-theme="light"] main small,
-html[data-bs-theme="light"] td,
-html[data-bs-theme="light"] th,
-html[data-bs-theme="light"] .small,
-html[data-bs-theme="light"] .text-muted,
-html[data-bs-theme="light"] .muted-content,
-html[data-bs-theme="light"] .card-body span,
-html[data-bs-theme="light"] .modal-body span,
-html[data-bs-theme="light"] .date-span {
+html[data-bs-theme="light"] .app-auth-shell main p,
+html[data-bs-theme="light"] .app-auth-shell main li,
+html[data-bs-theme="light"] .app-auth-shell main small,
+html[data-bs-theme="light"] .app-auth-shell td,
+html[data-bs-theme="light"] .app-auth-shell th,
+html[data-bs-theme="light"] .app-auth-shell .small,
+html[data-bs-theme="light"] .app-auth-shell .text-muted,
+html[data-bs-theme="light"] .app-auth-shell .muted-content,
+html[data-bs-theme="light"] .app-auth-shell .card-body span,
+html[data-bs-theme="light"] .app-auth-shell .modal-body span,
+html[data-bs-theme="light"] .app-auth-shell .date-span {
     color: #667085;
 }
 
-html[data-bs-theme="light"] .card,
-html[data-bs-theme="light"] .modal-content,
-html[data-bs-theme="light"] .dropdown-menu:not(.dropdown-emoji),
-html[data-bs-theme="light"] .nav_profile,
-html[data-bs-theme="light"] .sub-main,
-html[data-bs-theme="light"] .notify-card,
-html[data-bs-theme="light"] .notify-div,
-html[data-bs-theme="light"] .large-dash-card,
-html[data-bs-theme="light"] .dash-card,
-html[data-bs-theme="light"] .dash-card-mini,
-html[data-bs-theme="light"] .referral-link-card .card-body,
-html[data-bs-theme="light"] .ref-card-body,
-html[data-bs-theme="light"] .bg-whitee,
-html[data-bs-theme="light"] .bg-dark-force {
+/* App Shell: Light Theme Cards + Panels */
+html[data-bs-theme="light"] .app-auth-shell .card,
+html[data-bs-theme="light"] .app-auth-shell .modal-content,
+html[data-bs-theme="light"] .app-auth-shell .dropdown-menu:not(.dropdown-emoji),
+html[data-bs-theme="light"] .app-auth-shell .nav_profile,
+html[data-bs-theme="light"] .app-auth-shell .sub-main,
+html[data-bs-theme="light"] .app-auth-shell .notify-card,
+html[data-bs-theme="light"] .app-auth-shell .notify-div,
+html[data-bs-theme="light"] .app-auth-shell .large-dash-card,
+html[data-bs-theme="light"] .app-auth-shell .dash-card,
+html[data-bs-theme="light"] .app-auth-shell .dash-card-mini,
+html[data-bs-theme="light"] .app-auth-shell .referral-link-card .card-body,
+html[data-bs-theme="light"] .app-auth-shell .ref-card-body,
+html[data-bs-theme="light"] .app-auth-shell .bg-whitee,
+html[data-bs-theme="light"] .app-auth-shell .bg-dark-force {
     background: #ffffff !important;
     color: #1f2937 !important;
     border-color: rgba(15, 23, 42, 0.08) !important;
     box-shadow: 0 10px 32px rgba(15, 23, 42, 0.06);
 }
 
-html[data-bs-theme="light"] .card-header,
-html[data-bs-theme="light"] .card-footer,
-html[data-bs-theme="light"] .modal-header,
-html[data-bs-theme="light"] .modal-footer {
+html[data-bs-theme="light"] .app-auth-shell .card-header,
+html[data-bs-theme="light"] .app-auth-shell .card-footer,
+html[data-bs-theme="light"] .app-auth-shell .modal-header,
+html[data-bs-theme="light"] .app-auth-shell .modal-footer {
     border-color: rgba(15, 23, 42, 0.08) !important;
 }
 
-html[data-bs-theme="light"] body:not(.login-page-theme):not(.home-login-page) .form-control,
-html[data-bs-theme="light"] body:not(.login-page-theme):not(.home-login-page) .custom-select,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .input-group-alternative
-    .form-control,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .input-group-alternative
-    .input-group-text,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .input-group-sub
-    .form-control,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .input-group-sub
-    .input-sub-text,
-html[data-bs-theme="light"] body:not(.login-page-theme):not(.home-login-page) select,
-html[data-bs-theme="light"] body:not(.login-page-theme):not(.home-login-page) textarea {
+/* App Shell: Light Theme Forms */
+html[data-bs-theme="light"] .app-auth-shell .form-control,
+html[data-bs-theme="light"] .app-auth-shell .custom-select,
+html[data-bs-theme="light"] .app-auth-shell .input-group-alternative .form-control,
+html[data-bs-theme="light"] .app-auth-shell .input-group-alternative .input-group-text,
+html[data-bs-theme="light"] .app-auth-shell .input-group-sub .form-control,
+html[data-bs-theme="light"] .app-auth-shell .input-group-sub .input-sub-text,
+html[data-bs-theme="light"] .app-auth-shell select,
+html[data-bs-theme="light"] .app-auth-shell textarea {
     background: #ffffff !important;
     color: #111827 !important;
     border: 1px solid rgba(15, 23, 42, 0.12) !important;
 }
 
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .form-control::placeholder,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    textarea::placeholder,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    input::placeholder {
+html[data-bs-theme="light"] .app-auth-shell .form-control::placeholder,
+html[data-bs-theme="light"] .app-auth-shell textarea::placeholder,
+html[data-bs-theme="light"] .app-auth-shell input::placeholder {
     color: #98a2b3 !important;
 }
 
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .form-control:focus,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .custom-select:focus,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    textarea:focus,
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    select:focus {
+html[data-bs-theme="light"] .app-auth-shell .form-control:focus,
+html[data-bs-theme="light"] .app-auth-shell .custom-select:focus,
+html[data-bs-theme="light"] .app-auth-shell textarea:focus,
+html[data-bs-theme="light"] .app-auth-shell select:focus {
     background: #ffffff !important;
     color: #111827 !important;
     border-color: rgba(226, 57, 76, 0.28) !important;
     box-shadow: 0 0 0 0.2rem rgba(226, 57, 76, 0.08) !important;
 }
 
-html[data-bs-theme="light"]
-    body:not(.login-page-theme):not(.home-login-page)
-    .input-group-text {
+html[data-bs-theme="light"] .app-auth-shell .input-group-text {
     background: #ffffff;
     color: #98a2b3;
     border-color: rgba(15, 23, 42, 0.12);
 }
 
-html[data-bs-theme="light"] .list-group-item,
-html[data-bs-theme="light"] .dropdown-item,
-html[data-bs-theme="light"] .table,
-html[data-bs-theme="light"] .table td,
-html[data-bs-theme="light"] .table th {
+/* App Shell: Light Theme Lists + Tables */
+html[data-bs-theme="light"] .app-auth-shell .list-group-item,
+html[data-bs-theme="light"] .app-auth-shell .dropdown-item,
+html[data-bs-theme="light"] .app-auth-shell .table,
+html[data-bs-theme="light"] .app-auth-shell .table td,
+html[data-bs-theme="light"] .app-auth-shell .table th {
     color: #475467;
 }
 
-html[data-bs-theme="light"] .list-group-item {
+html[data-bs-theme="light"] .app-auth-shell .list-group-item {
     background: #ffffff;
     border-color: rgba(15, 23, 42, 0.08);
 }
 
-html[data-bs-theme="light"] .list-group-item-action:hover,
-html[data-bs-theme="light"] .dropdown-item:hover,
-html[data-bs-theme="light"] .dropdown-item:focus {
+html[data-bs-theme="light"] .app-auth-shell .list-group-item-action:hover,
+html[data-bs-theme="light"] .app-auth-shell .dropdown-item:hover,
+html[data-bs-theme="light"] .app-auth-shell .dropdown-item:focus {
     background: #f8fafc;
     color: #111827;
 }
 
-html[data-bs-theme="light"] .table thead th,
-html[data-bs-theme="light"] .table tr {
+html[data-bs-theme="light"] .app-auth-shell .table thead th,
+html[data-bs-theme="light"] .app-auth-shell .table tr {
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     color: #667085;
 }
 
-html[data-bs-theme="light"] .table tbody {
+html[data-bs-theme="light"] .app-auth-shell .table tbody {
     background-color: #ffffff;
 }
 
-html[data-bs-theme="light"] .table tbody tr {
+html[data-bs-theme="light"] .app-auth-shell .table tbody tr {
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }
 
-html[data-bs-theme="light"] .alert-success,
-html[data-bs-theme="light"] .alert-primary,
-html[data-bs-theme="light"] .alert-warning,
-html[data-bs-theme="light"] .alert-danger,
-html[data-bs-theme="light"] .alert_custom,
-html[data-bs-theme="light"] .not_creator_alert {
+/* App Shell: Light Theme Alerts + Pagination */
+html[data-bs-theme="light"] .app-auth-shell .alert-success,
+html[data-bs-theme="light"] .app-auth-shell .alert-primary,
+html[data-bs-theme="light"] .app-auth-shell .alert-warning,
+html[data-bs-theme="light"] .app-auth-shell .alert-danger,
+html[data-bs-theme="light"] .app-auth-shell .alert_custom,
+html[data-bs-theme="light"] .app-auth-shell .not_creator_alert {
     border-color: rgba(15, 23, 42, 0.08) !important;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
 }
 
-html[data-bs-theme="light"] .page-link {
+html[data-bs-theme="light"] .app-auth-shell .page-link {
     background: #ffffff;
     color: #475467;
     border-color: rgba(15, 23, 42, 0.08);
 }
 
-html[data-bs-theme="light"] .page-link:hover,
-html[data-bs-theme="light"] .page-item.active .page-link {
+html[data-bs-theme="light"] .app-auth-shell .page-link:hover,
+html[data-bs-theme="light"] .app-auth-shell .page-item.active .page-link {
     background: #fdecef;
     color: #e2394c;
     border-color: rgba(226, 57, 76, 0.18);
 }
 
-/* Preserve auth/login page palette from global light-mode overrides */
-html[data-bs-theme="light"] body.login-page-theme,
-html[data-bs-theme="light"] body.home-login-page {
-    background: #000000 !important;
-    color: var(--login-text) !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .auth-title,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-label,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-pass-toggle,
-html[data-bs-theme="light"] body.login-page-theme #forgotPassword,
-html[data-bs-theme="light"] body.login-page-theme #loginSpan,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-remember .custom-control-label,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-remember .custom-control-label span,
-html[data-bs-theme="light"] body.home-login-page .auth-title,
-html[data-bs-theme="light"] body.home-login-page .login-figma-label,
-html[data-bs-theme="light"] body.home-login-page .login-figma-pass-toggle,
-html[data-bs-theme="light"] body.home-login-page #forgotPassword,
-html[data-bs-theme="light"] body.home-login-page #loginSpan,
-html[data-bs-theme="light"] body.home-login-page .login-figma-remember .custom-control-label,
-html[data-bs-theme="light"] body.home-login-page .login-figma-remember .custom-control-label span {
-    color: #ffffff !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .login-figma-subtitle,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-or,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-hero-title,
-html[data-bs-theme="light"] body.login-page-theme .title_login,
-html[data-bs-theme="light"] body.login-page-theme .title_home_login,
-html[data-bs-theme="light"] body.home-login-page .login-figma-subtitle,
-html[data-bs-theme="light"] body.home-login-page .login-figma-or,
-html[data-bs-theme="light"] body.home-login-page .login-figma-hero-title,
-html[data-bs-theme="light"] body.home-login-page .title_login,
-html[data-bs-theme="light"] body.home-login-page .title_home_login {
-    color: var(--login-text-muted) !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .btn-google.login-figma-social-btn,
-html[data-bs-theme="light"] body.login-page-theme .btn-google.login-figma-social-btn:hover,
-html[data-bs-theme="light"] body.login-page-theme .btn-google.login-figma-social-btn:focus,
-html[data-bs-theme="light"] body.home-login-page .btn-google.login-figma-social-btn,
-html[data-bs-theme="light"] body.home-login-page .btn-google.login-figma-social-btn:hover,
-html[data-bs-theme="light"] body.home-login-page .btn-google.login-figma-social-btn:focus {
-    color: #344054 !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .btn-facebook.login-figma-social-btn,
-html[data-bs-theme="light"] body.login-page-theme .btn-facebook.login-figma-social-btn:hover,
-html[data-bs-theme="light"] body.login-page-theme .btn-facebook.login-figma-social-btn:focus,
-html[data-bs-theme="light"] body.login-page-theme .btn-twitter.login-figma-social-btn,
-html[data-bs-theme="light"] body.login-page-theme .btn-twitter.login-figma-social-btn:hover,
-html[data-bs-theme="light"] body.login-page-theme .btn-twitter.login-figma-social-btn:focus,
-html[data-bs-theme="light"] body.home-login-page .btn-facebook.login-figma-social-btn,
-html[data-bs-theme="light"] body.home-login-page .btn-facebook.login-figma-social-btn:hover,
-html[data-bs-theme="light"] body.home-login-page .btn-facebook.login-figma-social-btn:focus,
-html[data-bs-theme="light"] body.home-login-page .btn-twitter.login-figma-social-btn,
-html[data-bs-theme="light"] body.home-login-page .btn-twitter.login-figma-social-btn:hover,
-html[data-bs-theme="light"] body.home-login-page .btn-twitter.login-figma-social-btn:focus {
-    color: #ffffff !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .login-figma-input-wrap,
-html[data-bs-theme="light"] body.home-login-page .login-figma-input-wrap {
-    background: var(--login-input-bg) !important;
-    border-color: var(--login-input-border) !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .login-figma-input-wrap .form-control,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-input-wrap .input-group-text,
-html[data-bs-theme="light"] body.login-page-theme .login-figma-input,
-html[data-bs-theme="light"] body.home-login-page .login-figma-input-wrap .form-control,
-html[data-bs-theme="light"] body.home-login-page .login-figma-input-wrap .input-group-text,
-html[data-bs-theme="light"] body.home-login-page .login-figma-input {
-    color: #ffffff !important;
-    background: transparent !important;
-    border-color: transparent !important;
-}
-
-html[data-bs-theme="light"] body.login-page-theme .login-figma-input::placeholder,
-html[data-bs-theme="light"] body.home-login-page .login-figma-input::placeholder {
-    color: var(--login-placeholder) !important;
-}
-
+/* App Shell: Light Theme Mobile Overrides */
 @media (max-width: 47.99875rem) {
     html[data-bs-theme="light"] .app-auth-shell header {
         background: #0b0d11 !important;
@@ -9705,9 +9666,9 @@ html[data-bs-theme="light"] body.home-login-page .login-figma-input::placeholder
         height: calc(100vh - 28px) !important;
         padding: 16px !important;
         border-radius: 16px !important;
-        background: var(--co-surface) !important;
-        border: 1px solid var(--co-border) !important;
-        box-shadow: var(--co-shadow) !important;
+        background: #050505 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55) !important;
         z-index: 1060 !important;
         overflow-y: auto !important;
         display: block !important;
@@ -9817,6 +9778,36 @@ html[data-bs-theme="light"] body.home-login-page .login-figma-input::placeholder
 
     .modern-navbar.site-header .container-fluid {
         gap: 12px !important;
+    }
+
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .nav-link,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .dropdown-item,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .nav-link,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .dropdown-item {
+        color: #ffffff !important;
+    }
+
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.show
+        .dropdown-divider,
+    .app-auth-shell
+        .modern-navbar.site-header
+        .site-header-collapse.navbar-collapse.collapsing
+        .dropdown-divider {
+        border-top-color: rgba(255, 255, 255, 0.08) !important;
     }
 }
 
