@@ -14,7 +14,7 @@
         </div>
         <div class="login-figma-left-inner">
           <div class="card-body login-figma-card">
-            <h4 class="auth-title mb-0">Welcome Back</h4>
+            <h4 class="auth-title mb-0">{{ __('auth.welcome_back') }}</h4>
             <small class="btn-block pb-4 h6 text-lime title_login login-figma-subtitle">{{ __('general.title_login') }}</small>
 
             @if (session('login_required'))
@@ -26,18 +26,18 @@
             <div class="mb-2 w-100 login-figma-social">
               @if ($settings->google_login == 'on')
               <a href="{{url('oauth/google')}}" class="btn btn-google login-figma-social-btn mb-2 w-100">
-                <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span>{{ __('auth.login_with') }} Google</span>
+                <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span>{{ __('auth.login_with') }} {{ __('general.google') }}</span>
               </a>
               @endif
 
               @if ($settings->facebook_login == 'on')
               <a href="{{url('oauth/facebook')}}" class="btn btn-facebook login-figma-social-btn mb-2 w-100">
-                <i class="fab fa-facebook mr-2"></i> <span>{{ __('auth.login_with') }} Facebook</span>
+                <i class="fab fa-facebook mr-2"></i> <span>{{ __('auth.login_with') }} {{ __('general.facebook') }}</span>
               </a>
               @endif
               @if ($settings->twitter_login == 'on')
               <a href="{{url('oauth/twitter')}}" class="btn btn-twitter login-figma-social-btn mb-2 w-100">
-                <i class="bi-twitter-x mr-2"></i> <span>{{ __('auth.login_with') }} Twitter</span>
+                <i class="bi-twitter-x mr-2"></i> <span>{{ __('auth.login_with') }} {{ __('general.twitter') }}</span>
               </a>
               @endif
             </div>
@@ -57,7 +57,7 @@
 
               <div class="form-group mb-3 display-none login-figma-field" id="full_name">
                 <div class="mb-1 login-figma-label-wrap">
-                  <span class="login-figma-label">Full name</span>
+                  <span class="login-figma-label">{{ __('auth.full_name1') }}</span>
                 </div>
                 <div class="input-group input-group-alternative login-figma-input-wrap">
                   <input class="form-control login-figma-input" value="{{ old('name')}}" placeholder="{{__('auth.full_name')}}" name="name" type="text" autocomplete="name">
@@ -66,7 +66,7 @@
 
               <div class="form-group mb-3 display-none login-figma-field" id="email">
                 <div class="mb-1 login-figma-label-wrap">
-                  <span class="login-figma-label">Email</span>
+                  <span class="login-figma-label">{{ __('auth.email') }}</span>
                 </div>
                 <div class="input-group input-group-alternative login-figma-input-wrap">
                   <input class="form-control login-figma-input" value="{{ old('email')}}" placeholder="{{__('auth.email')}}" name="email" type="text" autocomplete="email">
@@ -75,7 +75,7 @@
 
               <div class="form-group mb-3 login-figma-field" id="username_email">
                 <div class="mb-1 login-figma-label-wrap">
-                  <span class="login-figma-label">Email</span>
+                  <span class="login-figma-label">{{ __('auth.email') }}</span>
                 </div>
                 <div class="input-group input-group-alternative login-figma-input-wrap">
                   <input class="form-control login-figma-input" value="{{ old('username_email') }}" placeholder="{{ __('auth.username_or_email') }}" name="username_email" type="text" autocomplete="username">
@@ -84,7 +84,7 @@
 
               <div class="form-group login-figma-field">
                 <div class="mb-1 login-figma-label-wrap">
-                  <span class="login-figma-label">Password</span>
+                  <span class="login-figma-label">{{ __('general.password') }}</span>
                 </div>
                 <div class="input-group input-group-alternative login-figma-input-wrap" id="showHidePassword">
                   <input name="password" type="password" class="form-control login-figma-input" placeholder="{{ __('auth.password') }}" autocomplete="current-password">
@@ -665,6 +665,4 @@
 </script>
 
 @endsection
-
-
 

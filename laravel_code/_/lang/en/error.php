@@ -12,11 +12,13 @@ return array(
 	"error_404"         => "404 Page not found",
 	"error_403"         => "Error 403",
 	"error_406"         => "Error 406",
+	"error_500"         => "Error 500",
 
 	"error_404_description"         => "Oops! Page not found.",
 	"error_404_subdescription"      => "Sorry, that page does not found!",
 	"error_403_description"         => "Sorry, access forbidden!",
 	"error_406_description"         => "Sorry, not acceptable!",
+	"server_error"                  => "Server Error",
 
 	// Others Errors Language Lines
 	"error_user_banned"         => "Sorry, This user has been banned!",

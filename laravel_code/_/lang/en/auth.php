@@ -72,4 +72,6 @@ return [
     'protected_recaptcha' => 'Protected by reCAPTCHA',
 	'full_name1' => 'Full name',
 	'email' => 'Email',
+    'confirm_password_message' => 'Please confirm your password before continuing.',
+    'verify_email_address' => 'Verify Your Email Address',
 ];

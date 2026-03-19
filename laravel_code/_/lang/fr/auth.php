@@ -70,5 +70,7 @@ return [
 'protected_recaptcha'       => 'Protégé par reCAPTCHA',
 'full_name1' => 'Nom et prénom',
 'email' => 'E-mail',
+'confirm_password_message'  => 'Veuillez confirmer votre mot de passe avant de continuer.',
+'verify_email_address'      => 'Vérifiez votre adresse e-mail',
 'register' => 'S\'inscrire',
 ];

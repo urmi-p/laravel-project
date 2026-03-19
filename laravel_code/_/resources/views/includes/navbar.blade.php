@@ -42,6 +42,25 @@
                 box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
                 margin-left: auto;
             }
+            html[data-bs-theme="light"] .mobile-footer-actions .mode-pill {
+                background: #ffffff;
+                box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08),
+                    0 12px 30px rgba(15, 23, 42, 0.08);
+            }
+            html[data-bs-theme="light"] .mobile-footer-actions .mode-pill .btn_mobile_nav {
+                background: #f8fafc;
+                color: #64748b;
+            }
+            html[data-bs-theme="light"] .mobile-footer-actions .mode-pill .btn_mobile_nav.active {
+                background: #fdecef;
+                color: #e2394c !important;
+            }
+            html[data-bs-theme="light"] .mobile-footer-actions .logout-btn {
+                background: #ffffff;
+                color: #1f2937;
+                box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08),
+                    0 12px 30px rgba(15, 23, 42, 0.08);
+            }
         }
     </style>
     <nav

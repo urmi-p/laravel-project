@@ -11,7 +11,7 @@
 
 							@if ($settings->facebook_login == 'on')
 								<a href="{{url('oauth/facebook')}}" class="btn btn-facebook auth-form-btn flex-grow mb-2 w-100">
-									<i class="fab fa-facebook mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> Facebook
+									<i class="fab fa-facebook mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.facebook') }}
 								</a>
 							@endif
 
@@ -23,7 +23,7 @@
 
 								@if ($settings->google_login == 'on')
 								<a href="{{url('oauth/google')}}" class="btn btn-google auth-form-btn flex-grow w-100">
-									<img src="{{ url('public/img/google.svg') }}" class="mr-2" width="18" height="18"> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> Google
+									<img src="{{ url('public/img/google.svg') }}" class="mr-2" width="18" height="18"> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.google') }}
 								</a>
 							@endif
 							</div>

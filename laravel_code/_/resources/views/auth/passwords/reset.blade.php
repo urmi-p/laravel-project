@@ -20,8 +20,8 @@
         </div>
 
         <div class="reset-password-content w-100">
-          <h4 class="mb-0 auth-title">Password &amp; login</h4>
-          <small class="btn-block mt-2 pb-0 title_login">Use a strong, unique password to keep your account safe. You will be signed out from other devices when you change it.</small>
+          <h4 class="mb-0 auth-title">{{ __('auth.reset_password') }}</h4>
+          <small class="btn-block mt-2 pb-0 title_login">{{ __('auth.reset_pass_subtitle') }}</small>
         </div>
         @if (session('status'))
         <div class="alert alert-success">
@@ -57,9 +57,9 @@
             <div class="strength-bar">
               <div id="strengthFill" class="strength-fill"></div>
             </div>
-            <div id="strengthText" class="strength-text">Very Weak</div>
+            <div id="strengthText" class="strength-text">{{ __('general.very_weak') }}</div>
             <div id="strengthHint" class="strength-hint">
-              Please enter strong password include Capital Letters, Numbers and signs
+              {{ __('general.strong_password_hint') }}
             </div>
           </div>
 
@@ -74,10 +74,10 @@
 
           <div class="text-center reset-submit-wrap">
             @if ($settings->captcha == 'on')
-            {!! NoCaptcha::displaySubmit('passwordResetForm', 'Save Changes', ['data-size' => 'invisible', 'class' => 'btn btn-primary w-100 reset-submit-btn']) !!}
+            {!! NoCaptcha::displaySubmit('passwordResetForm', __('general.save_changes'), ['data-size' => 'invisible', 'class' => 'btn btn-primary w-100 reset-submit-btn']) !!}
             {!! NoCaptcha::renderJs() !!}
             @else
-            <button type="submit" class="btn btn-primary w-100 reset-submit-btn">Save Changes</button>
+            <button type="submit" class="btn btn-primary w-100 reset-submit-btn">{{ __('general.save_changes') }}</button>
             @endif
           </div>
         </form>
@@ -89,7 +89,7 @@
 
       <div class="col-12 col-md-6 col-xl-6 right-side auth-right-panel reset-password-right d-none d-md-flex flex-column">
         <img src="{{url('img', $settings->logo)}}" class="img-center d-lg-block mt-3 auth-hero-logo" width="356" height="120" alt="{{$settings->title}}">
-        <span class="h5 mb-5 d-lg-block title_home_login">Join now and start making money with your content!</span>
+        <span class="h5 mb-5 d-lg-block title_home_login">{{ __('general.title_home_login') }}</span>
         <div class="image-stack">
           <img src="{{url('img', $settings->home_index)}}" class="img-center img-fluid d-lg-block stack-img" alt="Hero">
         </div>

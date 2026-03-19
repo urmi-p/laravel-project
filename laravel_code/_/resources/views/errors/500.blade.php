@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Error 500</title>
+    <title>{{ __('error.error_500') }}</title>
 
     <link href="{{ asset('css/core.min.css') }}" rel="stylesheet">
 
@@ -28,7 +28,7 @@
 
   						<h1>500</h1>
 
-  						<p class="mt-3 mb-5">Server Error</p>
+  						<p class="mt-3 mb-5">{{ __('error.server_error') }}</p>
 
   					</div>
 
@@ -41,4 +41,3 @@
   </body>
 
 </html>
-

@@ -70,5 +70,7 @@ return [
 'protected_recaptcha'      => 'Захищено reCAPTCHA',
 'full_name1' => 'ПІБ',
 'email' => 'Електронна пошта',
+'confirm_password_message' => 'Будь ласка, підтвердьте свій пароль, щоб продовжити.',
+'verify_email_address'     => 'Підтвердіть свою електронну адресу',
 'register' => 'Зареєструватися',
 ];

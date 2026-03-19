@@ -34,19 +34,19 @@
         <div class="mb-2 w-100 login-figma-social">
           @if ($settings->google_login == 'on')
           <a href="{{url('oauth/google')}}" class="btn btn-google auth-form-btn login-figma-social-btn mb-2 w-100">
-            <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> {{ __('auth.login_with') }}<span class="auth-provider-name">Google</span>
+            <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> {{ __('auth.login_with') }}<span class="auth-provider-name">{{ __('general.google') }}</span>
           </a>
           @endif
 
           @if ($settings->facebook_login == 'on')
           <a href="{{url('oauth/facebook')}}" class="btn btn-facebook auth-form-btn login-figma-social-btn mb-2 w-100">
-            <i class="fab fa-facebook mr-2"></i> {{ __('auth.login_with') }}<span class="auth-provider-name">Facebook</span>
+            <i class="fab fa-facebook mr-2"></i> {{ __('auth.login_with') }}<span class="auth-provider-name">{{ __('general.facebook') }}</span>
           </a>
           @endif
 
           @if ($settings->twitter_login == 'on')
           <a href="{{url('oauth/twitter')}}" class="btn btn-twitter auth-form-btn login-figma-social-btn mb-2 w-100">
-            <i class="bi-twitter-x mr-2"></i> {{ __('auth.login_with') }}<span class="auth-provider-name">Twitter</span>
+            <i class="bi-twitter-x mr-2"></i> {{ __('auth.login_with') }}<span class="auth-provider-name">{{ __('general.twitter') }}</span>
           </a>
           @endif
         </div>
@@ -64,7 +64,7 @@
 
           <div class="form-group mb-3" id="username_email">
             <div class="mb-1">
-              <span class="login-figma-label">Email</span>
+              <span class="login-figma-label">{{ __('auth.email') }}</span>
             </div>
             <div class="input-group input-group-alternative login-figma-input-wrap">
               <input class="form-control login-figma-input" required value="{{ old('username_email') }}" placeholder="{{ __('auth.username_or_email') }}" name="username_email" type="text">
