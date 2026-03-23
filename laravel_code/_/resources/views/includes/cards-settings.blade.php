@@ -115,17 +115,7 @@
                 </a>
                 @endif
 
-                <a href="{{ url('settings/verify/account') }}"
-                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('settings/verify/account')) active @endif">
-
-                    <div>
-
-                        <i
-                            class="@if (auth()->user()->verified_id == 'yes') feather icon-check-circle @else bi-star @endif mr-2"></i>
-
-                        <span>{{ auth()->user()->verified_id == 'yes' ? __('general.verified_account') : __('general.become_creator') }}</span>
-                    </div>
-                </a>
+                
 
                 @if ($settings->video_call_status && auth()->user()->verified_id == 'yes')
                 <a href="{{ url('settings/video-call') }}"

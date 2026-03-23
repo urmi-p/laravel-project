@@ -128,6 +128,7 @@ class LoginController extends Controller
 
           return response()->json([
             'actionRequired' => true,
+            'csrf_token' => csrf_token(),
           ]);
         }
 

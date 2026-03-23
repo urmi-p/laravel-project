@@ -592,13 +592,21 @@
 
 
 
+                                                @php
+                                                    $shareProfileUrl = url('profile', $user->username) . Helper::referralLink();
+                                                    $shareProfileUrlEncoded = rawurlencode($shareProfileUrl);
+                                                    $shareProfileName = $user->hide_name == 'yes' ? $user->username : $user->name;
+                                                    $shareProfileNameEncoded = rawurlencode($shareProfileName);
+                                                    $shareSmsTextEncoded = rawurlencode(__('general.check_this') . ' ' . $shareProfileUrl);
+                                                @endphp
+
                                                 <div class="container-fluid">
 
                                                     <div class="row">
 
                                                         <div class="col-md-4 col-6 mb-3">
 
-                                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($user->username) . Helper::referralLink() }}"
+                                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareProfileUrlEncoded }}"
                                                                 title="{{ __('general.facebook') }}" target="_blank"
                                                                 class="social-share text-muted d-block text-center h6">
 
@@ -612,8 +620,8 @@
 
                                                         <div class="col-md-4 col-6 mb-3">
 
-                                                            <a href="https://twitter.com/intent/tweet?url={{ url($user->username) . Helper::referralLink() }}&text={{ e($user->hide_name == 'yes' ? $user->username : $user->name) }}"
-                                                                data-url="{{ url($user->username) }}"
+                                                            <a href="https://twitter.com/intent/tweet?url={{ $shareProfileUrlEncoded }}&text={{ $shareProfileNameEncoded }}"
+                                                                data-url="{{ $shareProfileUrl }}"
                                                                 class="social-share text-muted d-block text-center h6"
                                                                 target="_blank" title="{{ __('general.twitter') }}">
 
@@ -626,9 +634,10 @@
 
                                                         <div class="col-md-4 col-6 mb-3">
 
-                                                            <a href="whatsapp://send?text={{ url($user->username) . Helper::referralLink() }}"
+                                                            <a href="https://wa.me/?text={{ $shareProfileUrlEncoded }}"
                                                                 data-action="share/whatsapp/share"
                                                                 class="social-share text-muted d-block text-center h6"
+                                                                target="_blank"
                                                                 title="{{ __('general.whatsapp') }}">
 
                                                                 <i class="fab fa-whatsapp btn-whatsapp"></i> <span
@@ -642,7 +651,7 @@
 
                                                         <div class="col-md-4 col-6 mb-3">
 
-                                                            <a href="mailto:?subject={{ e($user->hide_name == 'yes' ? $user->username : $user->name) }}&amp;body={{ url($user->username) . Helper::referralLink() }}"
+                                                            <a href="mailto:?subject={{ $shareProfileNameEncoded }}&amp;body={{ $shareProfileUrlEncoded }}"
                                                                 class="social-share text-muted d-block text-center h6"
                                                                 title="{{ __('auth.email') }}">
 
@@ -655,7 +664,7 @@
 
                                                         <div class="col-md-4 col-6 mb-3">
 
-                                                            <a href="sms:?&body={{ __('general.check_this') }} {{ url($user->username) . Helper::referralLink() }}"
+                                                            <a href="sms:?&body={{ $shareSmsTextEncoded }}"
                                                                 class="social-share text-muted d-block text-center h6"
                                                                 title="{{ __('general.sms') }}">
 
@@ -679,7 +688,7 @@
 
                                                             <input type="hidden" readonly="readonly" id="copy_link"
                                                                 class="form-control"
-                                                                value="{{ url('profile',$user->username) . Helper::referralLink() }}">
+                                                                value="{{ $shareProfileUrl }}">
 
                                                         </div>
 
@@ -1349,7 +1358,7 @@
                                                             </div>
                                                         </div>
                                                     </a>
-                                                    <small class="d-block w-100 text-center text-truncate profile-ppv-label">{{ __('general.ppv') }}</small>
+                                                    
 
                                                 </div>
                                             @else
@@ -2808,7 +2817,7 @@
     <script type="text/javascript">
         @if ($settings->generate_qr_code && $user->verified_id == 'yes')
 
-            new QRCode(document.getElementById("QrCode"), "{{ url($user->username) . Helper::referralLink() }}");
+            new QRCode(document.getElementById("QrCode"), "{{ url('profile', $user->username) . Helper::referralLink() }}");
 
             const downloadQR = () => {
 

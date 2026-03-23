@@ -4939,6 +4939,13 @@
 		e.preventDefault();
 
 		var $element = $(this);
+		var csrfToken = $('meta[name="csrf-token"]').attr('content');
+		var form2fa = $("#formVerify2fa");
+
+		// Avoid stale token submissions when modal stays open for long sessions.
+		if (csrfToken) {
+			form2fa.find('input[name="_token"]').val(csrfToken);
+		}
 
 
 
@@ -4951,6 +4958,9 @@
 			$("#formVerify2fa").ajaxForm({
 
 				dataType: 'json',
+				headers: {
+					'X-CSRF-TOKEN': csrfToken
+				},
 
 				success: function (response) {
 
@@ -5001,6 +5011,10 @@
 				},
 
 				error: function (responseText, statusText, xhr, $form) {
+					if (xhr == 419 || (responseText && responseText.status == 419)) {
+						window.location.reload();
+						return;
+					}
 
 					// error
 

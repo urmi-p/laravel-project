@@ -126,7 +126,7 @@
 								id="copy_link"
 								class="form-control"
 								readonly
-								value="{{ url('register') . '?ref=' . auth()->id() }}">
+								value="{{ route('register') . '?ref=' . auth()->id() }}">
 							<button class="btn btn-dark referrals-copy-btn" type="button" id="btn_copy_url">
 								<i class="fas fa-link"></i> <span class="referrals-copy-btn-text">{{ __('general.copy_link') }}</span>
 							</button>

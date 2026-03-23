@@ -1025,7 +1025,7 @@ return array(
 'results'                             => 'Résultats :',
 'restrict'                            => 'Restreindre',
 'restricted_users'                    => 'Utilisateurs restreints',
-'confirm_restrict'                    => 'Restreindre cet utilisateur l\'empêchera de vous envoyer des messages privés ou de commenter vos publications, mais il pourra toujours voir votre profil.',
+'confirm_restrict'                    => 'Si vous restreignez cet utilisateur, il ne pourra plus vous envoyer de messages privés ni commenter vos publications, mais il pourra toujours voir votre profil.',
 'remove_restriction'                  => 'Supprimer la restriction',
 'info_restricted_users'               => 'Utilisateurs que vous avez restreints',
 

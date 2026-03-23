@@ -351,6 +351,11 @@ $(function() {
 			 success:  function(result) {
 
          if (result.actionRequired) {
+           if (result.csrf_token) {
+             $('meta[name="csrf-token"]').attr('content', result.csrf_token);
+             $('#formVerify2fa').find('input[name="_token"]').val(result.csrf_token);
+           }
+
            $('#modal2fa').modal({
     				    backdrop: 'static',
     				    keyboard: false,
