@@ -541,7 +541,7 @@
                                     </defs>
                                 </svg>
                                 <span class="label">{{ __('general.commission_creator_keeps') }}</span>
-                                <h4 id="calc-creator-keeps">$9.29</h4>
+                                <h4 id="calc-creator-keeps">€9.29</h4>
                                 <p>{{ number_format(100 - ($commission + $tax), 1) }}%</p>
                                 <p>{{ __('general.commission_creator_keeps_desc') }}</p>
                             </div>
@@ -561,7 +561,7 @@
                                     </defs>
                                 </svg>
                                 <span class="label">{{ __('general.commission_platform_keeps') }}</span>
-                                <h4 id="calc-platform-keeps">$0.50</h4>
+                                <h4 id="calc-platform-keeps">€0.50</h4>
                                 <p>{{ $commission }}%</p>
                                 <p>{{ __('general.commission_platform_keeps_desc') }}</p>
                             </div>
@@ -575,7 +575,7 @@
                                     <path d="M9.32812 14.6666H22.6615" stroke="#F6339A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <span class="label">{{ __('general.commission_processing_tax') }}</span>
-                                <h4 id="calc-processing-tax">$0.20</h4>
+                                <h4 id="calc-processing-tax">€0.20</h4>
                                 <p>{{ $tax }}% + {{ $tax_cents }}</p>
                                 <p>{{ __('general.commission_processing_tax_desc') }}</p>
                             </div>
@@ -611,6 +611,15 @@
         const taxPercent = parseFloat("{{ $tax }}");
         const taxCents = parseFloat("{{ $tax_cents }}");
 
+        function formatEuro(amount) {
+            return new Intl.NumberFormat('en-IE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
         function calculateEarnings() {
             let price = parseFloat(calcInput.value);
             if (isNaN(price) || price < 0) price = 0;
@@ -628,9 +637,9 @@
             let creatorNet = amountAfterProcessor - platformFeeAmount;
 
             // Update UI
-            creatorKeepsEl.innerText = '$' + creatorNet.toFixed(2);
-            platformKeepsEl.innerText = '$' + platformFeeAmount.toFixed(2);
-            processingTaxEl.innerText = '$' + processorFeeAmount.toFixed(2);
+            creatorKeepsEl.innerText = formatEuro(creatorNet);
+            platformKeepsEl.innerText = formatEuro(platformFeeAmount);
+            processingTaxEl.innerText = formatEuro(processorFeeAmount);
         }
 
         calcBtn.addEventListener('click', (e) => {

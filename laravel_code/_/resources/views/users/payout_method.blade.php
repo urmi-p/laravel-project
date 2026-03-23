@@ -80,7 +80,7 @@
             <input name="payment_gateway" value="PayPal" id="radio1" class="custom-control-input" @if (auth()->user()->payment_gateway == 'PayPal') checked @endif type="radio">
             <div class="payment-card-ui">
               <div class="payment-icon">
-                <img src="{{ url('img/payments', auth()->user()->dark_mode == 'off' ? 'paypal.png' : 'paypal-white.png') }}" alt="PayPal" />
+                <i class="fab fa-paypal icon-sm-radio"></i>
               </div>
               <div class="payment-text">{{ __('general.paypal') }}</div>
             </div>
@@ -130,7 +130,7 @@
           <label class="payment-card">
             <input name="payment_gateway" value="Bitcoin" id="BitcoinInput" class="custom-control-input" @if (auth()->user()->payment_gateway == 'Bitcoin') checked @endif type="radio">
             <div class="payment-card-ui">
-              <div class="payment-icon"><img src="{{url('img/payments', auth()->user()->dark_mode == 'off' ? 'bitcoin.png' : 'bitcoin-white.png')}}" width="100" /> </div>
+              <div class="payment-icon"><i class="fab fa-bitcoin icon-sm-radio"></i></div>
               <div class="payment-text">{{ __('general.bitcoin') }}</div>
             </div>
           </label> <!--============ END BITCOIN ============-->
