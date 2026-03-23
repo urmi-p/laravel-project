@@ -20,62 +20,6 @@
                 gap: 3px !important;
                 max-width: calc(100vw - 104px);
             }
-            .mobile-header-mode-actions {
-                display: flex;
-                align-items: center;
-                gap: 3px;
-            }
-            .mobile-header-mode-actions .mode-pill {
-                display: inline-flex;
-                align-items: center;
-                gap: 3px;
-                padding: 0;
-                border-radius: 7px;
-                background: #1b1b1b;
-                box-shadow: none;
-            }
-            .mobile-header-mode-actions .mode-pill .btn_mobile_nav {
-                width: 26px;
-                height: 26px;
-                min-width: 26px;
-                min-height: 26px;
-                border-radius: 6px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                background: #131313;
-                color: #d9d9d9;
-                padding: 0 !important;
-            }
-            .mobile-header-mode-actions .mode-pill .btn_mobile_nav.active {
-                background: #e2394c;
-                color: #ffffff !important;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-            }
-            html[data-bs-theme="light"] .mobile-header-mode-actions .mode-pill .btn_mobile_nav[data-mode="light"],
-            html[data-bs-theme="dark"] .mobile-header-mode-actions .mode-pill .btn_mobile_nav[data-mode="dark"] {
-                background: #e2394c !important;
-                color: #ffffff !important;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-            }
-            .mobile-header-mode-actions .logout-btn {
-                width: 26px;
-                height: 26px;
-                min-width: 26px;
-                min-height: 26px;
-                border-radius: 7px !important;
-                background: #1b1b1b;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                color: #ffffff;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-                padding: 0 !important;
-            }
-            .mobile-header-mode-actions .btn_mobile_nav i {
-                font-size: 12px !important;
-                line-height: 1 !important;
-            }
             .main_head_search > .d-md-none > .btn_mobile_nav,
             .main_head_search > .d-md-none > a.btn_mobile_nav,
             .main_head_search > .d-md-none > a.btn-mobile-nav {
@@ -116,7 +60,7 @@
                 @auth
                     <div>
                         <div class="position-absolute d-flex d-md-none main_head_search"
-                            style="top: 16px; right: 8px; gap: 3px; margin-right: 0;">
+                            style="top: 25px; right: 35px;gap:6px;margin-right:20px">
                             <div class="d-md-none">
                                 <a class="btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
                                     data-toggle="collapse" data-target="#mobileCreatorSearch"
@@ -132,22 +76,6 @@
                                             stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </a>
-                            </div>
-                            <div class="d-md-none mobile-header-mode-actions">
-                                <div class="mode-pill">
-                                    <a href="{{ url('mode/light') }}"
-                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
-                                        data-mode="light"
-                                        title="{{ __('general.light_mode') }}">
-                                        <i class="feather icon-sun"></i>
-                                    </a>
-                                    <a href="{{ url('mode/dark') }}"
-                                        class="btn-mobile-nav btn_mobile_nav {{ auth()->user()->dark_mode == 'on' ? 'active' : '' }}"
-                                        data-mode="dark"
-                                        title="{{ __('general.dark_mode') }}">
-                                        <i class="feather icon-moon"></i>
-                                    </a>
-                                </div>
                             </div>
                             <div class="d-md-none">
                                 <a class="topup-wallet btn-mobile-nav navbar-toggler-mobile btn_mobile_nav" href="#"
@@ -201,12 +129,6 @@
                                         <path d="M3.42578 16.2857H17.1401" stroke="#A3A3A3" stroke-width="1.2"
                                             stroke-linecap="round" />
                                     </svg>
-                                </a>
-                            </div>
-                            <div class="d-md-none">
-                                <a href="{{ url('logout') }}" class="btn-mobile-nav btn_mobile_nav logout-btn"
-                                    title="{{ __('auth.logout') }}">
-                                    <i class="feather icon-log-out"></i>
                                 </a>
                             </div>
                         </div>
@@ -684,6 +606,31 @@
                                     </a>
                                 </li>
                             @endif
+
+                            <li class="nav-item d-md-none mobile-menu-actions-item">
+                                <div class="mobile-menu-actions">
+                                    <div class="theme-toggle-group">
+                                        <a href="{{ url('mode/light') }}"
+                                            class="theme-toggle-btn {{ auth()->user()->dark_mode == 'off' ? 'active' : '' }}"
+                                            data-mode="light"
+                                            title="{{ __('general.light_mode') }}">
+                                            <i class="feather icon-sun icon-navbar"></i>
+                                        </a>
+
+                                        <a href="{{ url('mode/dark') }}"
+                                            class="theme-toggle-btn {{ auth()->user()->dark_mode == 'on' ? 'active' : '' }}"
+                                            data-mode="dark"
+                                            title="{{ __('general.dark_mode') }}">
+                                            <i class="feather icon-moon icon-navbar"></i>
+                                        </a>
+                                    </div>
+
+                                    <a href="{{ url('logout') }}" class="mobile-menu-logout-btn"
+                                        title="{{ __('auth.logout') }}">
+                                        <i class="feather icon-log-out"></i>
+                                    </a>
+                                </div>
+                            </li>
 
                             <!-- =========== End Menu Mobile ============-->
 
