@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @section('title') {{__('general.verify_account')}} -@endsection
+@section('css')
+  <style type="text/css">
+    .input-pl {
+      padding-left: 12px !important;
+    }
 
+  </style>
+@endsection
 @section('content')
 <section class="section section-sm">
   {{-- for mobile header --}}
@@ -55,7 +62,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-map-marked-alt"></i></span>
               </div>
-              <input class="form-control" name="address" placeholder="{{__('general.address')}}" value="{{old('address')}}" type="text">
+              <input class="form-control input-pl" name="address" placeholder="{{__('general.address')}}" value="{{old('address')}}" type="text">
             </div>
             </div>
 
@@ -64,7 +71,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
                   </div>
-                  <input class="form-control" name="city" placeholder="{{__('general.city')}}" value="{{old('city')}}" type="text">
+                  <input class="form-control input-pl" name="city" placeholder="{{__('general.city')}}" value="{{old('city')}}" type="text">
                 </div>
               </div>
 
@@ -74,7 +81,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fa fa-map-marker-alt"></i></span>
                     </div>
-                    <input class="form-control" name="zip" placeholder="{{__('general.zip')}}" value="{{old('zip')}}" type="text">
+                    <input class="form-control input-pl" name="zip" placeholder="{{__('general.zip')}}" value="{{old('zip')}}" type="text">
                   </div>
                 </div>
                 @endif

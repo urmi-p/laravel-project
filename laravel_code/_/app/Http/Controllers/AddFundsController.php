@@ -1458,18 +1458,10 @@ class AddFundsController extends Controller
 
   public function myBalanceView()
   {
-    abort_if(auth()->user()->verified_id != 'yes', 403);
-    if ($this->settings->disable_wallet == 'on') {
-      abort(404);
-    }
-    $data = Deposits::whereUserId(auth()->user()->id)->orderBy('id', 'desc')->where('status', '!=', 'initialized')->paginate(20)->onEachSide(0);
-
-    $equivalent_money = Helper::equivalentMoney($this->settings->wallet_format);
-
-    return view('users.my_balance', ['data' => $data, 'equivalent_money' => $equivalent_money]);
+    abort(404);
   }
 
   public function myBalancePost(){
-    //for post reuest
+    abort(404);
   }
 }

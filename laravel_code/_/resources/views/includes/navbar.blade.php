@@ -473,17 +473,6 @@
                                 </li>
                             @endif
 
-                            @if (auth()->user()->verified_id == 'yes')
-                                <li class="nav-item dropdown d-md-none menu_mobile_active_link">
-                                    <a href="{{ url('my/balance') }}"
-                                        @if (request()->is('my/balance')) class="nav-link px-2 link-menu-mobile py-1 active disabled" @else class="nav-link px-2 link-menu-mobile py-1" @endif>
-                                        <div>
-                                            <i class="bi bi-credit-card mr-2"></i>
-                                            <span class="d-md-none">{{ __('general.balance') }}</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endif
                             <li class="nav-item dropdown d-md-none menu_mobile_active_link">
                                 <a href="{{ url('my/bookmarks') }}"
                                     class="nav-link px-2 link-menu-mobile py-1 @if (request()->is('my/bookmarks')) active disabled @endif">

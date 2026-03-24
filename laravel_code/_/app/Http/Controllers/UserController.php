@@ -409,8 +409,20 @@ class UserController extends Controller
       'updates' => $updates,
       'hasPages' => $updates->hasPages(),
       'totalPosts' => $user->updates()->select('updates.id', 'updates.user_id')->count(),
-      'totalPhotos' => $user->media()->where('media.type', 'image')->count(),
-      'totalVideos' => $user->media()->where('media.type', 'video')->count(),
+      'totalPhotos' => Media::where('user_id', $user->id)
+        ->where('type', 'image')
+        ->where('image', '<>', '')
+        ->where('status', 'active')
+        ->whereHas('updates', function ($query) {
+          $query->where('status', 'active');
+        })->count(),
+      'totalVideos' => Media::where('user_id', $user->id)
+        ->where('type', 'video')
+        ->where('video_poster', '<>', '')
+        ->where('status', 'active')
+        ->whereHas('updates', function ($query) {
+          $query->where('status', 'active');
+        })->count(),
       'totalMusic' => $user->media()->where('media.type', 'music')->count(),
       'totalFiles' => $user->media()->where('media.type', 'file')->count(),
       'totalEpub' => $user->media()->where('media.type', 'epub')->count(),
@@ -2800,12 +2812,15 @@ class UserController extends Controller
     // Get Platform Commission
     $commission = auth()->user()->custom_fee == 0 ? $this->settings->fee_commission : auth()->user()->custom_fee;
 
-    // Get Payment Gateway Fee (Estimate using Stripe or first enabled)
-    $paymentGateway = PaymentGateways::whereName('Stripe')->whereEnabled('1')->first() 
-                      ?? PaymentGateways::whereEnabled('1')->first();
+    // Get processing fee from enabled subscription gateway first; fallback to any enabled gateway.
+    $paymentGateway = PaymentGateways::whereEnabled('1')
+      ->whereSubscription('yes')
+      ->orderBy('id')
+      ->first()
+      ?? PaymentGateways::whereEnabled('1')->orderBy('id')->first();
 
-    $tax = $paymentGateway ? $paymentGateway->fee : 0;
-    $taxCents = $paymentGateway ? $paymentGateway->fee_cents : 0;
+    $tax = $paymentGateway ? (float) $paymentGateway->fee : 0;
+    $taxCents = $paymentGateway ? (float) $paymentGateway->fee_cents : 0;
 
     return view('users.commission', [
       'updates' => $purchases,

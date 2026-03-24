@@ -1574,6 +1574,10 @@
                         ->where('user_id', $user->id)
                         ->where('type', 'image')
                         ->where('image', '<>', '')
+                        ->where('status', 'active')
+                        ->whereHas('updates', function ($query) {
+                            $query->where('status', 'active');
+                        })
                         ->orderBy('id', 'desc')
                         ->paginate(30);
 
@@ -1671,6 +1675,10 @@
                         ->where('user_id', $user->id)
                         ->where('type', 'video')
                         ->where('video_poster', '<>', '')
+                        ->where('status', 'active')
+                        ->whereHas('updates', function ($query) {
+                            $query->where('status', 'active');
+                        })
                         ->orderBy('id', 'desc')
                         ->paginate(30);
 

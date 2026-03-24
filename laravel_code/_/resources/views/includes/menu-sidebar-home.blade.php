@@ -136,17 +136,6 @@
 		</a>
 	</li>
 	@endif
-	@if (auth()->user()->verified_id == 'yes')
-	<li class="sidebar_li">
-		<a href="{{ url('my/balance') }}"
-			class="@if (request()->is('my/balance')) active @endif">
-			<div>
-				<i class="bi bi-credit-card mr-2"></i>
-				<span>{{ __('general.balance') }}</span>
-			</div>
-		</a>
-	</li>
-	@endif
 	<li class="sidebar_li">
 		<a href="{{ url('my/bookmarks') }}" @if (request()->is('my/bookmarks')) class="active disabled" @endif>
 			<i class="bi-bookmark"></i>
