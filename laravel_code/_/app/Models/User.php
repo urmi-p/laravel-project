@@ -179,7 +179,7 @@ class User extends Authenticatable implements HasLocalePreference
 
   public function updatesPostDetail()
   {
-    return $this->hasMany(Updates::class)->where('status', '<>', 'encode');
+    return $this->hasMany(Updates::class);
   }
 
   public function media()

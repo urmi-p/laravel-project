@@ -442,7 +442,6 @@ class UserController extends Controller
         'updatesPostDetail' => fn($query) =>
         $query->getSelectRelations()
           ->whereId($id)
-          ->where('status', '<>', 'encode')
           ->orderBy('id', 'desc')
       ])->firstOrFail();
 
@@ -451,6 +450,10 @@ class UserController extends Controller
     // Check the status of the post
     if (
       auth()->check() && $updatesCount != 0
+      && $user->updatesPostDetail[0]->user_id != auth()->id()
+      && $user->updatesPostDetail[0]->status == 'encode'
+      && auth()->user()->role != 'admin'
+      || auth()->check() && $updatesCount != 0
       && $user->updatesPostDetail[0]->user_id != auth()->id()
       && $user->updatesPostDetail[0]->status == 'pending'
       && auth()->user()->role != 'admin'
@@ -462,6 +465,9 @@ class UserController extends Controller
       abort(404);
     } elseif (
       auth()->guest()
+      && $updatesCount != 0
+      && $user->updatesPostDetail[0]->status == 'encode'
+      || auth()->guest()
       && $updatesCount != 0
       && $user->updatesPostDetail[0]->status == 'pending'
       || auth()->guest()

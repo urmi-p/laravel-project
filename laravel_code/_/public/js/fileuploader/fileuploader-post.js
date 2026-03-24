@@ -182,6 +182,12 @@ $(document).ready(function() {
             item.html.attr('data-local-preview-src', localPreviewSrc);
           }
 
+          if (item && item.html) {
+            item.html.attr('data-upload-format', (data.files[0].format || '').toString().toLowerCase());
+            item.html.attr('data-upload-name', item.name || '');
+            item.html.attr('data-upload-mime', (item.file && item.file.type ? item.file.type : '').toString().toLowerCase());
+          }
+
           $(document).trigger('post-media-uploaded', [{
             name: item.name,
             format: data.files[0].format,

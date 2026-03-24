@@ -1277,6 +1277,8 @@
             var $uploadOverlay = $('#uploadProcessingOverlay');
             var $uploadOverlayPercent = $('#uploadProcessingPercent');
             var previewUrl = null;
+            var hasUploadedVideo = false;
+            var videoExtensions = ['mp4', 'mov', '3gp', 'mpeg', 'mpg', 'mkv', 'wmv', 'avi', 'flv', 'webm', 'm4v'];
             var zoomMin = 25;
             var zoomMax = 100;
             var currencySymbol = @json($settings->currency_symbol);
@@ -1393,6 +1395,52 @@
                 return $('#formUpdateCreate .fileuploader-item').length;
             }
 
+            function isVideoFileName(fileName) {
+                var name = (fileName || '').toString().trim().toLowerCase();
+                if (!name || name.indexOf('.') === -1) {
+                    return false;
+                }
+                var extension = name.split('.').pop();
+                return videoExtensions.indexOf(extension) !== -1;
+            }
+
+            function isVideoPayload(payload) {
+                if (payload) {
+                    var payloadFormat = (payload.format || '').toString().toLowerCase();
+                    if (payloadFormat === 'video' || payloadFormat.indexOf('video/') === 0) {
+                        return true;
+                    }
+
+                    var payloadType = payload.file && payload.file.type ? payload.file.type.toString().toLowerCase() : '';
+                    if (payloadType.indexOf('video/') === 0) {
+                        return true;
+                    }
+
+                    if (isVideoFileName(payload.name || '')) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            function refreshUploadedVideoState() {
+                var hasVideo = false;
+                $('#formUpdateCreate .fileuploader-item').each(function() {
+                    var $item = $(this);
+                    var format = ($item.attr('data-upload-format') || '').toString().toLowerCase();
+                    var name = ($item.attr('data-upload-name') || '').toString();
+                    var mime = ($item.attr('data-upload-mime') || '').toString().toLowerCase();
+
+                    if (format === 'video' || format.indexOf('video/') === 0 || mime.indexOf('video/') === 0 || isVideoFileName(name)) {
+                        hasVideo = true;
+                        return false;
+                    }
+                });
+
+                hasUploadedVideo = hasVideo;
+            }
+
             function updateUploadContinueState() {
                 var count = getSelectedFilesCount();
                 $form.toggleClass('has-selected-files', count > 0);
@@ -1502,6 +1550,12 @@
                 $uploadOverlay.removeClass('active');
                 $uploadOverlayPercent.text('100%');
 
+                if (isVideoPayload(payload || null)) {
+                    hasUploadedVideo = true;
+                } else {
+                    refreshUploadedVideoState();
+                }
+
                 previewUrl = null;
 
                 if (payload && payload.previewSrc) {
@@ -1511,12 +1565,17 @@
                 if (!previewUrl) {
                     previewUrl = collectPreviewSources()[0] || '';
                 }
-                showPreviewStep(previewUrl || '');
+                if (hasUploadedVideo) {
+                    showDetailsStep();
+                } else {
+                    showPreviewStep(previewUrl || '');
+                }
                 updateUploadContinueState();
             });
 
             $(document).on('post-media-removed', function() {
                 previewUrl = null;
+                refreshUploadedVideoState();
                 $uploadOverlay.removeClass('active');
                 $uploadOverlayPercent.text('0%');
                 showUploadStep();
@@ -1647,4 +1706,3 @@
         });
     </script>
 @endsection
-
