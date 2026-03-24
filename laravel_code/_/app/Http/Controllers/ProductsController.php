@@ -126,7 +126,7 @@ class ProductsController extends Controller
     $messages = [
       'description.required' => __('validation.required', ['attribute' => __('general.description')]),
       'tags.required' => __('validation.required', ['attribute' => __('general.tags')]),
-      'description.min' => __('validation.min', ['attribute' => __('general.description')]),
+      'description.min' => __('validation.min.string', ['attribute' => __('general.description'), 'min' => 10]),
       'price.min' => __('general.amount_minimum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'price.max' => __('general.amount_maximum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'quantity.required' => __('validation.required', ['attribute' => __('general.quantity')]),
@@ -248,7 +248,7 @@ class ProductsController extends Controller
 
     $messages = [
       'description.required' => __('validation.required', ['attribute' => __('general.description')]),
-      'description.min' => __('validation.min', ['attribute' => __('general.description')]),
+      'description.min' => __('validation.min.string', ['attribute' => __('general.description'), 'min' => 10]),
       'price.min' => __('general.amount_minimum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'price.max' => __('general.amount_maximum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'category.required' => __('validation.required', ['attribute' => __('general.category')]),
@@ -389,7 +389,7 @@ class ProductsController extends Controller
     $messages = [
       'description.required' => __('validation.required', ['attribute' => __('general.description')]),
       'tags.required' => __('validation.required', ['attribute' => __('general.tags')]),
-      'description.min' => __('validation.min', ['attribute' => __('general.description')]),
+      'description.min' => __('validation.min.string', ['attribute' => __('general.description'), 'min' => 10]),
       'price.min' => __('general.amount_minimum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'price.max' => __('general.amount_maximum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'delivery_time.required' => __('validation.required', ['attribute' => __('general.delivery_time')]),
@@ -513,7 +513,7 @@ class ProductsController extends Controller
     $messages = [
       'description.required' => __('validation.required', ['attribute' => __('general.description')]),
       'tags.required' => __('validation.required', ['attribute' => __('general.tags')]),
-      'description.min' => __('validation.min', ['attribute' => __('general.description')]),
+      'description.min' => __('validation.min.string', ['attribute' => __('general.description'), 'min' => 10]),
       'price.min' => __('general.amount_minimum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'price.max' => __('general.amount_maximum' . $currencyPosition, ['symbol' => $this->settings->currency_symbol, 'code' => $this->settings->currency_code]),
       'delivery_time.required' => __('validation.required', ['attribute' => __('general.delivery_time')]),

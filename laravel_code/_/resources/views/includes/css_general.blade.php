@@ -36,7 +36,7 @@
 
 
 
-<link href="<?php echo e(asset('css/styles.css'), false); ?>?v=<?php echo e($settings->version, false); ?>" rel="stylesheet">
+<link href="{{ asset('css/styles.css') }}?v={{ $settings->version }}&{{ filemtime(public_path('css/styles.css')) }}" rel="stylesheet">
 
 <link href="<?php echo e(asset('js/plyr/plyr.css'), false); ?>?v=<?php echo e($settings->version, false); ?>" rel="stylesheet" type="text/css" />
 
