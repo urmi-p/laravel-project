@@ -472,6 +472,7 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
 
 	Route::get('live/{username}',[LiveStreamingsController::class, 'show'])->name('live');
 	Route::get('get/data/live', [LiveStreamingsController::class, 'getDataLive'])->name('live.data')->middleware('live');
+	Route::post('live/debug/error', [LiveStreamingsController::class, 'debugClientError'])->name('live.debug.error');
 	Route::post('end/live/stream/{id}', [LiveStreamingsController::class, 'finish']);
 	Route::post('send/payment/live', [LiveStreamingsController::class, 'paymentAccess']);
 	Route::post('comment/live', [LiveStreamingsController::class, 'comments']);

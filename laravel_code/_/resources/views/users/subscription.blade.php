@@ -11,7 +11,6 @@
         color: #000 !important;
         border-radius: 12px !important;
         border: none !important;
-        padding: 12px 35px !important;
         font-weight: 600 !important;
         font-size: 15px !important;
         transition: all 0.3s ease;
@@ -68,6 +67,27 @@
 
     .input-pl {
       padding-left: 12px !important;
+    }
+
+    .subscription-grid-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .subscription-grid-row > .subscription-card,
+    .subscription-grid-row > .subscription-card-spacer {
+        flex: 1 1 0;
+    }
+
+    @media (max-width: 576px) {
+        .subscription-grid-row {
+            flex-direction: column;
+        }
+
+        .subscription-grid-row > .subscription-card-spacer {
+            display: none;
+        }
     }
 </style>
 @endsection
@@ -134,7 +154,7 @@
 
                         <div class="form-group">
 
-                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <div class="subscription-grid-row">
                                 <div class="subscription-card">
                                     <span class="status-dot-pos {{ auth()->user()->getPlan('weekly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_week') }}</label>
@@ -185,9 +205,18 @@
                                             </span>
                                         @enderror
                                     </div>
+
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input"
+                                            @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="status"
+                                            value="1" @if (auth()->user()->getPlan('monthly', 'status')) checked @endif
+                                            id="customSwitchMonthly">
+                                        <label class="custom-control-label switch"
+                                            for="customSwitchMonthly">{{ trans('general.status') }}</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <div class="subscription-grid-row">
                                 <div class="subscription-card">
                                     <span class="status-dot-pos {{ auth()->user()->getPlan('quarterly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
@@ -251,7 +280,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <div class="subscription-grid-row">
                                 <div class="subscription-card">
                                     <span class="status-dot-pos {{ auth()->user()->getPlan('yearly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
                                     <label
@@ -283,7 +312,7 @@
                                             for="customSwitchYearly">{{ trans('general.status') }}</label>
                                     </div>
                                 </div>
-                                <div></div>
+                                <div class="subscription-card-spacer"></div>
                             </div>
                             <div style="display:flex;justify-content:space-between;">
                                 <div class="mb-1 mt-1">

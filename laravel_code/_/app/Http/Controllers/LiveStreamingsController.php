@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\LiveStreamings;
 use App\Models\LiveOnlineUsers;
 use App\Events\LiveBroadcasting;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LiveStreamingsController extends Controller
@@ -474,5 +475,42 @@ class LiveStreamingsController extends Controller
         'text' => __('general.reported_success'),
       ]);
     }
+  }
+
+  public function debugClientError()
+  {
+    $validator = Validator::make($this->request->all(), [
+      'stage' => 'required|string|max:80',
+      'message' => 'nullable|string|max:500',
+      'code' => 'nullable|string|max:120',
+      'details' => 'nullable|string|max:2000',
+      'page' => 'nullable|string|max:255',
+      'channel' => 'nullable|string|max:255',
+      'role' => 'nullable|string|max:30',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json([
+        'success' => false,
+      ], 422);
+    }
+
+    Log::warning('Live stream client error', [
+      'user_id' => auth()->id(),
+      'username' => auth()->user()->username ?? null,
+      'stage' => $this->request->stage,
+      'message' => $this->request->message,
+      'code' => $this->request->code,
+      'details' => $this->request->details,
+      'page' => $this->request->page,
+      'channel' => $this->request->channel,
+      'role' => $this->request->role,
+      'ip' => $this->request->ip(),
+      'user_agent' => $this->request->userAgent(),
+    ]);
+
+    return response()->json([
+      'success' => true,
+    ]);
   }
 }

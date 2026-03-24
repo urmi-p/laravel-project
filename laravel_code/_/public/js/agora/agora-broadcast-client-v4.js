@@ -49,6 +49,59 @@ var devices = {
 // -- .NONE for prod
 AgoraRTC.setLogLevel(1);
 
+function safeErrorDetails(error) {
+  try {
+    return JSON.stringify(error);
+  } catch (e) {
+    return String(error);
+  }
+}
+
+async function reportLiveError(stage, error) {
+  try {
+    const token = $('meta[name="csrf-token"]').attr('content');
+    await fetch(URL_BASE + '/live/debug/error', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': token
+      },
+      body: JSON.stringify({
+        stage: stage,
+        message: error && error.message ? String(error.message) : String(error),
+        code: error && error.code ? String(error.code) : '',
+        details: safeErrorDetails(error),
+        page: window.location.pathname,
+        channel: options.channel,
+        role: options.role
+      })
+    });
+  } catch (requestError) {
+    console.log('Failed to send live debug error', requestError);
+  }
+}
+
+function notifyLiveError(stage, error) {
+  const code = error && error.code ? ' [' + error.code + ']' : '';
+  const message = (error && error.message ? error.message : 'Unknown live streaming error') + code;
+
+  if (typeof swal === 'function') {
+    swal({
+      type: 'error',
+      title: 'Live streaming error',
+      text: stage + ': ' + message
+    });
+  } else {
+    alert('Live streaming error: ' + stage + ': ' + message);
+  }
+}
+
+function handleLiveError(stage, error) {
+  console.log('Live streaming error at', stage, error);
+  reportLiveError(stage, error);
+  notifyLiveError(stage, error);
+}
+
 // init Agora SDK
 
 $("#mute-audio").click(function (e) {
@@ -83,15 +136,47 @@ async function joinChannel() {
     options.uid = await client.join(options.appid, options.channel, options.token || null, options.uid || null);
 
     if (options.role === "host") {
-        // create local audio and video tracks
-        localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
-          encoderConfig: cameraVideoProfile,
-        });
-        // play local video track
-        localTracks.videoTrack.play("full-screen-video");
-        // publish local tracks to channel
-        await client.publish(Object.values(localTracks));
+        // Create local tracks independently so one missing device does not block live start.
+        let trackErrors = [];
+
+        try {
+          localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        } catch (audioError) {
+          localTracks.audioTrack = null;
+          trackErrors.push(audioError);
+        }
+
+        try {
+          localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
+            encoderConfig: cameraVideoProfile,
+          });
+        } catch (videoError) {
+          localTracks.videoTrack = null;
+          trackErrors.push(videoError);
+        }
+
+        const tracksToPublish = Object.values(localTracks).filter(Boolean);
+        if (!tracksToPublish.length) {
+          throw trackErrors[0] || new Error("No microphone/camera device available");
+        }
+
+        if (localTracks.videoTrack) {
+          localTracks.videoTrack.play("full-screen-video");
+        } else {
+          handleLiveError("camera_track", {
+            code: "VIDEO_DEVICE_UNAVAILABLE",
+            message: "Camera not available. Live will continue with audio only."
+          });
+        }
+
+        if (!localTracks.audioTrack) {
+          handleLiveError("microphone_track", {
+            code: "AUDIO_DEVICE_UNAVAILABLE",
+            message: "Microphone not available. Live will continue without audio."
+          });
+        }
+
+        await client.publish(tracksToPublish);
 
         // Get Cameras
         AgoraRTC.getCameras()
@@ -147,7 +232,7 @@ async function joinChannel() {
 
     console.log("join success");
   } catch (e) {
-    console.log("join failed", e);
+    handleLiveError("join_channel", e);
   }
 }
 
@@ -157,6 +242,9 @@ function changeStreamSource(deviceIndex, deviceType) {
   var existingStream = false;
 
   if (deviceType === "video") {
+    if (!localTracks.videoTrack) {
+      return;
+    }
     deviceId = devices.cameras[deviceIndex].deviceId;
 
     localTracks.videoTrack.setDevice(deviceId);
@@ -165,10 +253,13 @@ function changeStreamSource(deviceIndex, deviceType) {
   }
 
   if (deviceType === "audio") {
+    if (!localTracks.audioTrack) {
+      return;
+    }
     deviceId = devices.mics[deviceIndex].deviceId;
 
     localTracks.audioTrack.setDevice(deviceId);
-    options.camera.camId = deviceId;
+    options.camera.micId = deviceId;
 
   }
 }
@@ -250,6 +341,7 @@ function leaveChannel() {
 }
 
 async function subscribe(user, mediaType) {
+  try {
     const uid = user.uid;
     // subscribe to a remote user
     await client.subscribe(user, mediaType);
@@ -270,6 +362,9 @@ async function subscribe(user, mediaType) {
         $('#liveAudio').html('<i class="fas fa-volume-up"></i>');
       });
   }//mediaType
+  } catch (error) {
+    handleLiveError("subscribe_" + mediaType, error);
+  }
 }
 
 function handleUserPublished(user, mediaType) {
@@ -277,6 +372,11 @@ function handleUserPublished(user, mediaType) {
     remoteUsers[id] = user;
     subscribe(user, mediaType);
 }
+
+client.on('exception', function (evt) {
+  console.log('Agora exception', evt);
+  reportLiveError('agora_exception', evt);
+});
 
 function handleUserUnpublished(user, mediaType) {
     if (mediaType === 'video') {
