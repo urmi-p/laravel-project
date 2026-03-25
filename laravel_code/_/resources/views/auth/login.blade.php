@@ -99,15 +99,17 @@
             <ul class="list-unstyled m-0" id="showErrorsLogin"></ul>
           </div>
 
+          @if ($settings->captcha == 'on')
+          <div class="d-flex justify-content-center mt-3">
+            {!! NoCaptcha::display() !!}
+          </div>
+          {!! NoCaptcha::renderJs() !!}
+          @endif
+
           <div class="text-center">
-            @if ($settings->captcha == 'on')
-            {!! NoCaptcha::displaySubmit('formLoginRegister', '<i></i> '.__('auth.login'), ['data-size' => 'invisible', 'id' => 'btnLoginRegister', 'class' => 'btn btn-primary login-figma-submit mt-4 w-100']) !!}
-            {!! NoCaptcha::renderJs() !!}
-            @else
             <button id="btnLoginRegister" type="submit" class="btn btn-primary login-figma-submit mt-4 w-100">
               <i></i> {{__('auth.login')}}
             </button>
-            @endif
           </div>
         </form>
 

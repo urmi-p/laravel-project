@@ -44,9 +44,6 @@
 
             @if (auth()->user()->countries_id != ''
                 && auth()->user()->birthdate != ''
-                && auth()->user()->cover != ''
-                && auth()->user()->cover != $settings->cover_default
-                && auth()->user()->avatar != $settings->avatar
               )
 
           <div class="alert alert-warning mr-1">
@@ -144,18 +141,6 @@
 
           <ul class="list-unstyled">
             <br>
-
-            @if (auth()->user()->avatar == $settings->avatar)
-              <li>
-                <i class="far fa-times-circle"></i> {{ __('general.set_avatar') }} <a href="{{ url('profile', auth()->user()->username) }}" class="text-white link-border">{{ __('general.upload') }} <i class="feather icon-arrow-right"></i></a>
-              </li>
-            @endif
-
-            @if (auth()->user()->cover == '' || auth()->user()->cover == $settings->cover_default)
-            <li>
-              <i class="far fa-times-circle"></i> {{ __('general.set_cover') }} <a href="{{ url('profile', auth()->user()->username) }}" class="text-white link-border">{{ __('general.upload') }} <i class="feather icon-arrow-right"></i></a>
-            </li>
-          @endif
 
           @if (auth()->user()->countries_id == '')
             <li>

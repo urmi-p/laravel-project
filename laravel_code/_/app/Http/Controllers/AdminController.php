@@ -1560,9 +1560,9 @@ class AdminController extends Controller
 
 	{
 
-		$temp = 'public/temp/'; // Temp
+		$temp = public_path('temp'); // Temp
 
-		$path = '/img-category/'; // Path General
+		$path = public_path('img-category'); // Path General
 
 
 
@@ -1592,6 +1592,14 @@ class AdminController extends Controller
 
 		if ($request->hasFile('thumbnail')) {
 
+			if (!\File::exists($temp)) {
+				\File::makeDirectory($temp, 0755, true);
+			}
+
+			if (!\File::exists($path)) {
+				\File::makeDirectory($path, 0755, true);
+			}
+
 
 
 			$extension = $request->file('thumbnail')->extension();
@@ -1604,15 +1612,15 @@ class AdminController extends Controller
 
 
 
-				Image::read($temp . $thumbnail)->cover(width: 120, height: 120)
+				Image::read($temp . DIRECTORY_SEPARATOR . $thumbnail)->cover(width: 120, height: 120)
 
 					->encodeByExtension($extension)
 
-					->save($path . $thumbnail);
+					->save($path . DIRECTORY_SEPARATOR . $thumbnail);
 
 
 
-				\File::delete($temp . $thumbnail);
+				\File::delete($temp . DIRECTORY_SEPARATOR . $thumbnail);
 
 			} // End File
 
@@ -1678,9 +1686,9 @@ class AdminController extends Controller
 
 		$categories = Categories::find($request->id);
 
-		$temp = 'public/temp/'; // Temp
+		$temp = public_path('temp'); // Temp
 
-		$path = 'img-category/'; // Path General
+		$path = public_path('img-category'); // Path General
 
 
 
@@ -1718,6 +1726,14 @@ class AdminController extends Controller
 
 		if ($request->hasFile('thumbnail')) {
 
+			if (!\File::exists($temp)) {
+				\File::makeDirectory($temp, 0755, true);
+			}
+
+			if (!\File::exists($path)) {
+				\File::makeDirectory($path, 0755, true);
+			}
+
 
 
 			$extension        = $request->file('thumbnail')->extension();
@@ -1730,21 +1746,21 @@ class AdminController extends Controller
 
 
 
-				Image::read($temp . $thumbnail)->cover(width: 120, height: 120)
+				Image::read($temp . DIRECTORY_SEPARATOR . $thumbnail)->cover(width: 120, height: 120)
 
 					->encodeByExtension($extension)
 
-					->save($path . $thumbnail);
+					->save($path . DIRECTORY_SEPARATOR . $thumbnail);
 
 
 
-				\File::delete($temp . $thumbnail);
+				\File::delete($temp . DIRECTORY_SEPARATOR . $thumbnail);
 
 
 
 				// Delete Old Image
 
-				\File::delete($path . $categories->image);
+				\File::delete($path . DIRECTORY_SEPARATOR . $categories->image);
 
 			} // End File
 
@@ -1790,7 +1806,7 @@ class AdminController extends Controller
 
 		$categories = Categories::findOrFail($id);
 
-		$thumbnail = 'img-category/' . $categories->image; // Path General
+		$thumbnail = public_path('img-category') . DIRECTORY_SEPARATOR . $categories->image; // Path General
 
 
 

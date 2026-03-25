@@ -190,11 +190,11 @@
 
   OneSignal.push(function () {
 
-        OneSignal.SERVICE_WORKER_PARAM = { scope: '/public/js/' };
+        OneSignal.SERVICE_WORKER_PARAM = { scope: '/js/' };
 
-        OneSignal.SERVICE_WORKER_PATH = 'public/js/OneSignalSDKWorker.js'
+        OneSignal.SERVICE_WORKER_PATH = '/js/OneSignalSDKWorker.js'
 
-        OneSignal.SERVICE_WORKER_UPDATER_PATH = 'public/js/OneSignalSDKWorker.js'
+        OneSignal.SERVICE_WORKER_UPDATER_PATH = '/js/OneSignalSDKWorker.js'
 
         OneSignal.init(initConfig);
 

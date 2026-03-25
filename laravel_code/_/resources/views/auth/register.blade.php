@@ -100,13 +100,15 @@
 
           <div class="alert alert-success mb-0 mt-3 display-none" id="checkAccount"></div>
 
+          @if ($settings->captcha == 'on')
+          <div class="d-flex justify-content-center mt-3">
+            {!! NoCaptcha::display() !!}
+          </div>
+          {!! NoCaptcha::renderJs() !!}
+          @endif
+
           <div class="text-center">
-            @if ($settings->captcha == 'on')
-            {!! NoCaptcha::displaySubmit('formLoginRegister', '<i></i> '.__('auth.sign_up'), ['data-size' => 'invisible', 'id' => 'btnLoginRegister', 'class' => 'btn btn-primary mt-4 w-100']) !!}
-            {!! NoCaptcha::renderJs() !!}
-            @else
             <button type="submit" class="btn btn-primary mt-4 w-100" id="btnLoginRegister"><i></i> {{__('auth.sign_up')}}</button>
-            @endif
           </div>
         </form>
 
