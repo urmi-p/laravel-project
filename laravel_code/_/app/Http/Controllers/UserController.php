@@ -891,7 +891,7 @@ class UserController extends Controller
     elseif ($this->request->type == 'bank') {
 
       $rules = [
-        'bank_details'  => 'required|min:20',
+        'bank_details'  => 'required|min:15',
       ];
 
       $this->validate($this->request, $rules);

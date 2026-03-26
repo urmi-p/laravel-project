@@ -2,11 +2,50 @@
 
 @section('title') {{__('general.my_posts')}} -@endsection
 
+@section('css')
+<style>
+  @media (max-width: 767.98px) {
+    .my-posts-table thead {
+      display: none;
+    }
+    .my-posts-table,
+    .my-posts-table tbody,
+    .my-posts-table tr,
+    .my-posts-table td {
+      display: block;
+      width: 100%;
+    }
+    .my-posts-table tr {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 12px;
+    }
+    .my-posts-table td {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 0;
+      border: 0;
+    }
+    .my-posts-table td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      opacity: 0.8;
+      flex: 0 0 auto;
+      margin-right: 8px;
+    }
+    .my-posts-table td > * {
+      text-align: right;
+    }
+  }
+</style>
+@endsection
+
 @section('content')
 <section class="section section-sm">
     @include('includes.header-mobile')
-    <div class="container-fluid">
-      <div class="row justify-content-center text-center mb-sm">
+    <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
+      <div class="row mb-sm">
         <div class="col-lg-8 py-5">
           <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-2"><i class="feather icon-feather mr-2"></i> {{__('general.my_posts')}}</h2>
           <p class="lead mt-0 font_weight_400 fs-14">{{__('general.all_post_created')}}</p>
@@ -26,14 +65,13 @@
           </div>
           @endif
 
-          @if ($posts->isNotEmpty())
           <div class="d-lg-flex d-block justify-content-between align-items-center mb-3 text-word-break">
             <form class="position-relative mr-3 w-100 mb-lg-0 mb-2" role="search" autocomplete="off" action="{{ url('my/posts') }}" method="get">
               <i class="bi bi-search btn-search bar-search"></i>
              <input type="text" minlength="3" required="" name="q" class="form-control pl-5" value="{{ request('q') }}" placeholder="{{ __('general.search') }}" aria-label="Search">
           </form>
 
-            <div class="w-lg-100">
+            <div class="w-lg-100 d-flex align-items-center gap-2">
               <select class="form-control custom-select w-100 pr-4 filter dark_all_dropdown">
                 <option @selected(!request('sort')) value="{{ url('my/posts') }}">{{ __('general.all') }}</option>
 
@@ -55,9 +93,10 @@
             </div>
           </div>
 
+          @if ($posts->isNotEmpty())
           <div class="card shadow-sm mb-2">
           <div class="table-responsive">
-            <table class="table table-striped m-0">
+            <table class="table table-striped m-0 my-posts-table">
               <thead>
                 <tr>
                   <th scope="col">{{ __('general.id') }}</th>
@@ -75,8 +114,8 @@
 
                 @foreach ($posts as $post)
                   <tr>
-                    <td>{{ $post->id }}</td>
-                    <td>
+                    <td data-label="{{ __('general.id') }}">{{ $post->id }}</td>
+                    <td data-label="{{ __('admin.content') }}">
                       @if ($post->media_count)
                       {{ $post->media_count }} {{trans_choice('general.files', $post->media_count )}}
                       @else
@@ -84,28 +123,28 @@
                       @endif
                     </td>
 
-                    <td>
+                    <td data-label="{{ __('admin.description') }}">
                     <a href="{{ url($post->creator->username, 'post').'/'.$post->id }}" target="_blank">
                       {{ str_limit($post->description, 20, '...') }} <i class="bi bi-box-arrow-up-right ml-1"></i>
                     </a>
                     </td>
-                    <td>
+                    <td data-label="{{ __('admin.type') }}">
                       @if ($post->locked == 'yes')
                         <i class="feather icon-lock mr-1" title="{{__('users.content_locked')}}"></i>
                       @else
                         <i class="iconmoon icon-WorldWide mr-1" title="{{__('general.public')}}"></i>
                       @endif
                     </td>
-                    <td>{{ Helper::amountFormatDecimal($post->price) }}</td>
-                    <td>
+                    <td data-label="{{ __('general.price') }}">{{ Helper::amountFormatDecimal($post->price) }}</td>
+                    <td data-label="{{ __('general.interactions') }}">
                       @if (!$settings->hide_total_likes)
                       <i class="far fa-heart"></i> {{ $post->likes_count }} 
                       @endif
                       <i class="far fa-comment ml-1"></i> {{ ($post->comments_count + $post->replies_count) }}
                       <i class="feather icon-bookmark ml-1"></i> {{ $post->bookmarks_count }}
                     </td>
-                    <td>{{Helper::formatDate($post->date)}}</td>
-                    <td>
+                    <td data-label="{{ __('admin.date') }}">{{Helper::formatDate($post->date)}}</td>
+                    <td data-label="{{ __('admin.status') }}">
                       @if ($post->status == 'active')
                         <span class="badge badge-pill badge-success text-uppercase">{{__('general.active')}}</span>
                       @elseif($post->status == 'schedule')

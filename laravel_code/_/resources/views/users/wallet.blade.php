@@ -87,6 +87,57 @@
     display: block;
   }
 
+  .amt-stepper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .amt-step-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 44px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #222;
+    background: #121212;
+    color: #ddd;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .amt-step-btn:hover {
+    border-color: #f1415d;
+    color: #fff;
+  }
+
+  .amt-step-btn:focus-visible {
+    outline: 2px solid #f1415d;
+    outline-offset: 2px;
+  }
+
+  .amt-step-btn .bi {
+    font-size: 16px;
+  }
+
+  [data-bs-theme="light"] .amt-step-btn {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    color: #222 !important;
+  }
+
+  [data-bs-theme="light"] .amt-step-btn:hover {
+    border-color: #f1415d !important;
+    color: #111 !important;
+  }
+
   .payment-list-custom {
     margin-top: 20px;
   }
@@ -478,11 +529,29 @@
                     </div> --}}
                     <input class="form-control amt_input" required id="onlyNumber" name="amount" min="{{ $settings->min_deposits_amount }}" max="{{ $settings->max_deposits_amount }}" autocomplete="off" placeholder="{{__('admin.amount')}} ({{ __('general.minimum') }} {{ Helper::priceWithoutFormat($settings->min_deposits_amount) }} - {{ __('general.maximum') }} {{ Helper::priceWithoutFormat($settings->max_deposits_amount) }})" type="number">
                   </div>
-                  <small class="amt-helper-text">
-                    <i class="bi-arrow-up-square mr-1 amount-increase" style="cursor:pointer;"></i> 
-                    <i class="bi-arrow-down-square mr-1 amount-decrease" style="cursor:pointer;"></i> 
-                    {{ __('general.increase_decrease_amount') }}
-                  </small>
+                  <div class="amt-stepper">
+                    <button type="button" class="amt-step-btn amount-step" data-step="-10" aria-label="-10">
+                      -10
+                    </button>
+                    <button type="button" class="amt-step-btn amount-step" data-step="-5" aria-label="-5">
+                      -5
+                    </button>
+                    <button type="button" class="amt-step-btn amount-step" data-step="-1" aria-label="-1">
+                      <i class="bi bi-dash-lg"></i>
+                      1
+                    </button>
+                    <button type="button" class="amt-step-btn amount-step" data-step="1" aria-label="+1">
+                      <i class="bi bi-plus-lg"></i>
+                      1
+                    </button>
+                    <button type="button" class="amt-step-btn amount-step" data-step="5" aria-label="+5">
+                      +5
+                    </button>
+                    <button type="button" class="amt-step-btn amount-step" data-step="10" aria-label="+10">
+                      +10
+                    </button>
+                    <span class="amt-helper-text mb-0">{{ __('general.increase_decrease_amount') }}</span>
+                  </div>
                 </div>
 
                 <div class="payment-list-custom">
@@ -888,15 +957,19 @@ $('#onlyNumber').on('keyup', function() {
   });
 
 
-$('.amount-increase').click(function () {
+$('.amount-step').click(function () {
   let input = $('#onlyNumber');
-  input.val(parseInt(input.val() || 0) + 1);
-});
+  let step = parseInt($(this).data('step') || 1);
+  let current = parseInt(input.val() || 0);
+  let min = parseInt(input.attr('min') || 0);
+  let max = parseInt(input.attr('max') || Number.MAX_SAFE_INTEGER);
+  let next = current + step;
 
-$('.amount-decrease').click(function () {
-  let input = $('#onlyNumber');
-  let val = parseInt(input.val() || 0);
-  if (val > 1) input.val(val - 1);
+  if (!Number.isFinite(next)) next = min;
+  if (next < min) next = min;
+  if (next > max) next = max;
+
+  input.val(next).trigger('keyup');
 });
 </script>
 @endsection

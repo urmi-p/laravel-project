@@ -33,14 +33,31 @@
     .fileuploader-input-inner span {padding: 0 10px;}
     .fileuploader-item-inner { background: var(--colorDark) !important; }
     .fileuploader-item-inner h5 { color: var(--colorText) !important; }
+    .fileuploader-theme-gallery .fileuploader-input-button {
+        background: {{ $settings->color_default }} !important;
+        border-color: {{ $settings->color_default }} !important;
+        color: #fff !important;
+    }
+    .fileuploader-theme-gallery .fileuploader-input-button:hover,
+    .fileuploader-theme-gallery .fileuploader-input-button:focus {
+        filter: brightness(0.95);
+    }
+    .vault-info-alert {
+        background: {{ $settings->color_default }} !important;
+        border-color: {{ $settings->color_default }} !important;
+        color: #fff !important;
+    }
+    .vault-info-alert .bi-info-circle-fill {
+        color: #fff !important;
+    }
 </style>
 
 @endsection
 
 @section('content')
 <section class="section section-sm">
-    <div class="container-fluid">
-        <div class="row justify-content-center text-center mb-sm">
+    <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
+        <div class="row mb-sm">
             <div class="col-lg-8 py-5">
                 <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="feather icon-archive mr-2"></i> {{__('general.vault')}}</h2>
                 <p class="lead mt-0 font_weight_400 fs-14">{{__('general.all_vault_uploaded')}}</p>
@@ -61,7 +78,7 @@
                 @endif
 
                 @if ($settings->video_encoding == 'on')
-                <div class="alert alert-info">
+                <div class="alert alert-info vault-info-alert">
                     <i class="bi-info-circle-fill mr-1"></i> {{ __('general.video_encoding_warning') }}
                 </div>
                 @endif
