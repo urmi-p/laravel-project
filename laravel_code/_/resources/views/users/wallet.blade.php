@@ -56,6 +56,10 @@
     font-size: 16px !important;
     box-shadow: none !important;
     width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   [data-bs-theme="light"] .amt-input-container input {
@@ -68,6 +72,12 @@
 
   [data-bs-theme="light"] .amt-input-container input::placeholder {
     color: #aaa;
+  }
+
+  @media (max-width: 575.98px) {
+    .amt-input-container input {
+      font-size: 13px !important;
+    }
   }
 
   .amt-helper-text {

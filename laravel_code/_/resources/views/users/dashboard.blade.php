@@ -28,9 +28,11 @@
 						<small>{{ __('admin.earnings_net') }}</small>
 						<h4> {{ Helper::amountFormatDecimal($earningNetUser) }}</h4>
 					</div>
-					<div class="icon-dash">
-						<i class="fas fa-hand-holding-usd  text-primary icon-dashboard"></i>
-						<!-- <span class="icon-wrap icon--dashboard"><i class="fas fa-hand-holding-usd"></i></span> -->
+					<div class="icon-dash icon-dash-euro">
+						<span class="fa-stack text-primary icon-dashboard icon-dashboard-euro" aria-hidden="true">
+							<i class="fas fa-hand-holding fa-stack-2x icon-hand-euro"></i>
+							<i class="fas fa-euro-sign fa-stack-1x"></i>
+						</span>
 					</div>
 
                   </div>

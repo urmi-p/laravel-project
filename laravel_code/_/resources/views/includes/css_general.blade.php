@@ -2972,6 +2972,44 @@ border-color: #adb5bd !important;
 
 }
 
+.icon-dash {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.icon-dash .icon-dashboard {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  font-size: 16px;
+}
+
+.icon-dash .fa-stack {
+  line-height: 1;
+}
+
+.icon-dash .fa-stack-1x {
+  transform: translate(5px, -5px);
+  font-size: 0.75em;
+}
+
+.icon-dash-euro .fa-stack-1x {
+  transform: translate(5px, -5px);
+  font-size: 0.75em;
+}
+
+.icon-dash-euro .icon-hand-euro {
+  font-size: 1.4em;
+}
+
 .icon-dashboard-2 {
 
     background-color: <?php echo e(auth()->user()->dark_mode == 'on'? '#414141' : $settings->color_default.'2e', false); ?>;
