@@ -7,14 +7,18 @@ use FileUploader;
 use App\Models\Media;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Jobs\MediaModeration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Typography\FontFactory;
 use App\Services\BunnyStreamService;
 use App\Services\BunnyStorageService;
+use League\Glide\ServerFactory;
+use League\Glide\Responses\SymfonyResponseFactory;
 
 class UploadMediaController extends Controller
 {
@@ -351,6 +355,158 @@ class UploadMediaController extends Controller
 
 		return response()->json([
 			'success' => true
+		]);
+	}
+
+	/**
+	 * Crop an uploaded image and overwrite the stored file.
+	 */
+	public function crop(Request $request): JsonResponse
+	{
+		$validator = Validator::make($request->all(), [
+			'file' => 'required|string',
+			'crop' => 'required'
+		]);
+
+		if ($validator->fails()) {
+			return response()->json([
+				'success' => false,
+				'errors' => $validator->errors()->toArray()
+			], 422);
+		}
+
+		$file = (string) $request->input('file');
+		$crop = $request->input('crop');
+		if (is_string($crop)) {
+			$decoded = json_decode($crop, true);
+			if (json_last_error() === JSON_ERROR_NONE) {
+				$crop = $decoded;
+			}
+		}
+
+		if (!is_array($crop)) {
+			return response()->json([
+				'success' => false,
+				'errors' => ['crop' => ['Invalid crop payload.']]
+			], 422);
+		}
+
+		$left = isset($crop['left']) ? (int) $crop['left'] : 0;
+		$top = isset($crop['top']) ? (int) $crop['top'] : 0;
+		$width = isset($crop['width']) ? (int) $crop['width'] : 0;
+		$height = isset($crop['height']) ? (int) $crop['height'] : 0;
+
+		if ($width <= 0 || $height <= 0) {
+			return response()->json([
+				'success' => false,
+				'errors' => ['crop' => ['Crop size is invalid.']]
+			], 422);
+		}
+
+		$media = Media::whereUserId(auth()->id())
+			->whereImage($file)
+			->first();
+
+		if (!$media) {
+			return response()->json([
+				'success' => false,
+				'errors' => ['file' => ['Media not found.']]
+			], 404);
+		}
+
+		$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+		if ($extension === 'gif') {
+			return response()->json([
+				'success' => false,
+				'errors' => ['file' => ['Cropping animated GIFs is not supported.']]
+			], 422);
+		}
+
+		$path = config('path.images');
+		$storagePath = $path . $file;
+		$imageData = null;
+
+		if ($this->bunnyStorageService->isConfigured() && env('BUNNY_PULL_ZONE_URL')) {
+			$remoteUrl = rtrim(env('BUNNY_PULL_ZONE_URL'), '/') . '/' . ltrim($storagePath, '/');
+			$response = Http::timeout(15)->get($remoteUrl);
+			if ($response->successful()) {
+				$imageData = $response->body();
+			}
+		}
+
+		if ($imageData === null && Storage::exists($storagePath)) {
+			$imageData = Storage::get($storagePath);
+		}
+
+		if ($imageData === null) {
+			return response()->json([
+				'success' => false,
+				'errors' => ['file' => ['Image source not available.']]
+			], 404);
+		}
+
+		$img = Image::read($imageData);
+		$imageWidth = $img->width();
+		$imageHeight = $img->height();
+
+		$left = max(0, min($left, $imageWidth - 1));
+		$top = max(0, min($top, $imageHeight - 1));
+		$width = max(1, min($width, $imageWidth - $left));
+		$height = max(1, min($height, $imageHeight - $top));
+
+		$img->crop($width, $height, $left, $top);
+
+		$tempPath = tempnam(sys_get_temp_dir(), 'crop_');
+		$tempWithExt = $tempPath . ($extension ? '.' . $extension : '');
+		@rename($tempPath, $tempWithExt);
+		$img->save($tempWithExt);
+
+		$uploaded = false;
+		if ($this->bunnyStorageService->isConfigured()) {
+			$uploaded = $this->bunnyStorageService->uploadFromLocal($tempWithExt, $storagePath);
+		}
+
+		if (!$uploaded) {
+			Storage::put($storagePath, file_get_contents($tempWithExt));
+		}
+
+		if (file_exists($tempWithExt)) {
+			unlink($tempWithExt);
+		}
+
+		$media->update([
+			'width' => $width,
+			'height' => $height
+		]);
+
+		// Clear Glide cache so the new crop is served immediately.
+		try {
+			$server = ServerFactory::create([
+				'response' => new SymfonyResponseFactory(app('request')),
+				'source' => Storage::disk()->getDriver(),
+				'cache' => Storage::disk()->getDriver(),
+				'source_path_prefix' => 'uploads/updates/images/',
+				'cache_path_prefix' => '.cache',
+				'base_url' => 'uploads/updates/images/',
+				'group_cache_in_folders' => true,
+			]);
+
+			$server->deleteCache($file);
+
+			if (env('BUNNY_PULL_ZONE_URL')) {
+				$ext = pathinfo($file, PATHINFO_EXTENSION) ?: 'jpg';
+				$cachedRemotePath = '__bunny_files_cache/' . sha1($file) . '.' . $ext;
+				$server->deleteCache($cachedRemotePath);
+			}
+		} catch (\Throwable $e) {
+			// Cache clearing is best-effort; ignore failures.
+		}
+
+		return response()->json([
+			'success' => true,
+			'file' => $file,
+			'width' => $width,
+			'height' => $height
 		]);
 	}
 }

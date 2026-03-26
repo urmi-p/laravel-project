@@ -1298,6 +1298,8 @@
 
 
 
+		var startPostSubmit = function () {
+
 		$('#progress, .blocked').show();
 
 
@@ -1710,6 +1712,28 @@
 			}).submit();
 
 		})(); //<--- FUNCTION %
+		};
+
+		var cropPromise = null;
+		if (typeof window.persistPostCropBeforeSubmit === 'function') {
+			try {
+				cropPromise = window.persistPostCropBeforeSubmit();
+			} catch (e) {
+				cropPromise = null;
+			}
+		}
+
+		if (cropPromise && typeof cropPromise.always === 'function') {
+			cropPromise.always(function () {
+				startPostSubmit();
+			});
+		} else if (cropPromise && typeof cropPromise.then === 'function') {
+			Promise.resolve(cropPromise).finally(function () {
+				startPostSubmit();
+			});
+		} else {
+			startPostSubmit();
+		}
 
 	});//<<<-------- * END FUNCTION CLICK UPDATE * ---->>>>
 

@@ -448,6 +448,11 @@
             object-fit: contain;
             display: block;
             transform-origin: center center;
+            cursor: grab;
+        }
+
+        .post-preview-media img.is-dragging {
+            cursor: grabbing;
         }
 
         .post-preview-thumbs {
@@ -879,7 +884,7 @@
                                                     <img id="postPreviewImage" src="" alt="{{ __('general.preview') }}">
                                                 </div>
                                                 <div class="post-preview-controls">
-                                                    <input id="postPreviewZoom" class="post-preview-range" type="range" min="0" max="100" step="1" value="25">
+                                                    <input id="postPreviewZoom" class="post-preview-range" type="range" min="100" max="300" step="1" value="100">
                                                 </div>
                                             </div>
                                             <div id="postPreviewThumbs" class="post-preview-thumbs"></div>
@@ -1279,9 +1284,15 @@
             var previewUrl = null;
             var hasUploadedVideo = false;
             var videoExtensions = ['mp4', 'mov', '3gp', 'mpeg', 'mpg', 'mkv', 'wmv', 'avi', 'flv', 'webm', 'm4v'];
-            var zoomMin = 25;
-            var zoomMax = 100;
+            var zoomMin = 100;
+            var zoomMax = 300;
             var currencySymbol = @json($settings->currency_symbol);
+            var previewPan = { x: 0, y: 0 };
+            var isDraggingPreview = false;
+            var dragStart = { x: 0, y: 0 };
+            var panStart = { x: 0, y: 0 };
+            var currentScale = zoomMin / 100;
+            var cropRequests = {};
             function syncZoomSliderFill() {
                 var min = parseFloat($zoom.attr('min')) || zoomMin;
                 var max = parseFloat($zoom.attr('max')) || zoomMax;
@@ -1290,23 +1301,101 @@
                 $zoom.css('--zoom-value', pct + '%');
             }
 
+            function getPreviewScale() {
+                return currentScale;
+            }
+
+            function getPreviewDimensions() {
+                var imgEl = $previewImage.get(0);
+                var containerEl = $('.post-preview-media').get(0);
+                if (!imgEl || !containerEl || !imgEl.naturalWidth || !imgEl.naturalHeight) {
+                    return null;
+                }
+
+                var containerW = containerEl.clientWidth;
+                var containerH = containerEl.clientHeight;
+                var fitScale = Math.min(containerW / imgEl.naturalWidth, containerH / imgEl.naturalHeight);
+                var baseW = imgEl.naturalWidth * fitScale;
+                var baseH = imgEl.naturalHeight * fitScale;
+                var scale = getPreviewScale();
+                return {
+                    containerW: containerW,
+                    containerH: containerH,
+                    scaledW: baseW * scale,
+                    scaledH: baseH * scale,
+                    fitScale: fitScale,
+                    naturalW: imgEl.naturalWidth,
+                    naturalH: imgEl.naturalHeight
+                };
+            }
+
+            function clampPreviewPan() {
+                var dims = getPreviewDimensions();
+                if (!dims) {
+                    previewPan.x = 0;
+                    previewPan.y = 0;
+                    return;
+                }
+
+                var extraX = Math.max(0, (dims.scaledW - dims.containerW) / 2);
+                var extraY = Math.max(0, (dims.scaledH - dims.containerH) / 2);
+
+                if (extraX === 0) {
+                    previewPan.x = 0;
+                } else {
+                    previewPan.x = Math.max(-extraX, Math.min(extraX, previewPan.x));
+                }
+
+                if (extraY === 0) {
+                    previewPan.y = 0;
+                } else {
+                    previewPan.y = Math.max(-extraY, Math.min(extraY, previewPan.y));
+                }
+            }
+
+            function applyPreviewTransform() {
+                clampPreviewPan();
+                $previewImage.css('transform', 'translate(' + previewPan.x + 'px, ' + previewPan.y + 'px) scale(' + getPreviewScale() + ')');
+            }
+
+            function resetPreviewPan() {
+                previewPan.x = 0;
+                previewPan.y = 0;
+                applyPreviewTransform();
+            }
+
+            function getPointerPosition(e) {
+                if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                    return {
+                        x: e.originalEvent.touches[0].clientX,
+                        y: e.originalEvent.touches[0].clientY
+                    };
+                }
+
+                return {
+                    x: e.clientX || 0,
+                    y: e.clientY || 0
+                };
+            }
+
             function setPreviewScale(percentValue) {
                 var percent = Math.max(zoomMin, Math.min(zoomMax, parseFloat(percentValue) || zoomMin));
                 $zoom.val(percent);
                 syncZoomSliderFill();
-                $previewImage.css('transform', 'scale(' + (percent / 100) + ')');
+                currentScale = percent / 100;
+                applyPreviewTransform();
             }
 
             function setupAutoZoom() {
                 var imgEl = $previewImage.get(0);
                 var containerEl = $('.post-preview-media').get(0);
                 if (!imgEl || !containerEl || !imgEl.naturalWidth || !imgEl.naturalHeight) {
-                    $zoom.attr({ min: 0, max: 100, step: 1 }).prop('disabled', true);
+                    $zoom.attr({ min: zoomMin, max: zoomMax, step: 1 }).prop('disabled', true);
                     setPreviewScale(zoomMin);
                     return;
                 }
 
-                $zoom.attr({ min: 0, max: 100, step: 1 }).prop('disabled', false);
+                $zoom.attr({ min: zoomMin, max: zoomMax, step: 1 }).prop('disabled', false);
                 setPreviewScale($zoom.val() || zoomMin);
             }
 
@@ -1323,6 +1412,7 @@
                 $uploadStep.hide();
                 $detailsStep.removeClass('active');
                 $previewStep.addClass('active');
+                resetPreviewPan();
 
                 $previewImage.off('load.stepzoom').on('load.stepzoom', function() {
                     setupAutoZoom();
@@ -1451,6 +1541,11 @@
                     return '';
                 }
 
+                var originalSrc = $item.attr('data-original-preview-src') || '';
+                if (originalSrc && !$item.attr('data-local-preview-src')) {
+                    return originalSrc;
+                }
+
                 var localSrc = $item.attr('data-local-preview-src') || '';
                 if (localSrc) {
                     return localSrc;
@@ -1468,6 +1563,219 @@
 
                 return '';
             }
+
+            function getActiveUploadItem() {
+                var $active = $('#formUpdateCreate .fileuploader-item.preview-active');
+                if ($active.length) {
+                    return $active;
+                }
+
+                var currentSrc = $previewImage.attr('src') || '';
+                if (!currentSrc) {
+                    return $();
+                }
+
+                var $match = $();
+                $('#formUpdateCreate .fileuploader-item').each(function() {
+                    var $item = $(this);
+                    var src = getPreviewSourceFromItem($item);
+                    if (src && src === currentSrc) {
+                        $match = $item;
+                        return false;
+                    }
+                });
+
+                return $match;
+            }
+
+            function markActiveItemBySrc(src) {
+                if (!src) {
+                    return;
+                }
+                var $matched = $();
+                $('#formUpdateCreate .fileuploader-item').each(function() {
+                    var $item = $(this);
+                    if (getPreviewSourceFromItem($item) === src) {
+                        $matched = $item;
+                        return false;
+                    }
+                });
+                if ($matched.length) {
+                    $('#formUpdateCreate .fileuploader-item').removeClass('preview-active');
+                    $matched.addClass('preview-active');
+                }
+            }
+
+            function computeCropFromPreview() {
+                var dims = getPreviewDimensions();
+                if (!dims) {
+                    return null;
+                }
+
+                var scale = getPreviewScale();
+                var imgLeft = (dims.containerW / 2) + previewPan.x - (dims.scaledW / 2);
+                var imgTop = (dims.containerH / 2) + previewPan.y - (dims.scaledH / 2);
+                var visibleLeft = Math.max(0, -imgLeft);
+                var visibleTop = Math.max(0, -imgTop);
+                var visibleRight = Math.min(dims.scaledW, dims.containerW - imgLeft);
+                var visibleBottom = Math.min(dims.scaledH, dims.containerH - imgTop);
+
+                if (visibleRight <= visibleLeft || visibleBottom <= visibleTop) {
+                    return null;
+                }
+
+                var factor = dims.fitScale * scale;
+                var cropLeft = visibleLeft / factor;
+                var cropTop = visibleTop / factor;
+                var cropWidth = (visibleRight - visibleLeft) / factor;
+                var cropHeight = (visibleBottom - visibleTop) / factor;
+
+                cropLeft = Math.max(0, Math.min(dims.naturalW - 1, cropLeft));
+                cropTop = Math.max(0, Math.min(dims.naturalH - 1, cropTop));
+                cropWidth = Math.max(1, Math.min(dims.naturalW - cropLeft, cropWidth));
+                cropHeight = Math.max(1, Math.min(dims.naturalH - cropTop, cropHeight));
+
+                return {
+                    left: Math.round(cropLeft),
+                    top: Math.round(cropTop),
+                    width: Math.round(cropWidth),
+                    height: Math.round(cropHeight),
+                    naturalW: dims.naturalW,
+                    naturalH: dims.naturalH
+                };
+            }
+
+            function applyLocalCropPreview($item, crop) {
+                if (!$item || !$item.length || !crop) {
+                    return;
+                }
+
+                var imgEl = $previewImage.get(0);
+                if (!imgEl || !imgEl.naturalWidth || !imgEl.naturalHeight) {
+                    return;
+                }
+
+                if (!$item.attr('data-original-preview-src')) {
+                    var currentSrc = $previewImage.attr('src') || getPreviewSourceFromItem($item);
+                    if (currentSrc) {
+                        $item.attr('data-original-preview-src', currentSrc);
+                    }
+                }
+
+                var canvas = document.createElement('canvas');
+                canvas.width = crop.width;
+                canvas.height = crop.height;
+                var ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    return;
+                }
+
+                ctx.drawImage(
+                    imgEl,
+                    crop.left,
+                    crop.top,
+                    crop.width,
+                    crop.height,
+                    0,
+                    0,
+                    crop.width,
+                    crop.height
+                );
+
+                var dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+                $item.attr('data-local-preview-src', dataUrl);
+
+                var $thumbImg = $item.find('.fileuploader-item-image img').first();
+                if ($thumbImg.length) {
+                    $thumbImg.attr('src', dataUrl);
+                }
+
+                var currentPreviewSrc = $previewImage.attr('src') || '';
+                if (currentPreviewSrc) {
+                    $previewImage.attr('src', dataUrl);
+                }
+            }
+
+            function shouldPersistCrop(crop) {
+                if (!crop) {
+                    return false;
+                }
+
+                var margin = 2;
+                if (
+                    crop.left <= margin &&
+                    crop.top <= margin &&
+                    Math.abs(crop.width - crop.naturalW) <= margin &&
+                    Math.abs(crop.height - crop.naturalH) <= margin
+                ) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function persistActiveCrop() {
+                var $item = getActiveUploadItem();
+                if (!$item || !$item.length) {
+                    return $.Deferred().resolve().promise();
+                }
+
+                var format = ($item.attr('data-upload-format') || '').toString().toLowerCase();
+                if (format && format !== 'image') {
+                    return $.Deferred().resolve().promise();
+                }
+
+                var fileName = ($item.attr('data-upload-name') || '').toString();
+                if (!fileName) {
+                    return $.Deferred().resolve().promise();
+                }
+
+                var crop = computeCropFromPreview();
+                if (!shouldPersistCrop(crop)) {
+                    return $.Deferred().resolve().promise();
+                }
+
+                applyLocalCropPreview($item, crop);
+
+                var payload = {
+                    file: fileName,
+                    crop: {
+                        left: crop.left,
+                        top: crop.top,
+                        width: crop.width,
+                        height: crop.height
+                    },
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                };
+
+                var lastPayload = cropRequests[fileName];
+                if (lastPayload &&
+                    lastPayload.left === payload.crop.left &&
+                    lastPayload.top === payload.crop.top &&
+                    lastPayload.width === payload.crop.width &&
+                    lastPayload.height === payload.crop.height) {
+                    return $.Deferred().resolve().promise();
+                }
+
+                cropRequests[fileName] = payload.crop;
+                return $.post(URL_BASE + '/upload/media/crop', payload).done(function(response) {
+                    if (!response || !response.success || !response.file || response.file === fileName) {
+                        return;
+                    }
+
+                    // Keep the client-side item bound to the latest cropped file name.
+                    $item.attr('data-upload-name', response.file);
+                    $item.data('upload-name', response.file);
+
+                    cropRequests[response.file] = payload.crop;
+                    delete cropRequests[fileName];
+                });
+            }
+
+            // Exposed for submit flow so publish can wait until crop is persisted.
+            window.persistPostCropBeforeSubmit = function() {
+                return persistActiveCrop();
+            };
 
             function openPreviewFromSelectedItem($item) {
                 var src = getPreviewSourceFromItem($item);
@@ -1570,6 +1878,7 @@
                 } else {
                     showPreviewStep(previewUrl || '');
                 }
+                markActiveItemBySrc(previewUrl || '');
                 updateUploadContinueState();
             });
 
@@ -1604,6 +1913,47 @@
                 setPreviewScale($(this).val());
             });
 
+            $previewImage.on('mousedown touchstart', function(e) {
+                if (!$previewStep.hasClass('active')) {
+                    return;
+                }
+
+                var dims = getPreviewDimensions();
+                if (!dims) {
+                    return;
+                }
+
+                if (dims.scaledW <= dims.containerW && dims.scaledH <= dims.containerH) {
+                    return;
+                }
+
+                isDraggingPreview = true;
+                dragStart = getPointerPosition(e);
+                panStart = { x: previewPan.x, y: previewPan.y };
+                $previewImage.addClass('is-dragging');
+                e.preventDefault();
+            });
+
+            $(document).on('mousemove touchmove', function(e) {
+                if (!isDraggingPreview) {
+                    return;
+                }
+
+                var point = getPointerPosition(e);
+                previewPan.x = panStart.x + (point.x - dragStart.x);
+                previewPan.y = panStart.y + (point.y - dragStart.y);
+                applyPreviewTransform();
+                e.preventDefault();
+            });
+
+            $(document).on('mouseup touchend touchcancel', function() {
+                if (!isDraggingPreview) {
+                    return;
+                }
+                isDraggingPreview = false;
+                $previewImage.removeClass('is-dragging');
+            });
+
             $(window).on('resize', function() {
                 if ($previewStep.hasClass('active')) {
                     setupAutoZoom();
@@ -1611,10 +1961,12 @@
             });
 
             $('#postPreviewContinue').on('click', function() {
+                persistActiveCrop();
                 showDetailsStep();
             });
 
             $('#postDetailsBack').on('click', function() {
+                persistActiveCrop();
                 var currentSrc = $previewImage.attr('src') || '';
                 if (getSelectedFilesCount() > 1 || !currentSrc) {
                     showUploadStep();
@@ -1628,6 +1980,7 @@
                 e.preventDefault();
 
                 if ($form.hasClass('step-details')) {
+                    persistActiveCrop();
                     var currentSrc = $previewImage.attr('src') || collectPreviewSources()[0] || '';
                     showPreviewStep(currentSrc);
                     return;
@@ -1655,9 +2008,11 @@
                 if (!src) {
                     return;
                 }
+                persistActiveCrop();
                 $('#postPreviewThumbs .post-preview-thumb').removeClass('active');
                 $(this).addClass('active');
                 loadPreviewImage(src);
+                markActiveItemBySrc(src);
             });
 
             $visibilityButtons.on('click', function() {

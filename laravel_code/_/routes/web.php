@@ -459,6 +459,7 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
 
 	Route::any('upload/media',[UploadMediaController::class, 'store']); 
 	Route::post('delete/media',[UploadMediaController::class, 'delete']);
+	Route::post('upload/media/crop',[UploadMediaController::class, 'crop']);
 
 	Route::any('upload/media/message',[UploadMediaMessageController::class, 'store']); 
 	Route::post('delete/media/message',[UploadMediaMessageController::class, 'delete']);
