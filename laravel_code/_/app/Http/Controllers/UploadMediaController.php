@@ -118,9 +118,8 @@ class UploadMediaController extends Controller
 		$pathImage = public_path('temp/') . $image['name'];
 		$img   = Image::read($pathImage);
 		$token = str_random(150) . uniqid() . now()->timestamp;
-		$url   = ucfirst(Helper::urlToDomain(url('/')));
-		$username = auth()->user()->username;
 		$path  = config('path.images');
+		$originalStoragePath = $this->getOriginalStoragePath($fileName);
 
 		$width = $img->width();
 		$height = $img->height();
@@ -135,19 +134,10 @@ class UploadMediaController extends Controller
 			$scale = $width > 2000 ? 2000 : $width;
 
 			$img = $img->scale(width: $scale);
-
-			$fontSize = max(12, round($img->width() * 0.03));
+			$this->persistImageToStorage($img, $originalStoragePath, $image['extension'] ?? null);
 
 			if (config('settings.watermark') == 'on') {
-				$img->text($url . '/' . $username, $img->width() - 30, $img->height() - 30, function (FontFactory $font)
-				use ($fontSize) {
-					$font->filename(public_path('webfonts/arial.TTF'));
-					$font->size($fontSize);
-					$font->color('#eaeaea');
-					$font->stroke('000000', 1);
-					$font->align('right');
-					$font->valign('bottom');
-				});
+				$this->applyImageWatermark($img);
 			}
 
 			$img->save();
@@ -292,6 +282,7 @@ class UploadMediaController extends Controller
 	public function delete()
 	{
 		$path = config('path.images');
+		$pathOriginal = $path . 'originals/';
 		$pathVideo = config('path.videos');
 		$pathMusic = config('path.music');
 		$pathFile = config('path.files');
@@ -313,7 +304,9 @@ class UploadMediaController extends Controller
 
 		if ($media->image) {
 			Storage::delete($path . $media->image);
+			Storage::delete($pathOriginal . $media->image);
 			$this->bunnyStorageService->delete($path . $media->image);
+			$this->bunnyStorageService->delete($pathOriginal . $media->image);
 			// Delete local file (if exist)
 			Storage::disk('default')->delete($local . $media->image);
 
@@ -424,9 +417,25 @@ class UploadMediaController extends Controller
 
 		$path = config('path.images');
 		$storagePath = $path . $file;
+		$originalStoragePath = $this->getOriginalStoragePath($file);
 		$imageData = null;
+		$usedOriginalSource = false;
 
 		if ($this->bunnyStorageService->isConfigured() && env('BUNNY_PULL_ZONE_URL')) {
+			$remoteUrl = rtrim(env('BUNNY_PULL_ZONE_URL'), '/') . '/' . ltrim($originalStoragePath, '/');
+			$response = Http::timeout(15)->get($remoteUrl);
+			if ($response->successful()) {
+				$imageData = $response->body();
+				$usedOriginalSource = true;
+			}
+		}
+
+		if ($imageData === null && Storage::exists($originalStoragePath)) {
+			$imageData = Storage::get($originalStoragePath);
+			$usedOriginalSource = true;
+		}
+
+		if ($imageData === null && $this->bunnyStorageService->isConfigured() && env('BUNNY_PULL_ZONE_URL')) {
 			$remoteUrl = rtrim(env('BUNNY_PULL_ZONE_URL'), '/') . '/' . ltrim($storagePath, '/');
 			$response = Http::timeout(15)->get($remoteUrl);
 			if ($response->successful()) {
@@ -456,23 +465,13 @@ class UploadMediaController extends Controller
 
 		$img->crop($width, $height, $left, $top);
 
-		$tempPath = tempnam(sys_get_temp_dir(), 'crop_');
-		$tempWithExt = $tempPath . ($extension ? '.' . $extension : '');
-		@rename($tempPath, $tempWithExt);
-		$img->save($tempWithExt);
+		$this->persistImageToStorage($img, $originalStoragePath, $extension);
 
-		$uploaded = false;
-		if ($this->bunnyStorageService->isConfigured()) {
-			$uploaded = $this->bunnyStorageService->uploadFromLocal($tempWithExt, $storagePath);
+		if (config('settings.watermark') == 'on' && $usedOriginalSource) {
+			$this->applyImageWatermark($img);
 		}
 
-		if (!$uploaded) {
-			Storage::put($storagePath, file_get_contents($tempWithExt));
-		}
-
-		if (file_exists($tempWithExt)) {
-			unlink($tempWithExt);
-		}
+		$this->persistImageToStorage($img, $storagePath, $extension);
 
 		$media->update([
 			'width' => $width,
@@ -508,5 +507,48 @@ class UploadMediaController extends Controller
 			'width' => $width,
 			'height' => $height
 		]);
+	}
+
+	protected function getOriginalStoragePath(string $file): string
+	{
+		return config('path.images') . 'originals/' . $file;
+	}
+
+	protected function applyImageWatermark($img): void
+	{
+		$url = ucfirst(Helper::urlToDomain(url('/')));
+		$username = auth()->user()->username;
+		$fontSize = max(12, round($img->width() * 0.03));
+
+		$img->text($url . '/' . $username, $img->width() - 30, $img->height() - 30, function (FontFactory $font)
+		use ($fontSize) {
+			$font->filename(public_path('webfonts/arial.TTF'));
+			$font->size($fontSize);
+			$font->color('#eaeaea');
+			$font->stroke('000000', 1);
+			$font->align('right');
+			$font->valign('bottom');
+		});
+	}
+
+	protected function persistImageToStorage($img, string $storagePath, ?string $extension = null): void
+	{
+		$tempPath = tempnam(sys_get_temp_dir(), 'img_');
+		$tempWithExt = $tempPath . ($extension ? '.' . strtolower($extension) : '');
+		@rename($tempPath, $tempWithExt);
+		$img->save($tempWithExt);
+
+		$uploaded = false;
+		if ($this->bunnyStorageService->isConfigured()) {
+			$uploaded = $this->bunnyStorageService->uploadFromLocal($tempWithExt, $storagePath);
+		}
+
+		if (!$uploaded) {
+			Storage::put($storagePath, file_get_contents($tempWithExt));
+		}
+
+		if (file_exists($tempWithExt)) {
+			unlink($tempWithExt);
+		}
 	}
 }
