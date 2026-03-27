@@ -50,7 +50,7 @@ class BunnyUploadMessageVideo implements ShouldQueue
 
         try {
             $syncResult = $bunnyService->syncLibrarySettingsFromApp();
-            if (config('settings.watermark_on_videos') == 'on' && empty($syncResult['synced'])) {
+            if ($bunnyService->isWatermarkEnabled() && empty($syncResult['synced'])) {
                 throw new \Exception('Bunny watermark sync failed. Configure BUNNY_API_KEY and ensure video library watermark access is enabled.');
             }
 

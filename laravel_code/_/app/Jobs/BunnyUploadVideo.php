@@ -67,7 +67,12 @@ class BunnyUploadVideo implements ShouldQueue
 
         try {
             // 1. Sync library settings (watermarks, etc.)
-            $bunnyService->syncLibrarySettingsFromApp();
+            $syncResult = $bunnyService->syncLibrarySettingsFromApp();
+            Log::info('BunnyUploadVideo: Library sync result', [
+                'media_id' => $this->video->id,
+                'post_id' => $post->id,
+                'sync_result' => $syncResult,
+            ]);
 
             // 2. Get or create "Posts" collection
             $collectionId = $bunnyService->getOrCreateCollection('Posts');
@@ -80,6 +85,36 @@ class BunnyUploadVideo implements ShouldQueue
 
             // 4. Fetch metadata with retry
             $videoData = $bunnyService->getVideoWithRetry($bunnyVideoId, 6, 1000);
+            $status = (int) ($videoData['status'] ?? $videoData['Status'] ?? 0);
+
+            // Wait until Bunny finishes processing so watermark/transcodes are applied.
+            if ($status !== 4) {
+                for ($i = 0; $i < 12; $i++) {
+                    if ($status === 4 || $status === 5) {
+                        break;
+                    }
+                    sleep(5);
+                    $videoData = $bunnyService->getVideoWithRetry($bunnyVideoId, 3, 1000);
+                    $status = (int) ($videoData['status'] ?? $videoData['Status'] ?? 0);
+                }
+            }
+
+            Log::info('BunnyUploadVideo: Bunny metadata after upload', [
+                'media_id' => $this->video->id,
+                'post_id' => $post->id,
+                'bunny_video_id' => $bunnyVideoId,
+                'status' => $status,
+                'length' => $videoData['length'] ?? $videoData['Length'] ?? null,
+                'width' => $videoData['width'] ?? $videoData['Width'] ?? null,
+                'has_mp4_fallback' => $videoData['hasMP4Fallback'] ?? $videoData['HasMP4Fallback'] ?? null,
+                'video_library_id' => $videoData['videoLibraryId'] ?? $videoData['VideoLibraryId'] ?? null,
+            ]);
+
+            if ($status === 5) {
+                $readableError = $bunnyService->getReadableTranscodingError($videoData) ?? 'Bunny transcoding failed.';
+                throw new \Exception($readableError);
+            }
+
             $bunnyService->ensureMp4FallbackEnabled($videoData);
             // 5. Update Media record
             $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);

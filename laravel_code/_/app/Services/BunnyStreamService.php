@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AdminSettings;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,7 @@ class BunnyStreamService
     protected $managementApiKey;
     protected $libraryId;
     protected $cdnHostname;
+    protected ?array $adminSettingsCache = null;
 
     public function __construct()
     {
@@ -238,6 +240,7 @@ class BunnyStreamService
     public function syncLibrarySettingsFromApp(): array
     {
         if (!$this->isManagementConfigured()) {
+            Log::warning('Bunny Stream: management API key/library not configured for sync');
             return [
                 'synced' => false,
                 'reason' => 'management_key_missing'
@@ -247,13 +250,15 @@ class BunnyStreamService
         try {
             $library = $this->getVideoLibrary();
             $payload = [];
+            $watermarkEnabled = $this->isWatermarkEnabled();
 
             if (empty($library['EnableMP4Fallback'])) {
                 $payload['EnableMP4Fallback'] = true;
             }
 
-            if (config('settings.watermark_on_videos') == 'on') {
-                $payload = array_merge($payload, $this->buildWatermarkPositionPayload());
+            if ($watermarkEnabled) {
+                $watermarkPositionPayload = $this->buildWatermarkPositionPayload();
+                $payload = array_merge($payload, $watermarkPositionPayload);
                 $this->ensureWatermarkAsset($library);
             } elseif (!empty($library['HasWatermark'])) {
                 $this->deleteWatermark();
@@ -263,7 +268,14 @@ class BunnyStreamService
                 $this->updateVideoLibrary($payload);
             }
 
-            return ['synced' => true];
+            $updatedLibrary = $this->getVideoLibrary();
+            $hasWatermarkAfter = !empty($updatedLibrary['HasWatermark']);
+
+            return [
+                'synced' => true,
+                'watermark_enabled' => $watermarkEnabled,
+                'library_has_watermark' => $hasWatermarkAfter,
+            ];
         } catch (\Exception $e) {
             Log::warning('Bunny Stream: Failed syncing library settings', [
                 'error' => $e->getMessage(),
@@ -386,6 +398,11 @@ class BunnyStreamService
         ])->post("https://api.bunny.net/videolibrary/{$this->libraryId}", $payload);
 
         if (!$response->successful()) {
+            Log::warning('Bunny Core API: update video library failed', [
+                'library_id' => $this->libraryId,
+                'status' => $response->status(),
+                'response' => $this->responseSnippet($response->body()),
+            ]);
             throw new Exception('Bunny Core API: failed to update video library');
         }
     }
@@ -402,30 +419,63 @@ class BunnyStreamService
             return;
         }
 
-        $watermarkFile = config('settings.watermak_video');
+        $watermarkFile = (string) $this->getAppSetting('watermak_video', '');
         if (!$watermarkFile) {
+            Log::warning('Bunny Stream: Watermark enabled but watermark file setting is empty');
             return;
         }
 
         $watermarkPath = public_path('img/' . $watermarkFile);
         if (!file_exists($watermarkPath)) {
+            Log::warning('Bunny Stream: Watermark enabled but file not found', [
+                'path' => $watermarkPath,
+            ]);
             return;
         }
 
-        $stream = fopen($watermarkPath, 'r');
+        [$uploadPath, ] = $this->buildSanitizedWatermarkForUpload($watermarkPath);
 
-        $response = Http::withHeaders([
-            'AccessKey' => $this->managementApiKey,
-            'Content-Type' => 'application/octet-stream',
-            'Accept' => 'application/json',
-        ])->withOptions([
-            'body' => $stream
-        ])->put("https://api.bunny.net/videolibrary/{$this->libraryId}/watermark");
-
-        if (!$response->successful()) {
-            Log::warning('Bunny Core API: failed to upload watermark asset', [
-                'response' => $response->body()
+        $binary = @file_get_contents($uploadPath);
+        if ($binary === false || $binary === '') {
+            Log::warning('Bunny Watermark Step 4: Failed to read upload file bytes', [
+                'upload_path' => $uploadPath,
             ]);
+            if ($uploadPath !== $watermarkPath && file_exists($uploadPath)) {
+                @unlink($uploadPath);
+            }
+            return;
+        }
+
+        $uploadMd5 = md5($binary);
+
+        $client = new Client([
+            'timeout' => 60,
+            'http_errors' => false,
+        ]);
+
+        $uploadResponse = $client->request('PUT', "https://api.bunny.net/videolibrary/{$this->libraryId}/watermark", [
+            'headers' => [
+                'AccessKey' => $this->managementApiKey,
+                'Content-Type' => 'application/octet-stream',
+                'Accept' => 'application/json',
+                'Content-Length' => strlen($binary),
+            ],
+            'body' => $binary,
+        ]);
+
+        $status = $uploadResponse->getStatusCode();
+        $body = (string) $uploadResponse->getBody();
+
+        if ($status < 200 || $status >= 300) {
+            Log::warning('Bunny Core API: failed to upload watermark asset', [
+                'status' => $status,
+                'response' => $this->responseSnippet($body),
+                'upload_md5' => $uploadMd5,
+            ]);
+        }
+
+        if ($uploadPath !== $watermarkPath && file_exists($uploadPath)) {
+            @unlink($uploadPath);
         }
     }
 
@@ -436,10 +486,17 @@ class BunnyStreamService
      */
     protected function deleteWatermark(): void
     {
-        Http::withHeaders([
+        $response = Http::withHeaders([
             'AccessKey' => $this->managementApiKey,
             'Accept' => 'application/json',
         ])->delete("https://api.bunny.net/videolibrary/{$this->libraryId}/watermark");
+
+        if (!$response->successful()) {
+            Log::warning('Bunny Stream: Failed to remove existing watermark', [
+                'status' => $response->status(),
+                'response' => $response->body(),
+            ]);
+        }
     }
 
     /**
@@ -449,28 +506,221 @@ class BunnyStreamService
      */
     protected function buildWatermarkPositionPayload(): array
     {
-        $position = (string) config('settings.watermark_position');
+        $position = (string) $this->getAppSetting('watermark_position', 'center');
+        $watermarkWidth = 35;
+        $watermarkHeight = 35;
+        $margin = 5;
 
-        $left = 5;
-        $top = 5;
-
-        if ($position === 'top-right' || $position === 'topright') {
-            $left = 75;
-            $top = 5;
-        } elseif ($position === 'bottom-left' || $position === 'bottomleft') {
-            $left = 5;
-            $top = 80;
-        } elseif ($position === 'bottom-right' || $position === 'bottomright') {
-            $left = 75;
-            $top = 80;
+        $watermarkFile = (string) $this->getAppSetting('watermak_video', '');
+        if ($watermarkFile) {
+            $watermarkPath = public_path('img/' . $watermarkFile);
+            $meta = $this->getWatermarkImageMeta($watermarkPath);
+            $contentWidth = (int) ($meta['content_width'] ?? 0);
+            $contentHeight = (int) ($meta['content_height'] ?? 0);
+            if ($contentWidth > 0 && $contentHeight > 0) {
+                $ratio = $contentHeight / $contentWidth;
+                $watermarkHeight = max(20, min(60, (int) round($watermarkWidth * $ratio)));
+            }
         }
+
+        $left = $margin;
+        $top = $margin;
+
+        if ($position === 'center') {
+            $left = (int) floor((100 - $watermarkWidth) / 2);
+            $top = (int) floor((100 - $watermarkHeight) / 2);
+        } elseif ($position === 'top-right' || $position === 'topright') {
+            $left = (int) floor(100 - $watermarkWidth - $margin);
+            $top = $margin;
+        } elseif ($position === 'bottom-left' || $position === 'bottomleft') {
+            $left = $margin;
+            $top = (int) floor(100 - $watermarkHeight - $margin);
+        } elseif ($position === 'bottom-right' || $position === 'bottomright') {
+            $left = (int) floor(100 - $watermarkWidth - $margin);
+            $top = (int) floor(100 - $watermarkHeight - $margin);
+        }
+
+        $left = max(0, min(100 - $watermarkWidth, $left));
+        $top = max(0, min(100 - $watermarkHeight, $top));
 
         return [
             'WatermarkPositionLeft' => $left,
             'WatermarkPositionTop' => $top,
-            'WatermarkWidth' => 20,
-            'WatermarkHeight' => 20,
+            'WatermarkWidth' => $watermarkWidth,
+            'WatermarkHeight' => $watermarkHeight,
         ];
+    }
+
+    /**
+     * Check whether watermark on videos is enabled in admin settings.
+     *
+     * @return bool
+     */
+    public function isWatermarkEnabled(): bool
+    {
+        return (string) $this->getAppSetting('watermark_on_videos', 'off') === 'on';
+    }
+
+    /**
+     * Read app settings from request config first, then DB for queue/non-HTTP contexts.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    protected function getAppSetting(string $key, $default = null)
+    {
+        $configValue = config('settings.' . $key);
+        if ($configValue !== null && $configValue !== '') {
+            return $configValue;
+        }
+
+        if ($this->adminSettingsCache === null) {
+            $model = AdminSettings::query()->first();
+            $this->adminSettingsCache = $model ? $model->attributesToArray() : [];
+        }
+
+        return $this->adminSettingsCache[$key] ?? $default;
+    }
+
+    /**
+     * Build a temporary sanitized PNG for reliable Bunny watermark upload.
+     *
+     * @param string $watermarkPath
+     * @return array{0:string,1:array}
+     */
+    protected function buildSanitizedWatermarkForUpload(string $watermarkPath): array
+    {
+        if (!function_exists('imagecreatefromstring')) {
+            return [$watermarkPath, []];
+        }
+
+        $raw = @file_get_contents($watermarkPath);
+        if ($raw === false || $raw === '') {
+            return [$watermarkPath, []];
+        }
+
+        $img = @imagecreatefromstring($raw);
+        if (!$img) {
+            return [$watermarkPath, []];
+        }
+
+        $w = imagesx($img);
+        $h = imagesy($img);
+        imagealphablending($img, false);
+        imagesavealpha($img, true);
+
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'bunny_wm_sanitize_' . md5($watermarkPath . microtime(true)) . '.png';
+        $ok = @imagepng($img, $tmp);
+        imagedestroy($img);
+
+        if (!$ok || !file_exists($tmp)) {
+            return [$watermarkPath, []];
+        }
+
+        return [$tmp, [
+            'width' => $w,
+            'height' => $h,
+            'size_bytes' => @filesize($tmp) ?: null,
+        ]];
+    }
+
+    /**
+     * Inspect watermark PNG visibility stats for debugging.
+     *
+     * @param string $watermarkPath
+     * @return array
+     */
+    protected function getWatermarkImageMeta(string $watermarkPath): array
+    {
+        $meta = [
+            'size_bytes' => @filesize($watermarkPath) ?: null,
+            'width' => null,
+            'height' => null,
+            'transparent_pct' => null,
+            'opaque_pct' => null,
+            'content_width' => null,
+            'content_height' => null,
+        ];
+
+        $imageInfo = @getimagesize($watermarkPath);
+        if (is_array($imageInfo)) {
+            $meta['width'] = $imageInfo[0] ?? null;
+            $meta['height'] = $imageInfo[1] ?? null;
+        }
+
+        if (function_exists('imagecreatefrompng')) {
+            $img = @imagecreatefrompng($watermarkPath);
+            if ($img) {
+                $w = imagesx($img);
+                $h = imagesy($img);
+                $total = max(1, $w * $h);
+                $transparent = 0;
+                $opaque = 0;
+                $minX = $w;
+                $minY = $h;
+                $maxX = -1;
+                $maxY = -1;
+
+                for ($y = 0; $y < $h; $y++) {
+                    for ($x = 0; $x < $w; $x++) {
+                        $rgba = imagecolorat($img, $x, $y);
+                        $a = ($rgba & 0x7F000000) >> 24; // 0 = opaque, 127 = transparent
+                        if ($a === 127) {
+                            $transparent++;
+                        } elseif ($a === 0) {
+                            $opaque++;
+                        }
+
+                        if ($a < 120) {
+                            if ($x < $minX) {
+                                $minX = $x;
+                            }
+                            if ($y < $minY) {
+                                $minY = $y;
+                            }
+                            if ($x > $maxX) {
+                                $maxX = $x;
+                            }
+                            if ($y > $maxY) {
+                                $maxY = $y;
+                            }
+                        }
+                    }
+                }
+
+                $meta['transparent_pct'] = round(($transparent / $total) * 100, 2);
+                $meta['opaque_pct'] = round(($opaque / $total) * 100, 2);
+                if ($maxX >= $minX && $maxY >= $minY) {
+                    $meta['content_width'] = ($maxX - $minX) + 1;
+                    $meta['content_height'] = ($maxY - $minY) + 1;
+                }
+                imagedestroy($img);
+            }
+        }
+
+        return $meta;
+    }
+
+    /**
+     * Keep API response logs readable.
+     *
+     * @param string|null $body
+     * @param int $limit
+     * @return string|null
+     */
+    protected function responseSnippet(?string $body, int $limit = 400): ?string
+    {
+        if ($body === null) {
+            return null;
+        }
+
+        $clean = trim($body);
+        if ($clean === '') {
+            return '';
+        }
+
+        return mb_substr($clean, 0, $limit);
     }
 
     /**
