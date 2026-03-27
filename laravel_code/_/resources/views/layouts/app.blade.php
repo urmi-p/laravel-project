@@ -57,9 +57,9 @@
   <div id="mobileMenuOverlay" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"></div>
 
   @auth
-    {{-- @if (! request()->is('messages/*') && ! request()->is('live/*')) --}}
+    @if (!request()->is('live/*'))
       @include('includes.menu-mobile')
-    {{-- @endif --}}
+    @endif
   @endauth
 
   @if (auth()->guest() && $settings->alert_adult == 'on' && !$settings->age_verification_status)
@@ -114,10 +114,12 @@
 
 @php
   $hideGlobalChrome = request()->is('login') || request()->is('signup') || request()->is('register') || request()->is('password/*');
+  $isLiveRoute = request()->is('live/*');
 @endphp
 
 @if (
       !$hideGlobalChrome &&
+      !$isLiveRoute &&
       (
         (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
         || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
@@ -131,7 +133,7 @@
   @include('includes.navbar')
   @endif
 
-  @if (!$hideGlobalChrome)
+  @if (!$hideGlobalChrome && !$isLiveRoute)
     @include('includes.header-mobile')
   @endif
 
@@ -142,6 +144,7 @@
             
           @if (
                   !$hideGlobalChrome &&
+                  !$isLiveRoute &&
                 ( 
                   (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
                         || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
