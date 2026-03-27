@@ -669,6 +669,7 @@ return array(
 'disable_wallet'               => 'Désactiver le portefeuille',
 'error_delete_post'            => 'Selon nos politiques, vous ne pouvez pas supprimer cette publication si vous avez des abonnés actifs.',
 'set_price_for_msg'            => 'Définir un prix pour ce message.',
+'set_price'                    => 'Définir le prix',
 'hide_name'                    => 'Afficher le nom d\'utilisateur au lieu du nom complet',
 'min_ppv_amount'               => 'Montant minimum du contenu à la demande (Publication/Message verrouillé)',
 'max_ppv_amount'               => 'Montant maximum du contenu à la demande (Publication/Message verrouillé)',

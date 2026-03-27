@@ -674,6 +674,7 @@ return array(
 	'disable_wallet' => 'Desactivar billetera',
 	'error_delete_post' => 'Por políticas de nuestra plataforma, no puede eliminar esta publicación, si tiene suscriptores activos.',
 	'set_price_for_msg' => 'Establezca un precio para este mensaje.',
+	'set_price' => 'Establecer precio',
 	'hide_name' => 'Mostrar nombre de usuario en lugar de tu Nombre completo',
 	'min_ppv_amount' => 'Pago mínimo por ver (Publicación/Mensaje bloqueado)',
 	'max_ppv_amount' => 'Pago máximo por ver (Publicación/Mensaje bloqueado)',

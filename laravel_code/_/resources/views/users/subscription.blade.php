@@ -1,99 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ trans('general.subscription_price') }} -
-@endsection
-
-@section('css')
-<style type="text/css">
-    .btn-save-custom {
-        background-color: #fff !important;
-        color: #000 !important;
-        border-radius: 12px !important;
-        border: none !important;
-        font-weight: 600 !important;
-        font-size: 15px !important;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        height: auto !important;
-        line-height: normal !important;
-    }
-
-    .btn-save-custom:hover {
-        background-color: #f8f8f8 !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        color: #000 !important;
-    }
-
-    .subscription-card {
-        position: relative;
-        background: #1a1a1a;
-        border: 1px solid #333;
-        transition: background 0.3s ease, border 0.3s ease;
-    }
-
-    [data-bs-theme="light"] .subscription-card {
-        background: #fff !important;
-        border: 1px solid #e2e2e2 !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .subscription-card-label {
-        color: #fff;
-    }
-
-    [data-bs-theme="light"] .subscription-card-label {
-        color: #111 !important;
-    }
-
-    .theme-subtitle {
-        color: #fff;
-    }
-
-    [data-bs-theme="light"] .theme-subtitle {
-        color: #444 !important;
-    }
-
-    .status-dot-pos {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        display: inline-block;
-    }
-
-    .input-pl {
-      padding-left: 12px !important;
-    }
-
-    .subscription-grid-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .subscription-grid-row > .subscription-card,
-    .subscription-grid-row > .subscription-card-spacer {
-        flex: 1 1 0;
-    }
-
-    @media (max-width: 576px) {
-        .subscription-grid-row {
-            flex-direction: column;
-        }
-
-        .subscription-grid-row > .subscription-card-spacer {
-            display: none;
-        }
-    }
-</style>
+    {{ __('users.my_subscriptions') }} -
 @endsection
 
 @section('content')
-<section class="section section-sm">
+<section class="section section-sm subscription-settings-page">
     {{-- for mobile header --}}
     @include('includes.header-mobile')
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
@@ -104,10 +16,11 @@
                 @if (auth()->user()->verified_id == 'yes')
                 <div class="col-md-12 col-lg-9 mb-5 mb-lg-0">
                     <div class="row mb-sm">
-                        <div class="col-lg-8 py-5">
-                            <h2 class="mb-0 font-montserrat font_weight_700 fs-24 pb-3"><i class="bi bi-cash-stack mr-2"></i>
-                                {{ trans('general.subscription_price') }}</h2>
-                            <p class="lead mt-0 fs-14 font_weight_400 theme-subtitle">{{ trans('general.info_subscription') }}</p>
+                        <div class="col-12 pt-2 pb-4 pt-lg-4 pb-lg-4">
+                            <div class="subscription-settings-header d-flex flex-column gap-3">
+                                <h2 class="mb-0 font-montserrat fw-bold subscription-settings-title">{{ __('users.my_subscriptions') }}</h2>
+                                <p class="mb-0 fw-normal subscription-settings-subtitle">{{ __('users.my_subscriptions_subtitle') }}</p>
+                            </div>
                         </div>
                     </div>
                     @if (session('status'))
@@ -152,177 +65,111 @@
 
                         @csrf
 
+                        @php
+                            $subscriptionPlans = [
+                                [
+                                    'label' => __('general.subscription_price_week'),
+                                    'name' => 'price_weekly',
+                                    'status_name' => 'status_weekly',
+                                    'status_id' => 'customSwitchWeekly',
+                                    'interval' => 'weekly',
+                                    'error' => 'price_weekly',
+                                ],
+                                [
+                                    'label' => __('general.subscription_price_month'),
+                                    'name' => 'price',
+                                    'status_name' => 'status',
+                                    'status_id' => 'customSwitchMonthly',
+                                    'interval' => 'monthly',
+                                    'error' => 'price',
+                                ],
+                                [
+                                    'label' => __('general.subscription_price_quarter'),
+                                    'name' => 'price_quarterly',
+                                    'status_name' => 'status_quarterly',
+                                    'status_id' => 'customSwitchQuarterly',
+                                    'interval' => 'quarterly',
+                                    'error' => 'price_quarterly',
+                                ],
+                                [
+                                    'label' => __('general.subscription_price_biannual'),
+                                    'name' => 'price_biannually',
+                                    'status_name' => 'status_biannually',
+                                    'status_id' => 'customSwitchBiannually',
+                                    'interval' => 'biannually',
+                                    'error' => 'price_biannually',
+                                ],
+                            ];
+                        @endphp
+
                         <div class="form-group">
+                            <div class="row g-4 subscription-settings-grid">
+                                @foreach ($subscriptionPlans as $plan)
+                                    <div class="col-12 col-md-6">
+                                        <div class="subscription-plan-card h-100 d-flex flex-column">
+                                            <div class="subscription-plan-status">
+                                                <div class="subscription-plan-dot {{ auth()->user()->getPlan($plan['interval'], 'status') ? 'is-active' : 'is-inactive' }}"></div>
 
-                            <div class="subscription-grid-row">
-                                <div class="subscription-card">
-                                    <span class="status-dot-pos {{ auth()->user()->getPlan('weekly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
-                                    <label class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_week') }}</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">{{ $settings->currency_symbol }}</span>
+                                                <div class="subscription-plan-toggle">
+                                                    <input
+                                                        type="checkbox"
+                                                        class="subscription-plan-toggle-input"
+                                                        @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
+                                                        name="{{ $plan['status_name'] }}"
+                                                        value="1"
+                                                        @if (auth()->user()->getPlan($plan['interval'], 'status')) checked @endif
+                                                        id="{{ $plan['status_id'] }}">
+                                                    <label class="subscription-plan-toggle-label" for="{{ $plan['status_id'] }}" aria-label="{{ __('general.status') }}"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center gap-3 subscription-plan-head">
+                                                <h3 class="mb-0 subscription-plan-title">{{ $plan['label'] }}</h3>
+                                            </div>
+
+                                            <div class="d-flex flex-column gap-3 subscription-plan-body">
+                                                <div class="subscription-plan-input-wrap">
+                                                    <div class="input-group input-group-sub subscription-plan-input-group mb-0">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-sub-text subscription-plan-currency">{{ $settings->currency_symbol }}</span>
+                                                        </div>
+                                                        <input
+                                                            class="form-control light_mode_form isNumber subscriptionPrice subscription-plan-input"
+                                                            @if (auth()->user()->verified_id == 'no' ||
+                                                                    auth()->user()->verified_id == 'reject' ||
+                                                                    auth()->user()->free_subscription == 'yes') disabled @endif
+                                                            name="{{ $plan['name'] }}"
+                                                            placeholder="0.00"
+                                                            value="{{ $settings->currency_code == 'JPY' ? round(auth()->user()->getPlan($plan['interval'], 'price')) : auth()->user()->getPlan($plan['interval'], 'price') }}"
+                                                            type="text">
+                                                    </div>
+
+                                                    @error($plan['error'])
+                                                        <span class="invalid-feedback d-block" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+
+                                                <div>
+                                                    <button type="button" class="btn subscription-plan-action">{{ __('general.set_price') }}</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <input class="form-control form-control-lg isNumber subscriptionPrice input-pl"
-                                            @if (auth()->user()->verified_id == 'no' ||
-                                                    auth()->user()->verified_id == 'reject' ||
-                                                    auth()->user()->free_subscription == 'yes') disabled @endif name="price_weekly"
-                                            placeholder="0.00"
-                                            value="{{ $settings->currency_code == 'JPY' ? round(auth()->user()->getPlan('weekly', 'price')) : auth()->user()->getPlan('weekly', 'price') }}"
-                                            type="text">
-                                        @error('price_weekly')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
                                     </div>
-
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input"
-                                            @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="status_weekly"
-                                            value="1" @if (auth()->user()->getPlan('weekly', 'status')) checked @endif
-                                            id="customSwitchWeekly">
-                                        <label class="custom-control-label switch"
-                                            for="customSwitchWeekly">{{ trans('general.status') }}</label>
-                                    </div>
-                                </div>
-                                <div class="subscription-card">
-                                    <span class="status-dot-pos {{ auth()->user()->getPlan('monthly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
-                                    <label class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_month') }}</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">{{ $settings->currency_symbol }}</span>
-                                        </div>
-                                        <input class="form-control form-control-lg isNumber subscriptionPrice input-pl"
-                                            @if (auth()->user()->verified_id == 'no' ||
-                                                    auth()->user()->verified_id == 'reject' ||
-                                                    auth()->user()->free_subscription == 'yes') disabled @endif name="price"
-                                            placeholder="0.00"
-                                            value="{{ $settings->currency_code == 'JPY' ? round(auth()->user()->getPlan('monthly', 'price')) : auth()->user()->getPlan('monthly', 'price') }}"
-                                            type="text">
-                                        @error('price')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input"
-                                            @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="status"
-                                            value="1" @if (auth()->user()->getPlan('monthly', 'status')) checked @endif
-                                            id="customSwitchMonthly">
-                                        <label class="custom-control-label switch"
-                                            for="customSwitchMonthly">{{ trans('general.status') }}</label>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
-                            <div class="subscription-grid-row">
-                                <div class="subscription-card">
-                                    <span class="status-dot-pos {{ auth()->user()->getPlan('quarterly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
-                                    <label
-                                        class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_quarter') }}</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">{{ $settings->currency_symbol }}</span>
-                                        </div>
-                                        <input class="form-control form-control-lg isNumber subscriptionPrice input-pl"
-                                            @if (auth()->user()->verified_id == 'no' ||
-                                                    auth()->user()->verified_id == 'reject' ||
-                                                    auth()->user()->free_subscription == 'yes') disabled @endif name="price_quarterly"
-                                            placeholder="0.00"
-                                            value="{{ $settings->currency_code == 'JPY' ? round(auth()->user()->getPlan('quarterly', 'price')) : auth()->user()->getPlan('quarterly', 'price') }}"
-                                            type="text">
-                                        @error('price_quarterly')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
 
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input"
-                                            @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="status_quarterly"
-                                            value="1" @if (auth()->user()->getPlan('quarterly', 'status')) checked @endif
-                                            id="customSwitchQuarterly">
-                                        <label class="custom-control-label switch"
-                                            for="customSwitchQuarterly">{{ trans('general.status') }}</label>
-                                    </div>
-                                </div>
-                                <div class="subscription-card">
-                                    <span class="status-dot-pos {{ auth()->user()->getPlan('biannually', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
-                                    <label
-                                        class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_biannual') }}</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">{{ $settings->currency_symbol }}</span>
-                                        </div>
-                                        <input class="form-control form-control-lg isNumber subscriptionPrice input-pl"
-                                            @if (auth()->user()->verified_id == 'no' ||
-                                                    auth()->user()->verified_id == 'reject' ||
-                                                    auth()->user()->free_subscription == 'yes') disabled @endif name="price_biannually"
-                                            placeholder="0.00"
-                                            value="{{ $settings->currency_code == 'JPY' ? round(auth()->user()->getPlan('biannually', 'price')) : auth()->user()->getPlan('biannually', 'price') }}"
-                                            type="text">
-                                        @error('price_biannually')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input"
-                                            @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="status_biannually"
-                                            value="1" @if (auth()->user()->getPlan('biannually', 'status')) checked @endif
-                                            id="customSwitchBiannually">
-                                        <label class="custom-control-label switch"
-                                            for="customSwitchBiannually">{{ trans('general.status') }}</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="subscription-grid-row">
-                                <div class="subscription-card">
-                                    <span class="status-dot-pos {{ auth()->user()->getPlan('yearly', 'status') ? 'bg-success' : 'bg-danger' }}"></span>
-                                    <label
-                                        class="font_weight_600 fs-30 subscription-card-label">{{ trans('general.subscription_price_year') }}</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">{{ $settings->currency_symbol }}</span>
-                                        </div>
-                                        <input class="form-control form-control-lg isNumber subscriptionPrice input-pl"
-                                            @if (auth()->user()->verified_id == 'no' ||
-                                                    auth()->user()->verified_id == 'reject' ||
-                                                    auth()->user()->free_subscription == 'yes') disabled @endif name="price_yearly"
-                                            placeholder="0.00"
-                                            value="{{ $settings->currency_code == 'JPY' ? round(auth()->user()->getPlan('yearly', 'price')) : auth()->user()->getPlan('yearly', 'price') }}"
-                                            type="text">
-                                        @error('price_yearly')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input"
-                                            @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="status_yearly"
-                                            value="1" @if (auth()->user()->getPlan('yearly', 'status')) checked @endif
-                                            id="customSwitchYearly">
-                                        <label class="custom-control-label switch"
-                                            for="customSwitchYearly">{{ trans('general.status') }}</label>
-                                    </div>
-                                </div>
-                                <div class="subscription-card-spacer"></div>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mt-4 subscription-settings-footer">
                                 <div class="mb-1 mt-1">
-                                    <div class="custom-control custom-switch custom-switch-lg">
+                                    <div class="subscription-free-toggle d-inline-flex align-items-center gap-3">
                                         <input type="checkbox" class="custom-control-input"
                                             @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="free_subscription"
                                             value="yes" @if (auth()->user()->free_subscription == 'yes') checked @endif
                                             id="customSwitchFreeSubscription">
-                                        <label class="custom-control-label switch"
-                                            for="customSwitchFreeSubscription">{{ trans('general.free_subscription') }}</label>
+                                        <label class="subscription-plan-toggle-label subscription-plan-toggle-label-free"
+                                            for="customSwitchFreeSubscription"></label>
+                                        <label class="mb-0 subscription-free-label" for="customSwitchFreeSubscription">{{ trans('general.free_subscription') }}</label>
                                     </div>
 
                                     @if (auth()->user()->totalSubscriptionsActive() != 0)
@@ -341,7 +188,7 @@
                                         @endif
                                     @endif
                                 </div>
-                                <button class="btn btn-1 btn-save-custom mr-3" @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
+                                <button class="btn subscription-save-button" @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
                                     onClick="this.form.submit(); this.disabled=true; this.innerText='{{ trans('general.please_wait') }}';"
                                     type="submit">
                                     {{ trans('general.save_changes') }}
