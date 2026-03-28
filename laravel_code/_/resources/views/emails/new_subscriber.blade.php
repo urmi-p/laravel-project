@@ -1,311 +1,382 @@
-<!DOCTYPE html
-
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-
-
 <head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-</head>
-
-
-
-<body
-
-    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; background-color: #ffffff; color: #718096; height: 100%; line-height: 1.4; margin: 0; padding: 0; width: 100% !important;">
-
-    <style>
-
-        @media only screen and (max-width: 600px) {
-
-            .inner-body {
-
-                width: 100% !important;
-
-            }
-
-
-
-            .footer {
-
-                width: 100% !important;
-
-            }
-
+    <title>{{ $title_site }}</title>
+    <style type="text/css" rel="stylesheet" media="all">
+        body,
+        body *:not(html):not(style):not(br):not(tr):not(code) {
+            box-sizing: border-box;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
         }
 
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            height: 100%;
+            line-height: 1.5;
+            -webkit-text-size-adjust: none;
+            background-color: #000000;
+            color: #12243a;
+        }
 
+        table {
+            border-collapse: collapse;
+        }
+
+        img {
+            border: none;
+            max-width: 100%;
+        }
+
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .wrapper {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header-shell {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header-copy {
+            color: #ffffff;
+            font-size: 16px;
+            line-height: 1.4;
+            text-align: center;
+            padding: 24px 20px 8px;
+        }
+
+        .logo-wrap {
+            text-align: center;
+            padding: 8px 20px 34px;
+        }
+
+        .content-shell {
+            width: 100%;
+            background-color: #f4f4f4;
+        }
+
+        .content-card {
+            width: 100%;
+            max-width: 760px;
+            background-color: #f4f4f4;
+        }
+
+        .content-pad {
+            padding: 52px 56px 64px;
+        }
+
+        .title {
+            margin: 0 0 40px;
+            color: #112640;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .greeting,
+        .body-copy,
+        .body-copy p,
+        .salutation {
+            color: #112640;
+            font-size: 18px;
+            line-height: 1.55;
+            text-align: left;
+        }
+
+        .greeting {
+            margin: 0 0 12px;
+        }
+
+        .body-copy,
+        .body-copy p {
+            margin: 0 0 22px;
+        }
+
+        .body-copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        .body-copy a {
+            color: #112640;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .action-wrap {
+            padding: 10px 0 4px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 24px;
+            background-color: #111111;
+            border-radius: 4px;
+            color: #ffffff !important;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-decoration: none;
+        }
+
+        .salutation {
+            margin: 54px 0 0;
+            font-weight: 700;
+        }
+
+        .footer-shell {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .footer-wrap {
+            width: 100%;
+            max-width: 760px;
+        }
+
+        .footer-pad {
+            padding: 46px 32px 54px;
+        }
+
+        .footer-logo-cell {
+            width: 34%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+
+        .footer-text-cell {
+            width: 66%;
+            vertical-align: top;
+        }
+
+        .footer-about {
+            margin: 0 0 26px;
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .social-row {
+            margin: 0 0 18px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .social-row li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .social-box {
+            display: inline-block;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            border: 1px solid #ffffff;
+            text-align: center;
+        }
+
+        .copyright {
+            margin: 0;
+            color: #ffffff;
+            font-size: 13px;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .content-pad {
+                padding: 38px 26px 48px !important;
+            }
+
+            .title {
+                font-size: 22px !important;
+                margin-bottom: 30px !important;
+            }
+
+            .greeting,
+            .body-copy,
+            .body-copy p,
+            .salutation {
+                font-size: 17px !important;
+            }
+
+            .footer-pad {
+                padding: 34px 24px 42px !important;
+            }
+
+            .footer-logo-cell,
+            .footer-text-cell {
+                display: block !important;
+                width: 100% !important;
+                padding-right: 0 !important;
+            }
+
+            .footer-logo-cell {
+                padding-bottom: 26px !important;
+            }
+        }
 
         @media only screen and (max-width: 500px) {
-
-            .button {
-
-                width: 100% !important;
-
+            .header-copy {
+                font-size: 14px !important;
+                padding: 18px 16px 8px !important;
             }
 
+            .logo-wrap {
+                padding: 8px 16px 24px !important;
+            }
+
+            .content-pad {
+                padding: 30px 18px 38px !important;
+            }
+
+            .title {
+                font-size: 18px !important;
+            }
+
+            .greeting,
+            .body-copy,
+            .body-copy p,
+            .salutation {
+                font-size: 16px !important;
+            }
+
+            .button {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .footer-pad {
+                padding: 28px 18px 34px !important;
+            }
         }
-
     </style>
+</head>
 
-
-
-    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation"
-
-        style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #000; margin: 0; padding: 0; width: 100%;">
-
+<body>
+    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
         <tr>
-
-            <td align="center"
-
-                style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation"
-
-                    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 0; padding: 0; width: 100%;">
-
+            <td align="center">
+                <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
-
-                        <td class="header"
-
-                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; padding: 25px 0; text-align: center;">
-
-                            <a href="{{ url('/') }}"
-
-                                style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #3d4852; font-size: 19px; font-weight: bold; text-decoration: none; display: inline-block;">
-
-                                <img src="{{ url('public/img', $settings->logo) }}" class="logo" alt="Logo"
-
-                                    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; border: none; height: auto; width: auto; max-width: 190px !important;">
-
+                        <td class="header-copy">
+                            {{ __('emails.brand_tagline') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="logo-wrap">
+                            <a href="{{ url('/') }}" target="_blank" rel="noopener">
+                                <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $title_site }}" width="210">
                             </a>
-
-
-
-                            <h4 style="margin: 0px; color:#bdbdbd;">The online space made for real closeness.</h4>
-
                         </td>
-
                     </tr>
-
-
-
-                    <!-- Email Body -->
-
-                    <tr>
-
-                        <td class="body" width="100%" cellpadding="0" cellspacing="0"
-
-                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #000; border-bottom: 1px solid #000; border-top: 1px solid #000; margin: 0; padding: 0; width: 100%;">
-
-                            <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0"
-
-                                role="presentation"
-
-                                style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; background-color: #ffffff; border-color: #e8e5ef; border-radius: 2px; border-width: 1px; box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015); margin: 0 auto; padding: 0; width: 570px;">
-
-                                <!-- Body content -->
-
-                                <tr>
-
-                                    <td class="content-cell"
-
-                                        style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
-
-                                        <h1
-
-                                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #3d4852; font-size: 18px; font-weight: bold; margin-top: 0; text-align: left;">
-
-                                            {{trans('emails.hello')}} {{$fullname}}</h1>
-
-
-
-                                         <p
-
-                                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
-
-                                             {!! $body !!}
-
-                                        </p>
-
-                                
-
-                                        
-
-                                        <table class="action" align="center" width="100%" cellpadding="0"
-
-                                            cellspacing="0" role="presentation"
-
-                                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 30px auto; padding: 0; text-align: center; width: 100%;">
-
-                                            <tr>
-
-                                                <td align="center"
-
-                                                    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0"
-
-                                                        role="presentation"
-
-                                                        style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                                                        <tr>
-
-                                                            <td align="center"
-
-                                                                style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                                                                <table border="0" cellpadding="0" cellspacing="0"
-
-                                                                    role="presentation"
-
-                                                                    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                                                                    <tr>
-
-                                                                        <td
-
-                                                                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                                                                            <a href="{{url('my/subscribers')}}" class="button"
-
-                                                                                style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; display: inline-block; overflow: hidden; text-decoration: none; padding: 12px 14px; color: #FFF; background-color: #0c0c0c !important;"
-
-                                                                                target="_blank" rel="noopener">{{trans('emails.go_subscribers')}}</a>
-
-                                                                        </td>
-
-                                                                    </tr>
-
-                                                                </table>
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                    </table>
-
-                                                </td>
-
-                                            </tr>
-
-                                        </table>
-
-                                        <p
-
-                                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
-
-                                            {{trans('emails.regards')}}<br>
-
-                                            {{$title_site}}</p>
-
-
-
-
-
-
-
-                                    </td>
-
-                                </tr>
-
-                            </table>
-
-                        </td>
-
-                    </tr>
-
-
-
-                    <tr>
-
-                        <td
-
-                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-
-                            <table class="footer" align="center" width="570" cellpadding="0" cellspacing="0"
-
-                                role="presentation"
-
-                                style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
-
-                                <tr>
-
-                                    <td class="content-cell" align="center"
-
-                                        style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
-
-
-
-                                        <ul style="margin: 0px; padding: 0px; list-style-type: none;">
-
-                                            <li style="display: inline-block;"><a href="{{ AdminSettings::value('facebook') }}"
-
-                                                    style="color: #bdbdbd; text-decoration: none;">
-
-                                                    <img src="{{ url('public/img/facebook-square-white-bordered.png') }}" width="40">
-
-                                                </a>
-
-                                            </li>
-
-                                            <li style="display: inline-block;"><a href="{{ AdminSettings::value('twitter') }}"
-
-                                                    style="color: #bdbdbd; text-decoration: none;">
-
-                                                    <img src="{{ url('public/img/x-square-white-bordered.png') }}" width="40">
-
-                                                </a>
-
-                                                </li>
-
-                                            <li style="display: inline-block;"><a href="{{ AdminSettings::value('instagram') }}"
-
-                                                    style="color: #bdbdbd; text-decoration: none;">
-
-                                                    <img src="{{ url('public/img/instagram-square-white-bordered.png') }}" width="40">
-
-                                                </a>
-
-                                                </li>
-
-                                        </ul>
-
-                                        <p
-
-                                            style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; color: #b0adc5; font-size: 12px; text-align: center;">
-
-                                            &copy; {{ date('Y') }} {{$title_site}} {{trans('emails.rights_reserved')}}</p>
-
-
-
-                                    </td>
-
-                                </tr>
-
-                            </table>
-
-                        </td>
-
-                    </tr>
-
                 </table>
 
+                <table class="content-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td align="center">
+                            <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="content-pad">
+                                        <h1 class="title">{{ __('emails.new_subscriber_title') }}</h1>
+
+                                        <p class="greeting">{{ __('emails.hello') }} {{ $fullname }}</p>
+
+                                        <div class="body-copy">
+                                            {!! $body !!}
+                                        </div>
+
+                                        <div class="action-wrap">
+                                            <a href="{{ url('my/subscribers') }}" class="button" target="_blank" rel="noopener">
+                                                {{ __('emails.go_subscribers') }}
+                                            </a>
+                                        </div>
+
+                                        <p class="salutation">
+                                            {{ __('emails.regards') }}<br>
+                                            {{ __('emails.team_signature', ['title' => $title_site]) }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="footer-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td align="center">
+                            <table class="footer-wrap" width="760" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="footer-pad">
+                                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                            <tr>
+                                                <td class="footer-logo-cell">
+                                                    <a href="{{ url('/') }}" target="_blank" rel="noopener">
+                                                        <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $title_site }}"
+                                                            width="210">
+                                                    </a>
+                                                </td>
+                                                <td class="footer-text-cell">
+                                                    <p class="footer-about">
+                                                        {{ __('emails.footer_about', ['title' => $title_site]) }}
+                                                    </p>
+
+                                                    <ul class="social-row">
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('facebook') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/facebook-square-white-bordered.png') }}"
+                                                                    alt="Facebook" width="18">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('instagram') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/instagram-square-white-bordered.png') }}"
+                                                                    alt="Instagram" width="18">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('twitter') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/x-square-white-bordered.png') }}"
+                                                                    alt="X" width="18">
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                    <p class="copyright">
+                                                        &copy; {{ date('Y') }} {{ $title_site }}, {{ __('emails.rights_reserved') }}<br>
+                                                        {{ __('emails.company_address') }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </td>
-
         </tr>
-
     </table>
-
 </body>
-
-
 
 </html>

@@ -1,53 +1,393 @@
 <?php $settings = App\Models\AdminSettings::first(); ?>
-<table bgcolor="#fff" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
-	<tbody><tr>
-		<td align="center" valign="top">
-			<table border="0" cellpadding="0" cellspacing="0" style="font-size:16px;line-height:21px;font-family:'Source Sans Pro',Helvetica,sans-serif;color:#484646" width="600">
-				<tbody><tr>
-				<td>
-				<div style="padding:20px 0;font-size:18px;font-weight:bold;color:#3b63d8;border-bottom:1px solid #dcdcdc">
-			<a href="{{ url('/')}}" style="display:inline-block;color:#fff;text-decoration:none" target="_blank">
-			<img  src="{{url('public/img/logo-blue.png')}}" width="150">
-		</a>
-		</div>
-	</td>
-</tr>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-<tr>
-	<td style="padding:30px 0 50px 0">
-		<div style="text-align:center">
-			<img src="{{url('public/avatar/default.jpg')}}" style="width:72px; border-radius: 50px;">
-			<div style="margin:10px 0 5px 0;font-size:26px;font-weight:bold;line-height:24px;letter-spacing:-1px">
-			{{ trans('auth.password_reset_2') }}
-			</div>
-<div style="font-size:22px;line-height:25px;letter-spacing:-1px;color:#888686">
-		{{ trans('auth.password_reset_mail') }}
-	</div>
-	<div style="margin:30px 0 35px 0">
-		<a href="{{ url('password/reset', $token) }}" style="display:inline-block;padding:4px 20px;font-weight:bold;line-height:24px;text-decoration:none;color:#3b63d8;border:1px solid #3b63d8;border-radius:3px" target="_blank">
-			{{ trans('auth.password_reset_2') }}
-			</a>
-		</div>
-</div>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ $settings->title }}</title>
+    <style type="text/css" rel="stylesheet" media="all">
+        body,
+        body *:not(html):not(style):not(br):not(tr):not(code) {
+            box-sizing: border-box;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        }
 
-  </td>
-</tr>
-<tr>
-</tr>
-<tr>
-<td>
-	<div style="padding:20px 30px;font-size:13px;line-height:17px;color:#888686;background:#f7f7f7">
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            height: 100%;
+            line-height: 1.5;
+            -webkit-text-size-adjust: none;
+            background-color: #000000;
+            color: #12243a;
+        }
 
-<div style="text-align:center">
-&copy; {{ $settings->title }} - <?php echo date('Y'); ?>
-</div>
-</div>
-</td>
-</tr>
-</tbody></table>
-</td>
-</tr>
-<tr>
-<td height="30" style="height:30px"></td>
-</tr>
-</tbody></table>
+        table {
+            border-collapse: collapse;
+        }
+
+        img {
+            border: none;
+            max-width: 100%;
+        }
+
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .wrapper {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header-shell {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header-copy {
+            color: #ffffff;
+            font-size: 16px;
+            line-height: 1.4;
+            text-align: center;
+            padding: 24px 20px 8px;
+        }
+
+        .logo-wrap {
+            text-align: center;
+            padding: 8px 20px 34px;
+        }
+
+        .content-shell {
+            width: 100%;
+            background-color: #f4f4f4;
+        }
+
+        .content-card {
+            width: 100%;
+            max-width: 760px;
+            background-color: #f4f4f4;
+        }
+
+        .content-pad {
+            padding: 52px 56px 64px;
+            text-align: center;
+        }
+
+        .avatar-wrap {
+            margin: 0 0 22px;
+        }
+
+        .avatar {
+            width: 72px;
+            border-radius: 50%;
+        }
+
+        .title {
+            margin: 0 0 14px;
+            color: #112640;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .description,
+        .subcopy,
+        .subcopy a {
+            color: #112640;
+            text-align: center;
+        }
+
+        .description {
+            margin: 0 0 30px;
+            font-size: 18px;
+            line-height: 1.55;
+        }
+
+        .action-wrap {
+            padding: 0 0 18px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 24px;
+            background-color: #111111;
+            border-radius: 4px;
+            color: #ffffff !important;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-decoration: none;
+            min-width: 220px;
+        }
+
+        .subcopy-wrap {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #d9dde3;
+        }
+
+        .subcopy,
+        .subcopy p {
+            margin: 0 0 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .subcopy a {
+            color: #112640;
+            text-decoration: underline;
+        }
+
+        .footer-shell {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .footer-wrap {
+            width: 100%;
+            max-width: 760px;
+        }
+
+        .footer-pad {
+            padding: 46px 32px 54px;
+        }
+
+        .footer-logo-cell {
+            width: 34%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+
+        .footer-text-cell {
+            width: 66%;
+            vertical-align: top;
+        }
+
+        .footer-about {
+            margin: 0 0 26px;
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .social-row {
+            margin: 0 0 18px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .social-row li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .social-box {
+            display: inline-block;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            border: 1px solid #ffffff;
+            text-align: center;
+        }
+
+        .copyright {
+            margin: 0;
+            color: #ffffff;
+            font-size: 13px;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .content-pad {
+                padding: 38px 26px 48px !important;
+            }
+
+            .title {
+                font-size: 22px !important;
+            }
+
+            .description {
+                font-size: 17px !important;
+            }
+
+            .footer-pad {
+                padding: 34px 24px 42px !important;
+            }
+
+            .footer-logo-cell,
+            .footer-text-cell {
+                display: block !important;
+                width: 100% !important;
+                padding-right: 0 !important;
+            }
+
+            .footer-logo-cell {
+                padding-bottom: 26px !important;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .header-copy {
+                font-size: 14px !important;
+                padding: 18px 16px 8px !important;
+            }
+
+            .logo-wrap {
+                padding: 8px 16px 24px !important;
+            }
+
+            .content-pad {
+                padding: 30px 18px 38px !important;
+            }
+
+            .title {
+                font-size: 18px !important;
+            }
+
+            .description {
+                font-size: 16px !important;
+            }
+
+            .button {
+                display: block !important;
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .footer-pad {
+                padding: 28px 18px 34px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td align="center">
+                <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td class="header-copy">
+                            {{ __('emails.brand_tagline') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="logo-wrap">
+                            <a href="{{ url('/') }}" target="_blank" rel="noopener">
+                                <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $settings->title }}" width="210">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="content-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td align="center">
+                            <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="content-pad">
+                                        <div class="avatar-wrap">
+                                            <img src="{{ url('public/avatar/default.jpg') }}" alt="{{ $settings->title }}"
+                                                class="avatar">
+                                        </div>
+
+                                        <h1 class="title">{{ trans('auth.password_reset_2') }}</h1>
+
+                                        <p class="description">{{ trans('auth.password_reset_mail') }}</p>
+
+                                        <div class="action-wrap">
+                                            <a href="{{ url('password/reset', $token) }}" class="button" target="_blank" rel="noopener">
+                                                {{ trans('auth.password_reset_2') }}
+                                            </a>
+                                        </div>
+
+                                        <div class="subcopy-wrap">
+                                            <div class="subcopy">
+                                                <p>{{ __('emails.password_reset_msg_3') }}</p>
+                                                <p>
+                                                    <a href="{{ url('password/reset', $token) }}" target="_blank" rel="noopener">
+                                                        {{ url('password/reset', $token) }}
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="footer-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td align="center">
+                            <table class="footer-wrap" width="760" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="footer-pad">
+                                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                            <tr>
+                                                <td class="footer-logo-cell">
+                                                    <a href="{{ url('/') }}" target="_blank" rel="noopener">
+                                                        <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $settings->title }}"
+                                                            width="210">
+                                                    </a>
+                                                </td>
+                                                <td class="footer-text-cell">
+                                                    <p class="footer-about">
+                                                        {{ __('emails.footer_about', ['title' => $settings->title]) }}
+                                                    </p>
+
+                                                    <ul class="social-row">
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('facebook') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/facebook-square-white-bordered.png') }}"
+                                                                    alt="Facebook" width="18">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('instagram') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/instagram-square-white-bordered.png') }}"
+                                                                    alt="Instagram" width="18">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('twitter') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/x-square-white-bordered.png') }}"
+                                                                    alt="X" width="18">
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                    <p class="copyright">
+                                                        &copy; {{ date('Y') }} {{ $settings->title }}, {{ __('emails.rights_reserved') }}<br>
+                                                        {{ __('emails.company_address') }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

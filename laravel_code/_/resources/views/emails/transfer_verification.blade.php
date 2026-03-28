@@ -1,83 +1,361 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <style type="text/css" rel="stylesheet" media="all">
-        /* Media Queries */
-        @media  only screen and (max-width: 500px) {
-            .button {
-                width: 100% !important;
-            }
-        }
-    </style>
-</head>
-<body style="margin: 0; padding: 0; width: 100%; background-color: #F2F4F6;">
-    <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-            <td style="width: 100%; margin: 0; padding: 0; background-color: #F2F4F6;" align="center">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <!-- Logo -->
-                    <tr>
-                        <td style="padding: 25px 0; text-align: center;">
-                            <a style="font-family: Arial, &#039;Helvetica Neue&#039;, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #2F3133; text-decoration: none; text-shadow: 0 1px 0 white;" href="{{url('/')}}" target="_blank">
-                                {{$title_site}}
-                            </a>
-                        </td>
-                    </tr>
-
-        <!-- Email Body -->
-        <tr>
-            <td style="width: 100%; margin: 0; padding: 0; border-top: 1px solid #EDEFF2; border-bottom: 1px solid #EDEFF2; background-color: #FFF;" width="100%">
-                <table style="width: auto; max-width: 570px; margin: 0 auto; padding: 0;" align="center" width="570" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="font-family: Arial, &#039;Helvetica Neue&#039;, Helvetica, sans-serif; padding: 35px;">
-                            <!-- Greeting -->
-                            <h1 style="margin-top: 0; color: #2F3133; font-size: 19px; font-weight: bold; text-align: left;">
-                              {{trans('emails.hello')}} {{$fullname}}
-                            </h1>
-
-                            <!-- Intro -->
-                            <p style="margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em;">
-                                {!! $body !!}
-
-                              @if ($type == 'approve')
-                                <a href="{{ url('my/wallet') }}">{{ __('general.wallet') }}</a>
-                              @else
-                                <a href="{{ url('contact') }}">{{ __('general.contact') }}</a>
-                              @endif
-                            </p>
-
-                            <!-- Salutation -->
-                            <p style="margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em;">
-                                {{trans('emails.regards')}}<br>{{$title_site}}
-                            </p>
-                          </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-          <!-- Footer -->
-            <tr>
-                <td>
-                    <table style="width: auto; max-width: 570px; margin: 0 auto; padding: 0; text-align: center;" align="center" width="570" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td style="font-family: Arial, &#039;Helvetica Neue&#039;, Helvetica, sans-serif; color: #AEAEAE; padding: 35px; text-align: center;">
-                                <p style="margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em;">
-                                    &copy; <?php echo date('Y'); ?>
-                                    {{$title_site}}
-                                    {{trans('emails.rights_reserved')}}
-                                </p>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>
-</table>
-</body>
-</html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ $title_site }}</title>
+    <style type="text/css" rel="stylesheet" media="all">
+        body,
+        body *:not(html):not(style):not(br):not(tr):not(code) {
+            box-sizing: border-box;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            height: 100%;
+            line-height: 1.5;
+            -webkit-text-size-adjust: none;
+            background-color: #000000;
+            color: #12243a;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        img {
+            border: none;
+            max-width: 100%;
+        }
+
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .wrapper {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header-shell {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header-copy {
+            color: #ffffff;
+            font-size: 16px;
+            line-height: 1.4;
+            text-align: center;
+            padding: 24px 20px 8px;
+        }
+
+        .logo-wrap {
+            text-align: center;
+            padding: 8px 20px 34px;
+        }
+
+        .content-shell {
+            width: 100%;
+            background-color: #f4f4f4;
+        }
+
+        .content-card {
+            width: 100%;
+            max-width: 760px;
+            background-color: #f4f4f4;
+        }
+
+        .content-pad {
+            padding: 52px 56px 64px;
+        }
+
+        .title {
+            margin: 0 0 40px;
+            color: #112640;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .greeting,
+        .body-copy,
+        .body-copy p,
+        .salutation {
+            color: #112640;
+            font-size: 18px;
+            line-height: 1.55;
+            text-align: left;
+        }
+
+        .greeting {
+            margin: 0 0 12px;
+        }
+
+        .body-copy,
+        .body-copy p {
+            margin: 0 0 22px;
+        }
+
+        .body-copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        .body-copy a {
+            color: #112640;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .salutation {
+            margin: 54px 0 0;
+            font-weight: 700;
+        }
+
+        .footer-shell {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .footer-wrap {
+            width: 100%;
+            max-width: 760px;
+        }
+
+        .footer-pad {
+            padding: 46px 32px 54px;
+        }
+
+        .footer-logo-cell {
+            width: 34%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+
+        .footer-text-cell {
+            width: 66%;
+            vertical-align: top;
+        }
+
+        .footer-about {
+            margin: 0 0 26px;
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .social-row {
+            margin: 0 0 18px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .social-row li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .social-box {
+            display: inline-block;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            border: 1px solid #ffffff;
+            text-align: center;
+        }
+
+        .copyright {
+            margin: 0;
+            color: #ffffff;
+            font-size: 13px;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .content-pad {
+                padding: 38px 26px 48px !important;
+            }
+
+            .title {
+                font-size: 22px !important;
+                margin-bottom: 30px !important;
+            }
+
+            .greeting,
+            .body-copy,
+            .body-copy p,
+            .salutation {
+                font-size: 17px !important;
+            }
+
+            .footer-pad {
+                padding: 34px 24px 42px !important;
+            }
+
+            .footer-logo-cell,
+            .footer-text-cell {
+                display: block !important;
+                width: 100% !important;
+                padding-right: 0 !important;
+            }
+
+            .footer-logo-cell {
+                padding-bottom: 26px !important;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .header-copy {
+                font-size: 14px !important;
+                padding: 18px 16px 8px !important;
+            }
+
+            .logo-wrap {
+                padding: 8px 16px 24px !important;
+            }
+
+            .content-pad {
+                padding: 30px 18px 38px !important;
+            }
+
+            .title {
+                font-size: 18px !important;
+            }
+
+            .greeting,
+            .body-copy,
+            .body-copy p,
+            .salutation {
+                font-size: 16px !important;
+            }
+
+            .footer-pad {
+                padding: 28px 18px 34px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td align="center">
+                <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td class="header-copy">
+                            {{ __('emails.brand_tagline') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="logo-wrap">
+                            <a href="{{ url('/') }}" target="_blank" rel="noopener">
+                                <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $title_site }}" width="210">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="content-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td align="center">
+                            <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="content-pad">
+                                        <h1 class="title">{{ __('emails.transfer_verification_title') }}</h1>
+
+                                        <p class="greeting">{{ __('emails.hello') }} {{ $fullname }}</p>
+
+                                        <div class="body-copy">
+                                            <p>
+                                                {!! $body !!}
+                                                @if ($type == 'approve')
+                                                    <a href="{{ url('my/wallet') }}">{{ __('general.wallet') }}</a>
+                                                @else
+                                                    <a href="{{ url('contact') }}">{{ __('general.contact') }}</a>
+                                                @endif
+                                            </p>
+                                        </div>
+
+                                        <p class="salutation">
+                                            {{ __('emails.regards') }}<br>
+                                            {{ __('emails.team_signature', ['title' => $title_site]) }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="footer-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td align="center">
+                            <table class="footer-wrap" width="760" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="footer-pad">
+                                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                            <tr>
+                                                <td class="footer-logo-cell">
+                                                    <a href="{{ url('/') }}" target="_blank" rel="noopener">
+                                                        <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $title_site }}"
+                                                            width="210">
+                                                    </a>
+                                                </td>
+                                                <td class="footer-text-cell">
+                                                    <p class="footer-about">
+                                                        {{ __('emails.footer_about', ['title' => $title_site]) }}
+                                                    </p>
+
+                                                    <ul class="social-row">
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('facebook') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/facebook-square-white-bordered.png') }}"
+                                                                    alt="Facebook" width="18">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('instagram') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/instagram-square-white-bordered.png') }}"
+                                                                    alt="Instagram" width="18">
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="social-box" href="{{ AdminSettings::value('twitter') }}"
+                                                                target="_blank" rel="noopener">
+                                                                <img src="{{ url('public/img/x-square-white-bordered.png') }}"
+                                                                    alt="X" width="18">
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                    <p class="copyright">
+                                                        &copy; {{ date('Y') }} {{ $title_site }}, {{ __('emails.rights_reserved') }}<br>
+                                                        {{ __('emails.company_address') }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
