@@ -4246,12 +4246,12 @@ a:hover.choose-type-sale {
   vertical-align: middle;
 
 }
-
+/*
 .grecaptcha-badge {
 
   visibility: hidden;
 
-}
+}*/
 
 .btn-post {
 

@@ -3,15 +3,13 @@
 body,
 body *:not(html):not(style):not(br):not(tr):not(code) {
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    position: relative;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #ffffff;
-    color: #718096;
+    background-color: #000000;
+    color: #12243a;
     height: 100%;
     line-height: 1.4;
     margin: 0;
@@ -28,7 +26,7 @@ blockquote {
 }
 
 a {
-    color: #3b63d8;
+    color: #112640;
 }
 
 a img {
@@ -38,16 +36,20 @@ a img {
 /* Typography */
 
 h1 {
-    color: #3d4852;
-    font-size: 18px;
-    font-weight: bold;
+    color: #112640;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
     margin-top: 0;
-    text-align: left;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 h2 {
-    font-size: 16px;
-    font-weight: bold;
+    color: #112640;
+    font-size: 18px;
+    font-weight: 700;
     margin-top: 0;
     text-align: left;
 }
@@ -60,8 +62,9 @@ h3 {
 }
 
 p {
-    font-size: 16px;
-    line-height: 1.5em;
+    color: #112640;
+    font-size: 18px;
+    line-height: 1.55em;
     margin-top: 0;
     text-align: left;
 }
@@ -80,7 +83,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #f2f4f6;
+    background-color: #000000;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -98,34 +101,41 @@ img {
 /* Header */
 
 .header {
-    padding: 25px 0;
+    background-color: #000000;
+    padding: 0;
     text-align: center;
 }
 
-.header a {
-    color: #3d4852;
-    font-size: 19px;
-    font-weight: bold;
-    text-decoration: none;
+.header-copy {
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1.4;
+    padding: 24px 20px 8px;
+    text-align: center;
+}
+
+.logo-wrap {
+    padding: 8px 20px 34px;
+    text-align: center;
 }
 
 /* Logo */
 
 .logo {
-  height: auto;
-  width: auto;
-  max-width: 190px !important;
+    height: auto;
+    width: auto;
+    max-width: 210px !important;
 }
 
 /* Body */
 
-.body {
+.body-shell {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #f2f4f6;
-    border-bottom: 1px solid #edeff2;
-    border-top: 1px solid #edeff2;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;
+    border-top: 1px solid #f4f4f4;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -134,27 +144,25 @@ img {
 .inner-body {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
-    -premailer-width: 570px;
-    background-color: #ffffff;
-    border-color: #e8e5ef;
-    border-radius: 2px;
-    border-width: 1px;
-    box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015);
+    -premailer-width: 760px;
+    background-color: #f4f4f4;
     margin: 0 auto;
     padding: 0;
-    width: 570px;
+    width: 760px;
 }
 
 /* Subcopy */
 
 .subcopy {
-    border-top: 1px solid #e8e5ef;
-    margin-top: 25px;
-    padding-top: 25px;
+    border-top: 1px solid #d9dde3;
+    margin-top: 28px;
+    padding-top: 24px;
 }
 
 .subcopy p {
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    word-break: break-word;
 }
 
 /* Footer */
@@ -162,22 +170,67 @@ img {
 .footer {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
-    -premailer-width: 570px;
+    -premailer-width: 760px;
     margin: 0 auto;
     padding: 0;
     text-align: center;
-    width: 570px;
+    width: 760px;
 }
 
-.footer p {
-    color: #b0adc5;
-    font-size: 12px;
+.footer-pad {
+    padding: 46px 32px 54px;
+}
+
+.footer-logo-cell {
+    padding-right: 20px;
+    vertical-align: top;
+    width: 34%;
+}
+
+.footer-text-cell {
+    vertical-align: top;
+    width: 66%;
+}
+
+.footer-about {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 26px;
+    text-align: left;
+}
+
+.social-row {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+}
+
+.social-row li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.social-box {
+    border: 1px solid #ffffff;
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
     text-align: center;
+    width: 38px;
+}
+
+.copyright {
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0;
+    text-align: left;
 }
 
 .footer a {
-    color: #b0adc5;
-    text-decoration: underline;
+    color: #ffffff;
+    text-decoration: none;
 }
 
 /* Tables */
@@ -206,7 +259,7 @@ img {
 
 .content-cell {
     max-width: 100vw;
-    padding: 32px;
+    padding: 52px 56px 64px;
 }
 
 /* Buttons */
@@ -226,17 +279,22 @@ img {
     border-radius: 4px;
     color: #fff;
     display: inline-block;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    min-width: 220px;
     overflow: hidden;
+    padding: 14px 24px;
     text-decoration: none;
 }
 
 .button-blue,
 .button-primary {
-    background-color: #3b63d8;
-    border-bottom: 8px solid #3b63d8;
-    border-left: 18px solid #3b63d8;
-    border-right: 18px solid #3b63d8;
-    border-top: 8px solid #3b63d8;
+    background-color: #111111;
+    border-bottom: 0 solid #111111;
+    border-left: 0 solid #111111;
+    border-right: 0 solid #111111;
+    border-top: 0 solid #111111;
 }
 
 .button-green,
@@ -260,18 +318,18 @@ img {
 /* Panels */
 
 .panel {
-    border-left: #2d3748 solid 4px;
+    border-left: #111111 solid 4px;
     margin: 21px 0;
 }
 
 .panel-content {
-    background-color: #f2f4f6;
-    color: #718096;
+    background-color: #ffffff;
+    color: #112640;
     padding: 16px;
 }
 
 .panel-content p {
-    color: #718096;
+    color: #112640;
 }
 
 .panel-item {

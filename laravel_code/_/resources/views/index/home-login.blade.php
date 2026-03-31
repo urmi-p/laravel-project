@@ -164,7 +164,7 @@
 
                 @if ($settings->captcha == 'on')
 
-                {!! NoCaptcha::displaySubmit('formLoginRegister', '<i></i> '.__('auth.login'), ['data-size' => 'invisible', 'id' => 'btnLoginRegister', 'class' => 'btn btn-primary mt-4 w-100']) !!}
+                {!! NoCaptcha::displaySubmit('formLoginRegister', '<i></i> '.__('auth.login'), ['data-size' => 'invisible', 'id' => 'btnLoginRegister', 'class' => 'btn btn-primary mt-4 w-100 login-figma-submit']) !!}
 
                 {!! NoCaptcha::renderJs() !!}
 
@@ -665,4 +665,3 @@
 </script>
 
 @endsection
-

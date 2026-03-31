@@ -28,6 +28,6 @@
 {{ $salutation }}
 @else
 @lang('emails.regards')<br>
-{{ config('app.name') }}
+@lang('emails.team_signature', ['title' => config('app.name')])
 @endif
 @endcomponent

@@ -108,7 +108,7 @@
 							<ul class="list-unstyled m-0" id="showErrorsLogin"></ul>
 						</div>
 
-						<div class="alert alert-success display-none mb-0 mt-3" id="checkAccount"></div>
+					<div class="alert alert-success display-none mb-0 mt-3" id="checkAccount"></div>
 
 					<div class="text-center">
 						@if ($settings->captcha == 'on')

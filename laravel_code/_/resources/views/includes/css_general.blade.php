@@ -3312,11 +3312,42 @@ border-color: #adb5bd !important;
 
   height: 100%;
 
+  flex: 1 1 auto;
+
+  min-height: 320px;
+
+  overflow: hidden;
+
+  background-color: #000;
+
+}
+
+#full-screen-video > div,
+#full-screen-video video,
+#full-screen-video .agora_video_player,
+#full-screen-video .agora_video_player video {
+
+  width: 100% !important;
+
+  height: 100% !important;
+
+  object-fit: cover;
+
 }
 
 .liveContainer {
 
   background-color: #000;
+
+}
+
+.liveContainer:not(.live_offline) > .content.container-msg {
+
+  height: 100%;
+
+  display: flex;
+
+  padding: 0 !important;
 
 }
 
@@ -4589,12 +4620,12 @@ a:hover.choose-type-sale {
   vertical-align: middle;
 
 }
-
+/*
 .grecaptcha-badge {
 
   visibility: hidden;
 
-}
+}*/
 
 .btn-post {
 

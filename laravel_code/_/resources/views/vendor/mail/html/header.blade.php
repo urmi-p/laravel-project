@@ -1,8 +1,10 @@
 <tr>
 <td class="header">
+<div class="header-copy">@lang('emails.brand_tagline')</div>
+<div class="logo-wrap">
 <a href="{{ $url }}" style="display: inline-block;">
 <img src="{{ url('public/img', $settings->logo) }}" class="logo" alt="Logo">
 </a>
-<h4 style="margin: 0px; color:#bdbdbd;">The online space made for real closeness.</h4>
+</div>
 </td>
 </tr>

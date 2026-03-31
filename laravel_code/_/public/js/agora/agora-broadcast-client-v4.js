@@ -49,6 +49,30 @@ var devices = {
 // -- .NONE for prod
 AgoraRTC.setLogLevel(1);
 
+function getVideoContainer() {
+  return document.getElementById("full-screen-video");
+}
+
+function prepareVideoContainer() {
+  const container = getVideoContainer();
+  if (!container) {
+    throw new Error("Live preview container #full-screen-video was not found");
+  }
+
+  container.innerHTML = "";
+  container.style.backgroundColor = "#000";
+  container.style.overflow = "hidden";
+
+  return container;
+}
+
+function playTrackInContainer(track, playerConfig) {
+  const container = prepareVideoContainer();
+  track.play(container, Object.assign({
+    fit: "cover"
+  }, playerConfig || {}));
+}
+
 function safeErrorDetails(error) {
   try {
     return JSON.stringify(error);
@@ -93,6 +117,17 @@ function notifyLiveError(stage, error) {
     });
   } else {
     alert('Live streaming error: ' + stage + ': ' + message);
+  }
+}
+
+function notifyLiveWarning(stage, error) {
+  const message = error && error.message ? error.message : 'Live streaming warning';
+
+  console.log('Live streaming warning at', stage, error);
+
+  // Optional devices such as mic can fail without blocking video playback.
+  if (window.console && console.warn) {
+    console.warn(stage + ': ' + message, error);
   }
 }
 
@@ -161,7 +196,9 @@ async function joinChannel() {
         }
 
         if (localTracks.videoTrack) {
-          localTracks.videoTrack.play("full-screen-video");
+          playTrackInContainer(localTracks.videoTrack, {
+            mirror: true
+          });
         } else {
           handleLiveError("camera_track", {
             code: "VIDEO_DEVICE_UNAVAILABLE",
@@ -170,7 +207,7 @@ async function joinChannel() {
         }
 
         if (!localTracks.audioTrack) {
-          handleLiveError("microphone_track", {
+          notifyLiveWarning("microphone_track", {
             code: "AUDIO_DEVICE_UNAVAILABLE",
             message: "Microphone not available. Live will continue without audio."
           });
@@ -348,7 +385,7 @@ async function subscribe(user, mediaType) {
     console.log("subscribe success");
     if (mediaType === 'video') {
 
-        user.videoTrack.play('full-screen-video');
+        playTrackInContainer(user.videoTrack);
     }
     if (mediaType === 'audio') {
 
