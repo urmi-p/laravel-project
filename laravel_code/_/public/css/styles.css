@@ -2997,11 +2997,11 @@ a.btn-category:focus {
         display: none !important;
     }
 
-    .top_side_profile .nav_link .d-lg-inline-block {
-        display: block !important;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-    }
+.top_side_profile .nav_link .d-lg-inline-block {
+    display: block !important;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
 
     .profile-right-col .no_sub_msg {
         max-width: 21.875rem;
@@ -3043,6 +3043,51 @@ a.btn-category:focus {
     background: #fdecef !important;
     border-color: #e2394c !important;
     color: #5f5f5f !important;
+}
+
+/* Keep public and logged-in profile tabs visually aligned */
+.profile-unified-tabs {
+    background: #303030 !important;
+    border-color: #303030 !important;
+}
+
+.profile-unified-tabs .nav_link a,
+[data-bs-theme="light"] .profile-unified-tabs .nav_link a,
+[data-bs-theme="dark"] .profile-unified-tabs .nav_link a {
+    color: #f5f5f5 !important;
+}
+
+.profile-unified-tabs .nav_link.active > a,
+.profile-unified-tabs .nav_link.active > a:hover,
+.profile-unified-tabs .nav_link.active > a:focus,
+[data-bs-theme="light"] .profile-unified-tabs .nav_link.active > a,
+[data-bs-theme="light"] .profile-unified-tabs .nav_link.active > a:hover,
+[data-bs-theme="light"] .profile-unified-tabs .nav_link.active > a:focus,
+[data-bs-theme="dark"] .profile-unified-tabs .nav_link.active > a,
+[data-bs-theme="dark"] .profile-unified-tabs .nav_link.active > a:hover,
+[data-bs-theme="dark"] .profile-unified-tabs .nav_link.active > a:focus {
+    background: #000 !important;
+    border-color: #e2394c !important;
+    color: #fff !important;
+}
+
+.profile-unified-tabs .sm-btn-size,
+[data-bs-theme="light"] .profile-unified-tabs .sm-btn-size,
+[data-bs-theme="dark"] .profile-unified-tabs .sm-btn-size {
+    color: inherit !important;
+}
+
+.profile-video-locked-card {
+    background: #101010;
+}
+
+.profile-video-locked-image {
+    filter: blur(7px);
+    transform: scale(1.04);
+}
+
+.profile-video-locked-overlay {
+    background: rgba(0, 0, 0, 0.45);
 }
 
 .text_color_white {
