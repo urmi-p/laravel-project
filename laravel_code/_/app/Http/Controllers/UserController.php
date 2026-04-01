@@ -218,6 +218,16 @@ class UserController extends Controller
     $mediaTitle = null;
     $sortPostByTypeMedia = null;
 
+    // Repair owner posts that are stuck in pending/encode after videos finished.
+    if (
+      auth()->check()
+      && auth()->id() === (int) $user->id
+      && $this->settings->auto_approve_post == 'on'
+      && !$this->settings->moderation_status
+    ) {
+      $this->activateReadyVideoPostsForUser($user->id);
+    }
+
     if (isset($media)) {
       $mediaTitle = __('general.' . $media . '') . ' - ';
       $sortPostByTypeMedia = '&media=' . $media;
@@ -2152,6 +2162,12 @@ class UserController extends Controller
       abort(404);
     }
 
+    // Safety net: if auto-approve is ON and moderation is OFF, promote
+    // owner posts that are stuck in pending/encode after video encoding.
+    if ($this->settings->auto_approve_post == 'on' && !$this->settings->moderation_status) {
+      $this->activateReadyVideoPostsForUser(auth()->id());
+    }
+
     $posts = Updates::whereUserId(auth()->id())
       ->with([
         'creator:id,username'
@@ -2177,6 +2193,24 @@ class UserController extends Controller
     }
 
     return view('users.my_posts')->withPosts($posts);
+  }
+
+  /**
+   * Promote user posts from pending/encode to active when all videos are ready.
+   */
+  protected function activateReadyVideoPostsForUser(int $userId): void
+  {
+    Updates::whereUserId($userId)
+      ->whereIn('status', ['pending', 'encode'])
+      ->where(function ($query) {
+        $query->whereNull('schedule')->orWhere('schedule', false);
+      })
+      ->whereDoesntHave('media', function ($query) {
+        $query->where('type', 'video')
+          ->where('video_embed', '')
+          ->where('encoded', 'no');
+      })
+      ->update(['status' => 'active']);
   }
 
   public function blockCountries()
