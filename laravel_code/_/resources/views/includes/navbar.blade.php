@@ -140,7 +140,21 @@
             </div>
 
 
+            @guest
 
+                <li class="nav-item mr-1">
+
+                    <a @if (Helper::showLoginFormModal()) data-toggle="modal" data-target="#loginFormModal" @endif
+                        class="nav-link login-btn @if ($settings->registration_active == '0') btn btn-main btn-primary pr-3 pl-3 @endif"
+                        href="{{ in_array(config('settings.home_style'), [0, 2]) ? url('login') : url('/') }}">
+
+                        {{ __('auth.login') }}
+
+                    </a>
+
+                </li>
+                
+            @endguest
 
             @guest
                 <button class="333 navbar-toggler @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) text-white @endif" type="button"

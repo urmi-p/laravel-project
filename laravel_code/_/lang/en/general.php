@@ -583,6 +583,7 @@ return array(
 	'min_deposits_amount' => 'Minimum amount for Deposits',
 	'max_deposits_amount' => 'Maximum amount for Deposits',
 	'deposits' => 'Deposits',
+	'deposit' => 'Deposit',
 	'history_deposits' => 'History of funds added',
 	'available_balance' => 'Available balance',
 	'not_enough_funds' => 'Not enough funds',

@@ -130,7 +130,11 @@
             <td class="text-center">{{__('general.video_calls').$creator}}</td>
             @elseif ($data->type == 'audio_calls')
               <td class="text-center">{{__('general.audio_calls').$creator}}</td>
-            @else
+            @elseif ($data->type == 'deposit')
+
+              <td class="text-center">{{__('general.add_funds')}}</td>
+
+            @else
               <td class="text-center">{{__('general.single_payment').' ('.__('general.tip').')'.$creator}}</td>
             @endif
 

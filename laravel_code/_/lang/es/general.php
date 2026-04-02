@@ -586,6 +586,7 @@ return array(
 	'info_bank_transfer' => 'Sube una captura de pantalla de la transferencia, asegúrese de que los datos estén visibles',
 	'no_results' => 'No hay resultados',
 	'pending_deposit' => 'Nos comunicaremos con usted a través de su correo cuando su transferencia sea verificada a la brevedad posible.',
+	'deposit' => 'Depósito',
 	'approve' => 'Aprobar',
 	'transfer_verified' => '¡Tu pago ha sido verificado!',
 	'info_transfer_verified' => 'Tu pago por :amount fue verificado con éxito, ya puedes usar tus fondos', // Not remove :amount

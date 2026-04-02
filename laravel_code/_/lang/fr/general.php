@@ -582,6 +582,7 @@ return array(
 'info_bank_transfer'            => 'Téléversez une capture d\'écran du virement, assurez-vous que les données soient lisibles',
 'no_results'                    => 'Aucun résultat',
 'pending_deposit'               => 'Nous vous contacterons par email dès que votre virement sera vérifié.',
+'deposit'                       => 'Dépôt',
 'approve'                       => 'Approuver',
 'transfer_verified'             => 'Votre paiement a été vérifié !',
 'info_transfer_verified'        => 'Votre paiement de :amount a été vérifié avec succès, vous pouvez maintenant utiliser vos fonds.', // Ne pas modifier :amount

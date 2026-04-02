@@ -3325,6 +3325,8 @@ class Helper
 
 		return request()->is('/') && in_array(config('settings.home_style'), [0, 2])
 
+			|| request()->is('profile/*')
+
 			|| request()->route()->named('profile')
 
 			|| request()->is([

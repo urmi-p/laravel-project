@@ -317,8 +317,42 @@ trait Functions
 		$sql->taxes = $taxes;
 		$sql->save();
 
+		// Wallet deposits paid instantly should also appear in the transactions table.
+		if ($sql->status === 'active') {
+			$this->walletDepositTransaction($userId, $txnId, $amount, $paymentGateway, $taxes, $percentageApplied);
+		}
+
 		return $sql;
 	} // End Method
+
+	// Insert Wallet Deposit Transaction
+	protected function walletDepositTransaction($userId, $txnId, $amount, $paymentGateway, $taxes, $percentageApplied = null)
+	{
+		$verifiedTxnId = Transactions::where('txn_id', $txnId)->first();
+
+		if ($verifiedTxnId) {
+			return $verifiedTxnId;
+		}
+
+		$txn = new Transactions();
+		$txn->txn_id = $txnId;
+		$txn->user_id = $userId;
+		$txn->subscriptions_id = 0;
+		$txn->subscribed = 0;
+		$txn->amount = $amount;
+		$txn->earning_net_user = 0;
+		$txn->earning_net_admin = 0;
+		$txn->payment_gateway = $paymentGateway;
+		$txn->type = 'deposit';
+		$txn->percentage_applied = $percentageApplied ?? '';
+		$txn->approved = '1';
+		$txn->referred_commission = 0;
+		$txn->taxes = $taxes;
+		$txn->direct_payment = false;
+		$txn->save();
+
+		return $txn;
+	}
 
 	public function generateTwofaCode($user)
 	{
