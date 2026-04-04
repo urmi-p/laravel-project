@@ -103,7 +103,7 @@
                      <div class="input-group-prepend">
                        <span class="input-group-text">{{$settings->currency_symbol}}</span>
                      </div>
-                         <input class="form-control form-control-lg isNumber" autocomplete="off" name="amount" placeholder="{{trans('admin.amount')}}" type="text">
+                         <input class="form-control form-control-lg isNumber input-pl" autocomplete="off" name="amount" placeholder="{{trans('admin.amount')}}" type="text">
                      </div>
                    </div><!-- End form-group -->
                  @endif
