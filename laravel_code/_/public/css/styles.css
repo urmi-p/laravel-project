@@ -8273,7 +8273,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
         align-items: center;
         justify-content: center;
         gap: 0.375rem;
-        color: #676d75 !important;
+        color: #ffffff !important;
         padding: 0.5rem 0.75rem;
         border-radius: 6.25rem;
     }
@@ -8282,8 +8282,8 @@ html[data-bs-theme="dark"] .app-auth-shell {
     .app-auth-shell .menuMobile .btn-mobile i.icon-navbar,
     .app-auth-shell .menuMobile .btn-mobile svg,
     .app-auth-shell .menuMobile .btn-mobile svg * {
-        color: #676d75 !important;
-        stroke: #676d75 !important;
+        color: #ffffff !important;
+        stroke: #ffffff !important;
     }
 
     .app-auth-shell .menuMobile .btn-mobile.active {
@@ -11798,4 +11798,3 @@ body.landing-page {
 .input-pl {
     padding-left: 12px !important;
 }
-

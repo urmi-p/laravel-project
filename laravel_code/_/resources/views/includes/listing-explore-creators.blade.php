@@ -2,7 +2,7 @@
 
 <a href="{{url('profile',$user->username)}}">
 
-  <div class="w-100 h-100 d-block mb-1" style="background: @if ($user->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $user->cover, 'size' => 480]) }})  @endif #505050 center center;  background-size: cover;">
+  <div class="w-100 h-100 d-block mb-2" style="background: @if ($user->cover != '') url({{ route('resize', ['path' => 'cover', 'file' => $user->cover, 'size' => 480]) }})  @endif #505050 center center;  background-size: cover;">
     <div class="card-cover position-relative" style="height: 50px">
 
       @if ($user->free_subscription == 'yes')

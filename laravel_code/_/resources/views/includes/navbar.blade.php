@@ -36,17 +36,15 @@
                 width: 14px;
                 height: 14px;
             }
-            .main_head_search > .d-md-none > .btn_mobile_nav .currency-icon,
-            .main_head_search > .d-md-none > a.btn_mobile_nav .currency-icon,
-            .main_head_search > .d-md-none > a.btn-mobile-nav .currency-icon {
-                font-size: 14px;
-                line-height: 1;
+            .main_head_search > .d-md-none > .btn_mobile_nav .wallet-icon,
+            .main_head_search > .d-md-none > a.btn_mobile_nav .wallet-icon,
+            .main_head_search > .d-md-none > a.btn-mobile-nav .wallet-icon {
+                width: 22px;
+                height: 22px;
+                display: block;
+                margin: 0 auto;
+                transform: translateY(1px);
             }
-        }
-
-        .btn_mobile_nav .currency-icon {
-            font-weight: 600;
-            color: #A3A3A3;
         }
     </style>
     <nav
@@ -98,7 +96,17 @@
                                         data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                                     @endif
                                     aria-controls="navbarCollapse" aria-expanded="false" role="button">
-                                    <span class="currency-icon">€</span>
+                                    <svg class="wallet-icon" width="18" height="18" viewBox="0 0 18 18"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path
+                                            d="M11.625 4.875C11.0967 4.49589 10.4629 4.29199 9.81262 4.29199C8.08312 4.29199 6.57597 5.73303 6.07422 7.5C5.95853 7.90756 5.95853 8.34244 6.07422 8.75C6.57597 10.517 8.08312 11.958 9.81262 11.958C10.4629 11.958 11.0967 11.7541 11.625 11.375"
+                                            stroke="#A3A3A3" stroke-width="1.2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path d="M5.625 7.125H10.5" stroke="#A3A3A3" stroke-width="1.2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M5.625 9.125H10.125" stroke="#A3A3A3" stroke-width="1.2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </a>
                             </div>
                             <div class="d-md-none">

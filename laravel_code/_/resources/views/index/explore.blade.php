@@ -4,6 +4,20 @@
     {{ request()->is('explore') ? __('general.explore') . ' -' : null }}
 @endsection
 
+@section('css')
+<style>
+@media (max-width: 991px) {
+    .section.section-sm > .container-fluid,
+    .app-auth-shell .section.section-sm > .container-fluid {
+        max-width: none !important;
+        width: 100% !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+}
+</style>
+@endsection
+
 @section('content')
     <section class="section section-sm">
         <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
