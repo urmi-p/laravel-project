@@ -1677,4 +1677,11 @@ return array(
 	'request_account_deletion_alert' => 'Para eliminar su cuenta, por favor contáctenos y procesaremos su solicitud.',
 	'chat_with' => 'Chatea con',
 	'mutual_follow' => 'se siguen mutuamente y comparten una comunidad',
+	'install_web_app_help' => 'Instala Close Only para acceder mas rapido desde tu dispositivo.',
+	'install_web_app_installed_help' => 'Close Only ya esta instalada en este dispositivo.',
+	'install_web_app_prompt_help' => 'Toca aqui para instalar Close Only en este dispositivo.',
+	'install_web_app_prompt_missing_help' => 'Si no aparecio la ventana, abre el menu del navegador y elige Instalar aplicacion.',
+	'add_to_home_screen' => 'Anadir a pantalla de inicio',
+	'add_to_home_screen_help' => 'En iPhone o iPad, toca Compartir y luego Anadir a pantalla de inicio.',
+	'install_web_app_browser_help' => 'Abre el menu del navegador y elige Instalar aplicacion o Anadir a pantalla de inicio.',
 );

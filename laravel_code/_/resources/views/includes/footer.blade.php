@@ -220,8 +220,8 @@
 
 
 		<li>
-			<div id="installContainer" class="display-none">
-				<button class="btn btn-primary w-50 rounded-pill mb-2 mt-3" id="butInstall" type="button">
+			<div id="installContainer" class="display-none text-center">
+				<button class="btn btn-primary w-50 rounded-pill mb-2 mt-3 mx-auto d-block" id="butInstall" type="button">
 					<i class="bi-phone mr-1"></i> {{ __('general.install_web_app') }}
 				</button>
 			</div>
@@ -232,6 +232,4 @@
 
 
 </div>
-
-
 

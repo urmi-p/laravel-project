@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@php
+  $ogLocales = [
+      'en' => 'en_US',
+      'es' => 'es_ES',
+      'fr' => 'fr_FR',
+      'ua' => 'uk_UA',
+  ];
+  $currentOgLocale = $ogLocales[app()->getLocale()] ?? 'en_US';
+  $alternateOgLocales = array_values(array_diff($ogLocales, [$currentOgLocale]));
+@endphp
+
 
 
 @section('title')
@@ -23,9 +34,11 @@
 
     <!-- Current locale and alternate locales -->
 
-    <meta property="og:locale" content="en_US" />
+  <meta property="og:locale" content="{{ $currentOgLocale }}" />
 
-    <meta property="og:locale:alternate" content="es_ES" />
+  @foreach ($alternateOgLocales as $alternateOgLocale)
+  <meta property="og:locale:alternate" content="{{ $alternateOgLocale }}" />
+  @endforeach
 
 
 

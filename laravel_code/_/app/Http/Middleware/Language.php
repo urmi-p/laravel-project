@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Session;
-use App\Models\Languages;
 
 class Language
 {
@@ -23,30 +22,15 @@ class Language
         Session::put('locale', auth()->user()->language);
       } else {
         if (Session::has('locale')) {
-              app()->setLocale(session('locale'));
-          } else {
+          app()->setLocale(session('locale'));
+        } else {
+          $defaultLocale = config('app.locale');
 
-              try {
+          app()->setLocale($defaultLocale);
+          Session::put('locale', $defaultLocale);
+        }
+      } // User Session Check
 
-                Session::put('locale', config('app.locale'));
-
-                $availableLangs = Languages::all()->pluck('abbreviation');
-                $userLangs = explode(',', $request->server('HTTP_ACCEPT_LANGUAGE'));
-
-                foreach ($availableLangs as $lang) {
-                    if (strpos($userLangs[0], ''.$lang.'' ) !== FALSE ) {
-                        app()->setLocale($lang);
-                        Session::put('locale', $lang);
-                        break;
-                    }
-                }
-
-            } catch (\Exception $e) {
-              //
-            }
-          }
-        } // User Session Check
-
-        return $next($request);
+      return $next($request);
     }
 }

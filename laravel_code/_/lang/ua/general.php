@@ -1593,4 +1593,11 @@ return array(
 	'mercadopago' => 'Mercadopago',
 	'chat_with' => 'Спілкуйтеся з',
 	'mutual_follow' => 'ви підписані один на одного та маєте спільну спільноту',
+	'install_web_app_help' => 'Встановіть Close Only для швидшого доступу з вашого пристрою.',
+	'install_web_app_installed_help' => 'Close Only вже встановлено на цьому пристрої.',
+	'install_web_app_prompt_help' => 'Натисніть тут, щоб встановити Close Only на цей пристрій.',
+	'install_web_app_prompt_missing_help' => 'Якщо вікно не з’явилося, відкрийте меню браузера і оберіть Встановити додаток.',
+	'add_to_home_screen' => 'Додати на головний екран',
+	'add_to_home_screen_help' => 'На iPhone або iPad натисніть Поділитися, а потім Додати на головний екран.',
+	'install_web_app_browser_help' => 'Відкрийте меню браузера і оберіть Встановити додаток або Додати на головний екран.',
 );

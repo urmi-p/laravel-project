@@ -1592,4 +1592,11 @@ return array(
 	'subscriptions_detail' => 'Subscriptions Detail',
 	'chat_with' => 'Chat with',
 	'mutual_follow' => 'you follow each other & share a community together',
+	'install_web_app_help' => 'Install Close Only for faster access on your device.',
+	'install_web_app_installed_help' => 'Close Only is already installed on this device.',
+	'install_web_app_prompt_help' => 'Tap here to install Close Only on this device.',
+	'install_web_app_prompt_missing_help' => 'If the prompt did not appear, open your browser menu and choose Install app.',
+	'add_to_home_screen' => 'Add to Home Screen',
+	'add_to_home_screen_help' => 'On iPhone or iPad, tap Share and then Add to Home Screen.',
+	'install_web_app_browser_help' => 'Open your browser menu and choose Install app or Add to Home Screen.',
 );
