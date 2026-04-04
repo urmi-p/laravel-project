@@ -8226,6 +8226,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 
     .app-auth-shell .menuMobile {
+        padding-bottom: env(safe-area-inset-bottom, 0);
         left: 0;
         right: 0;
         bottom: 0;
@@ -8237,14 +8238,14 @@ html[data-bs-theme="dark"] .app-auth-shell {
         background: #191919 !important;
         box-shadow: none;
         overflow: hidden;
-        min-height: 5.5rem; /* 88px */
+        min-height: calc(5.5rem + env(safe-area-inset-bottom, 0)); /* 88px + device inset */
     }
 
     .app-auth-shell .menuMobile::after {
         content: "";
         position: absolute;
         left: 50%;
-        bottom: 0.5rem;
+        bottom: calc(0.5rem + env(safe-area-inset-bottom, 0));
         transform: translateX(-50%);
         width: 8.4375rem; /* 135px */
         height: 0.3125rem; /* 5px */

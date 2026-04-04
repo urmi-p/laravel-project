@@ -335,7 +335,7 @@
 
   var no_one_seen_story_yet =  "<?php echo e(__('general.no_one_seen_story_yet'), false); ?>";
 
-  var is_profile = <?php echo e(request()->route()->named('profile') ? 'true' : 'false', false); ?>;
+  var is_profile = <?php echo e((request()->routeIs('profile') || request()->is('profile/*')) ? 'true' : 'false', false); ?>;
 
   var error_scrollelement = false;
 

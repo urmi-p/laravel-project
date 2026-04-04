@@ -1642,7 +1642,7 @@
                                 <img src="{{ $urlImg }}" class="grid-img">
                             @else
                                 <a href="javascript:void(0);"
-                                    @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->route()->named('profile')) @if ($mediaPhotos->user()->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest>
+                                    @guest data-toggle="modal" data-target="#loginFormModal" @else @if (request()->routeIs('profile') || request()->is('profile/*')) @if ($mediaPhotos->user()->free_subscription == 'yes') data-toggle="modal" data-target="#subscriptionFreeForm" @else data-toggle="modal" data-target="#subscriptionForm" @endif @endif @endguest>
 
                                     <img src="{{ url('media/storage/blur', $mediaPhotos->image) }}" class="grid-img">
 
@@ -1743,7 +1743,7 @@
                                 @guest
                                     data-toggle="modal" data-target="#loginFormModal"
                                 @else
-                                    @if (request()->route()->named('profile'))
+                                    @if (request()->routeIs('profile') || request()->is('profile/*'))
                                         data-toggle="modal"
                                         data-target="{{ $mediaVideos->user()->free_subscription == 'yes' ? '#subscriptionFreeForm' : '#subscriptionForm' }}"
                                     @endif

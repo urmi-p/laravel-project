@@ -37,7 +37,7 @@
 				<form method="POST" action="{{ route('login') }}" data-url-login="{{ route('login') }}" data-url-register="{{ route('register') }}" id="formLoginRegister" enctype="multipart/form-data">
 						@csrf
 
-						@if (request()->route()->named('profile'))
+						@if (request()->routeIs('profile') || request()->is('profile/*'))
 							<input type="hidden" name="isProfile" value="{{ $user->username }}">
 						@endif
 
