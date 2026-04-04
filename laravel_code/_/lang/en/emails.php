@@ -33,6 +33,6 @@ return [
     'team_signature' => 'The :title Team',
     'footer_about' => 'At :title, we believe in authentic connections. We provide you with a simple and secure space to stay close to your circle. Here, closeness and trust are at the heart of every interaction.',
     'company_address' => 'Digital Air Media Ltd - Address: 128 City Road, London, United Kingdom',
-    'info_button_footer' => 'If youâ€™re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser:' // not replace :actionText
+    'info_button_footer' => 'If you\'re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser:', // not replace :actionText
 
 ];

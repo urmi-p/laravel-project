@@ -128,8 +128,8 @@
 
 @section('content')
 <section class="section section-sm pb-0 section-msg messages-chat-page">
-    <div class="container-fluid pt-lg-5 pt-2">
-      <div class="row justify-content-center h-100">
+    <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
+      <div class="row justify-content-center h-100 mx-0">
         @if (auth()->check() && auth()->user()->role === 'admin')
           <div class="col-lg-3 col-md-3 side_bar_box_shadow">
             @include('includes.menu-sidebar-home')

@@ -309,7 +309,7 @@
             </div>
             {{-- @include('includes.cards-settings') --}}
 
-            <div class="col-md-9 col-lg-9 mb-5 mb-lg-0">
+            <div class="col-md-9 col-lg-9 mb-3">
 
                 <div class="commission-wrapper">
                     <h4 class="fw-bold font_weight_700 fs-24">{{ __('general.subscription_fees') }}</h4>

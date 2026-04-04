@@ -32,7 +32,7 @@
 
       </div>
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mb-3">
 
 
 
@@ -100,7 +100,7 @@
 
                 <div class="form-group">
 
-                  <select name="country_free_shipping" class="form-control custom-select">
+                  <select name="country_free_shipping" class="form-control custom-select dark_all_dropdown">
 
                     <option value="" selected>{{ __('general.country_free_shipping') }}</option>
 
@@ -126,7 +126,7 @@
 
                 <div class="form-group">
 
-                  <select name="quantity" class="form-control custom-select">
+                  <select name="quantity" class="form-control custom-select dark_all_dropdown">
 
                     <option disabled value="" selected>{{ __('general.quantity') }}</option>
 
@@ -152,7 +152,7 @@
 
                 <div class="form-group">
 
-                  <select name="category" class="form-control custom-select">
+                  <select name="category" class="form-control custom-select dark_all_dropdown">
 
                     <option disabled value="" selected>{{ __('general.category') }}</option>
 

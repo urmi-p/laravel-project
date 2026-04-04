@@ -2674,6 +2674,44 @@ input[type=number] {
 
   border: 0;
 
+  background: transparent;
+
+  padding: 0 16px 0 12px;
+
+  margin-top: 12px !important;
+
+}
+
+.msg-inbox .list-group {
+
+  background: transparent;
+
+}
+
+.msg-inbox .item-chat {
+
+  width: 100%;
+
+  border: 0 !important;
+
+  border-radius: 20px !important;
+
+  padding: 16px !important;
+
+}
+
+.msg-inbox .item-chat .media {
+
+  width: 100%;
+
+  min-width: 0;
+
+}
+
+.msg-inbox .item-chat .media-body {
+
+  min-width: 0;
+
 }
 
 @media (min-width: 1280px) {
