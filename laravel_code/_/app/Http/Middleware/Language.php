@@ -16,10 +16,13 @@ class Language
      */
     public function handle($request, Closure $next)
     {
-      // User Session Check
+      // Only two options:
+      // 1) User-selected language (profile/session)
+      // 2) Default locale from env (config('app.locale'))
       if (auth()->check() && auth()->user()->language != '') {
-        app()->setLocale(auth()->user()->language);
-        Session::put('locale', auth()->user()->language);
+        $locale = auth()->user()->language;
+      } elseif (Session::has('locale') && session('locale') != '') {
+        $locale = session('locale');
       } else {
         if (Session::has('locale')) {
           app()->setLocale(session('locale'));

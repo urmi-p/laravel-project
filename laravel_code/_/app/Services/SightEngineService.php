@@ -96,12 +96,11 @@ class SightEngineService
 
     public function checkVideo(Media $media)
     {
+        $getPost = null;
+        $statusFinalPost = 'pending';
+        $pathFile = '';
+
         try {
-            $pathFile = Helper::postPlaybackUrl($media);
-            $videoPath = $pathFile;
-
-            $this->videoValidation->processVideo(videoPath: $videoPath, videoId: $media->id);
-
             // Get post
             $getPost = Updates::with(['media'])->whereId($media->updates_id)->first();
 
@@ -113,15 +112,21 @@ class SightEngineService
             $statusPost = $getPost->schedule ? 'schedule' : 'active';
             $statusFinalPost = Setting::value('auto_approve_post') == 'on' ? $statusPost : 'pending';
 
+            $pathFile = Helper::postPlaybackUrl($media);
+            $videoPath = $pathFile;
+
+            $this->videoValidation->processVideo(videoPath: $videoPath, videoId: $media->id);
+
         } catch (Exception $e) {
             info('Error in SightEngineService checkVideo():', [
                 'message' => $e->getMessage(),
                 'fileName' => $media->file_name,
             ]);
 
-            Notifications::send($getPost->user_id, 1, 34, 0, $media->file_name);
-
-            $this->deleteMedia($media, $getPost, $pathFile, $statusFinalPost);
+            if ($getPost) {
+                Notifications::send($getPost->user_id, 1, 34, 0, $media->file_name);
+                $this->deleteMedia($media, $getPost, $pathFile, $statusFinalPost);
+            }
         }
     }
 

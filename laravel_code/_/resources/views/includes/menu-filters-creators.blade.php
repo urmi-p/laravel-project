@@ -48,7 +48,7 @@
                     <a class="btn mb-3 e-none btn-category fs-18" href="javascript:;" data-toggle="modal"
                         data-target="#filterGendersAge">
 
-                        <img src="{{ url('public/img/genders.png') }}" class="mr-2" width="30" />
+                        <i class="fa fa-venus-mars mr-2"></i>
                         {{ trans('general.gender_age') }}
 
                     </a>
@@ -113,7 +113,7 @@
 
                                                 </div>
 
-                                                <select name="gender" class="form-control custom-select">
+                                                <select name="gender" class="form-control custom-select input-pl report-modal-select">
 
                                                     <option selected="selected" value="all">
                                                         {{ __('general.all_genders') }}</option>
@@ -147,7 +147,7 @@
 
                                                 </div>
 
-                                                <input class="form-control" min="18" name="min_age"
+                                                <input class="form-control input-pl fs-14" min="18" name="min_age"
                                                     placeholder="{{ trans('general.min_age') }}"
                                                     value="{{ request('min_age') }}" type="number">
 
@@ -167,7 +167,7 @@
 
                                                 </div>
 
-                                                <input class="form-control" name="max_age"
+                                                <input class="form-control input-pl fs-14" name="max_age"
                                                     placeholder="{{ trans('general.max_age') }}"
                                                     value="{{ request('max_age') }}" type="number">
 
