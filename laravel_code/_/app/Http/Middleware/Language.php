@@ -16,23 +16,20 @@ class Language
      */
     public function handle($request, Closure $next)
     {
-      // Only two options:
-      // 1) User-selected language (profile/session)
-      // 2) Default locale from env (config('app.locale'))
+      // Priority:
+      // 1) Logged-in user's saved language
+      // 2) Guest/session-selected language
+      // 3) Admin default locale
       if (auth()->check() && auth()->user()->language != '') {
         $locale = auth()->user()->language;
       } elseif (Session::has('locale') && session('locale') != '') {
         $locale = session('locale');
       } else {
-        if (Session::has('locale')) {
-          app()->setLocale(session('locale'));
-        } else {
-          $defaultLocale = config('app.locale');
+        $locale = config('app.locale');
+        Session::put('locale', $locale);
+      }
 
-          app()->setLocale($defaultLocale);
-          Session::put('locale', $defaultLocale);
-        }
-      } // User Session Check
+      app()->setLocale($locale);
 
       return $next($request);
     }
