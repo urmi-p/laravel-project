@@ -11794,3 +11794,8 @@ body.landing-page {
   }
 }
 /* END subscription-settings-page moved from resources/views/users/subscription.blade.php */
+
+.input-pl {
+    padding-left: 12px !important;
+}
+
