@@ -58,6 +58,49 @@
       margin-left: auto;
     }
     @media (max-width: 767.98px) {
+      .messages-chat-page .messageDiv {
+        padding: 14px !important;
+        gap: 14px !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        border-radius: 18px !important;
+      }
+      .messages-chat-page .container-msg {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .messages-chat-page .chatlist {
+        padding-top: .35rem !important;
+        padding-bottom: .35rem !important;
+      }
+      .messages-chat-page .chatlist > a.align-self-end.mr-3 {
+        margin-right: .5rem !important;
+      }
+      .messages-chat-page .chatlist .avatar-chat {
+        width: 36px !important;
+        height: 36px !important;
+      }
+      .messages-chat-page .chatlist .wrapper-msg-left,
+      .messages-chat-page .chatlist .wrapper-msg-right {
+        max-width: min(88vw, 420px) !important;
+      }
+      .messages-chat-page .chatlist .message.media-container {
+        padding: 0 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        gap: 0 !important;
+        box-shadow: none !important;
+      }
+      .messages-chat-page .chatlist .message.media-container .media-wrapper,
+      .messages-chat-page .chatlist .message.media-container .container-media-msg {
+        border-radius: 12px !important;
+        overflow: hidden;
+      }
+      .messages-chat-page .chatlist .message:not(.media-container) {
+        font-size: 14px;
+        line-height: 1.4;
+        padding: 8px 12px !important;
+      }
       .messages-chat-page .card-footer .btn-upload {
         width: 40px;
         height: 40px;
@@ -227,7 +270,7 @@
               </div><!-- contentDIV -->
 
               @if (!auth()->user()->checkRestriction($user->id) && $user->allow_dm || auth()->user()->isSuperAdmin())
-                  <div class="card-footer bg-white position-relative">
+                  <div class="card-footer position-relative">
 
                   @if ($subscribedToYourContent || $subscribedToMyContent || auth()->user()->isSuperAdmin() || $user->isSuperAdmin())
 

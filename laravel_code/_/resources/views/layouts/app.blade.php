@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no" class="notranslate" data-bs-theme="{{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'dark' : 'light' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no" class="notranslate" data-bs-theme="{{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'dark' : 'dark' }}">
 
 <head>
   <meta charset="utf-8">

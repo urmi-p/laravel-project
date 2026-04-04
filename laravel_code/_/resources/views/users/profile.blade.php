@@ -516,23 +516,23 @@
                                     </svg> {{ __('general.tip') }}
                                 </a>
                             @endif
-                            <!-- @if (auth()->check() && auth()->id() != $user->id && $totalPosts != 0 && $settings->gifts && $user->verified_id == 'yes')
+                            @if (auth()->check() && auth()->id() != $user->id && $totalPosts != 0 && $settings->gifts && $user->verified_id == 'yes')
 
                                 <a href="javascript:void(0);" data-toggle="modal" title="{{ __('general.gifts') }}"
-                                    data-target="#giftsForm" class="btn btn-google btn-profile mr-1 bg_white">
+                                    data-target="#giftsForm" class="pr-btn btn btn-google btn-profile mr-1 bg_white">
 
                                     <i class="bi-gift mr-1"></i> {{ __('general.gifts') }}
 
                                 </a>
                             @elseif (auth()->guest() && $totalPosts != 0 && $settings->gifts)
                                 <a href="javascript:void(0);" data-toggle="modal" title="{{ __('general.gifts') }}"
-                                    data-target="#loginFormModal" class="btn btn-google btn-profile mr-1 bg_white">
+                                    data-target="#loginFormModal" class="pr-btn btn btn-google btn-profile mr-1 bg_white">
 
                                     <i class="bi-gift mr-1"></i> {{ __('general.gifts') }}
 
                                 </a>
 
-                            @endif -->
+                            @endif
                             
                             @if ((auth()->guest() && $user->verified_id == 'yes') ||
                             (auth()->check() && auth()->id() != $user->id && $user->verified_id == 'yes' && $user->allow_dm))
@@ -1553,7 +1553,7 @@
 
                             </div>
                         @else
-                            <div class="grid-updates position-relative" id="updatesPaginator">
+                            <div class="grid-updates position-relative test" id="updatesPaginator">
 
                                 @include('includes.updates')
 

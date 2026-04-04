@@ -14,7 +14,7 @@
 			<form method="post" style="display: contents;" action="{{url('send/gift')}}" id="formSendGift">
 				@csrf
 
-				@if (request()->route()->named('profile'))
+				@if ((request()->route() && request()->route()->named('profile')) || request()->is('profile/*'))
 					<input type="hidden" name="user_id" value="{{ $user->id }}" />
 				@endif
 

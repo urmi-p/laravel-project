@@ -1749,6 +1749,24 @@ class Helper
 
 	}
 
+	public static function storageFileExists(string $path): bool
+	{
+		$defaultDisk = config('filesystems.default', 'default');
+		$disks = array_values(array_unique([$defaultDisk, 'default']));
+
+		foreach ($disks as $disk) {
+			try {
+				if (Storage::disk($disk)->exists($path)) {
+					return true;
+				}
+			} catch (\Throwable $e) {
+				// Ignore disk check failure and continue with the next fallback disk.
+			}
+		}
+
+		return false;
+	}
+
 	public static function reelPlaybackUrl($media): string
 	{
 		if (!$media) {
@@ -1835,7 +1853,7 @@ class Helper
 		}
 		if (!empty($media->video_poster)) {
 			$path = config('path.stories') . $media->video_poster;
-			if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+			if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 				return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 			}
 			return self::getFile(config('path.stories') . $media->video_poster);
@@ -1854,7 +1872,7 @@ class Helper
 		}
 
 		$path = config('path.stories') . $name;
-		if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+		if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 			return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 		}
 
@@ -1911,7 +1929,7 @@ class Helper
 		}
 		if (!empty($media->video_poster)) {
 			$path = config('path.vault') . $media->video_poster;
-			if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+			if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 				return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 			}
 			return self::getFile($path);
@@ -1930,7 +1948,7 @@ class Helper
 		}
 
 		$path = config('path.vault') . $name;
-		if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+		if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 			return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 		}
 
@@ -1981,7 +1999,7 @@ class Helper
 		}
 
 		$path = config('path.messages') . $media->file;
-		$isLocal = Storage::exists($path);
+		$isLocal = self::storageFileExists($path);
 
 		if ($isLocal && $messageId) {
 			return url('files/messages', [$messageId, $media->file]);
@@ -2007,7 +2025,7 @@ class Helper
 		}
 		if (!empty($media->video_poster)) {
 			$path = $media->vault_id ? config('path.vault') : config('path.messages');
-			if (!Storage::exists($path . $media->video_poster) && env('BUNNY_PULL_ZONE_URL') && $media->vault_id) {
+			if (!self::storageFileExists($path . $media->video_poster) && env('BUNNY_PULL_ZONE_URL') && $media->vault_id) {
 				return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path . $media->video_poster, '/');
 			}
 			return self::getFile($path . $media->video_poster);
@@ -2026,7 +2044,7 @@ class Helper
 		}
 
 		$path = config('path.images') . $media->image;
-		$isLocal = Storage::exists($path);
+		$isLocal = self::storageFileExists($path);
 
 		if ($isLocal && ($media->img_type ?? '') !== 'gif' && !empty($media->updates_id)) {
 			return url('files/storage', $media->updates_id) . '/' . $media->image;
@@ -2050,7 +2068,7 @@ class Helper
 		}
 
 		$path = config('path.shop') . $name;
-		if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+		if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 			return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 		}
 
@@ -2068,7 +2086,7 @@ class Helper
 		}
 
 		$path = config('path.ads') . $name;
-		if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+		if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 			return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 		}
 
@@ -2173,7 +2191,7 @@ class Helper
 		}
 		if (!empty($media->video_poster)) {
 			$path = config('path.welcome_messages') . $media->video_poster;
-			if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+			if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 				return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 			}
 			return self::getFile($path);
@@ -2192,7 +2210,7 @@ class Helper
 		}
 
 		$path = config('path.welcome_messages') . $name;
-		if (!Storage::exists($path) && env('BUNNY_PULL_ZONE_URL')) {
+		if (!self::storageFileExists($path) && env('BUNNY_PULL_ZONE_URL')) {
 			return self::normalizedCdnBaseUrl(env('BUNNY_PULL_ZONE_URL')) . '/' . ltrim($path, '/');
 		}
 

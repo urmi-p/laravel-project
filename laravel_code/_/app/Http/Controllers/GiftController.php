@@ -18,7 +18,18 @@ final class GiftController extends Controller
 {
     use Traits\Functions;
 
-    public $path = '/img/gifts/';
+    public $path = 'img/gifts/';
+
+    private function giftsPublicPath(): string
+    {
+        return public_path(trim($this->path, '/'));
+    }
+
+    private function giftsRemotePath(string $fileName = ''): string
+    {
+        $base = trim($this->path, '/');
+        return $fileName !== '' ? $base . '/' . ltrim($fileName, '/') : $base;
+    }
 
     public function show()
     {
@@ -39,20 +50,37 @@ final class GiftController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image')->hashName();
             $bunnyStorageService = app(BunnyStorageService::class);
-            $remotePath = ltrim($this->path, '/') . $file;
+            $remotePath = $this->giftsRemotePath($file);
+            $publicPath = $this->giftsPublicPath();
 
             if ($bunnyStorageService->isConfigured()) {
                 try {
-                    $bunnyStorageService->uploadFromLocal($request->file('image')->getRealPath(), $remotePath);
+                    $uploadedToBunny = $bunnyStorageService->uploadFromLocal(
+                        $request->file('image')->getRealPath(),
+                        $remotePath
+                    );
+
+                    if (!$uploadedToBunny) {
+                        return back()->withErrors([
+                            'image' => 'Gift image upload to Bunny CDN failed.',
+                        ]);
+                    }
                 } catch (\Throwable $e) {
                     Log::warning('Gift image Bunny upload failed', [
                         'file' => $file,
                         'error' => $e->getMessage(),
                     ]);
-                }
-            }
 
-            $request->file('image')->move($this->path, $file);
+                    return back()->withErrors([
+                        'image' => 'Gift image upload to Bunny CDN failed.',
+                    ]);
+                }
+            } else {
+                if (!is_dir($publicPath)) {
+                    mkdir($publicPath, 0755, true);
+                }
+                $request->file('image')->move($publicPath, $file);
+            }
 
             Gift::create([
                 'price' => $request->price,
@@ -83,23 +111,40 @@ final class GiftController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image')->hashName();
             $bunnyStorageService = app(BunnyStorageService::class);
-            $remotePath = ltrim($this->path, '/') . $file;
+            $remotePath = $this->giftsRemotePath($file);
+            $publicPath = $this->giftsPublicPath();
 
             if ($bunnyStorageService->isConfigured()) {
                 try {
-                    $bunnyStorageService->uploadFromLocal($request->file('image')->getRealPath(), $remotePath);
+                    $uploadedToBunny = $bunnyStorageService->uploadFromLocal(
+                        $request->file('image')->getRealPath(),
+                        $remotePath
+                    );
+
+                    if (!$uploadedToBunny) {
+                        return back()->withErrors([
+                            'image' => 'Gift image upload to Bunny CDN failed.',
+                        ]);
+                    }
                 } catch (\Throwable $e) {
                     Log::warning('Gift image Bunny upload failed', [
                         'file' => $file,
                         'error' => $e->getMessage(),
                     ]);
+
+                    return back()->withErrors([
+                        'image' => 'Gift image upload to Bunny CDN failed.',
+                    ]);
                 }
+            } else {
+                if (!is_dir($publicPath)) {
+                    mkdir($publicPath, 0755, true);
+                }
+                $request->file('image')->move($publicPath, $file);
             }
 
-            $request->file('image')->move($this->path, $file);
-
-            \File::delete($this->path . $gift->image);
-            $bunnyStorageService->delete(ltrim($this->path, '/') . $gift->image);
+            \File::delete($this->giftsPublicPath() . DIRECTORY_SEPARATOR . $gift->image);
+            $bunnyStorageService->delete($this->giftsRemotePath($gift->image));
         }
 
         $gift->update([
@@ -114,8 +159,8 @@ final class GiftController extends Controller
 
     public function destroy(Gift $gift): RedirectResponse
     {
-        \File::delete($this->path . $gift->image);
-        app(BunnyStorageService::class)->delete(ltrim($this->path, '/') . $gift->image);
+        \File::delete($this->giftsPublicPath() . DIRECTORY_SEPARATOR . $gift->image);
+        app(BunnyStorageService::class)->delete($this->giftsRemotePath($gift->image));
 
         $gift->delete();
 
@@ -127,10 +172,15 @@ final class GiftController extends Controller
         $messages = [
             'gift.required' => __('general.please_select_gift'),
             'gift.integer' => __('general.please_select_gift'),
+            'gift.exists' => __('general.please_select_gift'),
+            'user_id.required' => __('general.error'),
+            'user_id.integer' => __('general.error'),
+            'user_id.exists' => __('general.error'),
         ];
 
         $validator = Validator::make($request->all(), [
-            'gift' => 'required|integer',
+            'gift' => 'required|integer|exists:gifts,id',
+            'user_id' => 'required|integer|exists:users,id',
             'message' => 'max:50'
           ], $messages);
 
@@ -141,8 +191,15 @@ final class GiftController extends Controller
             ]);
           }
 
-        $gift = Gift::findOrFail($request->gift);
-        $user = User::findOrFail($request->user_id);
+        $gift = Gift::find($request->gift);
+        $user = User::find($request->user_id);
+
+        if (!$gift || !$user) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['error' => __('general.error')],
+            ]);
+        }
         $amount = $gift->price;
 
         if (auth()->user()->wallet < Helper::amountGross($amount)) {

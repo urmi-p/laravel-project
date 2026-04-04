@@ -157,7 +157,7 @@
             @endguest
 
             @guest
-                <button class="333 navbar-toggler @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) text-white @endif" type="button"
+                <button class="navbar-toggler @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) text-white @endif" type="button"
                     data-toggle="collapse" data-target="#navbarCollapse"
                     data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -209,7 +209,6 @@
                     @endif
                 @endif
             @endauth
-            @auth
                 <div class="justify-content-between collapse navbar-collapse navbar-mobile site-header-collapse" id="navbarCollapse">
                     <div class="d-md-none text-right pr-2 mb-2">
 
@@ -881,7 +880,6 @@
                     </ul>
 
                 </div>
-            @endauth
 
         </div>
 
