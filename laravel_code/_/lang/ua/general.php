@@ -531,7 +531,6 @@ return array(
 	'footer_background_color' => 'Колір фону футера',
 	'footer_text_color' => 'Колір тексту футера',
 	'language' => 'Мова',
-	'home_style' => 'Тема головної сторінки',
 	'title_home_login' => 'Приєднуйтесь і почніть заробляти на своєму контенті!',
 
 	// Version 1.7

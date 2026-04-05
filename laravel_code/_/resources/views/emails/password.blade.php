@@ -285,7 +285,7 @@
                     <tr>
                         <td class="logo-wrap">
                             <a href="{{ url('/') }}" target="_blank" rel="noopener">
-                                <img src="{{ url('public/img', $settings->logo) }}" alt="{{ $settings->title }}" width="210">
+                                <img src="{{ asset('img/' . $settings->logo) }}" alt="{{ $settings->title }}" width="210">
                             </a>
                         </td>
                     </tr>
@@ -298,7 +298,7 @@
                                 <tr>
                                     <td class="content-pad">
                                         <div class="avatar-wrap">
-                                            <img src="{{ url('public/avatar/default.jpg') }}" alt="{{ $settings->title }}"
+                                            <img src="{{ asset('avatar/default.jpg') }}" alt="{{ $settings->title }}"
                                                 class="avatar">
                                         </div>
 

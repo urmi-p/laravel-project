@@ -12,7 +12,7 @@
                             <tr>
                                 <td class="footer-logo-cell">
                                     <a href="{{ url('/') }}" target="_blank" rel="noopener">
-                                        <img src="{{ url('img', $footerSettings->logo) }}" alt="{{ $footerTitle }}"
+                                        <img src="{{ asset('img/' . $footerSettings->logo) }}" alt="{{ $footerTitle }}"
                                             width="210">
                                     </a>
 
@@ -20,21 +20,21 @@
                                         <li>
                                             <a class="social-box" href="{{ App\Models\AdminSettings::value('facebook') }}"
                                                 target="_blank" rel="noopener">
-                                                <img src="{{ url('img/facebook-square-white-bordered.png') }}"
+                                                <img src="{{ asset('img/facebook-square-white-bordered.png') }}"
                                                     alt="Facebook" width="18">
                                             </a>
                                         </li>
                                         <li>
                                             <a class="social-box" href="{{ App\Models\AdminSettings::value('instagram') }}"
                                                 target="_blank" rel="noopener">
-                                                <img src="{{ url('img/instagram-square-white-bordered.png') }}"
+                                                <img src="{{ asset('img/instagram-square-white-bordered.png') }}"
                                                     alt="Instagram" width="18">
                                             </a>
                                         </li>
                                         <li>
                                             <a class="social-box" href="{{ App\Models\AdminSettings::value('twitter') }}"
                                                 target="_blank" rel="noopener">
-                                                <img src="{{ url('img/x-square-white-bordered.png') }}"
+                                                <img src="{{ asset('img/x-square-white-bordered.png') }}"
                                                     alt="X" width="18">
                                             </a>
                                         </li>

@@ -526,7 +526,6 @@ return array(
 'footer_background_color'            => 'Couleur de fond du pied de page',
 'footer_text_color'                  => 'Couleur du texte du pied de page',
 'language'                           => 'Langue',
-'home_style'                         => 'Thème de la page d\'accueil',
 'title_home_login'                   => 'Rejoignez-nous dès maintenant et commencez à gagner de l\'argent avec votre contenu !',
 
 'birthdate_desc'                    => 'Formats valides (mois/jour/année) ou (jour-mois-année)',

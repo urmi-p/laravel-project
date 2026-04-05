@@ -529,7 +529,6 @@ return array(
 	'footer_background_color' => 'Color de fondo del pie de página',
 	'footer_text_color' => 'Color del texto del pie de página',
 	'language' => 'Idioma',
-	'home_style' => 'Tema de página de inicio',
 	'title_home_login' => '¡Únete ahora y comienza a ganar dinero con tu contenido!',
 
 	// Version 1.7

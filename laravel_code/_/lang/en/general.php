@@ -534,7 +534,6 @@ return array(
 	'footer_background_color' => 'Footer background color',
 	'footer_text_color' => 'Footer text color',
 	'language' => 'Language',
-	'home_style' => 'Home page theme',
 	'title_home_login' => 'Join now and start making money with your content!',
 	'title_login' => 'Sign in to your account to continue',
 
