@@ -48,7 +48,7 @@
         }
     </style>
     <nav
-        class="navbar navbar-expand-md navbar-inverse modern-navbar site-header p-nav @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
+        class="navbar navbar-expand-md navbar-inverse modern-navbar site-header p-nav @if (auth()->guest() && request()->path() == '/') scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
         <div class="container-fluid d-flex align-items-center">
 
             <div class="d-flex justify-content-between">
@@ -60,7 +60,7 @@
                                 data-logo-2="{{ $settings->logo_2 }}" alt="{{ $settings->title }}"
                                 class="logo align-bottom max-w-100" />
                         @else
-                            <img src="{{ url('img', auth()->guest() && request()->path() == '/' && $settings->home_style == 0 ? $settings->logo : $settings->logo_2) }}"
+                            <img src="{{ url('img', auth()->guest() && request()->path() == '/' ? $settings->logo : $settings->logo_2) }}"
                                 data-logo="{{ $settings->logo }}" data-logo-2="{{ $settings->logo_2 }}"
                                 alt="{{ $settings->title }}" class="logo align-bottom max-w-100" />
                         @endif
@@ -154,7 +154,7 @@
 
                     <a @if (Helper::showLoginFormModal()) data-toggle="modal" data-target="#loginFormModal" @endif
                         class="nav-link login-btn @if ($settings->registration_active == '0') btn btn-main btn-primary pr-3 pl-3 @endif"
-                        href="{{ in_array(config('settings.home_style'), [0, 2]) ? url('login') : url('/') }}">
+                        href="{{ url('login') }}">
 
                         {{ __('auth.login') }}
 
@@ -165,7 +165,7 @@
             @endguest
 
             @guest
-                <button class="navbar-toggler @if (auth()->guest() && request()->path() == '/' && $settings->home_style == 0) text-white @endif" type="button"
+                <button class="navbar-toggler @if (auth()->guest() && request()->path() == '/') text-white @endif" type="button"
                     data-toggle="collapse" data-target="#navbarCollapse"
                     data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -377,7 +377,7 @@
 
                                 <a @if (Helper::showLoginFormModal()) data-toggle="modal" data-target="#loginFormModal" @endif
                                     class="nav-link login-btn @if ($settings->registration_active == '0') btn btn-main btn-primary pr-3 pl-3 @endif"
-                                    href="{{ in_array(config('settings.home_style'), [0, 2]) ? url('login') : url('/') }}">
+                                    href="{{ url('login') }}">
 
                                     {{ __('auth.login') }}
 
@@ -388,8 +388,8 @@
                                 <li class="nav-item">
 
                                     <a @if (Helper::showLoginFormModal()) data-toggle="modal" data-target="#loginFormModal" @endif
-                                        class="toggleRegister nav-link btn btn-main @if (request()->path() == '/' && $settings->home_style == 0) btn-light @else btn-primary @endif btn-register-menu pr-3 pl-3 btn-arrow btn-arrow-sm"
-                                        href="{{ in_array(config('settings.home_style'), [0, 2]) ? url('signup') : url('/') }}">
+                                        class="toggleRegister nav-link btn btn-main @if (request()->path() == '/') btn-light @else btn-primary @endif btn-register-menu pr-3 pl-3 btn-arrow btn-arrow-sm"
+                                        href="{{ url('signup') }}">
 
                                         {{ __('general.getting_started') }}
 

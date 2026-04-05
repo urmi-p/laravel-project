@@ -33,7 +33,7 @@ class PrivateContent
 
 			if ($this->auth->guest() && $this->settings->who_can_see_content == 'users') {
  			 session()->flash('login_required', __('auth.login_required'));
- 				 return $this->settings->home_style == 0 ? redirect()->route('login') : redirect()->route('home');
+ 				 return redirect()->route('login');
  			 }
 
 		return $next($request);

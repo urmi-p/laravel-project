@@ -30,6 +30,10 @@ class SightEngineService
 
     public function checkImage(Media $media)
     {
+        $getPost = null;
+        $statusFinalPost = 'pending';
+        $pathFile = '';
+
         try {
             $pathFile = config('path.images') . $media->image;
             $imageUrl = Helper::postImageUrl($media);
@@ -82,15 +86,16 @@ class SightEngineService
                     $this->deleteMedia($media, $getPost, $pathFile, $statusFinalPost);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             info('Error in SightEngineService checkImage():', [
                 'message' => $e->getMessage(),
                 'fileName' => $media->file_name,
             ]);
 
-            Notifications::send($getPost->user_id, 1, 34, 0, $media->file_name);
-
-            $this->deleteMedia($media, $getPost, $pathFile, $statusFinalPost);
+            if ($getPost) {
+                Notifications::send($getPost->user_id, 1, 34, 0, $media->file_name);
+                $this->deleteMedia($media, $getPost, $pathFile, $statusFinalPost);
+            }
         }
     }
 

@@ -327,7 +327,7 @@
 
   var ok = "<?php echo e(__('users.ok'), false); ?>";
 
-  var user_count_carousel = <?php if(auth()->guest() && request()->path() == '/' && config('settings.home_style') == 0): ?> <?php echo e($users->count(), false); ?><?php else: ?> 0 <?php endif; ?>;
+  var user_count_carousel = <?php if(auth()->guest() && request()->path() == '/'): ?> <?php echo e($users->count(), false); ?><?php else: ?> 0 <?php endif; ?>;
 
   var no_results_found = "<?php echo e(__('general.no_results_found'), false); ?>";
 
@@ -373,7 +373,7 @@
 
   var is_purchases = <?php echo e(request()->is('my/purchases') ? 'true' : 'false', false); ?>;
 
-  var is_explore = <?php echo e(request()->is(['/']) && config('settings.home_style') == 2 && auth()->guest() || request()->is(['explore']) ? 'true' : 'false', false); ?>;
+  var is_explore = <?php echo e(request()->is(['explore']) ? 'true' : 'false', false); ?>;
 
   var sessionActive = <?php echo e(auth()->check() ? 'true' : 'false', false); ?>;
 

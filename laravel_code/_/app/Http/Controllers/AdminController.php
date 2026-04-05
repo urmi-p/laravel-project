@@ -2596,7 +2596,6 @@ class AdminController extends Controller
 
 			->update([
 
-				'home_style' => $request->get('home_style'),
 
 				'color_default' => $request->get('color'),
 

@@ -90,17 +90,9 @@
             <p>{{ __('general.alert_age_verification') }}</p>
           </div>
           <div class="modal-footer border-0 pt-0 pb-4 justify-content-center">
-            <button type="button" 
-            
-            @if ($settings->home_style == 1 && request()->path() == '/') 
-              data-dismiss="modal" 
-              class="btn btn-primary"
-
-              @else
+            <button type="button"
               data-toggle="modal" data-target="#loginFormModal"
-              class="btn btn-primary toggleRegister"
-            @endif
-            >
+              class="btn btn-primary toggleRegister">
             {{__('general.start_age_verification')}}
           </button>
           </div>
@@ -117,19 +109,7 @@
   $isLiveRoute = request()->is('live/*');
 @endphp
 
-@if (
-      !$hideGlobalChrome &&
-      !$isLiveRoute &&
-      (
-        (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
-        || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
-        || auth()->guest() && request()->path() != '/' && $settings->home_style == 1
-        || auth()->guest() && request()->path() == '/' && $settings->home_style == 2
-        || auth()->guest() && request()->path() != '/' && $settings->home_style == 2
-        || auth()->check()
-        )
-      )
-)
+@if (!$hideGlobalChrome && !$isLiveRoute)
   @include('includes.navbar')
   @endif
 
@@ -140,32 +120,15 @@
   <main @if (request()->is('messages/*') || request()->is('live/*')) style="h-100" @endif role="main">
     @yield('content')
 
-    @if (auth()->guest() || auth()->check())
-            
-          @if (
-                  !$hideGlobalChrome &&
-                  !$isLiveRoute &&
-                ( 
-                  (auth()->guest() && request()->path() == '/' && $settings->home_style == 0
-                        || auth()->guest() && request()->path() != '/' && $settings->home_style == 0
-                        || auth()->guest() && request()->path() != '/' && $settings->home_style == 1
-                        || auth()->guest() && request()->path() != '/' && $settings->home_style == 2
-                        || auth()->check()
-                          )
-                )
-          )
-
-                  @if (auth()->guest() && $settings->who_can_see_content == 'users')
-                    <div class="text-center py-3 px-3">
-                      @include('includes.footer-tiny')
-                    </div>
-                  @else
-                    @include('includes.footer')
-                  @endif
-
-          @endif
-
-  @endif
+    @if (!$hideGlobalChrome && !$isLiveRoute)
+      @if (auth()->guest() && $settings->who_can_see_content == 'users')
+        <div class="text-center py-3 px-3">
+          @include('includes.footer-tiny')
+        </div>
+      @else
+        @include('includes.footer')
+      @endif
+    @endif
 
   @guest
 

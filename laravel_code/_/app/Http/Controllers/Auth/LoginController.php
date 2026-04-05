@@ -49,11 +49,7 @@ class LoginController extends Controller
    */
   public function showLoginForm()
   {
-    if (in_array(config('settings.home_style'), [0, 2])) {
-      return view('auth.login');
-    } else {
-      return redirect('/');
-    }
+    return view('auth.login');
   }
 
   public function login(Request $request)

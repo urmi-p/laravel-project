@@ -79,14 +79,14 @@
                         @if (request()->is('/') && auth()->guest())
                             <a data-toggle="modal" data-target="#loginFormModal"
                                 class="mb-2 d-lg-none d-block nav-link btn btn-main btn-primary btn-register-menu pr-3 pl-3 btn-arrow btn-arrow-sm mobileButton"
-                                href="{{ in_array(config('settings.home_style'), [0, 2]) ? url('login') : url('/') }}">
+                                href="{{ url('login') }}">
                                 {{ __('auth.login') }}
                             </a>
 
                             @if ($settings->registration_active == '1')
                                 <a data-toggle="modal" data-target="#loginFormModal"
                                     class="toggleRegister d-lg-none d-block nav-link btn btn-main btn-primary btn-register-menu pr-3 pl-3 btn-arrow btn-arrow-sm mobileButton"
-                                    href="{{ in_array(config('settings.home_style'), [0, 2]) ? url('signup') : url('/') }}">
+                                    href="{{ url('signup') }}">
                                     {{ __('general.getting_started') }}
                                 </a>
                             @endif
