@@ -680,7 +680,6 @@ return array(
 	'disable_wallet' => 'Disable wallet',
 	'error_delete_post' => 'By policies of our platform, you can not delete this post, if you have active subscribers.',
 	'set_price_for_msg' => 'Set a price for this message.',
-	'set_price' => 'Set Price',
 	'hide_name' => 'Show username instead of your Full name',
 	'min_ppv_amount' => 'Minimum Pay Per View (Post/Message Locked)',
 	'max_ppv_amount' => 'Maximum Pay Per View (Post/Message Locked)',
