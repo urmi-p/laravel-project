@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no" class="notranslate" data-bs-theme="{{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'dark' : 'dark' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no" class="notranslate" data-bs-theme="{{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'dark' : 'light' }}">
 
 <head>
   <meta charset="utf-8">
@@ -121,13 +121,15 @@
     @yield('content')
 
     @if (!$hideGlobalChrome && !$isLiveRoute)
-      @if (auth()->guest() && $settings->who_can_see_content == 'users')
-        <div class="text-center py-3 px-3">
-          @include('includes.footer-tiny')
-        </div>
-      @else
-        @include('includes.footer')
-      @endif
+      <div class="app-footer-shell">
+        @if (auth()->guest() && $settings->who_can_see_content == 'users')
+          <div class="text-center py-3 px-3">
+            @include('includes.footer-tiny')
+          </div>
+        @else
+          @include('includes.footer')
+        @endif
+      </div>
     @endif
 
   @guest

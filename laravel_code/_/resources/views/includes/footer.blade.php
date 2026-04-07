@@ -1,20 +1,12 @@
 <!-- FOOTER -->
 
-<footer class="py-3 link-footer  footer-bg @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest() ) footer_background_color @endif text-center">
+<footer class="py-3 link-footer footer-bg text-center">
 	
 		<div class="col-md-12 text-center">
 
 				<a href="{{url('/')}}">
 
-					@if (auth()->check() && auth()->user()->dark_mode == 'on')
-
 					<img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="max-w-125">
-
-					@else
-
-					<img src="{{url('img', $settings->logo_2)}}" alt="{{$settings->title}}" class="max-w-125">
-
-					@endif
 
 				</a>
 
@@ -45,7 +37,7 @@
 		</div>
 	
 </footer>
-<div class="py-4 footer-bg @auth d-none d-lg-block @endauth @if (auth()->check() && auth()->user()->dark_mode == 'off' || auth()->guest()) footer_background_color footer_text_color @else bg-white @endif @if (auth()->check() && auth()->user()->dark_mode == 'off' && $settings->footer_background_color == '#ffffff' || auth()->guest() && $settings->footer_background_color == '#ffffff' ) border-top @endif">
+<div class="py-4 footer-bg @auth d-none d-lg-block @endauth">
 	<footer class="">
 		<div class="row">
 
@@ -232,4 +224,3 @@
 
 
 </div>
-

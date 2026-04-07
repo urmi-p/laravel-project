@@ -7931,6 +7931,10 @@ html[data-bs-theme="dark"] .app-auth-shell {
         --app-mobile-gap: 1.5rem; /* 24px */
     }
 
+    .app-auth-shell .app-footer-shell {
+        background: #171717 !important;
+    }
+
     .app-auth-shell .modern-navbar.site-header {
         width: 100%;
         max-width: none;
@@ -8852,26 +8856,47 @@ html[data-bs-theme="light"] .app-auth-shell .lead {
 
 html[data-bs-theme="light"] .app-auth-shell footer.footer-bg,
 html[data-bs-theme="light"] .app-auth-shell div.footer-bg {
-    background: #ffffff !important;
-    border-top: 0.0625rem solid rgba(15, 23, 42, 0.08) !important;
-    color: #667085 !important;
+    background: #171717 !important;
+    border-top: 1px solid #171717 !important;
+    color: #d1d5db !important;
+}
+
+html[data-bs-theme="light"] .app-auth-shell .app-footer-shell {
+    background: #171717 !important;
 }
 
 html[data-bs-theme="light"] .app-auth-shell footer.footer-bg small,
-html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .link-footer {
-    color: #667085 !important;
+html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .link-footer,
+html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .footer-tiny,
+html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .dropdown-toggle.footer-tiny {
+    color: #d1d5db !important;
 }
 
 html[data-bs-theme="light"] .app-auth-shell footer.footer-bg a,
 html[data-bs-theme="light"] .app-auth-shell div.footer-bg a,
 html[data-bs-theme="light"] .app-auth-shell .footer_text_color,
 html[data-bs-theme="light"] .app-auth-shell .footer_text_color .link-footer {
-    color: #667085 !important;
+    color: #d1d5db !important;
 }
 
 html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .link-footer:hover,
+html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .footer-tiny:hover,
 html[data-bs-theme="light"] .app-auth-shell footer.footer-bg a:hover {
-    color: #1f2937 !important;
+    color: #ffffff !important;
+}
+
+html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .card,
+html[data-bs-theme="light"] .app-auth-shell .app-footer-shell .card {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html[data-bs-theme="light"] .app-auth-shell footer.footer-bg .card-body,
+html[data-bs-theme="light"] .app-auth-shell .app-footer-shell .card-body {
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
 /* App Shell: Light Theme Headings + Copy */
