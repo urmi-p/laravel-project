@@ -7533,6 +7533,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
 .app-auth-shell .modern-navbar.site-header .container-fluid {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    position: relative;
 }
 
 .app-auth-shell .search-bar {
@@ -7559,6 +7560,27 @@ html[data-bs-theme="dark"] .app-auth-shell {
 .app-auth-shell .modern-navbar.site-header .site-header-actions {
     flex: 0 0 auto;
     margin-left: auto !important;
+}
+
+@media (min-width: 768px) {
+    .app-auth-shell .modern-navbar.site-header .guest-header-center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: max-content;
+        z-index: 2;
+    }
+
+    .app-auth-shell .modern-navbar.site-header .site-header-guest-actions {
+        margin-left: auto;
+        position: relative;
+        z-index: 3;
+    }
 }
 
 .app-auth-shell .dashboard-home-container {

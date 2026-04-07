@@ -46,12 +46,76 @@
                 transform: translateY(1px);
             }
         }
+
+        @media (min-width: 768px) {
+            .modern-navbar.site-header.guest-site-header {
+                width: calc(100% - 4rem);
+                max-width: 92rem;
+                margin: 2rem auto 1.5rem !important;
+                padding: 1rem !important;
+                min-height: 84px;
+                border-radius: 32px;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                background: #0b0d11 !important;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+            }
+
+            .modern-navbar.site-header.guest-site-header .container-fluid {
+                position: relative;
+                display: flex !important;
+                align-items: center;
+                width: 100%;
+                gap: 16px;
+            }
+
+            .modern-navbar.site-header.guest-site-header .guest-header-left {
+                display: flex;
+                align-items: center;
+                flex: 0 0 auto;
+            }
+
+            .modern-navbar.site-header.guest-site-header .site-header-collapse {
+                display: flex !important;
+                align-items: center;
+                justify-content: flex-end;
+                flex: 1 1 auto;
+                width: 100%;
+            }
+
+            .modern-navbar.site-header.guest-site-header .site-header-search,
+            .modern-navbar.site-header.guest-site-header .site-header-actions {
+                display: none !important;
+            }
+
+            .modern-navbar.site-header.guest-site-header .guest-header-center {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                width: max-content;
+                margin: 0;
+                z-index: 2;
+            }
+
+            .modern-navbar.site-header.guest-site-header .site-header-guest-actions {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                margin-left: auto !important;
+                margin-right: 0;
+                z-index: 3;
+            }
+        }
     </style>
     <nav
-        class="navbar navbar-expand-md navbar-inverse modern-navbar site-header p-nav @if (auth()->guest() && request()->path() == '/') scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
-        <div class="container-fluid d-flex align-items-center">
+        class="navbar navbar-expand-md navbar-inverse modern-navbar site-header {{ auth()->guest() ? 'guest-site-header' : '' }} p-nav @if (auth()->guest() && request()->path() == '/') scroll @else p-3 @if (request()->is('live/*')) d-none @endif  @if (request()->is('messages/*')) shadow-sm @elseif(request()->is('messages')) shadow-sm @else shadow-custom @endif {{ auth()->check() && auth()->user()->dark_mode == 'on' ? 'bg-white' : 'navbar_background_color' }} link-scroll @endif">
+        <div class="container-fluid d-flex align-items-center {{ auth()->guest() ? 'guest-header-shell' : '' }}">
 
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between {{ auth()->guest() ? 'guest-header-left' : '' }}">
                 <div class="navbar-left d-flex align-items-center">
                     <a class="navbar-brand" href="{{ url('/') }}">
 
@@ -147,30 +211,16 @@
                 @endauth
             </div>
 
-
             @guest
-
-                <li class="nav-item mr-1">
-
+                @if ($settings->registration_active == '1')
                     <a @if (Helper::showLoginFormModal()) data-toggle="modal" data-target="#loginFormModal" @endif
-                        class="nav-link login-btn @if ($settings->registration_active == '0') btn btn-main btn-primary pr-3 pl-3 @endif"
-                        href="{{ url('login') }}">
+                        class="d-md-none nav-link btn btn-main @if (request()->path() == '/') btn-light @else btn-primary @endif btn-register-menu pr-3 pl-3 btn-arrow btn-arrow-sm"
+                        href="{{ url('signup') }}">
 
-                        {{ __('auth.login') }}
+                        {{ __('auth.register') }}
 
                     </a>
-
-                </li>
-                
-            @endguest
-
-            @guest
-                <button class="navbar-toggler @if (auth()->guest() && request()->path() == '/') text-white @endif" type="button"
-                    data-toggle="collapse" data-target="#navbarCollapse"
-                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
-                </button>
+                @endif
             @endguest
             @auth
                 @if ((auth()->guest() && $settings->who_can_see_content == 'all') || auth()->check())
@@ -227,7 +277,7 @@
                         </button>
                     </div>
 
-                    @if ((auth()->guest() && $settings->who_can_see_content == 'all') || auth()->check())
+                    @if (auth()->check())
 
                         <ul class="navbar-nav site-header-search">
                             @if (!$settings->disable_creators_section)
@@ -276,6 +326,7 @@
                         </ul>
                     @endif
 
+                    @auth
                     <ul class="navbar-nav site-header-center d-none d-md-flex">
                         @auth
                             @if (auth()->user()->verified_id == 'yes')
@@ -311,6 +362,24 @@
                             </li>
                         @endif
                     </ul>
+                    @endauth
+
+                    @guest
+                    <div class="guest-header-center d-none d-md-flex">
+                        @if (!$settings->disable_creators_section)
+                            <a class="nav-link navbar_mid_link px-2 {{ request()->is('creators*') ? 'font_bold' : 'font_normal' }}"
+                                href="{{ url('creators') }}" title="{{ __('general.explore_creators') }}">
+                                {{ __('general.explore_creators') }}
+                            </a>
+                        @endif
+                        @if ($settings->shop)
+                            <a class="nav-link navbar_mid_link px-2 {{ request()->is('shop*') ? 'font_bold' : 'font_normal' }}"
+                                href="{{ url('shop') }}" title="{{ __('general.explore_shop') }}">
+                                {{ __('general.explore_shop') }}
+                            </a>
+                        @endif
+                    </div>
+                    @endguest
 
                     <ul class="navbar-nav site-header-actions">
                         {{-- need only for mobile sidebar --}}
@@ -369,7 +438,7 @@
                         {{-- end for mobile sidebar --}}
                     </ul>
 
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav {{ auth()->guest() ? 'site-header-guest-actions' : '' }}">
 
                         @guest
 
@@ -391,7 +460,7 @@
                                         class="toggleRegister nav-link btn btn-main @if (request()->path() == '/') btn-light @else btn-primary @endif btn-register-menu pr-3 pl-3 btn-arrow btn-arrow-sm"
                                         href="{{ url('signup') }}">
 
-                                        {{ __('general.getting_started') }}
+                                        {{ __('auth.register') }}
 
                                     </a>
                                 </li>
