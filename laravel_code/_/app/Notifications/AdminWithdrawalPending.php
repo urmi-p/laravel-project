@@ -42,13 +42,13 @@ class AdminWithdrawalPending extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-      $subject = trans('general.withdrawal_request').' @'.$this->data->user()->username;
+      $subject = trans('general.withdrawal_request', [], 'en').' @'.$this->data->user()->username;
 
         return (new MailMessage)
             ->subject($subject)
-            ->greeting(trans('emails.hello'). ' ' .trans('admin.role_admin'))
+            ->greeting(trans('emails.hello', [], 'en'). ' ' .trans('admin.role_admin', [], 'en'))
             ->line($subject)
-            ->action(trans('general.view_details_panel_admin'), url('panel/admin/withdrawal', $this->data->id));
+            ->action(trans('general.view_details_panel_admin', [], 'en'), url('panel/admin/withdrawal', $this->data->id));
     }
 
     /**

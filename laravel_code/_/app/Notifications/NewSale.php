@@ -42,13 +42,13 @@ class NewSale extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-      $subject = '@'.$this->sale->user()->username.' '.trans('general.has_bought_your_item'). ' - '.$this->sale->products()->name;
+      $subject = '@'.$this->sale->user()->username.' '.trans('general.has_bought_your_item', [], 'en'). ' - '.$this->sale->products()->name;
 
         return (new MailMessage)
               ->subject($subject)
-              ->greeting(trans('emails.hello') .' '.$notifiable->name)
+              ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
               ->line($subject)
-              ->action(trans('general.my_sales'), url('my/sales'));
+              ->action(trans('general.my_sales', [], 'en'), url('my/sales'));
     }
 
     /**

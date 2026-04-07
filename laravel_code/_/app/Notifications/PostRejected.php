@@ -42,12 +42,12 @@ class PostRejected extends Notification
      */
     public function toMail($notifiable)
     {
-      $subject = trans('general.rejected_post') . ' - ' .str_limit($this->data->description, 10, '...');
-      $line = trans('general.line_rejected_post', ['title' => $this->data->description]);
+      $subject = trans('general.rejected_post', [], 'en') . ' - ' .str_limit($this->data->description, 10, '...');
+      $line = trans('general.line_rejected_post', ['title' => $this->data->description], 'en');
 
         return (new MailMessage)
             ->subject($subject)
-            ->greeting(trans('emails.hello'). ' ' .$notifiable->name)
+            ->greeting(trans('emails.hello', [], 'en'). ' ' .$notifiable->name)
             ->line($line);
     }
 

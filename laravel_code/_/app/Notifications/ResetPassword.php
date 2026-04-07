@@ -46,6 +46,6 @@ class ResetPassword extends Notification
     {
         return (new MailMessage)
          ->view('emails.password_reset', ['token' => $this->token])
-         ->subject(trans('emails.password_reset'));
+         ->subject(trans('emails.password_reset', [], 'en'));
     }
 }

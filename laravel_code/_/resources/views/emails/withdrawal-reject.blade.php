@@ -247,7 +247,7 @@
                 <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="header-copy">
-                            {{ __('emails.brand_tagline') }}
+                            {{ trans('emails.brand_tagline', [], 'en') }}
                         </td>
                     </tr>
                     <tr>
@@ -265,17 +265,17 @@
                             <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
                                 <tr>
                                     <td class="content-pad">
-                                        <h1 class="title">{{ __('emails.withdrawal_reject_title') }}</h1>
+                                        <h1 class="title">{{ trans('emails.withdrawal_reject_title', [], 'en') }}</h1>
 
-                                        <p class="greeting">{{ __('emails.hello') }} {{ $fullname }}</p>
+                                        <p class="greeting">{{ trans('emails.hello', [], 'en') }} {{ $fullname }}</p>
 
                                         <div class="body-copy">
                                             <p>{!! $body !!}</p>
                                         </div>
 
                                         <p class="salutation">
-                                            {{ __('emails.regards') }}<br>
-                                            {{ __('emails.team_signature', ['title' => $title_site]) }}
+                                            {{ trans('emails.regards', [], 'en') }}<br>
+                                            {{ trans('emails.team_signature', ['title' => $title_site], 'en') }}
                                         </p>
                                     </td>
                                 </tr>

@@ -292,7 +292,7 @@
                 <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="header-copy">
-                            {{ __('emails.brand_tagline') }}
+                            {{ trans('emails.brand_tagline', [], 'en') }}
                         </td>
                     </tr>
                     <tr>
@@ -310,23 +310,23 @@
                             <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
                                 <tr>
                                     <td class="content-pad">
-                                        <h1 class="title">{{ __('emails.verify_email_title') }}</h1>
+                                        <h1 class="title">{{ trans('emails.verify_email_title', [], 'en') }}</h1>
 
                                         <div class="body-copy">
-                                            <p>{{ __('emails.verify_email_msg') }} {{ $settings->title }}</p>
-                                            <p>{{ __('emails.verify_email_msg_2') }}</p>
+                                            <p>{{ trans('emails.verify_email_msg', [], 'en') }} {{ $settings->title }}</p>
+                                            <p>{{ trans('emails.verify_email_msg_2', [], 'en') }}</p>
                                         </div>
 
                                         <div class="action-wrap">
                                             <a href="{{ url('verify/account', $confirmation_code) . $isProfile }}" class="button"
                                                 target="_blank" rel="noopener">
-                                                {{ __('emails.click_here') }}
+                                                {{ trans('emails.click_here', [], 'en') }}
                                             </a>
                                         </div>
 
                                         <p class="salutation">
-                                            {{ __('emails.regards') }}<br>
-                                            {{ __('emails.team_signature', ['title' => $settings->title]) }}
+                                            {{ trans('emails.regards', [], 'en') }}<br>
+                                            {{ trans('emails.team_signature', ['title' => $settings->title], 'en') }}
                                         </p>
 
                                         <div class="subcopy-wrap">

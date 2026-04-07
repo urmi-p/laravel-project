@@ -43,13 +43,13 @@ class TipReceived extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-       $subject = '@'.$this->data['tipper'] . ' ' . trans('general.sent_you_a_tip_for'). ' '.Helper::amountFormatDecimal($this->data['amount']);
+       $subject = '@'.$this->data['tipper'] . ' ' . trans('general.sent_you_a_tip_for', [], 'en'). ' '.Helper::amountFormatDecimal($this->data['amount']);
 
         return (new MailMessage)
                     ->subject($subject)
-                    ->greeting(trans('emails.hello') .' '.$notifiable->name)
+                    ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
                     ->line($subject)
-                    ->action(trans('general.go_payments_received'), url('my/payments/received'));
+                    ->action(trans('general.go_payments_received', [], 'en'), url('my/payments/received'));
     }
 
     /**

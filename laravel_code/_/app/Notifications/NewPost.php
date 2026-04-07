@@ -42,14 +42,14 @@ class NewPost extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-      $subject = '@'.$this->post->user()->username.' '.trans('general.has_created_new_post');
+      $subject = '@'.$this->post->user()->username.' '.trans('general.has_created_new_post', [], 'en');
       $url = url($this->post->user()->username, 'post').'/'.$this->post->id;
 
         return (new MailMessage)
               ->subject($subject)
-              ->greeting(trans('emails.hello') .' '.$notifiable->name)
+              ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
               ->line($subject)
-              ->action(trans('general.go_to_post'), $url);
+              ->action(trans('general.go_to_post', [], 'en'), $url);
     }
 
     /**

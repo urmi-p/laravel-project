@@ -62,9 +62,9 @@ class ConfirmPayment extends Notification implements ShouldQueue
         $url = route('cashier.payment', ['id' => $this->paymentId]);
 
         return (new MailMessage)
-            ->subject(trans('general.confirm_payment_in', ["app" => $settings->title]))
-            ->greeting(trans('general.confirm_amount', ['amount' => $this->amount]))
-            ->line(trans('general.confirm_payment_line'))
-            ->action(trans('general.confirm_payment'), $url);
+            ->subject(trans('general.confirm_payment_in', ["app" => $settings->title], 'en'))
+            ->greeting(trans('general.confirm_amount', ['amount' => $this->amount], 'en'))
+            ->line(trans('general.confirm_payment_line', [], 'en'))
+            ->action(trans('general.confirm_payment', [], 'en'), $url);
     }
 }

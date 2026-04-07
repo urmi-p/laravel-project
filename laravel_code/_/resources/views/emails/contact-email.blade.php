@@ -265,7 +265,7 @@
                 <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="header-copy">
-                            {{ __('emails.brand_tagline') }}
+                            {{ trans('emails.brand_tagline', [], 'en') }}
                         </td>
                     </tr>
                     <tr>
@@ -284,28 +284,28 @@
                             <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
                                 <tr>
                                     <td class="content-pad">
-                                        <h1 class="title">{{ __('emails.contact_email_title') }}</h1>
+                                        <h1 class="title">{{ trans('emails.contact_email_title', [], 'en') }}</h1>
 
                                         <div class="field-block">
-                                            <p class="field-label">{{ __('emails.contact_subject_label') }}</p>
+                                            <p class="field-label">{{ trans('emails.contact_subject_label', [], 'en') }}</p>
                                             <div class="field-value">{{ $subject }}</div>
                                         </div>
 
                                         <div class="field-block">
-                                            <p class="field-label">{{ __('emails.contact_from_label') }}</p>
+                                            <p class="field-label">{{ trans('emails.contact_from_label', [], 'en') }}</p>
                                             <div class="field-value">{{ $full_name }} - {{ $email }}</div>
                                         </div>
 
                                         <div class="field-block">
-                                            <p class="field-label">{{ __('emails.contact_message_label') }}</p>
+                                            <p class="field-label">{{ trans('emails.contact_message_label', [], 'en') }}</p>
                                             <div class="message-box">
                                                 <div class="field-value">{{ $_message }}</div>
                                             </div>
                                         </div>
 
                                         <p class="salutation">
-                                            {{ __('emails.regards') }}<br>
-                                            {{ __('emails.team_signature', ['title' => $title_site ?? config('app.name')]) }}
+                                            {{ trans('emails.regards', [], 'en') }}<br>
+                                            {{ trans('emails.team_signature', ['title' => $title_site ?? config('app.name')], 'en') }}
                                         </p>
                                     </td>
                                 </tr>

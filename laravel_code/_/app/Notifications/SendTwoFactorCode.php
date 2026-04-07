@@ -44,9 +44,9 @@ class SendTwoFactorCode extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject(trans('general.two_step_authentication_code'))
-                    ->greeting(trans('emails.hello') .' '.$notifiable->name)
-                    ->line(trans('general.your_code_is', ['code' => $this->data['code']]));
+                    ->subject(trans('general.two_step_authentication_code', [], 'en'))
+                    ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
+                    ->line(trans('general.your_code_is', ['code' => $this->data['code']], 'en'));
     }
 
     /**

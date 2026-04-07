@@ -298,7 +298,7 @@
                 <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="header-copy">
-                            {{ __('emails.brand_tagline') }}
+                            {{ trans('emails.brand_tagline', [], 'en') }}
                         </td>
                     </tr>
                     <tr>
@@ -316,29 +316,29 @@
                             <table class="content-card" width="760" cellpadding="0" cellspacing="0" role="presentation">
                                 <tr>
                                     <td class="content-pad">
-                                        <h1 class="title">{{ __('emails.password_reset') }}</h1>
+                                        <h1 class="title">{{ trans('emails.password_reset', [], 'en') }}</h1>
 
-                                        <p class="greeting">{{ __('emails.hello') }}</p>
+                                        <p class="greeting">{{ trans('emails.hello', [], 'en') }}</p>
 
                                         <div class="body-copy">
-                                            <p>{{ __('emails.password_reset_msg') }}</p>
-                                            <p>{{ __('emails.password_reset_msg_2') }}</p>
+                                            <p>{{ trans('emails.password_reset_msg', [], 'en') }}</p>
+                                            <p>{{ trans('emails.password_reset_msg_2', [], 'en') }}</p>
                                         </div>
 
                                         <div class="action-wrap">
                                             <a href="{{ url('password/reset', $token) }}" class="button" target="_blank" rel="noopener">
-                                                {{ __('emails.password_reset') }}
+                                                {{ trans('emails.password_reset', [], 'en') }}
                                             </a>
                                         </div>
 
                                         <p class="salutation">
-                                            {{ __('emails.regards') }}<br>
-                                            {{ __('emails.team_signature', ['title' => $settings->title]) }}
+                                            {{ trans('emails.regards', [], 'en') }}<br>
+                                            {{ trans('emails.team_signature', ['title' => $settings->title], 'en') }}
                                         </p>
 
                                         <div class="subcopy-wrap">
                                             <div class="subcopy">
-                                                <p>{{ __('emails.password_reset_msg_3') }}</p>
+                                                <p>{{ trans('emails.password_reset_msg_3', [], 'en') }}</p>
                                                 <p>
                                                     <a href="{{ url('password/reset', $token) }}" target="_blank" rel="noopener">
                                                         {{ url('password/reset', $token) }}

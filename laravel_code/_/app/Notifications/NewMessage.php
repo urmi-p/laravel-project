@@ -34,13 +34,13 @@ class NewMessage extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $subject = __('general.new_msg_from') . ' @' . $this->user->username;
+        $subject = trans('general.new_msg_from', [], 'en') . ' @' . $this->user->username;
 
         return (new MailMessage)
             ->subject($subject)
-            ->greeting(__('emails.hello') . ' ' . $notifiable->name)
+            ->greeting(trans('emails.hello', [], 'en') . ' ' . $notifiable->name)
             ->line($subject)
-            ->action(__('general.go_to_messages'), url('messages', $this->user->id));
+            ->action(trans('general.go_to_messages', [], 'en'), url('messages', $this->user->id));
     }
 
     /**

@@ -42,15 +42,15 @@ class SubscriptionDisabled extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-      $subject = '@'.$this->user->username.' '.trans('general.has_changed_subscription_free_subject');
-      $line = '@'.$this->user->username.' '.trans('general.has_changed_subscription_free');
+      $subject = '@'.$this->user->username.' '.trans('general.has_changed_subscription_free_subject', [], 'en');
+      $line = '@'.$this->user->username.' '.trans('general.has_changed_subscription_free', [], 'en');
       $url = url($this->user->username);
 
         return (new MailMessage)
               ->subject($subject)
-              ->greeting(trans('emails.hello') .' '.$notifiable->name)
+              ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
               ->line($line)
-              ->action(trans('general.go_to_page'), $url);
+              ->action(trans('general.go_to_page', [], 'en'), $url);
     }
 
     /**

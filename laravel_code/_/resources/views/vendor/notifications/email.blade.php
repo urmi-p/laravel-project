@@ -3,7 +3,7 @@
 @if (! empty($greeting))
 # {{ $greeting }}
 @else
-# @lang('emails.hello')
+# {{ trans('emails.hello', [], 'en') }}
 @endif
 
 {{-- Intro Lines --}}
@@ -27,7 +27,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('emails.regards')<br>
-@lang('emails.team_signature', ['title' => config('app.name')])
+{{ trans('emails.regards', [], 'en') }}<br>
+{{ trans('emails.team_signature', ['title' => config('app.name')], 'en') }}
 @endif
 @endcomponent

@@ -33,10 +33,10 @@ class SubscriptionUpcomingRenewals extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('general.upcoming_renewal_for', ['creator' => $this->user->username]))
-            ->greeting(__('emails.hello') .' '.$notifiable->name)
-            ->line(__('general.detail_upcoming_renewal', ['creator' => $this->user->username]))
-            ->action(__('general.manage_subscriptions'), url('my/subscriptions'));
+            ->subject(trans('general.upcoming_renewal_for', ['creator' => $this->user->username], 'en'))
+            ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
+            ->line(trans('general.detail_upcoming_renewal', ['creator' => $this->user->username], 'en'))
+            ->action(trans('general.manage_subscriptions', [], 'en'), url('my/subscriptions'));
     }
 
     /**

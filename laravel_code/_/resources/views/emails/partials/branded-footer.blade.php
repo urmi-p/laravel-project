@@ -1,6 +1,23 @@
 <?php
     $footerSettings = $settings ?? App\Models\AdminSettings::first();
     $footerTitle = $title ?? ($title_site ?? ($footerSettings->title ?? config('app.name')));
+    $socialLinks = array_filter([
+        [
+            'href' => $footerSettings->facebook ?? null,
+            'label' => 'Facebook',
+            'short' => 'FB',
+        ],
+        [
+            'href' => $footerSettings->instagram ?? null,
+            'label' => 'Instagram',
+            'short' => 'IG',
+        ],
+        [
+            'href' => $footerSettings->twitter ?? null,
+            'label' => 'X',
+            'short' => 'X',
+        ],
+    ], fn ($link) => ! empty($link['href']));
 ?>
 <table class="footer-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
@@ -16,38 +33,40 @@
                                             width="210">
                                     </a>
 
-                                    <ul class="social-row">
-                                        <li>
-                                            <a class="social-box" href="{{ App\Models\AdminSettings::value('facebook') }}"
-                                                target="_blank" rel="noopener">
-                                                <img src="{{ asset('img/facebook-square-white-bordered.png') }}"
-                                                    alt="Facebook" width="18">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-box" href="{{ App\Models\AdminSettings::value('instagram') }}"
-                                                target="_blank" rel="noopener">
-                                                <img src="{{ asset('img/instagram-square-white-bordered.png') }}"
-                                                    alt="Instagram" width="18">
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="social-box" href="{{ App\Models\AdminSettings::value('twitter') }}"
-                                                target="_blank" rel="noopener">
-                                                <img src="{{ asset('img/x-square-white-bordered.png') }}"
-                                                    alt="X" width="18">
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    @if ($socialLinks)
+                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0"
+                                            style="margin-top: 18px;">
+                                            <tr>
+                                                @foreach ($socialLinks as $socialLink)
+                                                    <td style="padding-right: 10px;">
+                                                        <table role="presentation" cellpadding="0" cellspacing="0"
+                                                            border="0">
+                                                            <tr>
+                                                                <td width="38" height="38" align="center"
+                                                                    valign="middle"
+                                                                    style="width: 38px; height: 38px; border: 1px solid #ffffff; text-align: center; vertical-align: middle;">
+                                                                    <a href="{{ $socialLink['href'] }}" target="_blank"
+                                                                        rel="noopener"
+                                                                        style="display: block; width: 38px; line-height: 38px; color: #ffffff; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-align: center; text-decoration: none; text-transform: uppercase; mso-line-height-rule: exactly;">
+                                                                        {{ $socialLink['short'] }}
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        </table>
+                                    @endif
                                 </td>
                                 <td class="footer-text-cell">
                                     <p class="footer-about">
-                                        {{ __('emails.footer_about', ['title' => $footerTitle]) }}
+                                        {{ trans('emails.footer_about', ['title' => $footerTitle], 'en') }}
                                     </p>
 
                                     <p class="copyright">
-                                        &copy; {{ date('Y') }} {{ $footerTitle }}, {{ __('emails.rights_reserved') }}<br>
-                                        {{ __('emails.company_address') }}
+                                        &copy; {{ date('Y') }} {{ $footerTitle }}, {{ trans('emails.rights_reserved', [], 'en') }}<br>
+                                        {{ trans('emails.company_address', [], 'en') }}
                                     </p>
                                 </td>
                             </tr>

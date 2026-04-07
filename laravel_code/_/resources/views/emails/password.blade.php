@@ -279,7 +279,7 @@
                 <table class="header-shell" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="header-copy">
-                            {{ __('emails.brand_tagline') }}
+                            {{ trans('emails.brand_tagline', [], 'en') }}
                         </td>
                     </tr>
                     <tr>
@@ -302,19 +302,19 @@
                                                 class="avatar">
                                         </div>
 
-                                        <h1 class="title">{{ trans('auth.password_reset_2') }}</h1>
+                                        <h1 class="title">{{ trans('auth.password_reset_2', [], 'en') }}</h1>
 
-                                        <p class="description">{{ trans('auth.password_reset_mail') }}</p>
+                                        <p class="description">{{ trans('auth.password_reset_mail', [], 'en') }}</p>
 
                                         <div class="action-wrap">
                                             <a href="{{ url('password/reset', $token) }}" class="button" target="_blank" rel="noopener">
-                                                {{ trans('auth.password_reset_2') }}
+                                                {{ trans('auth.password_reset_2', [], 'en') }}
                                             </a>
                                         </div>
 
                                         <div class="subcopy-wrap">
                                             <div class="subcopy">
-                                                <p>{{ __('emails.password_reset_msg_3') }}</p>
+                                                <p>{{ trans('emails.password_reset_msg_3', [], 'en') }}</p>
                                                 <p>
                                                     <a href="{{ url('password/reset', $token) }}" target="_blank" rel="noopener">
                                                         {{ url('password/reset', $token) }}

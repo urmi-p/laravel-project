@@ -44,19 +44,19 @@ class PayPerViewReceived extends Notification implements ShouldQueue
     {
       switch ($this->data['type']) {
         case 'post':
-          $subject = '@'.$this->data['buyer'] . ' ' . trans('general.has_bought_your_content'). ' "'.str_limit($this->data['content'], 50, '...').'"';
+          $subject = '@'.$this->data['buyer'] . ' ' . trans('general.has_bought_your_content', [], 'en'). ' "'.str_limit($this->data['content'], 50, '...').'"';
           break;
 
         case 'message':
-          $subject = '@'.$this->data['buyer'] . ' ' . trans('general.has_bought_your_message'). ' "'.str_limit($this->data['content'], 50, '...').'"';
+          $subject = '@'.$this->data['buyer'] . ' ' . trans('general.has_bought_your_message', [], 'en'). ' "'.str_limit($this->data['content'], 50, '...').'"';
           break;
       }
 
        return (new MailMessage)
                    ->subject($subject)
-                   ->greeting(trans('emails.hello') .' '.$notifiable->name)
+                   ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
                    ->line($subject)
-                   ->action(trans('general.go_payments_received'), url('my/payments/received'));
+                   ->action(trans('general.go_payments_received', [], 'en'), url('my/payments/received'));
     }
 
     /**
