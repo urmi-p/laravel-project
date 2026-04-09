@@ -6,6 +6,12 @@
 
 @section('css')
 <style>
+@media (min-width: 992px) {
+    .section-sm.creator .creators-page-container {
+        padding-left: calc(var(--bs-gutter-x, 2.0625rem) * 0.5) !important;
+    }
+}
+
 @media (max-width: 991px) {
     .section-sm.creator .menu-left-home {
         background: transparent !important;
@@ -65,7 +71,7 @@
 
     @include('includes.header-mobile')
 
-    <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
+    <div class="container-fluid pt-lg-5 pt-2 px-lg-5 creators-page-container">
         <div class="row app-main-row">
             <div class="col-md-3 mb-4 menu-left-home side_bar_box_shadow">
                 @if (!$settings->disable_creators_section)
