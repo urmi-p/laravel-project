@@ -255,11 +255,16 @@
 
                     </a>
                 @else
-                    <a href="javascript:void(0);" class="btn btn-primary disabled w-100">
-
-                        {{ __('general.subscription_not_available') }}
-
-                    </a>
+                    @guest
+                        <a href="{{ url('login') }}" data-toggle="modal" data-target="#loginFormModal"
+                            class="btn btn-primary w-100">
+                            {{ __('general.sign_in_or_sign_up') }}
+                        </a>
+                    @else
+                        <a href="javascript:void(0);" class="btn btn-primary disabled w-100">
+                            {{ __('general.subscription_not_available') }}
+                        </a>
+                    @endguest
                 @endif
 
                 <ul class="list-inline mt-3">
