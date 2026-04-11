@@ -258,6 +258,7 @@ class RegisterController extends Controller
       }
 
       $this->guard()->login($user);
+      session()->flash('show_age_verification_after_register', true);
 
       return response()->json([
         'success' => true,

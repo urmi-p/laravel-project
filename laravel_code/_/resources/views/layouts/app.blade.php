@@ -78,7 +78,7 @@
     </div>
   @endif
 
-  @if (auth()->guest() && $settings->age_verification_status && $settings->show_modal_age_verification && !request()->is(['login', 'signup', 'password/reset*']))
+  @if (auth()->check() && session('show_age_verification_after_register') && $settings->age_verification_status && $settings->show_modal_age_verification)
     <div class="modal fade" tabindex="-1" id="alertAgeVerification">
       <div class="modal-dialog">
         <div class="modal-content text-center">
@@ -90,11 +90,9 @@
             <p>{{ __('general.alert_age_verification') }}</p>
           </div>
           <div class="modal-footer border-0 pt-0 pb-4 justify-content-center">
-            <button type="button"
-              data-toggle="modal" data-target="#loginFormModal"
-              class="btn btn-primary toggleRegister">
+            <a href="{{ route('verify.age') }}" class="btn btn-primary">
             {{__('general.start_age_verification')}}
-          </button>
+          </a>
           </div>
         </div>
       </div>

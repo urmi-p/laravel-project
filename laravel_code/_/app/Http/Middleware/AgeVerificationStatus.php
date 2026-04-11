@@ -20,6 +20,7 @@ class AgeVerificationStatus
             && config('settings.age_verification_status')
             && $request->user()->age_verification !== 1
             && $request->user()->role != 'admin'
+            && !session('show_age_verification_after_register')
             && $request->route()->getName() != 'verify.age'
             && $request->route()->getName() != 'age.start'
             && $request->route()->getName() != 'age.verification.result'

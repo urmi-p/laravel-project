@@ -312,7 +312,7 @@ $(function() {
 @endauth
 </script>
 
-@if (auth()->guest() && $settings->age_verification_status && $settings->show_modal_age_verification && !request()->is(['login', 'signup', 'password/reset*']))
+@if (auth()->check() && session('show_age_verification_after_register') && $settings->age_verification_status && $settings->show_modal_age_verification)
 <script>
 	$('#alertAgeVerification').modal({
 		backdrop: 'static',
