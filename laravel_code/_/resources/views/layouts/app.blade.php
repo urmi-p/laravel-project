@@ -78,7 +78,7 @@
     </div>
   @endif
 
-  @if (auth()->check() && session('show_age_verification_after_register') && $settings->age_verification_status && $settings->show_modal_age_verification)
+  @if (auth()->check() && !request()->is('guest/auth') && session('show_age_verification_after_register') && $settings->age_verification_status && $settings->show_modal_age_verification)
     <div class="modal fade" tabindex="-1" id="alertAgeVerification">
       <div class="modal-dialog">
         <div class="modal-content text-center">

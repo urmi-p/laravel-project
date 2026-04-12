@@ -107,7 +107,7 @@ class RegisterController extends Controller
   public function showRegistrationForm()
   {
     if ($this->settings->registration_active == '1') {
-      return view('auth.register');
+      return redirect()->route('guest.auth');
     } else {
       return redirect('/');
     }

@@ -49,7 +49,7 @@ class LoginController extends Controller
    */
   public function showLoginForm()
   {
-    return view('auth.login');
+    return redirect()->route('guest.auth');
   }
 
   public function login(Request $request)
