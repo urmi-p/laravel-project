@@ -403,7 +403,7 @@
                                     </a>
                                 </div>
                             </li>
-                            @if (auth()->user()->verified_id == 'yes')
+                            {{-- @if (auth()->user()->verified_id == 'yes')
                                 <li class="sidebar-card d-md-none">
                                     <div class="card-icon">
                                         <i class="fas fa-dollar-sign"></i>
@@ -413,8 +413,18 @@
                                         <strong>{{ Helper::amountFormatDecimal(auth()->user()->myPaymentsReceived()->sum('earning_net_user')) }}</strong>
                                     </div>
                                 </li>
+                            @endif --}}
+                            @if (auth()->user()->verified_id == 'yes')
+                                <li class="sidebar-card d-md-none">
+                                    <div class="card-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <small>{{__('general.balance')}}</small>
+                                        <strong>{{ Helper::amountFormatDecimal(auth()->user()->balance) }}</strong>
+                                    </div>
+                                </li>
                             @endif
-
                             {{-- WALLET BALANCE --}}
                             <li class="sidebar-card d-md-none">
                                 <div class="card-icon">
