@@ -1456,11 +1456,16 @@
                         </div>
 
                     @endif
-                    {{-- @if (auth()->check() && auth()->id() == $user->id && request()->path() == $user->username && auth()->user()->verified_id != 'reject')
+                    @if (
+                        auth()->check()
+                        && auth()->id() == $user->id
+                        && (request()->is($user->username) || request()->is('profile/' . $user->username))
+                        && auth()->user()->verified_id != 'reject'
+                    )
 
                         @include('includes.form-post')
 
-                    @endif --}}
+                    @endif
 
                         <!-- for test start -->
                         <!-- <div class="my-5 text-center no-updates main-no-updates">
