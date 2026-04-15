@@ -935,13 +935,9 @@ class UserController extends Controller
     $id    = auth()->id();
     $input['is_admin'] = auth()->user()->permissions;
     $input['is_creator'] = auth()->user()->verified_id == 'yes' ? 0 : 1;
-    $input['is_birthdateChanged'] = auth()->user()->birthdate_changed == 'no' ? 0 : 1;
-
     $messages = array(
       "letters" => __('validation.letters'),
       "email.required_if" => __('validation.required'),
-      "birthdate.before" => __('general.error_adult'),
-      "birthdate.required_if" => __('validation.required'),
       "story.required_if" => __('validation.required'),
     );
 
@@ -981,7 +977,7 @@ class UserController extends Controller
       'address' => 'max:100',
       'zip' => 'max:20',
       'profession'  => 'min:6|max:100|string',
-      'birthdate' => 'required_if:is_birthdateChanged,==,0|date_format:' . Helper::formatDatepicker() . '|before:' . Carbon::now()->subYears(18),
+      'birthdate' => 'nullable|date_format:' . Helper::formatDatepicker() . '|before:' . Carbon::now()->subYears(18),
     ], $messages);
 
     if ($validator->fails()) {
@@ -1026,8 +1022,13 @@ class UserController extends Controller
     $user->kick            = trim($this->request->kick) ?? '';
     $user->plan            = 'user_' . auth()->id();
     $user->gender          = $this->request->gender;
-    $user->birthdate       = auth()->user()->birthdate_changed == 'no' ? Carbon::createFromFormat(Helper::formatDatepicker(), $this->request->birthdate)->format('m/d/Y') : auth()->user()->birthdate;
-    $user->birthdate_changed = 'yes';
+    if (
+      auth()->user()->birthdate_changed == 'no'
+      && filled($this->request->birthdate)
+    ) {
+      $user->birthdate = Carbon::createFromFormat(Helper::formatDatepicker(), $this->request->birthdate)->format('m/d/Y');
+      $user->birthdate_changed = 'yes';
+    }
     $user->language      = $this->request->language;
     $user->hide_name     = $this->request->hide_name ?? 'no';
     $user->save();

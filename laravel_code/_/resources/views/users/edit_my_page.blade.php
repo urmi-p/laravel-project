@@ -223,10 +223,10 @@
                                     {{-- <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
                                 </div> --}}
-                                    <label>{{ trans('general.birthdate') }} *</label>
+                                    <label>{{ trans('general.birthdate') }}</label>
                                     <div class="input-group mb-2 input-group-sub">
                                         <input class="form-control datepicker light_mode_form" @if (auth()->user()->birthdate_changed == 'yes') disabled @endif
-                                            name="birthdate" placeholder="{{ trans('general.birthdate') }} *"
+                                            name="birthdate" placeholder="{{ trans('general.birthdate') }}"
                                             value="{{ auth()->user()->birthdate ?? date(Helper::formatDatepicker(), strtotime(auth()->user()->birthdate)) }}"
                                             autocomplete="off" type="text">
                                     </div>
@@ -317,10 +317,10 @@
                                     {{-- <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-globe"></i></span>
                                     </div> --}}
-                                    <label>{{ trans('general.country') }}</label>
+                                    <label>{{ trans('general.country') }} *</label>
                                     <div class="input-group mb-2 input-group-sub">
                                         <select name="countries_id" class="form-control custom-select light_mode_form">
-                                            <option value="">{{ trans('general.select_your_country') }} *</option>
+                                            <option value="">{{ trans('general.select_your_country') }}</option>
                                             @foreach (Countries::orderBy('country_name')->get() as $country)
                                                 <option @if (auth()->user()->countries_id == $country->id) selected="selected" @endif
                                                     value="{{ $country->id }}">{{ $country->country_name }}</option>

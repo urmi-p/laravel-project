@@ -39,11 +39,17 @@
             .main_head_search > .d-md-none > .btn_mobile_nav .wallet-icon,
             .main_head_search > .d-md-none > a.btn_mobile_nav .wallet-icon,
             .main_head_search > .d-md-none > a.btn-mobile-nav .wallet-icon {
-                width: 22px;
-                height: 22px;
+                /* width: 14px; */
+                /* height: 14px; */
                 display: block;
                 margin: 0 auto;
-                transform: translateY(1px);
+                transform: translateY(1px) scale(1.3);
+                transform-origin: center;
+            }
+            .main_head_search > .d-md-none > .btn_mobile_nav .wallet-icon path,
+            .main_head_search > .d-md-none > a.btn_mobile_nav .wallet-icon path,
+            .main_head_search > .d-md-none > a.btn-mobile-nav .wallet-icon path {
+                stroke-width: 1.6;
             }
         }
 
@@ -160,7 +166,7 @@
                                         data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                                     @endif
                                     aria-controls="navbarCollapse" aria-expanded="false" role="button">
-                                    <svg class="wallet-icon" width="18" height="18" viewBox="0 0 18 18"
+                                    <svg class="wallet-icon" width="35" height="35" viewBox="0 0 18 18"
                                         fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path
                                             d="M11.625 4.875C11.0967 4.49589 10.4629 4.29199 9.81262 4.29199C8.08312 4.29199 6.57597 5.73303 6.07422 7.5C5.95853 7.90756 5.95853 8.34244 6.07422 8.75C6.57597 10.517 8.08312 11.958 9.81262 11.958C10.4629 11.958 11.0967 11.7541 11.625 11.375"

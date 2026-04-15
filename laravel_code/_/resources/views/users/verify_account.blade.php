@@ -42,9 +42,7 @@
             && $settings->account_verification
             )
 
-            @if (auth()->user()->countries_id != ''
-                && auth()->user()->birthdate != ''
-              )
+            @if (auth()->user()->countries_id != '')
 
           <div class="alert alert-warning mr-1">
           <span class="alert-inner--text"><i class="fa fa-exclamation-triangle"></i> {{__('general.warning_verification_info')}}</span>
@@ -148,11 +146,6 @@
             </li>
             @endif
 
-            @if (auth()->user()->birthdate == '')
-            <li>
-              <i class="far fa-times-circle"></i> {{ __('general.set_birthdate') }} <a href="{{ url('settings/page') }}" class="text-white link-border">{{ __('admin.edit') }} <i class="feather icon-arrow-right"></i></a>
-            </li>
-          @endif
           </ul>
         </div>
 
