@@ -22,6 +22,9 @@ class Language
       // 3) Admin default locale
       if (auth()->check() && auth()->user()->language != '') {
         $locale = auth()->user()->language;
+        // Keep session locale in sync so Helpers/controllers using session('locale')
+        // resolve translated content (like custom pages in footer) correctly.
+        Session::put('locale', $locale);
       } elseif (Session::has('locale') && session('locale') != '') {
         $locale = session('locale');
       } else {

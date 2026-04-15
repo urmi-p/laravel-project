@@ -1,41 +1,27 @@
 <!-- FOOTER -->
 
 <footer class="py-3 link-footer footer-bg text-center">
-	
-		<div class="col-md-12 text-center">
-
-				<a href="{{url('/')}}">
-
-					<img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="max-w-125">
-
-				</a>
-
-
-
-			</div>
-		<div class="row">
-
-			@auth
-
-			<div class="d-lg-none d-block pb-5 mb-2 w-100">
-				@include('includes.footer-tiny')
-			</div>
-			@endauth
-
-
-			<div class="col-md-12 copyright @auth d-none d-lg-block @endauth">
-
-				&copy; {{date('Y')}} {{$settings->title}}, {{__('emails.rights_reserved')}}
-				@if ($settings->show_address_company_footer)
-				<small class="ml-2">
-					{{ $settings->company }} - {{ __('general.address') }}: {{ $settings->address }} {{ $settings->city }} {{ $settings->country }}
-				</small>
-				@endif
-
-			</div>
-
+	<div class="col-md-12 text-center">
+		<a href="{{url('/')}}">
+			<img src="{{url('img', $settings->logo)}}" alt="{{$settings->title}}" class="max-w-125">
+		</a>
+	</div>
+	<div class="row">
+		@auth
+		<div class="d-lg-none d-block pb-5 mb-2 w-100">
+			@include('includes.footer-tiny')
 		</div>
-	
+		@endauth
+
+		<div class="col-md-12 copyright @auth d-none d-lg-block @endauth">
+			&copy; {{date('Y')}} {{$settings->title}}, {{__('emails.rights_reserved')}}
+			@if ($settings->show_address_company_footer)
+			<small class="ml-2">
+				{{ $settings->company }} - {{ __('general.address') }}: {{ $settings->address }} {{ $settings->city }} {{ $settings->country }}
+			</small>
+			@endif
+		</div>
+	</div>
 </footer>
 <div class="py-4 footer-bg @auth d-none d-lg-block @endauth">
 	<footer class="">

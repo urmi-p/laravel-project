@@ -55,7 +55,9 @@ class HomeController extends Controller
 
     // Home Guest
     if (auth()->guest()) {
-      return view('landing_page');
+      return view('landing_page', [
+        'settings' => $this->settings
+      ]);
     } else {
 
       $users = $this->userExplore();
@@ -831,4 +833,3 @@ class HomeController extends Controller
     }
   }
 }
-

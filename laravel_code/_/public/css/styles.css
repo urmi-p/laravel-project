@@ -8625,7 +8625,6 @@ html[data-bs-theme="light"] .edit-post-middle {
 
     .app-auth-shell main[role="main"] .section.section-sm > .container-fluid {
         width: 100%;
-        max-width: var(--app-mobile-frame);
         margin-left: auto;
         margin-right: auto;
         padding-left: var(--app-mobile-gutter) !important;
