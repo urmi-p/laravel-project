@@ -8252,7 +8252,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
     }
 
     .app-auth-shell .menuMobile {
-        padding-bottom: env(safe-area-inset-bottom, 0);
+        /* padding-bottom: env(safe-area-inset-bottom, 0); */
         left: 0;
         right: 0;
         bottom: 0;
@@ -8261,23 +8261,22 @@ html[data-bs-theme="dark"] .app-auth-shell {
         margin-inline: 0;
         border-radius: 0;
         border: 0;
-        background: #191919 !important;
+        background: #000000 !important;
         box-shadow: none;
         overflow: hidden;
-        min-height: calc(5.5rem + env(safe-area-inset-bottom, 0)); /* 88px + device inset */
     }
 
-    .app-auth-shell .menuMobile::after {
+    /* .app-auth-shell .menuMobile::after {
         content: "";
         position: absolute;
         left: 50%;
         bottom: calc(0.5rem + env(safe-area-inset-bottom, 0));
         transform: translateX(-50%);
-        width: 8.4375rem; /* 135px */
-        height: 0.3125rem; /* 5px */
+        width: 8.4375rem; 
+        height: 0.3125rem; 
         background: #b9c0c9;
         border-radius: 6.25rem;
-    }
+    } */
 
     .app-auth-shell .menuMobile .list-inline {
         /* width: min(100%, var(--app-mobile-frame)); */
