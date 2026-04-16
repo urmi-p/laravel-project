@@ -2806,7 +2806,7 @@ class AdminController extends Controller
 
 					array(
 
-						'body' => __('general.body_account_verification_approved'),
+						'body' => __('general.body_account_verification_approved', [], 'en'),
 
 						'title_site' => $titleSite,
 
@@ -2820,7 +2820,7 @@ class AdminController extends Controller
 
 							->to($emailUser, $fullNameUser)
 
-							->subject(__('general.account_verification_approved') . ' - ' . $titleSite);
+							->subject(__('general.account_verification_approved', [], 'en') . ' - ' . $titleSite);
 
 					}
 
@@ -2892,7 +2892,7 @@ class AdminController extends Controller
 
 					array(
 
-						'body' => __('general.body_account_verification_reject'),
+						'body' => __('general.body_account_verification_reject', [], 'en'),
 
 						'title_site' => $titleSite,
 
@@ -2906,7 +2906,7 @@ class AdminController extends Controller
 
 							->to($emailUser, $fullNameUser)
 
-							->subject(__('general.account_verification_not_approved') . ' - ' . $titleSite);
+							->subject(__('general.account_verification_not_approved', [], 'en') . ' - ' . $titleSite);
 
 					}
 
@@ -3504,7 +3504,7 @@ class AdminController extends Controller
 
 				$message->from($_email_noreply, $_title_site);
 
-				$message->subject(__('users.title_email_verify'));
+				$message->subject(__('users.title_email_verify', [], 'en'));
 
 				$message->to($_email_user, $_username);
 
@@ -3594,7 +3594,7 @@ class AdminController extends Controller
 
 			[
 
-				'body' => __('general.info_transfer_verified', ['amount' => Helper::amountFormat($sql->amount)]),
+				'body' => __('general.info_transfer_verified', ['amount' => Helper::amountFormat($sql->amount)], 'en'),
 
 				'type' => 'approve',
 
@@ -3610,7 +3610,7 @@ class AdminController extends Controller
 
 					->to($emailUser, $fullNameUser)
 
-					->subject(__('general.transfer_verified') . ' - ' . $titleSite);
+					->subject(__('general.transfer_verified', [], 'en') . ' - ' . $titleSite);
 
 			}
 
@@ -3672,7 +3672,7 @@ class AdminController extends Controller
 
 				array(
 
-					'body' => __('general.info_transfer_not_verified', ['amount' => Helper::amountFormat($sql->amount)]),
+					'body' => __('general.info_transfer_not_verified', ['amount' => Helper::amountFormat($sql->amount)], 'en'),
 
 					'type' => 'not_approve',
 
@@ -3688,7 +3688,7 @@ class AdminController extends Controller
 
 						->to($emailUser, $fullNameUser)
 
-						->subject(__('general.transfer_not_verified') . ' - ' . $titleSite);
+						->subject(__('general.transfer_not_verified', [], 'en') . ' - ' . $titleSite);
 
 				}
 

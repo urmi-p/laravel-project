@@ -199,7 +199,7 @@ class RegisterController extends Controller
             $_email_noreply
           ) {
             $message->from($_email_noreply, $_title_site);
-            $message->subject(trans('users.title_email_verify'));
+            $message->subject(trans('users.title_email_verify', [], 'en'));
             $message->to($_email_user, $_username);
           }
         );

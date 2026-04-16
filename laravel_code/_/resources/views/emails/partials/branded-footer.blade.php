@@ -5,17 +5,17 @@
         [
             'href' => $footerSettings->facebook ?? null,
             'label' => 'Facebook',
-            'short' => 'FB',
+            'icon' => asset('img/facebook-square-white-bordered.png'),
         ],
         [
             'href' => $footerSettings->instagram ?? null,
             'label' => 'Instagram',
-            'short' => 'IG',
+            'icon' => asset('img/instagram-square-white-bordered.png'),
         ],
         [
             'href' => $footerSettings->twitter ?? null,
             'label' => 'X',
-            'short' => 'X',
+            'icon' => asset('img/x-square-white-bordered.png'),
         ],
     ], fn ($link) => ! empty($link['href']));
 ?>
@@ -39,20 +39,14 @@
                                             <tr>
                                                 @foreach ($socialLinks as $socialLink)
                                                     <td style="padding-right: 10px;">
-                                                        <table role="presentation" cellpadding="0" cellspacing="0"
-                                                            border="0">
-                                                            <tr>
-                                                                <td width="38" height="38" align="center"
-                                                                    valign="middle"
-                                                                    style="width: 38px; height: 38px; border: 1px solid #ffffff; text-align: center; vertical-align: middle;">
-                                                                    <a href="{{ $socialLink['href'] }}" target="_blank"
-                                                                        rel="noopener"
-                                                                        style="display: block; width: 38px; line-height: 38px; color: #ffffff; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-align: center; text-decoration: none; text-transform: uppercase; mso-line-height-rule: exactly;">
-                                                                        {{ $socialLink['short'] }}
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        <a href="{{ $socialLink['href'] }}" target="_blank"
+                                                            rel="noopener"
+                                                            style="display: inline-block; text-decoration: none;">
+                                                            <img src="{{ $socialLink['icon'] }}"
+                                                                alt="{{ $socialLink['label'] }}" width="38"
+                                                                height="38"
+                                                                style="display: block; width: 38px; height: 38px;">
+                                                        </a>
                                                     </td>
                                                 @endforeach
                                             </tr>

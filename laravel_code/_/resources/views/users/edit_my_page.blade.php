@@ -16,6 +16,12 @@
       color: #5f5f5f;
     }
 
+    @media (min-width: 992px) {
+        .edit-profile-submit-wrap {
+            margin-bottom: 2rem;
+        }
+    }
+
     /* category multiselect css */
 
     [data-bs-theme="dark"] .select2-container--default .select2-selection--multiple {
@@ -590,9 +596,11 @@
                             </ul>
                         </div><!-- Alert -->
 
-                        <button class="btn btn-1 btn-success btn-block"
-                            data-msg-success="{{ trans('admin.success_update') }}" id="saveChangesEditPage"
-                            type="submit"><i></i> {{ trans('general.save_changes') }}</button>
+                        <div class="edit-profile-submit-wrap">
+                            <button class="btn btn-1 btn-success btn-block"
+                                data-msg-success="{{ trans('admin.success_update') }}" id="saveChangesEditPage"
+                                type="submit"><i></i> {{ trans('general.save_changes') }}</button>
+                        </div>
                     </form>
                 </div><!-- end col-md-6 -->
             </div>
