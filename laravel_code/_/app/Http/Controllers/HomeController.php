@@ -581,7 +581,7 @@ class HomeController extends Controller
           $subject
         ) {
           $message->from($email_reply, $fullname);
-          $message->subject(__('general.message') . ' - ' . $subject . ' - ' . $email_user);
+          $message->subject(__('general.message', [], 'en') . ' - ' . $subject . ' - ' . $email_user);
           $message->to($email_reply, $title_site);
           $message->replyTo($email_user);
         }

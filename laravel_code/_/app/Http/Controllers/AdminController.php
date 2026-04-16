@@ -1510,7 +1510,7 @@ class AdminController extends Controller
 
 					->to($_emailUser, $fullNameUser)
 
-					->subject(__('general.withdrawal_reject') . ' - ' . $titleSite);
+					->subject(__('general.withdrawal_processed', [], 'en') . ' - ' . $titleSite);
 
 			}
 
@@ -5213,7 +5213,7 @@ class AdminController extends Controller
 
 						->to($emailUser)
 
-						->subject(__('general.withdrawal_reject') . ' - ' . $titleSite);
+						->subject(__('general.withdrawal_reject', [], 'en') . ' - ' . $titleSite);
 
 				}
 

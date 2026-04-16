@@ -49,7 +49,7 @@ class Subscriptions extends Model
 		$sender       = config('settings.email_no_reply');
 		$emailUser    = $user->email;
 		$fullNameUser = $user->name;
-		$subject      = $subscriber . ' ' . __('users.has_subscribed');
+		$subject      = $subscriber . ' ' . __('users.has_subscribed', [], 'en');
 
 		try {
 			if ($user->email_new_subscriber == 'yes') {
