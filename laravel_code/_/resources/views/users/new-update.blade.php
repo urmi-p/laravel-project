@@ -1032,10 +1032,6 @@
                                                     <span class="rounded-circle position-relative">
                                                         <a
                                                             href="{{ $creatorLive ? url('live', auth()->user()->username) : url('profile', auth()->user()->username) }}">
-                                                            @if (auth()->check() && $creatorLive)
-                                                                <span
-                                                                    class="live-span">{{ __('general.live') }}</span>
-                                                            @endif
                                                             <img src="{{ Helper::getFile(config('path.avatar') . auth()->user()->avatar) }}"
                                                                 alt="{{ auth()->user()->hide_name == 'yes' ? auth()->user()->username : auth()->user()->name }}"
                                                                 class="rounded-circle avatarUser" width="60"
@@ -1044,19 +1040,25 @@
                                                     </span>
                                                 </div>
                                                 <div class="action_user_info">
-                                                    <strong>
-                                                        <a href="{{ url('profile', auth()->user()->username) }}">
-                                                            {{ auth()->user()->hide_name == 'yes' ? auth()->user()->username : auth()->user()->name }}
-                                                        </a>
-                                                    </strong>
+                                                    <div class="action_user_heading">
+                                                        <strong>
+                                                            <a href="{{ url('profile', auth()->user()->username) }}">
+                                                                {{ auth()->user()->hide_name == 'yes' ? auth()->user()->username : auth()->user()->name }}
+                                                            </a>
+                                                        </strong>
 
-                                                    @if (auth()->user()->verified_id == 'yes')
-                                                        <small class="verified mt-2"
-                                                            title="{{ __('general.verified_account') }}"
-                                                            data-toggle="tooltip" data-placement="top">
-                                                            <i class="bi bi-patch-check-fill"></i>
-                                                        </small>
-                                                    @endif
+                                                        @if (auth()->check() && $creatorLive)
+                                                            <span class="live-span live-span-inline">{{ __('general.live') }}</span>
+                                                        @endif
+
+                                                        @if (auth()->user()->verified_id == 'yes')
+                                                            <small class="verified"
+                                                                title="{{ __('general.verified_account') }}"
+                                                                data-toggle="tooltip" data-placement="top">
+                                                                <i class="bi bi-patch-check-fill"></i>
+                                                            </small>
+                                                        @endif
+                                                    </div>
                                                     <span>
                                                         <small class="text-muted font-14 mt-2">{{ '@' . auth()->user()->username }}</small>
                                                     </span>

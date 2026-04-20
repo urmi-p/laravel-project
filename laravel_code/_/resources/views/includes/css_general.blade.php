@@ -4607,6 +4607,62 @@ a:hover.choose-type-sale {
 
 }
 
+.action_user_info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.action_user_heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.action_user_info strong {
+  min-width: 0;
+}
+
+.action_user_info strong a {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.action_user_info .verified {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0 !important;
+}
+
+.action_user_info span {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.action_user_info span small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.live-span.live-span-inline {
+  position: static;
+  margin: 0;
+  width: auto;
+  min-width: 39px;
+  padding: 0 6px;
+  line-height: 17px;
+}
+
 .text-story-preview {
 
     color: #fff;

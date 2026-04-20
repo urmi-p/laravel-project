@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title'){{__('general.messages')}} -@endsection
+@section('body_class', 'messages-detail-page')
 
 @section('css')
   <script type="text/javascript">
@@ -58,16 +59,51 @@
       margin-left: auto;
     }
     @media (max-width: 767.98px) {
+      body.messages-detail-page.app-auth-shell {
+        overflow-x: hidden;
+      }
+      body.messages-detail-page.app-auth-shell .app-footer-shell {
+        display: none !important;
+      }
+      body.messages-detail-page.app-auth-shell main[role="main"] {
+        height: calc(100dvh - 6.5rem);
+        min-height: calc(100dvh - 6.5rem);
+        padding-bottom: 0 !important;
+        overflow: hidden;
+      }
+      body.messages-detail-page.app-auth-shell .messages-chat-page.section-sm {
+        height: 100% !important;
+        min-height: 100% !important;
+        margin-bottom: 0 !important;
+        padding-bottom: calc(5.5rem + 0.75rem) !important;
+        overflow: hidden !important;
+      }
       .messages-chat-page .messageDiv {
         padding: 14px !important;
         gap: 14px !important;
         margin-right: 0 !important;
         margin-bottom: 0 !important;
         border-radius: 18px !important;
+        display: flex !important;
+        flex-direction: column;
+        height: 100% !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+      }
+      .messages-chat-page > .container-fluid,
+      .messages-chat-page > .container-fluid > .row.justify-content-center.h-100,
+      .messages-chat-page .messages-middle-col {
+        height: 100% !important;
+        min-height: 0 !important;
       }
       .messages-chat-page .container-msg {
         padding-left: 0 !important;
         padding-right: 0 !important;
+        flex: 1 1 auto;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch;
       }
       .messages-chat-page .chatlist {
         padding-top: .35rem !important;
@@ -121,6 +157,10 @@
         word-break: break-word;
         overflow-wrap: anywhere;
         padding-right: 40px;
+      }
+      .messages-chat-page .card-header,
+      .messages-chat-page .card-footer {
+        flex: 0 0 auto;
       }
     }
   </style>

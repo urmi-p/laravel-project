@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('body_class', 'shop-add-product-page')
+
 
 
 @section('title') {{ __('general.add_product') }} -@endsection
@@ -169,4 +171,3 @@
   <script src="{{ asset('js/shop.js') }}"></script>
 
 @endsection
-

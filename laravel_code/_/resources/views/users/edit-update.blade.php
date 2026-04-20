@@ -268,10 +268,6 @@
                                                         <span class="rounded-circle position-relative">
                                                             <a
                                                                 href="{{ $creatorLive ? url('live', $data->creator->username) : url('profile', $data->creator->username) }}">
-                                                                @if (auth()->check() && $creatorLive)
-                                                                    <span
-                                                                        class="live-span">{{ __('general.live') }}</span>
-                                                                @endif
                                                                 <img src="{{ Helper::getFile(config('path.avatar') . $data->creator->avatar) }}"
                                                                     alt="{{ $data->creator->hide_name == 'yes' ? $data->creator->username : $data->creator->name }}"
                                                                     class="rounded-circle avatarUser" width="60"
@@ -280,21 +276,27 @@
                                                         </span>
                                                     </div>
                                                     <div class="action_user_info">
-                                                        <strong><a href="{{ url($data->creator->username) }}">
+                                                        <div class="action_user_heading">
+                                                            <strong><a href="{{ url($data->creator->username) }}">
 
-                                                                {{ $data->creator->hide_name == 'yes' ? $data->creator->username : $data->creator->name }}
+                                                                    {{ $data->creator->hide_name == 'yes' ? $data->creator->username : $data->creator->name }}
 
-                                                            </a></strong>
+                                                                </a></strong>
 
-                                                        @if ($data->creator->verified_id == 'yes')
-                                                            <small class="verified mt-2"
-                                                                title="{{ __('general.verified_account') }}"
-                                                                data-toggle="tooltip" data-placement="top">
+                                                            @if (auth()->check() && $creatorLive)
+                                                                <span class="live-span live-span-inline">{{ __('general.live') }}</span>
+                                                            @endif
 
-                                                                <i class="bi bi-patch-check-fill"></i>
+                                                            @if ($data->creator->verified_id == 'yes')
+                                                                <small class="verified"
+                                                                    title="{{ __('general.verified_account') }}"
+                                                                    data-toggle="tooltip" data-placement="top">
 
-                                                            </small>
-                                                        @endif
+                                                                    <i class="bi bi-patch-check-fill"></i>
+
+                                                                </small>
+                                                            @endif
+                                                        </div>
                                                         <span>
                                                             <small
                                                                 class="text-muted font-14 mt-2">{{ '@' . $data->creator->username }}</small>

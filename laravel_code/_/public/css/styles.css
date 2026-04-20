@@ -8282,7 +8282,7 @@ html[data-bs-theme="dark"] .app-auth-shell {
         /* width: min(100%, var(--app-mobile-frame)); */
         margin: 0 auto;
         min-height: 3.625rem; /* 58px */
-        padding: 0.75rem 1rem 0.375rem;
+        padding: 0.75rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
         border-radius: 0;
         align-items: center;
     }
@@ -8628,6 +8628,10 @@ html[data-bs-theme="light"] .edit-post-middle {
         margin-right: auto;
         padding-left: var(--app-mobile-gutter) !important;
         padding-right: var(--app-mobile-gutter) !important;
+    }
+
+    .app-auth-shell.shop-add-product-page main[role="main"] .section.section-sm {
+        padding-bottom: 1rem !important;
     }
 
     .app-auth-shell main[role="main"] .section.section-sm .row {
@@ -9419,6 +9423,9 @@ html[data-bs-theme="light"] .app-auth-shell .page-item.active .page-link {
         padding-bottom: calc(
             5.5rem + var(--messages-mobile-footer-gap)
         ) !important;
+        min-height: calc(100dvh - 5.5rem) !important;
+        height: calc(100dvh - 5.5rem) !important;
+        overflow: hidden !important;
     }
 
     .messages-chat-page > .container-fluid {
@@ -9428,16 +9435,38 @@ html[data-bs-theme="light"] .app-auth-shell .page-item.active .page-link {
         margin-right: auto;
         padding-left: 1.25rem !important;
         padding-right: 1.25rem !important;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .messages-chat-page > .container-fluid > .row.justify-content-center.h-100,
+    .messages-chat-page .messages-middle-col {
+        min-height: 0 !important;
+        height: 100%;
     }
 
     .messages-chat-page .messages-middle-col .messageDiv {
-        min-height: calc(100vh - 11.5rem - var(--messages-mobile-footer-gap));
-        height: auto !important;
+        min-height: calc(100dvh - 11.5rem - var(--messages-mobile-footer-gap));
+        height: calc(100dvh - 11.5rem - var(--messages-mobile-footer-gap)) !important;
+        max-height: calc(100dvh - 11.5rem - var(--messages-mobile-footer-gap)) !important;
+        display: flex !important;
+        flex-direction: column;
+        gap: 14px !important;
+        overflow: hidden !important;
     }
 
     .messages-chat-page .messages-middle-col .messageDiv .container-msg {
+        flex: 1 1 auto;
         height: auto !important;
         min-height: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .messages-chat-page .messages-middle-col .messageDiv .card-header,
+    .messages-chat-page .messages-middle-col .messageDiv .card-footer {
+        flex: 0 0 auto;
     }
 }
 
