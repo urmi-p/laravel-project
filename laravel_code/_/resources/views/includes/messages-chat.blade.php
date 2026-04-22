@@ -114,7 +114,7 @@
     @endif
 
 @if ($msg->price == 0.00 || $msg->price != 0.00 && auth()->user()->checkPayPerViewMsg($msg->id))
-  <div class="@if ($mediaCount == 0) float-left @else wrapper-msg-right @endif message position-relative text-word-break @if ($mediaCount == 0 && $msg->tip == 'no' && !$msg->gift_id) else media-container @endif @if ($msg->format == 'zip') w-50 @else w-auto @endif rounded-bottom-left-0">
+  <div class="@if ($mediaCount == 0) float-left @else wrapper-msg-right @endif message position-relative text-word-break @if ($mediaCount != 0 || $msg->tip != 'no' || $msg->gift_id) media-container @endif @if ($msg->format == 'zip') w-50 @else w-auto @endif rounded-bottom-left-0">
         @include('includes.media-messages')
   </div>
   @endif

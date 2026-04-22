@@ -62,6 +62,10 @@
       body.messages-detail-page.app-auth-shell {
         overflow-x: hidden;
       }
+      .messages-chat-page .profile-desc,
+      .messages-chat-page .visit-profile-btn {
+        display: none !important;
+      }
       body.messages-detail-page.app-auth-shell .app-footer-shell {
         display: none !important;
       }
@@ -206,7 +210,7 @@
                       @endif
                     </h6>
                     <!-- Description line -->
-                    <p class="profile-desc">
+                    <p class="profile-desc d-none d-md-block">
                       {{ __('general.chat_with') }}
                       {{ $user->hide_name == 'yes' ? $user->username : $user->name }},
                       <span class="desc-break">
@@ -215,7 +219,7 @@
                     </p>
 
                     <!-- Visit Profile Button -->
-                    <a href="{{ url('profile',$user->username) }}" class="btn visit-profile-btn">
+                    <a href="{{ url('profile',$user->username) }}" class="btn visit-profile-btn d-none d-md-block">
                       {{__('general.visit_profile')}}
                     </a>
 

@@ -11767,3 +11767,38 @@ body.landing-page {
 .input-pl {
     padding-left: 12px !important;
 }
+
+@media (max-width: 575.98px) {
+  .landing-page .hero .hero-title.hero-title-mobile-lockup {
+    display: inline-block;
+    max-width: none;
+  }
+
+  .landing-page .hero .hero-title.hero-title-mobile-lockup .hero-title-line {
+    white-space: nowrap;
+  }
+
+  .landing-page .kp-title.kp-title-instant {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  .landing-page .kp-title.kp-title-instant .kp-title-instant-break {
+    display: none;
+  }
+
+  .landing-page .kp-title.kp-title-instant .kp-title-instant-part-2 {
+    margin-left: 0.35rem;
+  }
+
+  .landing-page .kp-title.kp-title-mobile-two-line .mobile-title-line,
+  .landing-page .hero-section .hero-title.hero-title-mobile-two-line .mobile-title-line {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .landing-page .hero-section .hero-title.hero-title-mobile-two-line {
+    display: inline-block;
+    max-width: none;
+  }
+}

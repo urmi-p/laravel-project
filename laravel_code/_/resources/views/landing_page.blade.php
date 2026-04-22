@@ -55,7 +55,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
 
-                    <h1 class="hero-title">
+                    <h1 class="hero-title hero-title-mobile-lockup">
                         <span class="hero-title-line hero-title-line-1">{{ __('general.landing_hero_title_line_1') }}</span>
                         <span class="hero-title-line hero-title-line-2">{{ __('general.landing_hero_title_line_2') }} <span class="hero-title-highlight">{{ __('general.landing_hero_title_highlight') }}</span></span>
                     </h1>
@@ -186,7 +186,9 @@
 
             <div class="landing-kp-col col-lg-6">
                 <div class="kp-card">
-                    <div class="kp-title">{{ __('general.landing_instant_profile_title_line_1') }}<br>{{ __('general.landing_instant_profile_title_line_2') }}</div>
+                    <div class="kp-title kp-title-instant">
+                        <span class="kp-title-instant-part">{{ __('general.landing_instant_profile_title_line_1') }}</span><br class="kp-title-instant-break"><span class="kp-title-instant-part kp-title-instant-part-2">{{ __('general.landing_instant_profile_title_line_2') }}</span>
+                    </div>
                     <div class="kp-text">
                         {{ __('general.landing_instant_profile_text') }}
                     </div>
@@ -204,8 +206,12 @@
 
             <div class="landing-kp-col col-lg-6">
                 <div class="kp-card">
-                <div class="kp-title">
-                    {{ __('general.discover_exclusive_content_title') }}
+                <div class="kp-title kp-title-mobile-two-line">
+                    @if (app()->getLocale() === 'en')
+                        <span class="mobile-title-line">Unlock exclusive content prenium 💥</span>
+                    @else
+                        {{ __('general.discover_exclusive_content_title') }}
+                    @endif
                 </div>
                 <div class="kp-text ">
                     {{ __('general.private_space_reserved_for_subscribers') }}
@@ -253,7 +259,13 @@ Step into a private space where your connection with creators reaches a whole ne
         <div class="row align-items-center">
             <!-- Left -->
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <h1 class="hero-title">{{ __('general.landing_creator_section_title') }}</h1>
+                <h1 class="hero-title hero-title-mobile-two-line">
+                    @if (app()->getLocale() === 'en')
+                        <span class="mobile-title-line">Enter a universe</span> <span class="mobile-title-line">built for connection</span>
+                    @else
+                        {{ __('general.landing_creator_section_title') }}
+                    @endif
+                </h1>
                 <p class="hero-text">
                 {{ __('general.landing_creator_section_text') }}
                 </p>
