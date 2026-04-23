@@ -19,7 +19,7 @@
 
 
 
-  @section('css')
+  @section('social_meta')
 
 
 
@@ -43,11 +43,11 @@
 
   <!-- Og Meta Tags -->
 
-  <link rel="canonical" href="{{url($user->username)}}"/>
+  <link rel="canonical" href="{{ url('profile/' . $user->username . '/post/' . $updates[0]->id) }}"/>
 
   <meta property="og:site_name" content="{{ $user->hide_name == 'yes' ? $user->username : $user->name }} - {{$settings->title}}"/>
 
-  <meta property="og:url" content="{{url($user->username)}}"/>
+  <meta property="og:url" content="{{ url('profile/' . $user->username . '/post/' . $updates[0]->id) }}"/>
 
   <meta property="og:image" content="{{Helper::getFile(config('path.avatar').$user->avatar)}}"/>
 

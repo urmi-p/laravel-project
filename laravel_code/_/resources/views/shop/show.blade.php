@@ -23,7 +23,7 @@
 
 
 
-    @section('css')
+    @section('social_meta')
 
     <meta property="og:type" content="website" />
 
@@ -69,8 +69,10 @@
 
 
 
-    <link href="{{ asset('js/splide/splide.min.css')}}?v={{$settings->version}}" rel="stylesheet" type="text/css" />
+    @endsection
 
+    @section('css')
+    <link href="{{ asset('js/splide/splide.min.css')}}?v={{$settings->version}}" rel="stylesheet" type="text/css" />
     @endsection
 
 

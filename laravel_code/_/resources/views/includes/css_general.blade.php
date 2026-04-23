@@ -108,6 +108,50 @@
 
   const myDeviceKeysId = <?php echo json_encode(auth()->user()->oneSignalDevices->pluck('player_id')->all()); ?>;
 
+  const pushPromptPrimaryColor = "<?php echo e($settings->color_default ?: '#e2394c', false); ?>";
+  const pushPromptPrimaryHoverColor = "#d52d41";
+  const pushPromptAcceptText = "<?php echo e(__('general.activate'), false); ?>";
+
+  function styleOneSignalPushPrompt() {
+    document.querySelectorAll('[class*="onesignal-slidedown"]').forEach(function (container) {
+      container.querySelectorAll('button').forEach(function (button) {
+        if (button.dataset.closeOnlyStyled === 'true') {
+          return;
+        }
+
+        var buttonText = (button.textContent || '').trim();
+
+        if (buttonText === pushPromptAcceptText) {
+          button.style.backgroundColor = pushPromptPrimaryColor;
+          button.style.borderColor = pushPromptPrimaryColor;
+          button.style.color = '#fff';
+          button.dataset.closeOnlyStyled = 'true';
+
+          button.addEventListener('mouseenter', function () {
+            button.style.backgroundColor = pushPromptPrimaryHoverColor;
+            button.style.borderColor = pushPromptPrimaryHoverColor;
+          });
+
+          button.addEventListener('mouseleave', function () {
+            button.style.backgroundColor = pushPromptPrimaryColor;
+            button.style.borderColor = pushPromptPrimaryColor;
+          });
+        }
+      });
+    });
+  }
+
+  var oneSignalPromptObserver = new MutationObserver(function () {
+    styleOneSignalPushPrompt();
+  });
+
+  oneSignalPromptObserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  styleOneSignalPushPrompt();
+
 
 
   var OneSignal = window.OneSignal || [];

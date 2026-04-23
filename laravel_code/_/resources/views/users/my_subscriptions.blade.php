@@ -178,12 +178,19 @@
 
                                         <div class="label">{{ __('admin.ends_at') }}</div>
                                         <div class="value">
+                                            @php
+                                                $cashierSubscription = $subscription->stripe_id != ''
+                                                    ? auth()->user()->subscription('main', $subscription->stripe_price)
+                                                    : null;
+                                                $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                                            @endphp
+
                                             @if ($subscription->ends_at)
                                                 {{ Helper::formatDate($subscription->ends_at) }}
                                             @elseif ($subscription->free == 'yes')
                                                 {{ __('general.free_subscription') }}
-                                            @elseif ($subscription->stripe_id != '' && !$subscription->ends_at && $subscription->stripe_status != 'incomplete')
-                                                {{ Helper::formatDate(auth()->user()->subscription('main', $subscription->stripe_price)->asStripeSubscription()->current_period_end, true) }}
+                                            @elseif ($stripePeriodEnd)
+                                                {{ Helper::formatDate($stripePeriodEnd, true) }}
                                             @else
                                                 {{ __('general.no_available') }}
                                             @endif

@@ -15,7 +15,7 @@
   @section('description_custom'){{strip_tags($response->content)}}@endsection
     @section('keywords_custom'){{$response->tags ? $response->tags.',' : null}}@endsection
 
-  @section('css')
+  @section('social_meta')
     <meta property="og:type" content="website" />
     <meta property="og:image:width" content="650"/>
     <meta property="og:image:height" content="430"/>

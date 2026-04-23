@@ -15,7 +15,7 @@
         <div class="login-figma-left-inner">
           <div class="card-body login-figma-card">
             <h4 class="auth-title mb-0">{{ __('auth.welcome_back') }}</h4>
-            <small class="btn-block pb-4 h6 text-lime title_login login-figma-subtitle">{{ __('general.title_login') }}</small>
+            <small class="btn-block pb-4 h6 text-lime title_login login-figma-subtitle" id="loginRegisterContinue">{{ __('general.login_continue') }}</small>
 
             @if (session('login_required'))
             <div class="alert alert-danger" id="dangerAlert">
@@ -26,18 +26,18 @@
             <div class="mb-2 w-100 login-figma-social">
               @if ($settings->google_login == 'on')
               <a href="{{url('oauth/google')}}" class="btn btn-google login-figma-social-btn mb-2 w-100">
-                <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span>{{ __('auth.login_with') }} {{ __('general.google') }}</span>
+                <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.google') }}
               </a>
               @endif
 
               @if ($settings->facebook_login == 'on')
               <a href="{{url('oauth/facebook')}}" class="btn btn-facebook login-figma-social-btn mb-2 w-100">
-                <i class="fab fa-facebook mr-2"></i> <span>{{ __('auth.login_with') }} {{ __('general.facebook') }}</span>
+                <i class="fab fa-facebook mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.facebook') }}
               </a>
               @endif
               @if ($settings->twitter_login == 'on')
               <a href="{{url('oauth/twitter')}}" class="btn btn-twitter login-figma-social-btn mb-2 w-100">
-                <i class="bi-twitter-x mr-2"></i> <span>{{ __('auth.login_with') }} {{ __('general.twitter') }}</span>
+                <i class="bi-twitter-x mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.twitter') }}
               </a>
               @endif
             </div>

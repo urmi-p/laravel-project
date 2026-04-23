@@ -17,6 +17,13 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         height: auto !important;
         line-height: normal !important;
+        width: auto !important;
+        min-width: 220px;
+        padding: 14px 24px !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
     .btn-save-custom:hover {
@@ -80,6 +87,23 @@
         flex: 1 1 0;
     }
 
+    .subscription-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .subscription-actions-info {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .subscription-save-button {
+        flex: 0 0 auto;
+        margin-right: 1rem;
+    }
+
     @media (max-width: 576px) {
         .subscription-grid-row {
             flex-direction: column;
@@ -87,6 +111,27 @@
 
         .subscription-grid-row > .subscription-card-spacer {
             display: none;
+        }
+
+        .subscription-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+        }
+
+        .subscription-save-button {
+            margin-right: 0 !important;
+            align-self: center;
+            margin-top: 4px;
+        }
+
+        .btn-save-custom {
+            min-width: 0;
+            width: auto !important;
+            max-width: 100%;
+            padding: 10px 14px !important;
+            font-size: 13px !important;
+            white-space: nowrap;
         }
     }
 </style>
@@ -314,8 +359,8 @@
                                 </div>
                                 <div class="subscription-card-spacer"></div>
                             </div>
-                            <div style="display:flex;justify-content:space-between;">
-                                <div class="mb-1 mt-1">
+                            <div class="subscription-actions">
+                                <div class="mb-1 mt-1 subscription-actions-info">
                                     <div class="custom-control custom-switch custom-switch-lg">
                                         <input type="checkbox" class="custom-control-input"
                                             @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif name="free_subscription"
@@ -341,7 +386,7 @@
                                         @endif
                                     @endif
                                 </div>
-                                <button class="btn btn-1 btn-save-custom mr-3" @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
+                                <button class="btn btn-1 btn-save-custom subscription-save-button" @if (auth()->user()->verified_id == 'no' || auth()->user()->verified_id == 'reject') disabled @endif
                                     onClick="this.form.submit(); this.disabled=true; this.innerText='{{ trans('general.please_wait') }}';"
                                     type="submit">
                                     {{ trans('general.save_changes') }}

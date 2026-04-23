@@ -23,7 +23,7 @@
 
 
 
-@section('css')
+@section('social_meta')
     <meta property="og:type" content="website" />
 
     <meta property="og:image:width" content="200" />
@@ -44,12 +44,12 @@
 
     <!-- Og Meta Tags -->
 
-    <link rel="canonical" href="{{ url($user->username . $media) }}" />
+    <link rel="canonical" href="{{ url('profile/' . $user->username . $media) }}" />
 
     <meta property="og:site_name"
         content="{{ $user->hide_name == 'yes' ? $user->username : $user->name }} - {{ $settings->title }}" />
 
-    <meta property="og:url" content="{{ url($user->username . $media) }}" />
+    <meta property="og:url" content="{{ url('profile/' . $user->username . $media) }}" />
 
     <meta property="og:image" content="{{ Helper::getFile(config('path.avatar') . $user->avatar) }}" />
 
@@ -67,6 +67,10 @@
     <meta name="twitter:title" content="{{ $user->hide_name == 'yes' ? $user->username : $user->name }}" />
 
     <meta name="twitter:description" content="{{ strip_tags($user->story) }}" />
+
+@endsection
+
+@section('css')
 
     <script type="text/javascript">
         var profile_id = {{ $user->id }};
@@ -280,6 +284,11 @@
                                 @elseif (auth()->check() && auth()->id() != $user->id && $checkSubscription)
                                     @if ($checkSubscription->stripe_status == 'active' && $checkSubscription->stripe_id != '')
 
+                                        @php
+                                            $cashierSubscription = auth()->user()->subscription('main', $checkSubscription->stripe_price);
+                                            $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                                        @endphp
+
                                         <form method="POST"
                                             action="{{ url('subscription/cancel/' . $checkSubscription->stripe_id) }}"
                                             class="d-inline formCancel">
@@ -287,7 +296,7 @@
                                             @csrf
 
                                             <button type="button"
-                                                data-expiration="{{ __('general.subscription_expire') . ' ' . Helper::formatDate(auth()->user()->subscription('main', $checkSubscription->stripe_price)->asStripeSubscription()->current_period_end, true) }}"
+                                                data-expiration="{{ $stripePeriodEnd ? __('general.subscription_expire') . ' ' . Helper::formatDate($stripePeriodEnd, true) : __('general.confirm_cancel_subscription') }}"
                                                 class="btn btn-success btn-profile mr-1 cancelBtn subscriptionActive">
 
                                                 <i class="feather icon-user-check mr-1"></i>

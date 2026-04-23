@@ -1084,7 +1084,7 @@ return array(
 'allow_zip_files'                     => 'Autoriser l\'envoi de fichiers zip (Publications et Messages)',
 	// Version 4.2
 	'push_notification_title' => 'Activez les notifications push pour être informé :app interaction.',// Not remove :app
-'maybe_later'                        => 'Peut-être plus tard',
+'maybe_later'                        => 'Plus tard',
 'push_notifications'                 => 'Notifications push',
 'notifications_activated_successfully' => 'Notifications activées avec succès !',
 'has_mentioned_you_post'             => 'vous a mentionné dans une publication',

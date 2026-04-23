@@ -4,7 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="{{ config('settings.theme_color_pwa') }}">
-  <title>{{ $settings->title }}</title>
+  <title>{{ auth()->check() && User::notificationsCount() ? '('.User::notificationsCount().') ' : '' }}@section('title')@show {{$settings->title.' - '.__('seo.slogan')}}</title>
+  @hasSection('social_meta')
+    @yield('social_meta')
+  @else
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ $settings->title }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:title" content="{{ trim($__env->yieldContent('title')) !== '' ? trim($__env->yieldContent('title')) . ' ' . $settings->title . ' - ' . __('seo.slogan') : $settings->title . ' - ' . __('seo.slogan') }}" />
+    <meta property="og:description" content="@yield('description_custom')@if(!Request::route()->named('seo') && !Request::route()->named('profile')){{trans('seo.description')}}@endif" />
+    <meta property="og:image" content="{{ url('img', $settings->logo) }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ trim($__env->yieldContent('title')) !== '' ? trim($__env->yieldContent('title')) . ' ' . $settings->title . ' - ' . __('seo.slogan') : $settings->title . ' - ' . __('seo.slogan') }}" />
+    <meta name="twitter:description" content="@yield('description_custom')@if(!Request::route()->named('seo') && !Request::route()->named('profile')){{trans('seo.description')}}@endif" />
+    <meta name="twitter:image" content="{{ url('img', $settings->logo) }}" />
+  @endif
+<!-- Favicon -->
   <link href="{{ url('img', $settings->favicon) }}" rel="icon">
 
   <!-- Bootstrap 5 -->
@@ -15,12 +31,20 @@
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  @if ($settings->google_tag_manager_head != '')
+  {!! $settings->google_tag_manager_head !!}
+  @endif
   @if ($settings->status_pwa)
     @laravelPWA
   @endif
+   @if ($settings->google_analytics != '')
+  {!! $settings->google_analytics !!}
+  @endif
 </head>
 <body class="landing-page">
-
+  @if ($settings->google_tag_manager_body != '')
+  {!! $settings->google_tag_manager_body !!}
+  @endif
     <section class="hero">
         <div class="container">
 
