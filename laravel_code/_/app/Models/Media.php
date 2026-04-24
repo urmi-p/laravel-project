@@ -16,6 +16,8 @@ class Media extends Model
     'video',
     'bunny_video_id',
     'video_poster',
+    'duration_video',
+    'quality_video',
     'video_embed',
     'music',
     'file',

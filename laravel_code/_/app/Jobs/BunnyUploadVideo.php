@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use FFMpeg\FFProbe;
 use Throwable;
 use App\Helper;
 use App\Models\Media;
@@ -83,6 +84,20 @@ class BunnyUploadVideo implements ShouldQueue
 
             Log::info('BunnyUploadVideo: Uploaded to Bunny. ID: ' . $bunnyVideoId);
 
+            // Persist the Bunny GUID immediately so it is not lost if a later
+            // metadata/transcoding step fails or the worker stops mid-job.
+            Media::whereId($this->video->id)->update([
+                'bunny_video_id' => $bunnyVideoId,
+                'video' => $bunnyVideoId,
+                'video_poster' => $bunnyService->getPosterUrl($bunnyVideoId),
+            ]);
+
+            Log::info('BunnyUploadVideo: Bunny ID saved to media record', [
+                'media_id' => $this->video->id,
+                'post_id' => $post->id,
+                'bunny_video_id' => $bunnyVideoId,
+            ]);
+
             // 4. Fetch metadata with retry
             $videoData = $bunnyService->getVideoWithRetry($bunnyVideoId, 6, 1000);
             $status = (int) ($videoData['status'] ?? $videoData['Status'] ?? 0);
@@ -119,15 +134,48 @@ class BunnyUploadVideo implements ShouldQueue
             // 5. Update Media record
             $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);
             $videoWidth = (int) ($videoData['width'] ?? $videoData['Width'] ?? 0);
+
+            // Bunny can briefly report a completed status while the length
+            // field is still zero. Retry a few times before leaving duration blank.
+            if ($durationSeconds <= 0) {
+                for ($i = 0; $i < 6; $i++) {
+                    sleep(5);
+                    $videoData = $bunnyService->getVideoWithRetry($bunnyVideoId, 3, 1000);
+                    $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);
+                    $videoWidth = (int) ($videoData['width'] ?? $videoData['Width'] ?? 0);
+
+                    if ($durationSeconds > 0) {
+                        break;
+                    }
+                }
+            }
+
+            if ($durationSeconds <= 0 || $videoWidth <= 0) {
+                $localVideoInfo = $this->probeLocalVideoInfo($localFile);
+
+                if ($durationSeconds <= 0 && !empty($localVideoInfo['duration'])) {
+                    $durationSeconds = (int) $localVideoInfo['duration'];
+                }
+
+                if ($videoWidth <= 0 && !empty($localVideoInfo['width'])) {
+                    $videoWidth = (int) $localVideoInfo['width'];
+                }
+            }
             
             Media::whereId($this->video->id)->update([
-                'bunny_video_id' => $bunnyVideoId,
-                'video' => $bunnyVideoId,
-                'video_poster' => $bunnyService->getPosterUrl($bunnyVideoId),
                 'duration_video' => $durationSeconds > 0 ? Helper::getDurationInMinutes($durationSeconds) : null,
                 'quality_video' => $videoWidth > 0 ? Helper::getResolutionVideo($videoWidth) : null,
                 'encoded' => 'yes',
                 // 'status' => 'active'
+            ]);
+
+            Log::info('BunnyUploadVideo: Media record marked encoded', [
+                'media_id' => $this->video->id,
+                'post_id' => $post->id,
+                'bunny_video_id' => $bunnyVideoId,
+                'duration_seconds' => $durationSeconds,
+                'duration_video' => $durationSeconds > 0 ? Helper::getDurationInMinutes($durationSeconds) : null,
+                'quality_video' => $videoWidth > 0 ? Helper::getResolutionVideo($videoWidth) : null,
             ]);
             
             // 6. Delete local temp file
@@ -192,6 +240,36 @@ class BunnyUploadVideo implements ShouldQueue
         $post = Updates::find($media->updates_id);
         if ($post) {
             Notifications::send($post->user_id, $post->user_id, 20, $post->id);
+        }
+    }
+
+    protected function probeLocalVideoInfo(string $localFile): array
+    {
+        try {
+            $ffprobe = FFProbe::create([
+                'ffmpeg.binaries' => config('laravel-ffmpeg.ffmpeg.binaries', env('FFMPEG_BINARIES', 'ffmpeg')),
+                'ffprobe.binaries' => config('laravel-ffmpeg.ffprobe.binaries', env('FFPROBE_BINARIES', 'ffprobe')),
+                'timeout' => config('laravel-ffmpeg.timeout', 3600),
+            ]);
+
+            $format = $ffprobe->format($localFile);
+            $videoStream = $ffprobe->streams($localFile)->videos()->first();
+
+            return [
+                'duration' => (int) round((float) ($format->get('duration') ?? 0)),
+                'width' => (int) ($videoStream ? ($videoStream->get('width') ?? 0) : 0),
+            ];
+        } catch (\Throwable $e) {
+            Log::warning('BunnyUploadVideo: Local ffprobe fallback failed', [
+                'media_id' => $this->videoId,
+                'local_file' => $localFile,
+                'error' => $e->getMessage(),
+            ]);
+
+            return [
+                'duration' => 0,
+                'width' => 0,
+            ];
         }
     }
 }
