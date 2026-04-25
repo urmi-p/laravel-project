@@ -30,7 +30,9 @@ class WelcomeMessageRegistered extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject(trans('general.welcome_message_registered_subject', ['title' => config('app.name')], 'en'))
             ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
-            ->line(trans('general.welcome_message_registered_body', ['user' => $notifiable->name], 'en'))
+            ->line(trans('general.welcome_message_registered_body_intro', [], 'en'))
+            ->line(trans('general.welcome_message_registered_body_main', [], 'en'))
+            ->line(trans('general.welcome_message_registered_body_footer', [], 'en'))
             ->action(trans('general.getting_started', [], 'en'), url('/'));
     }
 

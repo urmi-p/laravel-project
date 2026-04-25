@@ -295,7 +295,7 @@
                                     <td class="content-pad">
                                         <h1 class="title">{{ trans('emails.new_subscriber_title', [], 'en') }}</h1>
 
-                                        <p class="greeting">{{ trans('emails.hello', [], 'en') }} {{ $fullname }}</p>
+                                        <p class="greeting">{{ trans('emails.new_subscriber_greeting', ['name' => $fullname], 'en') }}</p>
 
                                         <div class="body-copy">
                                             {!! $body !!}

@@ -50,13 +50,17 @@ class Subscriptions extends Model
 		$emailUser    = $user->email;
 		$fullNameUser = $user->name;
 		$subject      = $subscriber . ' ' . __('users.has_subscribed', [], 'en');
+		$body         = '<p>' . __('emails.new_subscriber_intro', ['name' => $fullNameUser], 'en') . '</p>'
+			. '<p>' . __('emails.new_subscriber_line_1', [], 'en') . '</p>'
+			. '<p>' . __('emails.new_subscriber_line_2', [], 'en') . '</p>'
+			. '<p>' . __('emails.new_subscriber_line_3', [], 'en') . '</p>';
 
 		try {
 			if ($user->email_new_subscriber == 'yes') {
 				Mail::send(
 					'emails.new_subscriber',
 					[
-						'body' => $subject,
+						'body' => $body,
 						'title_site' => $titleSite,
 						'fullname' => $fullNameUser
 					],

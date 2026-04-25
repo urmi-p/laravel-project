@@ -1489,10 +1489,12 @@ return array(
 	// Version 7.3
 	'upcoming_renewals' => 'Upcoming renewals',
 	'upcoming_renewal_for' => 'Upcoming renewal for @:creator', // Not translate @:creator
-	'detail_upcoming_renewal' => 'Your subscription to @:creator will renew in the next 24 hours. Make sure your payment method is up to date so you don\'t lose access to their content.', // Not translate @:creator
+	'detail_upcoming_renewal' => 'This is a friendly reminder that your subscription to @:creator will expire soon. 👉 Renew today to keep enjoying their exclusive content without interruption.', // Not translate @:creator
 	'manage_subscriptions' => 'Manage subscriptions',
 	'welcome_message_registered_subject' => 'Welcome to :title', // Not translate :title
-	'welcome_message_registered_body' => 'Welcome and thank you for registering on our platform. We are excited to have you on board.',
+	'welcome_message_registered_body_intro' => 'Welcome to CloseOnly.fr! 🔐',
+	'welcome_message_registered_body_main' => 'We\'re excited to have you on board. Your account is ready, and you can now start exploring all our features. Our mission is to provide you with a simple, secure, and enjoyable experience.',
+	'welcome_message_registered_body_footer' => 'Feel free to explore your account and reach out to us anytime if you have questions.',
 	'send_welcome_email_new_users' => 'Send welcome email to new users',
 	'age_verification' => 'Age verification',
 	'age_verification_desc' => 'In order to use our platform, we need you to verify your age. Click the button below and you\'ll be redirected to the verification service.',

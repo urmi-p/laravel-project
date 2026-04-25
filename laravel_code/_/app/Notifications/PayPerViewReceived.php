@@ -54,8 +54,11 @@ class PayPerViewReceived extends Notification implements ShouldQueue
 
        return (new MailMessage)
                    ->subject($subject)
-                   ->greeting(trans('emails.hello', [], 'en') .' '.$notifiable->name)
-                   ->line($subject)
+                   ->greeting(trans('emails.new_ppv_greeting', ['name' => $notifiable->name], 'en'))
+                   ->line(trans('emails.new_ppv_intro', [], 'en'))
+                   ->line(trans('emails.new_ppv_line_1', [], 'en'))
+                   ->line(trans('emails.new_ppv_line_2', [], 'en'))
+                   ->line(trans('emails.new_ppv_line_3', [], 'en'))
                    ->action(trans('general.go_payments_received', [], 'en'), url('my/payments/received'));
     }
 

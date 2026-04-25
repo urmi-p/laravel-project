@@ -271,6 +271,7 @@
 
                                         <div class="body-copy">
                                             <p>{{ trans('emails.withdrawal_msg', [], 'en') }} <strong>{{ $amount }}</strong></p>
+                                            <p>{{ trans('emails.withdrawal_processed_note', [], 'en') }}</p>
                                         </div>
 
                                         <p class="salutation">
