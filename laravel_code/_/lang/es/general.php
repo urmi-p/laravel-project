@@ -790,7 +790,7 @@ return array(
 	'super_admin' => 'Super Admin',
 	'couple' => 'Pareja',
 	'video_on_way' => 'Vídeo en camino...',
-	'video_processed_info' => 'Tu video está siendo procesado, recibirá una notificación cuando esté listo.',
+	'video_processed_info' => 'Tu publicación fue enviada y el video aún se está procesando. Aparecerá automáticamente cuando esté listo y no necesitas volver a publicarlo.',
 	'video_processed_successfully_post' => 'Tu video ha sido procesado con éxito (Post)',
 	'video_processed_successfully_message' => 'Tu video ha sido procesado con éxito (Mensaje)',
 

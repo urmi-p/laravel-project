@@ -16,6 +16,69 @@ $(document).ready(function() {
 
 	var postUploadLimit = maximum_files_post;
 
+  function escapeUploadErrorText(text) {
+    return $('<div>').text(text || '').html();
+  }
+
+  function showUploadErrors(messages) {
+    var items = [];
+
+    $.each(messages || [], function(_, message) {
+      if (message) {
+        items.push('<li><i class="fa fa-times-circle"></i> ' + escapeUploadErrorText(message) + '</li>');
+      }
+    });
+
+    if (!items.length) {
+      return;
+    }
+
+    $('#showErrorsUdpate').html(items.join(''));
+    $('#errorUdpate').fadeIn(500);
+  }
+
+  function getUploadErrorMessages(item) {
+    var messages = [];
+    var response = item && item.upload ? item.upload.response : null;
+    var xhr = item && item.upload ? (item.upload.xhr || item.upload.ajax || null) : null;
+
+    if (response) {
+      if ($.isArray(response.warnings)) {
+        messages = messages.concat(response.warnings);
+      } else if (response.warnings && typeof response.warnings === 'object') {
+        $.each(response.warnings, function(_, warning) {
+          if (warning) {
+            messages.push(warning);
+          }
+        });
+      }
+
+      if (response.message) {
+        messages.push(response.message);
+      }
+    }
+
+    var status = xhr && xhr.status ? parseInt(xhr.status, 10) : 0;
+
+    if (!messages.length && status === 413) {
+      messages.push('The video is larger than the server allows. Please increase upload_max_filesize and post_max_size on the live server.');
+    }
+
+    if (!messages.length && status === 419) {
+      messages.push('Your session expired during upload. Refresh the page and try again.');
+    }
+
+    if (!messages.length && status >= 500) {
+      messages.push('The server stopped the upload. Check PHP upload limits, max_input_time, max_execution_time, and web server/proxy timeouts.');
+    }
+
+    if (!messages.length) {
+      messages.push('The upload connection was lost before the server finished receiving the file. Check upload_max_filesize, post_max_size, max_input_time, and any reverse-proxy timeout on live.');
+    }
+
+    return messages;
+  }
+
 
 
 	// enable fileuploader plugin
@@ -260,6 +323,7 @@ $(document).ready(function() {
 
 				item.html.find('.progress-holder, .fileuploader-action-popup, .fileuploader-item-image').hide();
 
+        showUploadErrors(getUploadErrorMessages(item));
 
 
         $('.btn-blocked').hide();

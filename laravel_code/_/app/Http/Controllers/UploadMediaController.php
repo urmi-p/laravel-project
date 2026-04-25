@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Typography\FontFactory;
 use App\Services\BunnyStreamService;
@@ -39,74 +40,115 @@ class UploadMediaController extends Controller
 	 */
 	public function store(): JsonResponse
 	{
-		$publicPath = public_path('temp/');
-		$file = strtolower(auth()->id() . uniqid() . time() . str_random(20));
-		
-		// if (config('settings.video_encoding') == 'off') {
-		// 	$extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4', 'audio/x-matroska', 'audio/mpeg'];
-		// } else {
-		$extensions = [
-			'png',
-			'jpeg',
-			'jpg',
-			'gif',
-			'ief',
-			'video/mp4',
-			'video/quicktime',
-			'video/3gpp',
-			'video/mpeg',
-			'video/x-matroska',
-			'video/x-ms-wmv',
-			'video/vnd.avi',
-			'video/avi',
-			'video/x-flv',
-			'audio/x-matroska',
-			'audio/mpeg'
-		];
-		// }
+		try {
+			$publicPath = public_path('temp/');
+			$file = strtolower(auth()->id() . uniqid() . time() . str_random(20));
+			
+			// if (config('settings.video_encoding') == 'off') {
+			// 	$extensions = ['png', 'jpeg', 'jpg', 'gif', 'ief', 'video/mp4', 'audio/x-matroska', 'audio/mpeg'];
+			// } else {
+			$extensions = [
+				'png',
+				'jpeg',
+				'jpg',
+				'gif',
+				'ief',
+				'video/mp4',
+				'video/quicktime',
+				'video/3gpp',
+				'video/mpeg',
+				'video/x-matroska',
+				'video/x-ms-wmv',
+				'video/vnd.avi',
+				'video/avi',
+				'video/x-flv',
+				'audio/x-matroska',
+				'audio/mpeg'
+			];
+			// }
 
-		// initialize FileUploader
-		$FileUploader = new FileUploader('photo', array(
-			'limit' => config('settings.maximum_files_post'),
-			'fileMaxSize' => floor(config('settings.file_size_allowed') / 1024),
-			'extensions' => $extensions,
-			'title' => $file,
-			'uploadDir' => $publicPath
-		));
+			// initialize FileUploader
+			$FileUploader = new FileUploader('photo', array(
+				'limit' => config('settings.maximum_files_post'),
+				'fileMaxSize' => floor(config('settings.file_size_allowed') / 1024),
+				'extensions' => $extensions,
+				'title' => $file,
+				'uploadDir' => $publicPath
+			));
 
-		// upload
-		$upload = $FileUploader->upload();
+			// upload
+			$upload = $FileUploader->upload();
 
-		if ($upload['isSuccess']) {
-			foreach ($upload['files'] as $key => $item) {
-				$upload['files'][$key] = [
-					'extension' => $item['extension'],
-					'format' => $item['format'],
-					'name' => $item['name'],
-					'size' => $item['size'],
-					'size2' => $item['size2'],
-					'type' => $item['type'],
-					'uploaded' => true,
-					'replaced' => false
-				];
+			if (!$upload['isSuccess']) {
+				$upload = $this->appendUploadLimitWarning($upload);
+			}
 
-				switch ($item['format']) {
-					case 'image':
-						$this->resizeImage($item);
-						break;
+			if ($upload['isSuccess']) {
+				foreach ($upload['files'] as $key => $item) {
+					$upload['files'][$key] = [
+						'extension' => $item['extension'],
+						'format' => $item['format'],
+						'name' => $item['name'],
+						'size' => $item['size'],
+						'size2' => $item['size2'],
+						'type' => $item['type'],
+						'uploaded' => true,
+						'replaced' => false
+					];
 
-					case 'video':
-						$this->uploadVideo($item);
-						break;
+					switch ($item['format']) {
+						case 'image':
+							$this->resizeImage($item);
+							break;
 
-					case 'audio':
-						$this->uploadMusic($item);
-						break;
+						case 'video':
+							$this->uploadVideo($item);
+							break;
+
+						case 'audio':
+							$this->uploadMusic($item);
+							break;
+					}
 				}
 			}
+
+			return response()->json($upload);
+		} catch (Throwable $e) {
+			Log::error('Upload media failed', [
+				'user_id' => auth()->id(),
+				'post_id' => $this->postId,
+				'message' => $e->getMessage(),
+			]);
+
+			return response()->json([
+				'isSuccess' => false,
+				'hasWarnings' => true,
+				'warnings' => [
+					'The upload failed on the server. Please try again. If it keeps happening, check PHP upload limits and request timeouts.'
+				],
+			], 500);
+		}
+	}
+
+	protected function appendUploadLimitWarning(array $upload): array
+	{
+		$hasFiles = !empty(request()->file('photo'));
+		$contentLength = (int) request()->server('CONTENT_LENGTH', 0);
+
+		if ($hasFiles || $contentLength <= 0) {
+			return $upload;
 		}
 
-		return response()->json($upload);
+		$warnings = $upload['warnings'] ?? [];
+		$warnings[] = sprintf(
+			'The server did not receive the uploaded file. Check PHP upload limits (upload_max_filesize, post_max_size), max_input_time, and web server/proxy timeouts. Current app limit: %s.',
+			Helper::formatBytes((int) config('settings.file_size_allowed') * 1024)
+		);
+
+		$upload['hasWarnings'] = true;
+		$upload['warnings'] = array_values(array_unique($warnings));
+
+		return $upload;
 	}
 
 	/**

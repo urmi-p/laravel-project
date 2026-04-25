@@ -1410,6 +1410,11 @@
 						$('#textPostPublish').html(publish);
 
             if (isNewUpdatePage) {
+              if (result.encode) {
+                window.location.href = URL_BASE + '/post/editing';
+                return;
+              }
+
               window.location.href = URL_BASE + '/';
               return;
             }
@@ -1558,7 +1563,7 @@
 
 							$('#alertPostSchedule').fadeIn();
 
-						} else {
+						} else if (!isNewUpdatePage) {
 
 							swal({
 
@@ -1599,6 +1604,44 @@
 						$('#textPostPublish').html(publish);
 
             if (isNewUpdatePage) {
+              if (result.url) {
+                swal({
+
+                  type: 'info',
+
+                  title: video_on_way,
+
+                  text: video_processed_info,
+
+                  confirmButtonText: ok
+
+                }, function() {
+
+                  window.location.href = result.url;
+
+                });
+                return;
+              }
+
+              if (result.encode) {
+                swal({
+
+                  type: 'info',
+
+                  title: video_on_way,
+
+                  text: video_processed_info,
+
+                  confirmButtonText: ok
+
+                }, function() {
+
+                  window.location.href = URL_BASE + '/post/editing';
+
+                });
+                return;
+              }
+
               window.location.href = URL_BASE + '/';
               return;
             }

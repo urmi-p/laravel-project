@@ -871,7 +871,8 @@ trait Functions
 			return response()->json([
 				'success' => true,
 				'pending' => true,
-				'encode' => true
+				'encode' => true,
+				'url' => route('post.edit.pending'),
 			]);
 		} catch (\Exception $e) {
 			Log::info($e->getMessage());

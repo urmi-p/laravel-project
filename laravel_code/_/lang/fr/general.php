@@ -785,7 +785,7 @@ return array(
 'super_admin'                      => 'Super Admin',
 'couple'                           => 'Couple',
 'video_on_way'                     => 'Vidéo en cours...',
-'video_processed_info'             => 'Votre vidéo est en cours de traitement, vous recevrez une notification rapidement.',
+'video_processed_info'             => 'Votre publication a bien été envoyée et la vidéo est encore en cours de traitement. Elle apparaîtra automatiquement lorsqu’elle sera prête et vous n’avez pas besoin de la republier.',
 'video_processed_successfully_post'=> 'Votre vidéo a été traitée avec succès (Publication)',
 'video_processed_successfully_message'=> 'Votre vidéo a été traitée avec succès (Message)',
 

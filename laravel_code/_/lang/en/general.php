@@ -801,7 +801,7 @@ return array(
 	'super_admin' => 'Super Admin',
 	'couple' => 'Couple',
 	'video_on_way' => 'Video on the way...',
-	'video_processed_info' => 'Your video is being processed, you will receive a notification when it is ready.',
+	'video_processed_info' => 'Your post was published and the video is still processing. It will appear automatically when ready, and you do not need to republish it.',
 	'video_processed_successfully_post' => 'Your video has been processed successfully (Post)',
 	'video_processed_successfully_message' => 'Your video has been processed successfully (Message)',
 
