@@ -69,6 +69,7 @@ use App\Http\Controllers\UploadMediaWelcomeMessageController;
 use App\Http\Controllers\VaultController;
 use App\Http\Controllers\WebhookSightengineController;
 use App\Http\Controllers\AgeVerificationController;
+use App\Http\Controllers\SocialShareImageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -86,6 +87,7 @@ use App\Http\Controllers\AgeVerificationController;
  |-----------------------------------
  */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('social-share-image.png', SocialShareImageController::class)->name('social.share-image');
 
 Route::get('home', function() {
     \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {

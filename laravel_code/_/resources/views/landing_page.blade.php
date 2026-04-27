@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+  @php
+    $shareTitle = trim($settings->title) !== '' ? $settings->title : 'Close Only';
+    $shareDescription = __('general.landing_hero_text');
+    $shareImageUrl = route('social.share-image', ['v' => '6']);
+  @endphp
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="{{ config('settings.theme_color_pwa') }}">
-  <title>{{ auth()->check() && User::notificationsCount() ? '('.User::notificationsCount().') ' : '' }}@section('title')@show {{$settings->title.' - '.__('seo.slogan')}}</title>
+  <title>{{ auth()->check() && User::notificationsCount() ? '('.User::notificationsCount().') ' : '' }}{{ $shareTitle }}</title>
   @hasSection('social_meta')
     @yield('social_meta')
   @else
@@ -12,13 +17,17 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="{{ $settings->title }}" />
     <meta property="og:url" content="{{ url()->current() }}" />
-    <meta property="og:title" content="{{ trim($__env->yieldContent('title')) !== '' ? trim($__env->yieldContent('title')) . ' ' . $settings->title . ' - ' . __('seo.slogan') : $settings->title . ' - ' . __('seo.slogan') }}" />
-    <meta property="og:description" content="@yield('description_custom')@if(!Request::route()->named('seo') && !Request::route()->named('profile')){{trans('seo.description')}}@endif" />
-    <meta property="og:image" content="{{ url('img', $settings->logo) }}" />
+    <meta property="og:title" content="{{ $shareTitle }}" />
+    <meta property="og:description" content="{{ $shareDescription }}" />
+    <meta property="og:image" content="{{ $shareImageUrl }}" />
+    <meta property="og:image:secure_url" content="{{ $shareImageUrl }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{{ trim($__env->yieldContent('title')) !== '' ? trim($__env->yieldContent('title')) . ' ' . $settings->title . ' - ' . __('seo.slogan') : $settings->title . ' - ' . __('seo.slogan') }}" />
-    <meta name="twitter:description" content="@yield('description_custom')@if(!Request::route()->named('seo') && !Request::route()->named('profile')){{trans('seo.description')}}@endif" />
-    <meta name="twitter:image" content="{{ url('img', $settings->logo) }}" />
+    <meta name="twitter:title" content="{{ $shareTitle }}" />
+    <meta name="twitter:description" content="{{ $shareDescription }}" />
+    <meta name="twitter:image" content="{{ $shareImageUrl }}" />
+    <meta name="twitter:image:alt" content="{{ $settings->title }}" />
   @endif
 <!-- Favicon -->
   <link href="{{ url('img', $settings->favicon) }}" rel="icon">

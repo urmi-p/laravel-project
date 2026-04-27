@@ -8,7 +8,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	"slogan" => "Réseau Social Exclusif", // New on v4.0
-	"description" => "CloseOnly est une plateforme qui permet aux utilisateurs d’accéder à un espace privé, réservé aux abonnés, où créateurs et communautés se retrouvent. En vous abonnant, vous découvrez du contenu exclusif, des interactions personnalisées et des moments uniques, partagés directement par vos créateurs préférés.",
-	"keywords" => "",
+	"slogan" => "Plateforme exclusive pour createurs", // New on v4.0
+	"description" => "Close Only est une plateforme premium de contenu exclusif, d'interactions privees et de connexions directes entre les createurs et leur audience.",
+	"keywords" => "contenu exclusif,createurs,abonnements,contenu prive,fans,plateforme premium",
 );

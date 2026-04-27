@@ -8,7 +8,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	"slogan" => "Soporte a los creadores de contenido", // New on v4.0
-	"description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut tortor rutrum massa efficitur tincidunt vel nec lacus. Curabitur porta aliquet diam, eu gravida neque lacinia.",
-	"keywords" => "donaciones,soporte,creadores,sponzy,suscripción,contenido",
+	"slogan" => "Plataforma exclusiva para creadores", // New on v4.0
+	"description" => "Close Only es una plataforma premium de contenido exclusivo, interacciones privadas y conexiones directas entre creadores y su audiencia.",
+	"keywords" => "contenido exclusivo,creadores,suscripciones,contenido privado,seguidores,plataforma premium",
 );
