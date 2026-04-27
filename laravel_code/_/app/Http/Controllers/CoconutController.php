@@ -44,6 +44,7 @@ final class CoconutController extends Controller
 
     // Status final post
     $statusPost = $post->schedule ? 'schedule' : 'active';
+    $statusFinalPost = config('settings.auto_approve_post') == 'on' ? $statusPost : 'pending';
 
     if ($webhook['event'] == 'job.completed') {
       $duration = (int) $webhook['data']['input']['metadata']['streams'][0]['duration'] ?? null;
@@ -70,23 +71,27 @@ final class CoconutController extends Controller
         // Update date the post and status
         $post->update([
           'date' => now(),
-          'status' => config('settings.auto_approve_post') == 'on' ? $statusPost : 'pending'
+          'status' => $statusFinalPost
         ]);
 
         // Notify to user - destination, author, type, target
         Notifications::send($post->user_id, $post->user_id, 9, $post->id);
 
-        // Send notification via Email
-        $this->newPostEvent($post);
+        if ($statusFinalPost == 'active') {
+          // Send notification via Email only after the post is actually published.
+          $this->newPostEvent($post);
+        }
       }
     } else {
       $post->update([
         'date' => now(),
-        'status' => config('settings.auto_approve_post') == 'on' ? $statusPost : 'pending'
+        'status' => $statusFinalPost
       ]);
 
-      // Send notification via Email
-      $this->newPostEvent($post);
+      if ($statusFinalPost == 'active') {
+        // Send notification via Email only after the post is actually published.
+        $this->newPostEvent($post);
+      }
 
       // Delete Media
       $mediaError = Media::find($this->request->mediaId);

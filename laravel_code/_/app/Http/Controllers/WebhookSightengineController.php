@@ -40,15 +40,16 @@ class WebhookSightengineController extends Controller
             $statusFinalPost = Setting::value('auto_approve_post') == 'on' ? $statusPost : 'pending';
 
             if ($content['data']['status'] == 'finished') {
-                // Check if there are other media that have not been moderated
-                $mediaPending = Media::whereUpdatesId($post->id)->whereStatus('pending')->count();
-
                 $validation = $videoValidation->validateVideoContent($content);
 
                 if ($validation['approved']) {
-                    // Update status of video
-                    $post->status = 'active';
-                    $post->save();
+                    // Mark the moderated video as approved without publishing
+                    // the parent post ahead of its scheduled publish time.
+                    $media->status = 'active';
+                    $media->save();
+
+                    // Check if there are other media that have not been moderated
+                    $mediaPending = Media::whereUpdatesId($post->id)->whereStatus('pending')->count();
 
                     // Update status of post
                     if ($mediaPending == 0 && $post->status == 'pending') {

@@ -167,7 +167,7 @@ class EncodeVideo implements ShouldQueue
         // Notify to user - destination, author, type, target
         Notifications::send($this->video->user_id, $this->video->user_id, 9, $this->video->updates_id);
 
-        if (!$settings->disable_new_post_notification) {
+        if ($statusFinalPost == 'active' && !$settings->disable_new_post_notification) {
           // Send notification via Email
           event(new NewPostEvent($getPost));
         }

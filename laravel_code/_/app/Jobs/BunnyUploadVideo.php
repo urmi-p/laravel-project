@@ -122,7 +122,7 @@ class BunnyUploadVideo implements ShouldQueue
 
                 Notifications::send($video->user_id, $video->user_id, 9, $video->updates_id);
 
-                if (!$settings->disable_new_post_notification) {
+                if ($statusFinalPost == 'active' && !$settings->disable_new_post_notification) {
                     event(new NewPostEvent($post));
                 }
             }
