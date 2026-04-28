@@ -493,6 +493,34 @@
             border-color: #e53b54;
         }
 
+        .post-preview-thumb--add {
+            border: 2px dashed rgba(255, 255, 255, 0.22);
+            background: transparent;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .post-preview-thumb--add::before,
+        .post-preview-thumb--add::after {
+            content: "";
+            position: absolute;
+            background: currentColor;
+            border-radius: 999px;
+        }
+
+        .post-preview-thumb--add::before {
+            width: 18px;
+            height: 2px;
+        }
+
+        .post-preview-thumb--add::after {
+            width: 2px;
+            height: 18px;
+        }
+
         html[data-bs-theme="dark"] .post-preview-step {
             background: #333438 !important;
         }
@@ -509,6 +537,10 @@
             background: #3b3d44;
         }
 
+        html[data-bs-theme="dark"] .post-preview-thumb--add {
+            color: #fff;
+        }
+
         html[data-bs-theme="light"] .post-preview-step {
             background: #ffffff;
         }
@@ -519,6 +551,12 @@
 
         html[data-bs-theme="light"] .post-preview-media {
             background: #ffffff;
+        }
+
+        html[data-bs-theme="light"] .post-preview-thumb--add {
+            color: #111827;
+            border-color: rgba(17, 24, 39, 0.18);
+            background: #f4f4f5;
         }
 
         .post-preview-controls {
@@ -1221,6 +1259,8 @@
             var panStart = { x: 0, y: 0 };
             var currentScale = zoomMin / 100;
             var cropRequests = {};
+            var uploadLimit = parseInt(window.maximum_files_post || 0, 10) || 0;
+            var uploadMediaLabel = @json(__('general.upload_media'));
             function syncZoomSliderFill() {
                 var min = parseFloat($zoom.attr('min')) || zoomMin;
                 var max = parseFloat($zoom.attr('max')) || zoomMax;
@@ -1388,6 +1428,14 @@
                     $previewThumbs.append($btn);
                 });
 
+                if (canAddMorePreviewMedia()) {
+                    $previewThumbs.append(
+                        $('<button type="button" class="post-preview-thumb post-preview-thumb--add"></button>')
+                            .attr('aria-label', uploadMediaLabel)
+                            .attr('title', uploadMediaLabel)
+                    );
+                }
+
                 $previewThumbs.show();
             }
 
@@ -1411,6 +1459,36 @@
                 }
 
                 return $('#formUpdateCreate .fileuploader-item').length;
+            }
+
+            function canAddMorePreviewMedia() {
+                var count = getSelectedFilesCount();
+                if (!count) {
+                    return false;
+                }
+
+                if (hasUploadedVideo) {
+                    return false;
+                }
+
+                if (uploadLimit > 0 && count >= uploadLimit) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function openMediaPicker() {
+                var input = $('#filePhoto').get(0);
+                if (input && typeof input.click === 'function') {
+                    input.click();
+                    return;
+                }
+
+                var api = $.fileuploader.getInstance($('input[name="photo[]"]'));
+                if (api && api.open) {
+                    api.open();
+                }
             }
 
             function isVideoFileName(fileName) {
@@ -1815,11 +1893,23 @@
                 refreshUploadedVideoState();
                 $uploadOverlay.removeClass('active');
                 $uploadOverlayPercent.text('0%');
-                showUploadStep();
+                $('#formUpdateCreate .fileuploader-item').removeClass('preview-active');
+                var remainingPreview = collectPreviewSources()[0] || '';
+
+                if (getSelectedFilesCount() > 0) {
+                    if (hasUploadedVideo) {
+                        showDetailsStep();
+                    } else {
+                        showPreviewStep(remainingPreview);
+                        markActiveItemBySrc(remainingPreview);
+                    }
+                } else {
+                    showUploadStep();
+                }
+
                 setTimeout(function() {
                     updateUploadContinueState();
                 }, 0);
-                $('#formUpdateCreate .fileuploader-item').removeClass('preview-active');
             });
 
             $(document).on('post-media-upload-start', function() {
@@ -1895,8 +1985,9 @@
 
             $('#postDetailsBack').on('click', function() {
                 persistActiveCrop();
-                var currentSrc = $previewImage.attr('src') || '';
-                if (getSelectedFilesCount() > 1 || !currentSrc) {
+                refreshUploadedVideoState();
+                var currentSrc = $previewImage.attr('src') || collectPreviewSources()[0] || '';
+                if (hasUploadedVideo || !currentSrc) {
                     showUploadStep();
                     return;
                 }
@@ -1932,6 +2023,13 @@
             });
 
             $(document).on('click', '#postPreviewThumbs .post-preview-thumb', function() {
+                if ($(this).hasClass('post-preview-thumb--add')) {
+                    persistActiveCrop().always(function() {
+                        openMediaPicker();
+                    });
+                    return;
+                }
+
                 var src = $(this).data('src') || '';
                 if (!src) {
                     return;

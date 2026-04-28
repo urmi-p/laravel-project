@@ -62,11 +62,13 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 			if ($media->type == 'video') {
 			$urlMedia = Helper::postPlaybackUrl($media);
 			$videoPoster = Helper::postThumbnailUrl($media);
+			$thumbMedia = $videoPoster ?: null;
 			} else {
 
 			$urlMedia = Helper::postImageUrl($media);
 
 			$videoPoster = null;
+			$thumbMedia = $urlMedia;
 
 			}
 
@@ -80,7 +82,7 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 
 			@if ($media->type == 'image' || $media->type == 'video')
 
-			<a href="{{ $urlMedia }}" class="media-wrapper rounded-0 glightbox" data-gallery="gallery{{$response->id}}" style="background-image: url('{{ $videoPoster ?? $urlMedia}}?w=960&h=980')">
+			<a href="{{ $urlMedia }}" class="media-wrapper rounded-0 glightbox" data-gallery="gallery{{$response->id}}" @if ($thumbMedia) style="background-image: url('{{ $thumbMedia }}?w=960&h=980')" @endif>
 
 				@if ($nth == 5 && $mediaImageVideoTotal > 5)
 
@@ -108,7 +110,7 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 
 				@if (! $videoPoster && $media->type == 'video')
 
-				<video playsinline muted preload="metadata" class="video-poster-html">
+				<video playsinline muted preload="metadata" class="video-poster-html w-100 h-100">
 
 					<source src="{{ $urlMedia }}" type="video/mp4" />
 
@@ -118,9 +120,9 @@ $fullViewImage = $media->width < $media->height ? 'post-image-full' : 'd-inline-
 
 
 
-				@if ($videoPoster)
+				@if ($thumbMedia)
 
-				<img src="{{ $videoPoster ?? $urlMedia }}?w=960&h=980" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} class="post-img-grid">
+				<img src="{{ $thumbMedia }}?w=960&h=980" {!! $media->width ? 'width="'. $media->width .'"' : null !!} {!! $media->height ? 'height="'. $media->height .'"' : null !!} class="post-img-grid">
 
 				@endif
 
