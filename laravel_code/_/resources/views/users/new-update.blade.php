@@ -416,6 +416,10 @@
 
         .post-details-back-wrap {
             margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
         .post-details-back {
@@ -428,6 +432,42 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .post-details-add-more {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 2px dashed rgba(229, 59, 84, 0.5);
+            background: transparent;
+            color: #e53b54;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            position: relative;
+        }
+
+        .post-details-add-more::before,
+        .post-details-add-more::after {
+            content: "";
+            position: absolute;
+            background: currentColor;
+            border-radius: 999px;
+        }
+
+        .post-details-add-more::before {
+            width: 16px;
+            height: 2px;
+        }
+
+        .post-details-add-more::after {
+            width: 2px;
+            height: 16px;
+        }
+
+        #formUpdateCreate.can-add-more-details .post-details-add-more {
+            display: inline-flex;
         }
 
         .post-preview-media {
@@ -938,6 +978,7 @@
                                                 <button type="button" id="postDetailsBack" class="post-details-back">
                                                     <i class="fas fa-arrow-left"></i>
                                                 </button>
+                                                <button type="button" id="postDetailsAddMore" class="post-details-add-more" aria-label="{{ __('general.upload_media') }}" title="{{ __('general.upload_media') }}"></button>
                                             </div>
                                             <div class="form-group" id="titlePost">
                                                 <label>{{__('general.title')}}</label>
@@ -1467,7 +1508,12 @@
                     return false;
                 }
 
-                if (hasUploadedVideo) {
+                return !hasUploadedVideo && canAddMoreMedia();
+            }
+
+            function canAddMoreMedia() {
+                var count = getSelectedFilesCount();
+                if (!count) {
                     return false;
                 }
 
@@ -1540,6 +1586,7 @@
             function updateUploadContinueState() {
                 var count = getSelectedFilesCount();
                 $form.toggleClass('has-selected-files', count > 0);
+                $form.toggleClass('can-add-more-details', canAddMoreMedia());
             }
 
             function getPreviewSourceFromItem($item) {
@@ -1993,6 +2040,10 @@
                 }
 
                 showPreviewStep(currentSrc);
+            });
+
+            $('#postDetailsAddMore').on('click', function() {
+                openMediaPicker();
             });
 
             $('#newPostHeaderBack').on('click', function(e) {

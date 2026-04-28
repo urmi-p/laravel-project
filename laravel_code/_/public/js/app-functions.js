@@ -1411,11 +1411,37 @@
 
             if (isNewUpdatePage) {
               if (result.encode) {
-                window.location.href = URL_BASE + '/post/editing';
+                swal({
+
+                  type: 'info',
+
+                  title: video_on_way,
+
+                  text: video_processed_info,
+
+                  confirmButtonText: ok
+
+                }, function() {
+
+                  window.location.href = URL_BASE + '/post/editing';
+
+                });
                 return;
               }
 
-              window.location.href = URL_BASE + '/';
+              swal({
+
+                type: 'success',
+
+                title: thanks,
+
+                confirmButtonText: ok
+
+              }, function() {
+
+                window.location.href = URL_BASE + '/';
+
+              });
               return;
             }
 
@@ -1642,7 +1668,19 @@
                 return;
               }
 
-              window.location.href = URL_BASE + '/';
+              swal({
+
+                type: 'success',
+
+                title: thanks,
+
+                confirmButtonText: ok
+
+              }, function() {
+
+                window.location.href = URL_BASE + '/';
+
+              });
               return;
             }
 
