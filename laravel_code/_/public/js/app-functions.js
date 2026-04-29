@@ -64,35 +64,147 @@
 
 
 
-	stopAudioPlay(players);
+	window.players = players || [];
+	window.popupPlayers = window.popupPlayers || [];
 
 
 
-	function stopAudioPlay(players) {
-
-		window.players = players;
+	registerPlayers(window.players);
 
 
 
-		for (var i in players) {
+	function registerPlayers(playersList) {
 
-			players[i].on('play', function (instance) {
+		for (var i in playersList) {
 
-				var source = instance.detail.plyr.source;
+			bindExclusivePlayback(playersList[i]);
 
-				for (var x in players) {
+		}
 
-					if (players[x].source != source) {
+	}
 
-						players[x].pause();
+
+
+	function bindExclusivePlayback(player) {
+
+		if (!player || player._closeOnlyPlaybackBound) {
+
+			return;
+
+		}
+
+
+
+		player._closeOnlyPlaybackBound = true;
+
+		player.on('play', function (instance) {
+
+			var currentPlayer = instance.detail.plyr;
+			var activePlayers = (window.players || []).concat(window.popupPlayers || []);
+
+			for (var x in activePlayers) {
+
+				if (activePlayers[x] && activePlayers[x] !== currentPlayer) {
+
+					activePlayers[x].pause();
+
+				}
+
+			}
+
+		});
+
+	}
+
+
+
+	function initPopupPlayers(container) {
+
+		var root = container || document;
+		var popupVideoNodes = root.querySelectorAll('.js-player-popup:not([data-plyr-initialized])');
+
+		if (!popupVideoNodes.length) {
+
+			return;
+
+		}
+
+
+
+		popupVideoNodes.forEach(function (videoNode) {
+
+			videoNode.setAttribute('data-plyr-initialized', 'true');
+
+			var popupPlayer = new Plyr(videoNode, { ratio: '4:3' });
+
+			window.popupPlayers.push(popupPlayer);
+			bindExclusivePlayback(popupPlayer);
+
+		});
+
+	}
+
+
+
+	function createMediaLightbox() {
+
+		var lightbox = GLightbox({
+
+			touchNavigation: true,
+
+			loop: false,
+
+			closeEffect: 'fade',
+
+			videosWidth: '100vw',
+
+			plyr: {
+
+				config: {
+
+					ratio: '4:3',
+
+					fullscreen: {
+
+						enabled: true,
+
+						fallback: true,
+
+						iosNative: true,
+
+						container: '.glightbox-container'
 
 					}
 
 				}
 
-			});
+			}
 
-		}
+		});
+
+
+
+		lightbox.on('slide_after_load', function (event) {
+
+			if (event && event.slideNode) {
+
+				initPopupPlayers(event.slideNode);
+
+			}
+
+		});
+
+
+
+		return lightbox;
+
+	}
+
+
+
+	function stopAudioPlay(players) {
+
+		registerPlayers(players);
 
 	}
 
@@ -1501,15 +1613,7 @@
 
 
 
-						const lightbox = GLightbox({
-
-							touchNavigation: true,
-
-							loop: false,
-
-							closeEffect: 'fade'
-
-						});
+						const lightbox = createMediaLightbox();
 
 
 
@@ -2714,15 +2818,7 @@
 
 
 
-				const lightbox = GLightbox({
-
-					touchNavigation: true,
-
-					loop: false,
-
-					closeEffect: 'fade'
-
-				});
+				const lightbox = createMediaLightbox();
 
 
 

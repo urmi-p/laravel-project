@@ -257,10 +257,8 @@ class UploadMediaController extends Controller
 			'created_at' => now()
 		]);
 
-		// Move file to Storage
-		// if (config('settings.video_encoding') == 'off') {
-		// 	$this->moveFileStorage($video['name'], config('path.videos'));
-		// }
+		// Persist the source video outside temp so the queued Bunny job can always find it.
+		$this->moveFileStorage($video['name'], config('path.videos'));
 	}
 
 	/**

@@ -3021,6 +3021,71 @@ border-color: #adb5bd !important;
 .glightbox-open {
 
 	height: auto !important;
+	overflow: hidden !important;
+
+}
+
+.glightbox-container .gslide-inline {
+
+	background: transparent !important;
+	max-width: min(960px, calc(100vw - 32px));
+	max-height: calc(100vh - 32px);
+	width: 100%;
+	padding: 0;
+	overflow: hidden;
+
+}
+
+.glightbox-container .gslide-inline .ginlined-content {
+
+	padding: 0;
+	max-height: calc(100vh - 32px);
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+
+}
+
+.glightbox-post-video {
+
+	background: #171717;
+	border-radius: 24px;
+	width: min(960px, 100%);
+	max-height: calc(100vh - 32px);
+	overflow-x: hidden;
+	overflow-y: auto;
+
+}
+
+.glightbox-post-video__media {
+
+	background: #000;
+
+}
+
+.glightbox-post-video__media .plyr {
+
+	border-radius: 0;
+
+}
+
+.glightbox-post-video__footer {
+
+	padding: 20px 22px;
+
+}
+
+.glightbox-post-video__footer .card-footer {
+
+	background: transparent;
+	border: 0;
+	padding: 0;
+
+}
+
+.glightbox-post-video__footer .action-pill {
+
+	cursor: default;
 
 }
 

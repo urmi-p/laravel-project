@@ -12,6 +12,7 @@ use App\Services\BunnyStreamService;
 use Illuminate\Bus\Queueable;
 use App\Events\NewPostEvent;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,6 +35,7 @@ class BunnyUploadVideo implements ShouldQueue
     {
         $video = Media::findOrFail($this->videoId);
         $post = Updates::find($video->updates_id);
+        $bunnyVideoId = null;
 
         if (!$post) {
             return;
@@ -43,8 +45,17 @@ class BunnyUploadVideo implements ShouldQueue
             throw new \Exception('Bunny Stream is not configured.');
         }
 
-        $localFile = public_path('temp/' . $video->video);
-        if (!file_exists($localFile)) {
+        $storagePath = config('path.videos') . $video->video;
+        $tempPath = public_path('temp/' . $video->video);
+        $localFile = null;
+
+        if (Storage::disk('default')->exists($storagePath)) {
+            $localFile = Storage::disk('default')->path($storagePath);
+        } elseif (file_exists($tempPath)) {
+            $localFile = $tempPath;
+        }
+
+        if (!$localFile || !file_exists($localFile)) {
             throw new \Exception('Local file not found.');
         }
 
@@ -100,8 +111,10 @@ class BunnyUploadVideo implements ShouldQueue
                 'encoded' => 'yes',
             ]);
 
-            if (file_exists($localFile)) {
-                @unlink($localFile);
+            Storage::disk('default')->delete($storagePath);
+
+            if (file_exists($tempPath)) {
+                @unlink($tempPath);
             }
 
             $settings = AdminSettings::first();
@@ -137,6 +150,18 @@ class BunnyUploadVideo implements ShouldQueue
                 }
             }
         } catch (\Exception $e) {
+            if ($bunnyVideoId && $bunnyService->isConfigured()) {
+                try {
+                    $bunnyService->deleteVideo($bunnyVideoId);
+                } catch (\Exception $deleteException) {
+                    Log::error('BunnyUploadVideo orphan cleanup failed: ' . $deleteException->getMessage(), [
+                        'media_id' => $video->id,
+                        'post_id' => $post->id,
+                        'bunny_video_id' => $bunnyVideoId,
+                    ]);
+                }
+            }
+
             Log::error('BunnyUploadVideo error: ' . $e->getMessage(), [
                 'media_id' => $video->id,
                 'post_id' => $post->id,
@@ -153,8 +178,21 @@ class BunnyUploadVideo implements ShouldQueue
             return;
         }
 
+        $storagePath = config('path.videos') . $media->video;
+        $tempPath = public_path('temp/' . $media->video);
+
+        Storage::disk('default')->delete($storagePath);
+
+        if (file_exists($tempPath)) {
+            @unlink($tempPath);
+        }
+
         $post = Updates::find($media->updates_id);
         if ($post) {
+            $post->update([
+                'status' => 'failed',
+            ]);
+
             Notifications::send($post->user_id, $post->user_id, 20, $post->id);
         }
     }
