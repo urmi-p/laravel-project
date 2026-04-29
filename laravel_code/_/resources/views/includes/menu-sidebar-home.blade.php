@@ -24,13 +24,22 @@
 		</div>
 	</li>
 	@if (auth()->user()->verified_id == 'yes')
-	<li class="sidebar-card">
+	{{-- <li class="sidebar-card">
 		<div class="card-icon">
 			<i class="fas fa-dollar-sign"></i>
 		</div>
 		<div class="card-info">
 			<small>{{__('general.earnings')}}</small>
 			<strong>{{ Helper::amountFormatDecimal(auth()->user()->myPaymentsReceived()->sum('earning_net_user')) }}</strong>
+		</div>
+	</li> --}}
+	<li class="sidebar-card">
+		<div class="card-icon">
+			<i class="fas fa-dollar-sign"></i>
+		</div>
+		<div class="card-info">
+			<small>{{__('general.balance')}}</small>
+			<strong>{{ Helper::amountFormatDecimal(auth()->user()->balance) }}</strong>
 		</div>
 	</li>
 	@endif
