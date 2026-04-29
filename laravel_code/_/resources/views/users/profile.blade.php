@@ -1220,13 +1220,20 @@
 
                             @php
 
-                                $recentMedia = \App\Models\Media::with(['updates'])
+                                $recentMedia = \App\Models\Media::with([
+                                    'updates' => function ($query) {
+                                        $query->where('status', 'active');
+                                    },
+                                ])
 
                                     ->where('media.type', 'image')
 
                                     ->whereUserId($user->id)
 
                                     ->where('media.updates_id', '<>', 0)
+                                    ->whereHas('updates', function ($query) {
+                                        $query->where('status', 'active');
+                                    })
 
                                     ->limit(3)
 
