@@ -1055,24 +1055,24 @@ class AdminController extends Controller
 
 
 	public function cancelTransaction($id)
-
 	{
 
 		$transaction = Transactions::whereId($id)->whereApproved('1')->firstOrFail();
 
+		if ($transaction->type == 'purchase') {
+			$purchaseId = Purchases::where('transactions_id', $transaction->id)->pluck('id')->first();
 
+			if ($purchaseId) {
+				return $this->salesRefund($purchaseId);
+			}
+		}
 
 		// Cancel subscription
-
 		$subscription = $transaction->subscription();
-
-
 
 		switch ($transaction->payment_gateway) {
 
 			case 'Stripe':
-
-
 
 				if (isset($subscription)) {
 
@@ -1082,11 +1082,7 @@ class AdminController extends Controller
 
 				}
 
-
-
 				break;
-
-
 
 			case 'Paystack':
 
@@ -1170,29 +1166,24 @@ class AdminController extends Controller
 
 		}
 
-
-
 		if (isset($subscription)) {
 
 			$subscription->delete();
 
 		}
 
-
-
 		// Subtract user earnings
 
 		User::whereId($transaction->subscribed)->decrement('balance', $transaction->earning_net_user);
 
+		// Refund the payer when the transaction was paid from wallet
+		if (strtolower($transaction->payment_gateway) == 'wallet') {
+			$taxes = TaxRates::whereIn('id', collect(explode('_', $transaction->taxes)))->get();
+			$totalTaxes = ($transaction->amount * $taxes->sum('percentage') / 100);
+			$amountRefund = number_format($transaction->amount + $totalTaxes, 2, '.', '');
 
-
-		if ($transaction->type == 'purchase') {
-
-			self::salesRefund(Purchases::where('transactions_id', $transaction->id)->pluck('id')->first());
-
+			User::whereId($transaction->user_id)->increment('wallet', $amountRefund);
 		}
-
-
 
 		// Change status transaction to canceled
 
