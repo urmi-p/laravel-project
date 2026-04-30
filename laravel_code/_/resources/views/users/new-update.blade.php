@@ -2075,9 +2075,9 @@
 
             $(document).on('click', '#postPreviewThumbs .post-preview-thumb', function() {
                 if ($(this).hasClass('post-preview-thumb--add')) {
-                    persistActiveCrop().always(function() {
-                        openMediaPicker();
-                    });
+                    // Keep file-picker open inside the original click gesture.
+                    openMediaPicker();
+                    persistActiveCrop();
                     return;
                 }
 
