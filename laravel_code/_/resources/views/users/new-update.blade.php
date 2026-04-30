@@ -1302,6 +1302,60 @@
             var cropRequests = {};
             var uploadLimit = parseInt(window.maximum_files_post || 0, 10) || 0;
             var uploadMediaLabel = @json(__('general.upload_media'));
+            function getDefaultPreviewState() {
+                return {
+                    scalePercent: zoomMin,
+                    panX: 0,
+                    panY: 0
+                };
+            }
+
+            function getActivePreviewItem() {
+                return getActiveUploadItem();
+            }
+
+            function getPreviewStateForItem($item) {
+                var defaults = getDefaultPreviewState();
+                if (!$item || !$item.length) {
+                    return defaults;
+                }
+
+                var savedScale = parseFloat($item.attr('data-preview-scale') || '');
+                var savedPanX = parseFloat($item.attr('data-preview-pan-x') || '');
+                var savedPanY = parseFloat($item.attr('data-preview-pan-y') || '');
+
+                return {
+                    scalePercent: isNaN(savedScale) ? defaults.scalePercent : savedScale,
+                    panX: isNaN(savedPanX) ? defaults.panX : savedPanX,
+                    panY: isNaN(savedPanY) ? defaults.panY : savedPanY
+                };
+            }
+
+            function savePreviewStateForItem($item) {
+                if (!$item || !$item.length) {
+                    return;
+                }
+
+                $item.attr('data-preview-scale', Math.round(getPreviewScale() * 100));
+                $item.attr('data-preview-pan-x', Math.round(previewPan.x));
+                $item.attr('data-preview-pan-y', Math.round(previewPan.y));
+            }
+
+            function saveActivePreviewState() {
+                var $item = getActivePreviewItem();
+                if (!$item || !$item.length) {
+                    return;
+                }
+                savePreviewStateForItem($item);
+            }
+
+            function applyPreviewStateForItem($item) {
+                var state = getPreviewStateForItem($item);
+                previewPan.x = state.panX;
+                previewPan.y = state.panY;
+                setPreviewScale(state.scalePercent);
+            }
+
             function syncZoomSliderFill() {
                 var min = parseFloat($zoom.attr('min')) || zoomMin;
                 var max = parseFloat($zoom.attr('max')) || zoomMax;
@@ -1393,6 +1447,7 @@
                 syncZoomSliderFill();
                 currentScale = percent / 100;
                 applyPreviewTransform();
+                saveActivePreviewState();
             }
 
             function setupAutoZoom() {
@@ -1405,7 +1460,7 @@
                 }
 
                 $zoom.attr({ min: zoomMin, max: zoomMax, step: 1 }).prop('disabled', false);
-                setPreviewScale($zoom.val() || zoomMin);
+                applyPreviewStateForItem(getActivePreviewItem());
             }
 
             function showUploadStep() {
@@ -1447,23 +1502,79 @@
                 return sources;
             }
 
-            function renderPreviewThumbnails(activeSrc) {
-                var sources = collectPreviewSources();
-                if (activeSrc && sources.indexOf(activeSrc) === -1) {
-                    sources.unshift(activeSrc);
+            function ensurePreviewItemKey($item, index) {
+                if (!$item || !$item.length) {
+                    return '';
                 }
+
+                var existing = ($item.attr('data-preview-key') || '').toString();
+                if (existing) {
+                    return existing;
+                }
+
+                var uploadName = ($item.attr('data-upload-name') || '').toString();
+                var key = uploadName ? ('file-' + uploadName) : ('idx-' + index);
+                $item.attr('data-preview-key', key);
+                return key;
+            }
+
+            function collectPreviewEntries() {
+                var entries = [];
+                $('#formUpdateCreate .fileuploader-item').each(function(index) {
+                    var $item = $(this);
+                    var src = getPreviewSourceFromItem($item);
+                    if (!src) {
+                        return;
+                    }
+
+                    entries.push({
+                        key: ensurePreviewItemKey($item, index),
+                        src: src
+                    });
+                });
+                return entries;
+            }
+
+            function getActivePreviewKey() {
+                var $active = getActiveUploadItem();
+                if (!$active || !$active.length) {
+                    return '';
+                }
+                return ensurePreviewItemKey($active, $active.index());
+            }
+
+            function markActiveItemByKey(key) {
+                if (!key) {
+                    return;
+                }
+
+                var $matched = $('#formUpdateCreate .fileuploader-item[data-preview-key="' + key.replace(/"/g, '\\"') + '"]').first();
+                if (!$matched.length) {
+                    return;
+                }
+
+                $('#formUpdateCreate .fileuploader-item').removeClass('preview-active');
+                $matched.addClass('preview-active');
+            }
+
+            function renderPreviewThumbnails(activeSrc) {
+                var entries = collectPreviewEntries();
                 $previewThumbs.empty();
 
-                if (!sources.length) {
+                if (!entries.length) {
                     $previewThumbs.hide();
                     return;
                 }
 
-                sources.forEach(function(src) {
-                    var $btn = $('<button type="button" class="post-preview-thumb" />').attr('data-src', src);
-                    var $img = $('<img alt="Thumbnail">').attr('src', src);
+                var activeKey = getActivePreviewKey();
+
+                entries.forEach(function(entry) {
+                    var $btn = $('<button type="button" class="post-preview-thumb" />')
+                        .attr('data-src', entry.src)
+                        .attr('data-key', entry.key);
+                    var $img = $('<img alt="Thumbnail">').attr('src', entry.src);
                     $btn.append($img);
-                    if (src === activeSrc) {
+                    if ((activeKey && entry.key === activeKey) || (!activeKey && entry.src === activeSrc)) {
                         $btn.addClass('active');
                     }
                     $previewThumbs.append($btn);
@@ -1483,6 +1594,7 @@
             function showPreviewStep(src) {
                 var previewSrc = src || collectPreviewSources()[0] || '';
                 renderPreviewThumbnails(previewSrc);
+                markActiveItemBySrc(previewSrc);
                 loadPreviewImage(previewSrc);
             }
 
@@ -1831,6 +1943,7 @@
             };
 
             function openPreviewFromSelectedItem($item) {
+                saveActivePreviewState();
                 var src = getPreviewSourceFromItem($item);
                 if (!src) {
                     return;
@@ -2017,6 +2130,7 @@
                 }
                 isDraggingPreview = false;
                 $previewImage.removeClass('is-dragging');
+                saveActivePreviewState();
             });
 
             $(window).on('resize', function() {
@@ -2085,11 +2199,17 @@
                 if (!src) {
                     return;
                 }
+                saveActivePreviewState();
                 persistActiveCrop();
                 $('#postPreviewThumbs .post-preview-thumb').removeClass('active');
                 $(this).addClass('active');
+                var itemKey = ($(this).attr('data-key') || '').toString();
+                if (itemKey) {
+                    markActiveItemByKey(itemKey);
+                } else {
+                    markActiveItemBySrc(src);
+                }
                 loadPreviewImage(src);
-                markActiveItemBySrc(src);
             });
 
             $visibilityButtons.on('click', function() {
