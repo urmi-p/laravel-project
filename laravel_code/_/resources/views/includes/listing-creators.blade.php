@@ -63,10 +63,7 @@
 					<li class="list-inline-item small"><i class="feather icon-mic"></i> {{ Helper::formatNumber($response->media->where('type', 'music')->count()) }}</li>
 
 				@endif
-				{{-- for test  --}}
-				<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
-
-				{{-- for test  --}}
+				
 				@if ($response->media->where('type', 'file')->groupBy('type')->count() != 0)
 
 					<li class="list-inline-item small"><i class="far fa-file-archive"></i> {{ Helper::formatNumber($response->media->where('type', 'file')->count()) }}</li>
