@@ -2167,13 +2167,25 @@ html[data-bs-theme="dark"] .theme-toggle-btn[data-mode="dark"] .icon-moon {
 @media (max-width: 1024px) {
     .post-composer-dark #updateDescription {
         min-height: 140px !important;
-        padding: 14px 14px 78px !important;
+        padding: 14px 14px 68px !important;
     }
     .post-composer-dark .btn_position {
         position: absolute;
         left: 10px;
+        right: 10px;
         bottom: 10px;
         z-index: 2;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .post-composer-dark .btn_position::-webkit-scrollbar {
+        display: none;
+    }
+    .post-composer-dark .btn_position > div {
+        flex: 0 0 auto;
     }
 }
 @media (max-width: 575.98px) {
