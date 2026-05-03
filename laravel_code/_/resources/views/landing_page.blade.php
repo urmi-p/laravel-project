@@ -249,8 +249,8 @@
                         ],
                         [
                             'type' => 'emoji',
-                            'icon' => '🇫🇷',
-                            'label' => 'French Platform',
+                            'icon' => '🌍',
+                            'label' => 'Universal Platform',
                         ],
                         [
                             'type' => 'emoji',
