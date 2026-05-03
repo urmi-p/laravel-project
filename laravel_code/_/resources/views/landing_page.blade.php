@@ -177,28 +177,114 @@
                 </div>
             </div>
 
-            <!-- BRANDS -->
-            <div class="row brands text-center">
-                <div class="col brand-item">
-                    <img src="{{ asset('img/icons/Subscription.png') }}" alt="{{ __('general.subscriptions') }}">
-                    <span>{{ __('general.subscriptions') }}</span>
-                </div>
-                <div class="col brand-item">
-                    <img src="{{ asset('img/icons/Paid-Messages.png') }}" alt="{{ __('general.paid_messages') }}">
-                    <span>{{ __('general.paid_messages') }}</span>
-                </div>
-                <div class="col brand-item">
-                    <img src="{{ asset('img/icons/Tips.png') }}" alt="{{ __('general.tips') }}">
-                    <span>{{ __('general.tips') }}</span>
-                </div>
-                <div class="col brand-item">
-                    <img src="{{ asset('img/icons/exclusive.png') }}" alt="{{ __('general.exclusive_content') }}">
-                    <span>{{ __('general.exclusive_content') }}</span>
-                </div>
-                <div class="col brand-item">
-                   <img src="{{ asset('img/icons/Agencies.png') }}" alt="{{ __('general.agencies_system') }}">
-                    <span>{{ __('general.agencies_system') }}</span>
-                </div>
+            @php
+                $featureRows = [
+                    [
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🤝',
+                            'label' => "Anonymity\nGuaranteed",
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🔐',
+                            'label' => "RPG-\nFriendly",
+                        ],
+                        [
+                            'type' => 'whatsapp',
+                            'label' => "24/7 support\nvia WhatsApp",
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '👱‍♀️',
+                            'label' => "100%\nFemale Staff",
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🔑',
+                            'label' => "Free Anti-Leak\nProtection",
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🔥',
+                            'label' => 'Reduced Commission',
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '📈',
+                            'label' => 'Detailed Statistics',
+                        ],
+                    ],
+                    [
+                        [
+                            'type' => 'emoji',
+                            'icon' => '📱',
+                            'label' => "Mobile\nApplication",
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🏖️',
+                            'label' => 'No Bank Fees',
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🗓️',
+                            'label' => 'Exclusive Events',
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '📣',
+                            'label' => 'Featured Offer',
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '👀',
+                            'label' => "5% Lifetime\nAffiliate Bonus",
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🛟',
+                            'label' => 'Human Support',
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '🇫🇷',
+                            'label' => 'French Platform',
+                        ],
+                        [
+                            'type' => 'emoji',
+                            'icon' => '✅',
+                            'label' => 'Certified Agencies',
+                        ],
+                    ],
+                ];
+            @endphp
+
+            <div class="feature-marquee" aria-label="{{ __('general.landing_features') }}">
+                @foreach ($featureRows as $rowIndex => $rowCards)
+                    <div class="feature-marquee__row{{ $rowIndex === 1 ? ' is-reverse' : '' }}">
+                        <div class="feature-marquee__track">
+                            @for ($duplicate = 0; $duplicate < 2; $duplicate++)
+                                <div class="feature-marquee__group" @if ($duplicate === 1) aria-hidden="true" @endif>
+                                    @foreach ($rowCards as $card)
+                                        <article class="feature-marquee__card">
+                                            <div class="feature-marquee__icon-wrap">
+                                                @if ($card['type'] === 'whatsapp')
+                                                    <svg class="feature-marquee__icon feature-marquee__icon--whatsapp" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                        <path d="M18.497 4.409a10 10 0 0 1 -10.36 16.828l-.223 -.098l-4.759 .849l-.11 .011a1 1 0 0 1 -.11 0l-.102 -.013l-.108 -.024l-.105 -.037l-.099 -.047l-.093 -.058l-.014 -.011l-.012 -.007l-.086 -.073l-.077 -.08l-.067 -.088l-.056 -.094l-.034 -.07l-.04 -.108l-.028 -.128l-.012 -.102a1 1 0 0 1 0 -.125l.012 -.1l.024 -.11l.045 -.122l1.433 -3.304l-.009 -.014a10 10 0 0 1 1.549 -12.454l.215 -.203a10 10 0 0 1 13.226 -.217m-8.997 3.09a1.5 1.5 0 0 0 -1.5 1.5v1a6 6 0 0 0 6 6h1a1.5 1.5 0 0 0 0 -3h-1l-.144 .007a1.5 1.5 0 0 0 -1.128 .697l-.042 .074l-.022 -.007a4.01 4.01 0 0 1 -2.435 -2.435l-.008 -.023l.075 -.041a1.5 1.5 0 0 0 .704 -1.272v-1a1.5 1.5 0 0 0 -1.5 -1.5"/>
+                                                    </svg>
+                                                @else
+                                                    <span class="feature-marquee__emoji" aria-hidden="true">{{ $card['icon'] }}</span>
+                                                @endif
+                                            </div>
+                                            <h3 class="feature-marquee__label">{!! nl2br(e($card['label'])) !!}</h3>
+                                        </article>
+                                    @endforeach
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+                @endforeach
             </div>
 
         </div>

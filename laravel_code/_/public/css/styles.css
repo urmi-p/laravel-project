@@ -10260,40 +10260,114 @@ body.landing-page {
       opacity: 0.95;
     }
 
-    /* BRANDS */
-    .landing-page .brands {
-      display: flex;
-      align-items: stretch;
+    .landing-page .feature-marquee {
       margin-top: 28px;
-      padding: 12px 0;
+      display: grid;
+      gap: 12px;
     }
 
-    .landing-page .brand-item {
+    .landing-page .feature-marquee__row {
+      position: relative;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+
+    .landing-page .feature-marquee__track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      animation: landing-marquee-left 28s linear infinite;
+    }
+
+    .landing-page .feature-marquee__row.is-reverse .feature-marquee__track {
+      animation-name: landing-marquee-right;
+      animation-duration: 32s;
+    }
+
+    .landing-page .feature-marquee__group {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      padding-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .landing-page .feature-marquee__card {
+      min-width: 184px;
+      min-height: 122px;
+      padding: 18px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      text-align: center;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    .landing-page .feature-marquee__icon-wrap {
+      width: 52px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      color: #fff;
-      opacity: 0.92;
-      min-height: 72px;
-      padding: 8px 12px;
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 1.35;
-      text-align: left;
     }
 
-    .landing-page .brand-item img {
-      width: 40px;
-      height: 40px;
-      flex: 0 0 40px;
+    .landing-page .feature-marquee__icon {
+      width: 46px;
+      height: 46px;
       object-fit: contain;
       display: block;
     }
 
-    .landing-page .brand-item span {
-      display: block;
-      max-width: 140px;
+    .landing-page .feature-marquee__emoji {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .landing-page .feature-marquee__icon--whatsapp {
+      fill: #24d366;
+    }
+
+    .landing-page .feature-marquee__label {
+      margin: 0;
+      max-width: 150px;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #fff;
+    }
+
+    .landing-page .feature-marquee:hover .feature-marquee__track {
+      animation-play-state: paused;
+    }
+
+    @keyframes landing-marquee-left {
+      from {
+        transform: translate3d(0, 0, 0);
+      }
+
+      to {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    @keyframes landing-marquee-right {
+      from {
+        transform: translate3d(-50%, 0, 0);
+      }
+
+      to {
+        transform: translate3d(0, 0, 0);
+      }
     }
 
     .landing-page .hero .container > .row.align-items-center {
@@ -10522,9 +10596,29 @@ body.landing-page {
     max-width: 100%;
   }
 
-  .landing-page .brand-item {
-    font-size: 14px;
-    min-height: 42px;
+  .landing-page .feature-marquee__card {
+    min-width: 164px;
+    min-height: 110px;
+    padding: 16px 14px 14px;
+  }
+
+  .landing-page .feature-marquee__icon-wrap {
+    width: 46px;
+    height: 46px;
+  }
+
+  .landing-page .feature-marquee__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-page .feature-marquee__emoji {
+    font-size: 28px;
+  }
+
+  .landing-page .feature-marquee__label {
+    font-size: 0.92rem;
+    max-width: 132px;
   }
 
   .landing-page .keypoints h2 {
@@ -10621,15 +10715,54 @@ body.landing-page {
     font-size: 16px;
   }
 
-  .landing-page .brands {
+  .landing-page .feature-marquee {
     margin-top: 16px;
-    padding: 8px 0;
+    gap: 10px;
   }
 
-  .landing-page .brand-item {
-    font-size: 12px;
-    min-height: 34px;
-    gap: 6px;
+  .landing-page .feature-marquee__row {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .landing-page .feature-marquee__track {
+    animation-duration: 24s;
+  }
+
+  .landing-page .feature-marquee__row.is-reverse .feature-marquee__track {
+    animation-duration: 27s;
+  }
+
+  .landing-page .feature-marquee__group {
+    gap: 10px;
+    padding-right: 10px;
+  }
+
+  .landing-page .feature-marquee__card {
+    min-width: 142px;
+    min-height: 98px;
+    padding: 14px 12px 12px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .landing-page .feature-marquee__icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-page .feature-marquee__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .landing-page .feature-marquee__emoji {
+    font-size: 24px;
+  }
+
+  .landing-page .feature-marquee__label {
+    font-size: 0.84rem;
+    max-width: 114px;
   }
 
   .landing-page .key-row {
@@ -11681,14 +11814,12 @@ body.landing-page {
     max-width: 14rem;
   }
 
-  .landing-page .brands > [class*="col-"] {
-    flex: 0 0 50%;
-    max-width: 50%;
+  .landing-page .feature-marquee__track {
+    animation-duration: 22s;
   }
 
-  .landing-page .brand-item {
-    justify-content: center;
-    min-height: 2.5rem;
+  .landing-page .feature-marquee__row.is-reverse .feature-marquee__track {
+    animation-duration: 25s;
   }
 
   .landing-page .kp-card,
