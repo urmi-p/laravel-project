@@ -196,7 +196,7 @@
                         ],
                         [
                             'type' => 'image',
-                            'image' => asset('img/payments/bitcoin.png'),
+                            'image' => asset('img/payments/crypto-accepted.jpeg'),
                             'image_class' => 'feature-marquee__icon--crypto',
                             'label' => "Cryptocurrency\nAccepted",
                         ],
