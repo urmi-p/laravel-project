@@ -2,6 +2,32 @@
 
 @section('title'){{trans('general.messages')}} -@endsection
 
+@section('css')
+<style>
+  @media (max-width: 767.98px) {
+    .messages-landing-page #messagesContainer .messages-empty-state {
+      width: 100% !important;
+      margin: 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+
+    .messages-landing-page #messagesContainer .messages-empty-state .card-body {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+</style>
+@endsection
+
 @section('content')
 <section class="section section-sm pb-0 section-msg messages-landing-page">
   <div class="container-fluid pt-lg-5 pt-2 px-lg-5">

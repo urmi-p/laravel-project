@@ -196,7 +196,7 @@
 
 @if ($messagesInbox->count() == 0)
 
-<div class="card border-0 text-center">
+<div class="card border-0 text-center messages-empty-state">
 
 	<div class="card-body">
 
