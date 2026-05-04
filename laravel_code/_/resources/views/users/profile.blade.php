@@ -2999,7 +2999,7 @@
 
                 title: "{{ __('general.canceled') }}",
 
-                text: "{{ session('subscription_cancel') }}",
+                text: @json(html_entity_decode(session('subscription_cancel'), ENT_QUOTES, 'UTF-8')),
 
                 type: "error",
 
@@ -3065,3 +3065,4 @@
 @php session()->forget('subscription_cancel') @endphp
 
 @php session()->forget('subscription_success') @endphp
+

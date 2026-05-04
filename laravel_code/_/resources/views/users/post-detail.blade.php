@@ -107,9 +107,9 @@
 
           @endif
 
-
-
+          <div class="d-none d-md-block">
             @include('includes.footer-tiny')
+          </div>
 
 
 

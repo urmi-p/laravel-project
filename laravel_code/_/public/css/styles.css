@@ -9666,6 +9666,53 @@ html[data-bs-theme="light"] .app-auth-shell .page-item.active .page-link {
         line-height: 1.4;
     }
 
+    .update-meta-mobile {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.4rem;
+        width: 100%;
+    }
+
+    .update-meta-mobile small {
+        margin: 0 !important;
+        white-space: nowrap;
+    }
+
+    .action-left {
+        width: 100%;
+    }
+
+    .action_user_info {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .action_user_heading {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.35rem;
+        width: 100%;
+    }
+
+    .action_user_heading .post-date-mobile {
+        margin-left: auto;
+        white-space: nowrap;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+    .action_user_heading .post-meta-mobile {
+        margin-left: auto !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.35rem;
+        white-space: nowrap;
+    }
+
     .app-auth-shell
         .app-main-row
         > .side_bar_box_shadow

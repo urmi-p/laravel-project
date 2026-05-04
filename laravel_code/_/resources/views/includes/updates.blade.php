@@ -355,13 +355,37 @@
 
                         </small>
                         @endif
+
+
                     </div>
                     <span>
                         <small class="text-muted font-14 mt-2">{{ '@' . $response->creator->username }}</small>
                     </span>
                 </div>
             </div>
+            
+                        <span class="post-meta-mobile d-inline-flex d-md-none align-items-center">
+                            <small class="timeAgo post-date-mobile"
+                                data="{{ date('c', strtotime($response->date)) }}"></small>
 
+                            @if ($response->locked == 'no')
+                                <small class="type-post" title="{{ __('general.public') }}">
+                                    <i class="iconmoon icon-WorldWide mr-1"></i>
+                                </small>
+                            @endif
+
+                            @if ($response->locked == 'yes')
+                                <small class="type-post" title="{{ __('users.content_locked') }}">
+                                    <i class="feather icon-lock mr-1"></i>
+
+                                    @if ((auth()->check() && $response->price != 0.0 && $checkUserSubscription && !$checkPayPerView) || (auth()->check() && $response->price != 0.0 && !$checkUserSubscription && !$checkPayPerView))
+                                        {{ Helper::formatPrice($response->price) }}
+                                    @elseif (auth()->check() && $checkPayPerView)
+                                        {{ __('general.paid') }}
+                                    @endif
+                                </small>
+                            @endif
+                        </span>
             @if ($response->status == 'active')
 
                 <div class="card-footer action-pill mt-2">
@@ -1020,17 +1044,17 @@
             @endif
 
             <div class="media">
-                <div class="media-body">
-                    <small class="timeAgo" data="{{ date('c', strtotime($response->date)) }}"></small>
+                <div class="media-body update-meta-mobile d-flex align-items-center flex-wrap justify-content-end justify-content-md-start">
+                    <small class="timeAgo d-none d-md-inline" data="{{ date('c', strtotime($response->date)) }}"></small>
 
                     @if ($response->locked == 'no')
-                        <small class="type-post" title="{{ __('general.public') }}">
+                        <small class="type-post d-none d-md-inline" title="{{ __('general.public') }}">
                             <i class="iconmoon icon-WorldWide mr-1"></i>
                         </small>
                     @endif
 
                     @if ($response->locked == 'yes')
-                        <small class="type-post" title="{{ __('users.content_locked') }}">
+                        <small class="type-post d-none d-md-inline" title="{{ __('users.content_locked') }}">
                             <i class="feather icon-lock mr-1"></i>
 
                             @if ((auth()->check() && $response->price != 0.0 && $checkUserSubscription && !$checkPayPerView) || (auth()->check() && $response->price != 0.0 && !$checkUserSubscription && !$checkPayPerView))
