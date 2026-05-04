@@ -478,6 +478,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        .post-preview-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 6;
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 10, 14, 0.76);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            color: #fff;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .post-preview-delete:hover {
+            background: rgba(229, 59, 84, 0.94);
+            border-color: rgba(229, 59, 84, 0.94);
+            color: #fff;
         }
 
         .post-preview-media img {
@@ -489,6 +514,10 @@
             display: block;
             transform-origin: center center;
             cursor: grab;
+        }
+
+        .post-preview-media img.is-empty {
+            display: none;
         }
 
         .post-preview-media img.is-dragging {
@@ -956,9 +985,13 @@
                                             <span class="upload-processing-text">{{ __('users.uploading') }} <strong id="uploadProcessingPercent">0%</strong></span>
                                         </div>
 
-                                        <div id="postPreviewStep" class="post-preview-step">
+                                            <div id="postPreviewStep" class="post-preview-step">
                                             <div class="post-preview-frame">
                                                 <div class="post-preview-media">
+                                                    <button type="button" id="postPreviewDelete" class="post-preview-delete"
+                                                        title="{{ __('general.delete') }}" aria-label="{{ __('general.delete') }}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
                                                     <img id="postPreviewImage" src="" alt="{{ __('general.preview') }}">
                                                 </div>
                                                 <div class="post-preview-controls">
@@ -1481,7 +1514,9 @@
                 $previewImage.off('load.stepzoom').on('load.stepzoom', function() {
                     setupAutoZoom();
                 });
-                $previewImage.attr('src', src || '');
+                var hasSrc = !!(src && String(src).trim());
+                $previewImage.toggleClass('is-empty', !hasSrc);
+                $previewImage.attr('src', hasSrc ? src : '');
 
                 if ($previewImage.get(0).complete) {
                     setTimeout(function() {
@@ -1561,11 +1596,6 @@
                 var entries = collectPreviewEntries();
                 $previewThumbs.empty();
 
-                if (!entries.length) {
-                    $previewThumbs.hide();
-                    return;
-                }
-
                 var activeKey = getActivePreviewKey();
 
                 entries.forEach(function(entry) {
@@ -1588,7 +1618,11 @@
                     );
                 }
 
-                $previewThumbs.show();
+                if ($previewThumbs.children().length) {
+                    $previewThumbs.show();
+                } else {
+                    $previewThumbs.hide();
+                }
             }
 
             function showPreviewStep(src) {
@@ -1615,19 +1649,11 @@
             }
 
             function canAddMorePreviewMedia() {
-                var count = getSelectedFilesCount();
-                if (!count) {
-                    return false;
-                }
-
                 return !hasUploadedVideo && canAddMoreMedia();
             }
 
             function canAddMoreMedia() {
                 var count = getSelectedFilesCount();
-                if (!count) {
-                    return false;
-                }
 
                 if (uploadLimit > 0 && count >= uploadLimit) {
                     return false;
@@ -1751,6 +1777,20 @@
                 });
 
                 return $match;
+            }
+
+            function removeUploadItem($item) {
+                if (!$item || !$item.length) {
+                    return false;
+                }
+
+                var $removeAction = $item.find('.fileuploader-action-remove').first();
+                if ($removeAction.length) {
+                    $removeAction.trigger('click');
+                    return true;
+                }
+
+                return false;
             }
 
             function markActiveItemBySrc(src) {
@@ -2064,7 +2104,7 @@
                         markActiveItemBySrc(remainingPreview);
                     }
                 } else {
-                    showUploadStep();
+                    showPreviewStep('');
                 }
 
                 setTimeout(function() {
@@ -2210,6 +2250,19 @@
                     markActiveItemBySrc(src);
                 }
                 loadPreviewImage(src);
+            });
+
+            $(document).on('click', '#postPreviewDelete', function() {
+                var $active = getActiveUploadItem();
+                if (!$active.length) {
+                    $active = $('#formUpdateCreate .fileuploader-item').first();
+                }
+
+                if (!$active.length) {
+                    return;
+                }
+
+                removeUploadItem($active);
             });
 
             $visibilityButtons.on('click', function() {

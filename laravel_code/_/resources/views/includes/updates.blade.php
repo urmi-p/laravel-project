@@ -364,28 +364,29 @@
                 </div>
             </div>
             
-                        <span class="post-meta-mobile d-inline-flex d-md-none align-items-center">
-                            <small class="timeAgo post-date-mobile"
-                                data="{{ date('c', strtotime($response->date)) }}"></small>
+            <span class="post-meta-mobile d-inline-flex d-md-none align-items-center">
+                <small class="timeAgo post-date-mobile"
+                    data="{{ date('c', strtotime($response->date)) }}"></small>
 
-                            @if ($response->locked == 'no')
-                                <small class="type-post" title="{{ __('general.public') }}">
-                                    <i class="iconmoon icon-WorldWide mr-1"></i>
-                                </small>
-                            @endif
+                @if ($response->locked == 'no')
+                    <small class="type-post" title="{{ __('general.public') }}">
+                        <i class="iconmoon icon-WorldWide mr-1"></i>
+                    </small>
+                @endif
 
-                            @if ($response->locked == 'yes')
-                                <small class="type-post" title="{{ __('users.content_locked') }}">
-                                    <i class="feather icon-lock mr-1"></i>
+                @if ($response->locked == 'yes')
+                    <small class="type-post" title="{{ __('users.content_locked') }}">
+                        <i class="feather icon-lock mr-1"></i>
 
-                                    @if ((auth()->check() && $response->price != 0.0 && $checkUserSubscription && !$checkPayPerView) || (auth()->check() && $response->price != 0.0 && !$checkUserSubscription && !$checkPayPerView))
-                                        {{ Helper::formatPrice($response->price) }}
-                                    @elseif (auth()->check() && $checkPayPerView)
-                                        {{ __('general.paid') }}
-                                    @endif
-                                </small>
-                            @endif
-                        </span>
+                        @if ((auth()->check() && $response->price != 0.0 && $checkUserSubscription && !$checkPayPerView) || (auth()->check() && $response->price != 0.0 && !$checkUserSubscription && !$checkPayPerView))
+                            {{ Helper::formatPrice($response->price) }}
+                        @elseif (auth()->check() && $checkPayPerView)
+                            {{ __('general.paid') }}
+                        @endif
+                    </small>
+                @endif
+            </span>
+            
             @if ($response->status == 'active')
 
                 <div class="card-footer action-pill mt-2">
