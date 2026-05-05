@@ -364,7 +364,7 @@
                 </div>
             </div>
             
-            <span class="post-meta-mobile d-inline-flex d-md-none align-items-center">
+            <span class="post-meta-mobile post-meta-mobile-feed d-inline-flex d-md-none align-items-center">
                 <small class="timeAgo post-date-mobile"
                     data="{{ date('c', strtotime($response->date)) }}"></small>
 
@@ -1025,7 +1025,7 @@
             @endif
         </div>
 
-        <div class="card-body">
+        <div class="card-body post-meta-body">
             <div
                 class="pinned_post text-muted small w-100 mb-2 {{ ($response->fixed_post == '1' && request()->path() == $response->creator->username) || (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id) ? 'pinned-current' : 'display-none' }}">
                 <i class="bi bi-pin mr-2"></i> {{ __('general.pinned_post') }}
@@ -1071,7 +1071,7 @@
         </div><!-- card body -->
 
         @if ((auth()->check() && auth()->user()->id == $response->creator->id) || ($response->locked == 'yes' && $mediaCount != 0) || (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price == 0.0) || (auth()->check() && $response->locked == 'yes' && $checkUserSubscription && $response->price != 0.0 && $checkPayPerView) || (auth()->check() && $response->locked == 'yes' && $response->price != 0.0 && !$checkUserSubscription && $checkPayPerView) || (auth()->check() && auth()->user()->role == 'admin' && auth()->user()->permission == 'all') || $response->locked == 'no')
-            <div class="card-body pt-0 pb-3">
+            <div class="card-body pt-0 pb-3 post-description-body">
                 <p class="mb-0 truncated position-relative text-word-break">
                     {!! Helper::linkText(Helper::checkText($response->description, $isVideoEmbed ?? null)) !!}
                 </p>
@@ -1079,7 +1079,7 @@
             </div>
         @else
             @if ($response->title)
-                <div class="card-body pt-0 pb-3">
+                <div class="card-body pt-0 pb-3 post-description-body">
                     <p class="mb-0 update-text position-relative text-word-break font-weight-bold">
                         {!! Helper::linkText($response->title) !!}
                     </p>
@@ -1495,7 +1495,7 @@
 
 </h4>
 
-<div class="w-100 mb-3 containerLikeComment">
+<div class="w-100 mb-2 containerLikeComment">
 
 
 

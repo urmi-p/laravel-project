@@ -9704,13 +9704,18 @@ html[data-bs-theme="light"] .app-auth-shell .page-item.active .page-link {
         line-height: 1.2;
     }
 
-    .action_user_heading .post-meta-mobile {
+    .post-meta-mobile {
         margin-left: auto !important;
         display: inline-flex !important;
         align-items: center;
         justify-content: flex-end;
-        gap: 0.35rem;
+        gap: 0.55rem;
+        padding-left: 0.5rem;
         white-space: nowrap;
+    }
+
+    .post-meta-mobile .type-post {
+        margin-left: 0.1rem;
     }
 
     .app-auth-shell
@@ -9741,6 +9746,34 @@ html[data-bs-theme="light"] .app-auth-shell .page-item.active .page-link {
         align-items: center !important;
         justify-content: center;
         float: none !important;
+    }
+
+    .app-auth-shell
+        .app-main-row
+        > .side_bar_box_shadow
+        + [class*="col-"]
+        .containerLikeComment {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .app-auth-shell
+        .app-main-row
+        > .side_bar_box_shadow
+        + [class*="col-"]
+        .bg-dark-force
+        + .card-body {
+        padding-top: 0.35rem !important;
+        padding-bottom: 0.35rem !important;
+    }
+
+    .app-auth-shell
+        .app-main-row
+        > .side_bar_box_shadow
+        + [class*="col-"]
+        .bg-dark-force
+        + .card-body
+        .media {
+        display: none !important;
     }
 
     .app-auth-shell
@@ -12006,5 +12039,47 @@ body.landing-page {
   .landing-page .hero-section .hero-title.hero-title-mobile-two-line {
     display: inline-block;
     max-width: none;
+  }
+
+  .post-meta-mobile-feed {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.45rem !important;
+    padding-left: 0.625rem !important;
+    white-space: nowrap !important;
+  }
+
+  .post-meta-mobile-feed .timeAgo {
+    margin-right: 0.1rem !important;
+  }
+
+  .post-meta-mobile-feed .type-post {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin-left: 0 !important;
+  }
+
+  .post-meta-body {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  .post-meta-body .media {
+    display: none !important;
+  }
+
+  .post-description-body {
+    padding-top: 0.15rem !important;
+  }
+
+  .post-description-body .truncated,
+  .post-description-body .update-text {
+    margin-top: 0 !important;
+  }
+
+  .containerLikeComment {
+    margin-bottom: 0.35rem !important;
   }
 }
