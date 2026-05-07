@@ -284,7 +284,8 @@ class UserController extends Controller
 
     // Sort by older
     $query->when(request('sort') == 'oldest', function ($q) {
-      $q->orderBy('updates.id', 'asc');
+      $q->orderBy('updates.date', 'asc')
+        ->orderBy('updates.id', 'asc');
     });
 
     // Sort by unlockable
@@ -297,7 +298,7 @@ class UserController extends Controller
       $q->where('updates.locked', 'no');
     });
 
-    $updates = $query->orderBy('updates.fixed_post', 'desc')
+    $updates = $query->orderBy('updates.date', 'desc')
       ->orderBy('updates.id', 'desc')
       ->groupBy('updates.id')
       ->simplePaginate(config('settings.number_posts_show'));

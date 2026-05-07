@@ -103,6 +103,7 @@ class HomeController extends Controller
   {
     $updates = Updates::verifyCountryBlocking()
       ->whereStatus('active')
+      ->orderBy('updates.date', 'desc')
       ->orderBy('updates.id', 'desc')
       ->getSelectRelations()
       ->simplePaginate(config('settings.number_posts_show'));

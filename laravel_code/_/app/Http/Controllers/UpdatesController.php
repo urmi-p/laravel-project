@@ -773,7 +773,8 @@ class UpdatesController extends Controller
 
     // Sort by older
     $query->when(request('sort') == 'oldest', function ($q) {
-      $q->orderBy('updates.id', 'asc');
+      $q->orderBy('updates.date', 'asc')
+        ->orderBy('updates.id', 'asc');
     });
 
     // Sort by unlockable
@@ -786,7 +787,7 @@ class UpdatesController extends Controller
       $q->where('updates.locked', 'no');
     });
 
-    $data = $query->orderBy('updates.fixed_post', 'desc')
+    $data = $query->orderBy('updates.date', 'desc')
       ->orderBy('updates.id', 'desc')
       ->groupBy('updates.id')
       ->skip($skip)
@@ -1033,7 +1034,8 @@ class UpdatesController extends Controller
 
     // Sort by older
     $updates->when(request('sort') == 'oldest', function ($q) {
-      $q->orderBy('updates.id', 'asc');
+      $q->orderBy('updates.date', 'asc')
+        ->orderBy('updates.id', 'asc');
     });
 
     // Sort by unlockable
@@ -1047,6 +1049,7 @@ class UpdatesController extends Controller
     });
 
     $updates = $updates->whereStatus('active')
+      ->orderBy('updates.date', 'desc')
       ->orderBy('updates.id', 'desc')
       ->getSelectRelations()
       ->simplePaginate(config('settings.number_posts_show'));
@@ -1077,7 +1080,8 @@ class UpdatesController extends Controller
 
     // Sort by older
     $updates->when(request('sort') == 'oldest', function ($q) {
-      $q->orderBy('updates.id', 'asc');
+      $q->orderBy('updates.date', 'asc')
+        ->orderBy('updates.id', 'asc');
     });
 
     // Sort by unlockable
@@ -1091,6 +1095,7 @@ class UpdatesController extends Controller
     });
 
     $updates = $updates->whereStatus('active')
+      ->orderBy('updates.date', 'desc')
       ->orderBy('updates.id', 'desc')
       ->skip($skip)
       ->take(config('settings.number_posts_show'))

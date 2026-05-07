@@ -1027,7 +1027,7 @@
 
         <div class="card-body post-meta-body">
             <div
-                class="pinned_post text-muted small w-100 mb-2 {{ ($response->fixed_post == '1' && request()->path() == $response->creator->username) || (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id) ? 'pinned-current' : 'display-none' }}">
+                class="pinned_post text-muted small w-100 mb-2 {{ ($response->fixed_post == '1' && request()->is('profile/' . $response->creator->username)) || (auth()->check() && $response->fixed_post == '1' && $response->creator->id == auth()->user()->id) ? 'pinned-current' : 'display-none' }}">
                 <i class="bi bi-pin mr-2"></i> {{ __('general.pinned_post') }}
             </div>
 

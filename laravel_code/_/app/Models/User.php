@@ -217,6 +217,7 @@ class User extends Authenticatable implements HasLocalePreference
       ->whereIntegerInRaw('user_id', $fetchSubscriptions)
       ->where('status', 'active')
       ->groupBy('id')
+      ->orderBy('date', 'desc')
       ->orderBy('id', 'desc');
 
     if (isset($skip)) {
