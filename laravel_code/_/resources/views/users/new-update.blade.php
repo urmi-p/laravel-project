@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('body_class', 'new-post-page')
 @section('css')
     <style>
         .new-post-header {
@@ -1306,6 +1307,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.fileuploader').addClass('d-block');
+            var publishMode = @json(request('publish'));
+            var textOnlyMode = publishMode === 'text';
 
             var $uploadStep = $('#formUpdateCreate .fileuploader');
             var $previewStep = $('#postPreviewStep');
@@ -2204,6 +2207,10 @@
                 e.preventDefault();
 
                 if ($form.hasClass('step-details')) {
+                    if (textOnlyMode && !collectPreviewSources().length) {
+                        window.history.back();
+                        return;
+                    }
                     persistActiveCrop();
                     var currentSrc = $previewImage.attr('src') || collectPreviewSources()[0] || '';
                     showPreviewStep(currentSrc);
@@ -2226,6 +2233,15 @@
 
                 openPreviewFromSelectedItem($(this));
             });
+
+            if (textOnlyMode) {
+                $('#postDetailsBack').hide();
+                $('#postDetailsAddMore').hide();
+                showDetailsStep();
+                setTimeout(function() {
+                    $('#updateDescription').trigger('focus');
+                }, 60);
+            }
 
             $(document).on('click', '#postPreviewThumbs .post-preview-thumb', function() {
                 if ($(this).hasClass('post-preview-thumb--add')) {

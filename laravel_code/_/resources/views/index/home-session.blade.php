@@ -106,7 +106,9 @@
                     @if (auth()->user()->verified_id == 'yes')
                         @include('includes.modal-add-story')
 
-                        @include('includes.form-post')
+                        <div class="creator-home-composer">
+                            @include('includes.form-post')
+                        </div>
                     @endif
 
                     @if ($updates->count() != 0)

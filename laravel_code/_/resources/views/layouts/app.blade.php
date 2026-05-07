@@ -57,7 +57,7 @@
   @endif
 </head>
 
-<body class="@yield('body_class') @auth app-auth-shell @endauth">
+<body class="@yield('body_class') @auth app-auth-shell @if(auth()->user()->verified_id == 'yes') creator-mobile-shell @endif @endauth">
   @if ($settings->google_tag_manager_body != '')
   {!! $settings->google_tag_manager_body !!}
   @endif
@@ -161,6 +161,10 @@
 
     @if ($settings->disable_tips == 'off')
      @include('includes.modal-tip')
+   @endif
+
+   @if (auth()->user()->verified_id == 'yes')
+     @include('includes.modal-creator-publish')
    @endif
 
    @if ($settings->gifts)
