@@ -1725,18 +1725,16 @@ input[type='file'] {overflow: hidden;}
 .menuMobile--creator {
 
   --creator-menu-bottom-pad: 6px;
-  --creator-menu-height: 46px;
-  --creator-publish-size: 46px;
-  --creator-publish-half: 0px;
-  --creator-publish-clearance: calc(var(--creator-publish-size) + 32px);
+  --creator-menu-height: 68px;
+  --creator-publish-size: 54px;
+  --creator-publish-half: 27px;
+  --creator-publish-clearance: calc(var(--creator-publish-size) + 42px);
 
   padding: 0 12px calc(env(safe-area-inset-bottom, 0px) + 6px);
 
   width: 100%;
   max-width: 100vw;
   box-sizing: border-box;
-  left: 0;
-  right: 0;
 
   z-index: 1060;
 
@@ -1752,9 +1750,10 @@ input[type='file'] {overflow: hidden;}
 
   display: grid !important;
 
-  grid-template-columns: 44px 44px var(--creator-publish-clearance) 44px 44px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--creator-publish-clearance) max-content 10px;
 
   justify-content: space-between;
+  justify-items: center;
 
   align-items: center;
 
@@ -1763,11 +1762,11 @@ input[type='file'] {overflow: hidden;}
   min-height: var(--creator-menu-height);
 
   width: 100%;
-  box-sizing: border-box;
   max-width: 100%;
-  padding: 0;
+  box-sizing: border-box;
+  padding: 0 4px 8px;
 
-  column-gap: 0;
+  column-gap: 12px;
 
   background: transparent;
 
@@ -1782,8 +1781,6 @@ input[type='file'] {overflow: hidden;}
 .menuMobile--creator .menuMobile-nav--creator > li {
 
   display: flex;
-
-  flex: 0 0 auto;
   min-width: 0;
 
   justify-content: center;
@@ -1794,9 +1791,9 @@ input[type='file'] {overflow: hidden;}
 
 .menuMobile--creator .menuMobile-nav--creator .btn-mobile:not(.btn-mobile-publish) {
 
-  min-width: 36px;
+  min-width: 40px;
 
-  min-height: 36px;
+  min-height: 40px;
 
   display: inline-flex;
 
@@ -1822,12 +1819,6 @@ input[type='file'] {overflow: hidden;}
 
 }
 
-.menuMobile--creator .menu-item-profile .btn-mobile {
-
-  transform: none;
-
-}
-
 .menuMobile--creator .menu-item-message {
 
   justify-content: center;
@@ -1840,31 +1831,7 @@ input[type='file'] {overflow: hidden;}
 
 }
 
-.app-auth-shell .menuMobile.menuMobile--creator.is-home-active .menuMobile-nav--creator {
-
-  grid-template-columns: max-content 44px var(--creator-publish-clearance) 44px 44px;
-
-}
-
-.app-auth-shell .menuMobile.menuMobile--creator.is-profile-active .menuMobile-nav--creator {
-
-  grid-template-columns: 44px max-content var(--creator-publish-clearance) 44px 44px;
-
-}
-
-.app-auth-shell .menuMobile.menuMobile--creator.is-message-active .menuMobile-nav--creator {
-
-  grid-template-columns: 44px 44px var(--creator-publish-clearance) max-content 44px;
-
-}
-
-.app-auth-shell .menuMobile.menuMobile--creator.is-last-active .menuMobile-nav--creator {
-
-  grid-template-columns: 44px 44px var(--creator-publish-clearance) 44px max-content;
-
-}
-
-.app-auth-shell .menuMobile.menuMobile--creator .menu-mobile-publish-placeholder {
+.menuMobile--creator .menu-mobile-publish-placeholder {
 
   width: var(--creator-publish-clearance);
 
@@ -1874,8 +1841,34 @@ input[type='file'] {overflow: hidden;}
 
 }
 
+.app-auth-shell .menuMobile.menuMobile--creator.is-home-active .menuMobile-nav--creator {
+
+  grid-template-columns: max-content minmax(0, 1fr) var(--creator-publish-clearance) minmax(0, 1fr) 40px;
+
+}
+
+.app-auth-shell .menuMobile.menuMobile--creator.is-profile-active .menuMobile-nav--creator {
+
+  grid-template-columns: minmax(0, 1fr) max-content var(--creator-publish-clearance) minmax(0, 1fr) 40px;
+
+}
+
+.app-auth-shell .menuMobile.menuMobile--creator.is-message-active .menuMobile-nav--creator {
+
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--creator-publish-clearance) max-content 10px;
+
+}
+
+.app-auth-shell .menuMobile.menuMobile--creator.is-last-active .menuMobile-nav--creator {
+
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--creator-publish-clearance) minmax(0, 1fr) max-content;
+
+}
+
 .app-auth-shell .menuMobile.menuMobile--creator .menu-item-home .btn-mobile.active.disabled,
-.app-auth-shell .menuMobile.menuMobile--creator .menu-item-message .btn-mobile.active.disabled {
+.app-auth-shell .menuMobile.menuMobile--creator .menu-item-profile .btn-mobile.active.disabled,
+.app-auth-shell .menuMobile.menuMobile--creator .menu-item-message .btn-mobile.active.disabled,
+.app-auth-shell .menuMobile.menuMobile--creator .menu-item-last .btn-mobile.active.disabled {
 
   min-width: 0;
   min-height: 40px;
@@ -1883,11 +1876,12 @@ input[type='file'] {overflow: hidden;}
 
 }
 
+.app-auth-shell .menuMobile.menuMobile--creator .menu-item-home .btn-mobile:not(.active),
 .app-auth-shell .menuMobile.menuMobile--creator .menu-item-profile .btn-mobile,
-.app-auth-shell .menuMobile.menuMobile--creator .menu-item-last .btn-mobile,
-.app-auth-shell .menuMobile.menuMobile--creator .menu-item-message .btn-mobile:not(.active) {
+.app-auth-shell .menuMobile.menuMobile--creator .menu-item-message .btn-mobile:not(.active),
+.app-auth-shell .menuMobile.menuMobile--creator .menu-item-last .btn-mobile {
 
-  min-width: 36px;
+  min-width: 40px;
   padding-inline: 0;
 
 }
@@ -1962,7 +1956,7 @@ html[data-bs-theme="light"] .menuMobile--creator .menuMobile-nav--creator {
 
   overflow: visible;
 
-  transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+  transition: background-color .18s ease, box-shadow .18s ease;
 
 }
 
@@ -1981,7 +1975,7 @@ html[data-bs-theme="light"] .menuMobile--creator .menuMobile-nav--creator {
 
   background: linear-gradient(180deg, #292a35 0%, #1b1c25 100%);
 
-  border-color: rgba(255, 255, 255, 0.22);
+  border: 0;
 
   box-shadow: 0 0 0 16px rgba(0, 0, 0, 0.92), 0 12px 28px rgba(0, 0, 0, 0.4);
 
@@ -1991,9 +1985,33 @@ html[data-bs-theme="light"] .menuMobile--creator .menuMobile-nav--creator {
 
   background: linear-gradient(180deg, #272935 0%, #1b1d27 100%);
 
-  border-color: rgba(255, 255, 255, 0.24);
+  border: 0;
 
   box-shadow: 0 0 0 16px rgba(0, 0, 0, 0.92), 0 12px 28px rgba(0, 0, 0, 0.42);
+
+}
+
+.btn-mobile-publish:active,
+.btn-mobile-publish:focus,
+.btn-mobile-publish:focus-visible,
+.btn-mobile-publish.active,
+.btn-mobile-publish.show,
+.btn-mobile-publish[aria-expanded="true"] {
+
+  border: 0 !important;
+  box-shadow: 0 0 0 16px rgba(0, 0, 0, 0.92), 0 12px 28px rgba(0, 0, 0, 0.4) !important;
+
+}
+
+.btn-mobile-publish.is-active:active,
+.btn-mobile-publish.is-active:focus,
+.btn-mobile-publish.is-active:focus-visible,
+.btn-mobile-publish.is-active.active,
+.btn-mobile-publish.is-active.show,
+.btn-mobile-publish.is-active[aria-expanded="true"] {
+
+  border: 0 !important;
+  box-shadow: 0 0 0 16px rgba(0, 0, 0, 0.92), 0 12px 28px rgba(0, 0, 0, 0.42) !important;
 
 }
 
@@ -2032,7 +2050,7 @@ html[data-bs-theme="light"] .menuMobile--creator .menuMobile-nav--creator {
 
 .menuMobile--creator.is-message-active .menu-item-last {
 
-  justify-content: flex-end;
+  justify-content: center;
 
 }
 
@@ -2241,7 +2259,7 @@ html[data-bs-theme="light"] .menuMobile--creator .menuMobile-nav--creator {
 
   body.creator-mobile-shell .app-footer-shell {
 
-    padding-bottom: 94px;
+    padding-bottom: 10px;
 
   }
 
@@ -5743,4 +5761,4 @@ height: auto;
   }
 }
 
-</style><?php /**PATH C:\Users\urmila\Documents\closeonly\laravel_dating_app\laravel code\_\resources\views/includes/css_general.blade.php ENDPATH**/ ?>
+</style>
