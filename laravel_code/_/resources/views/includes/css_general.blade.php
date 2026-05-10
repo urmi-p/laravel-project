@@ -1750,7 +1750,7 @@ input[type='file'] {overflow: hidden;}
 
   display: grid !important;
 
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--creator-publish-clearance) max-content 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--creator-publish-clearance) minmax(0, 1fr) minmax(0, 1fr);
 
   justify-content: space-between;
   justify-items: center;
