@@ -4,7 +4,7 @@
     <i class="fa fa-bars mr-2"></i> {{ trans('general.categories') }}
 
 </button>
-<div class="navbar-collapse collapse d-lg-block" id="navbarUserHome">
+<div class="collapse d-lg-block category-collapse" id="navbarUserHome">
     <span class="category-filter d-lg-block d-none font_weight_400 fs-16">
         {{ trans('general.categories') }}
     </span>
