@@ -2282,7 +2282,7 @@ body.modal-open .menu-mobile-publish-slot .btn-mobile-publish {
 
   body.creator-mobile-shell .app-footer-shell {
 
-    padding-bottom: 10px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 5px);
 
   }
 
