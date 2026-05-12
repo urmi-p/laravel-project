@@ -544,6 +544,29 @@ class UserController extends Controller
     return view('users.settings');
   }
 
+  public function updateLanguagePreference(Request $request)
+  {
+    $data = $request->validate([
+      'language' => 'required|exists:languages,abbreviation',
+    ]);
+
+    $user = auth()->user();
+    $user->language = $data['language'];
+    $user->save();
+
+    session()->put('locale', $data['language']);
+    session()->forget('show_language_after_register');
+
+    return back()->with('status', __('admin.success_update'));
+  }
+
+  public function dismissLanguagePreference()
+  {
+    session()->forget('show_language_after_register');
+
+    return response()->json(['success' => true]);
+  }
+
   public function updateSettings()
   {
     $input = $this->request->all();

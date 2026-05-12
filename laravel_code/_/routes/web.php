@@ -245,9 +245,11 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
 	 Route::post('reply/delete/{id}', [RepliesController::class, 'destroy']);
 	 Route::get('replies/loadmore',[RepliesController::class, 'loadmore']);
 
-	 // Settings Page
+	// Settings Page
   	Route::get('settings/page', [UserController::class, 'settingsPage']);
   	Route::post('settings/page', [UserController::class, 'updateSettingsPage']);
+	Route::post('settings/language', [UserController::class, 'updateLanguagePreference']);
+	Route::post('settings/language/dismiss', [UserController::class, 'dismissLanguagePreference']);
 
 	// Privacy and Security
    	Route::get('privacy/security', [UserController::class, 'privacySecurity']);

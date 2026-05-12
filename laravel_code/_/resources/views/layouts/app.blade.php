@@ -118,6 +118,16 @@
     </div>
   @endif
 
+  @if (
+    auth()->check()
+    && !request()->is('guest/auth')
+    && session('show_language_after_register')
+    && $languages->count() > 1
+    && !($settings->age_verification_status && $settings->show_modal_age_verification)
+  )
+    @include('includes.modal-language-preference')
+  @endif
+
 
   <div class="popout popout-error font-default"></div>
 

@@ -322,6 +322,33 @@ $(function() {
 </script>
 @endif
 
+@if (
+  auth()->check()
+  && session('show_language_after_register')
+  && $languages->count() > 1
+  && !($settings->age_verification_status && $settings->show_modal_age_verification)
+)
+<script>
+	var $languagePreferenceModal = $('#languagePreferenceModal');
+
+	$languagePreferenceModal.modal({
+		backdrop: 'static',
+		keyboard: false,
+		show: true
+	});
+
+	$languagePreferenceModal.on('hidden.bs.modal', function() {
+		var clearUrl = $languagePreferenceModal.data('clear-url');
+
+		if (clearUrl) {
+			$.post(clearUrl, {
+				_token: $('meta[name="csrf-token"]').attr('content')
+			});
+		}
+	});
+</script>
+@endif
+
 @if (auth()->guest()
     && ! request()->is('password/reset')
     && ! request()->is('password/reset/*')
