@@ -28,7 +28,117 @@
 				<div class="card-body p-lg-5">
 
 					 <form method="POST" action="{{ url('panel/admin/social-login') }}" enctype="multipart/form-data">
-						 @csrf
+						 @csrf
+
+
+
+		        <div class="row mb-3">
+
+		          <label class="col-sm-2 col-form-label text-lg-end">Apple Client ID</label>
+
+		          <div class="col-sm-10">
+
+		            <input value="{{ config('services.apple.client_id') }}" name="APPLE_CLIENT_ID" type="password" class="form-control">
+
+		          </div>
+
+		        </div>
+
+
+
+						<div class="row mb-3">
+
+		          <label class="col-sm-2 col-form-label text-lg-end">Apple Client Secret</label>
+
+		          <div class="col-sm-10">
+
+		            <input value="{{ config('services.apple.client_secret') }}" name="APPLE_CLIENT_SECRET" type="password" class="form-control">
+								<small class="d-block text-muted">Optional if generated from key details below.</small>
+
+		          </div>
+
+		        </div>
+
+
+
+						<div class="row mb-3">
+
+		          <label class="col-sm-2 col-form-label text-lg-end">Apple Team ID</label>
+
+		          <div class="col-sm-10">
+
+		            <input value="{{ config('services.apple.team_id') }}" name="APPLE_TEAM_ID" type="password" class="form-control">
+
+		          </div>
+
+		        </div>
+
+
+
+						<div class="row mb-3">
+
+		          <label class="col-sm-2 col-form-label text-lg-end">Apple Key ID</label>
+
+		          <div class="col-sm-10">
+
+		            <input value="{{ config('services.apple.key_id') }}" name="APPLE_KEY_ID" type="password" class="form-control">
+
+		          </div>
+
+		        </div>
+
+
+
+						<div class="row mb-3">
+
+		          <label class="col-sm-2 col-form-label text-lg-end">Apple Private Key Path</label>
+
+		          <div class="col-sm-10">
+
+		            <input value="{{ config('services.apple.private_key') }}" name="APPLE_PRIVATE_KEY" type="password" class="form-control">
+								<small class="d-block text-muted">Absolute server path to the Apple `.p8` file.</small>
+
+		          </div>
+
+		        </div>
+
+
+
+						<div class="row mb-3">
+
+		          <label class="col-sm-2 col-form-label text-lg-end">Apple Key Passphrase</label>
+
+		          <div class="col-sm-10">
+
+		            <input value="{{ config('services.apple.passphrase') }}" name="APPLE_PASSPHRASE" type="password" class="form-control">
+								<small class="d-block text-muted">Optional. Leave blank if the key has no passphrase.</small>
+								<small class="d-block text-muted">URL Callback: <strong>{{url('oauth/apple/callback')}}</strong></small>
+
+		          </div>
+
+		        </div>
+
+
+
+						<fieldset class="row mb-3">
+
+		          <legend class="col-form-label col-sm-2 pt-0 text-lg-end">{{ __('admin.status') }}</legend>
+
+		          <div class="col-sm-10">
+
+		            <div class="form-check form-switch form-switch-md">
+
+		             <input class="form-check-input" type="checkbox" name="apple_login" @if ($settings->apple_login == 'on') checked="checked" @endif value="on" role="switch">
+
+		           </div>
+
+		          </div>
+
+		        </fieldset><!-- end row -->
+
+
+
+						<hr />
 
 		        <div class="row mb-3">
 		          <label class="col-sm-2 col-form-label text-lg-end">Facebook Client ID</label>

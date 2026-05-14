@@ -172,6 +172,7 @@ return [
   		'twitter'   => 'Twitter',
   		'facebook'   => 'Facebook',
   		'google'   => 'Google',
+  		'apple'   => 'Apple',
   		'instagram'   => 'Instagram',
   		'comment' => 'Comentario',
   		'title' => 'Título',

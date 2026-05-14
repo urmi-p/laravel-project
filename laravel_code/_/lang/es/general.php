@@ -360,6 +360,7 @@ return array(
 	'landing_faq_question_6' => '¿Los creadores pueden compartir contenido exclusivo?',
 	'landing_faq_answer_6' => 'Sí, los creadores pueden compartir fotos, videos y momentos especiales premium directamente con sus suscriptores.',
 	'google' => 'Google',
+	'apple' => 'Apple',
 	'privacy' => 'Privacidad',
 	'terms' => 'Condiciones',
 	'discover_exclusive_content_title' => 'Suscríbete para descubrir contenido exclusivo',

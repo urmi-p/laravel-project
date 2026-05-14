@@ -1154,6 +1154,14 @@ a.link-border {
     color: #344054 !important;
     font-weight: 400;
 }
+.btn-apple,
+.btn-apple:hover,
+.btn-apple:active,
+.btn-apple:focus {
+    background: #0a0a0a;
+    color: #ffffff;
+    border-color: #2f2f2f;
+}
 .shadow-custom {
     box-shadow: 0 5px 16px rgba(0, 9, 128, 0.05);
 }
@@ -3305,6 +3313,14 @@ a.btn-category:focus {
 .auth-shell .btn-twitter:hover,
 .auth-shell .btn-twitter:active,
 .auth-shell .btn-twitter:focus {
+    background: transparent;
+    color: #fff;
+    border-color: #333;
+}
+.auth-shell .btn-apple,
+.auth-shell .btn-apple:hover,
+.auth-shell .btn-apple:active,
+.auth-shell .btn-apple:focus {
     background: transparent;
     color: #fff;
     border-color: #333;
@@ -5523,6 +5539,13 @@ footer.footer-bg {
     color: var(--login-text);
     border-color: var(--login-divider);
 }
+.login-page-theme .btn-apple.login-figma-social-btn,
+.login-page-theme .btn-apple.login-figma-social-btn:hover,
+.login-page-theme .btn-apple.login-figma-social-btn:focus {
+    background: transparent;
+    color: var(--login-text);
+    border-color: var(--login-divider);
+}
 
 .login-page-theme .login-figma-input-wrap {
     border-radius: 10px;
@@ -6759,6 +6782,11 @@ footer.footer-bg {
 }
 
 .home-login-page .btn-twitter.login-figma-social-btn {
+    background: transparent;
+    border-color: var(--hl-twitter-border);
+    color: var(--hl-text);
+}
+.home-login-page .btn-apple.login-figma-social-btn {
     background: transparent;
     border-color: var(--hl-twitter-border);
     color: var(--hl-text);

@@ -22,8 +22,14 @@
               <i class="fa fa-exclamation-triangle"></i> {{session('login_required')}}
             </div>
             @endif
-            @if ($settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
+            @if ($settings->apple_login == 'on' || $settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
             <div class="mb-2 w-100 login-figma-social">
+              @if ($settings->apple_login == 'on')
+              <a href="{{url('oauth/apple')}}" class="btn btn-apple login-figma-social-btn mb-2 w-100">
+                <i class="fab fa-apple mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.apple') }}
+              </a>
+              @endif
+
               @if ($settings->google_login == 'on')
               <a href="{{url('oauth/google')}}" class="btn btn-google login-figma-social-btn mb-2 w-100">
                 <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.google') }}

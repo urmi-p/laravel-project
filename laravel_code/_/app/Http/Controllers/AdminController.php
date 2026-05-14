@@ -2999,6 +2999,8 @@ class AdminController extends Controller
 
 	{
 
+		$this->settings->apple_login = $request->apple_login;
+
 		$this->settings->facebook_login = $request->facebook_login;
 
 		$this->settings->google_login = $request->google_login;

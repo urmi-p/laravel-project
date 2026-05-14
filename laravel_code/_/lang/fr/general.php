@@ -357,6 +357,7 @@ return array(
 'landing_faq_question_6'        => 'Les créateurs peuvent-ils partager du contenu exclusif ?',
 'landing_faq_answer_6'          => 'Oui, les créateurs peuvent partager des photos, vidéos et moments premium directement avec leurs abonnés.',
 'google'                        => 'Google',
+'apple'                        => 'Apple',
 'privacy'                       => 'Confidentialité',
 'terms'                         => 'Conditions',
 'discover_exclusive_content_title' => 'Abonnez-vous pour découvrir du contenu exclusif',

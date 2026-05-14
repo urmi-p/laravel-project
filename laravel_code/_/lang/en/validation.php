@@ -166,6 +166,7 @@ return [
   		'twitter'   => 'Twitter',
   		'facebook'   => 'Facebook',
   		'google'   => 'Google',
+  		'apple'   => 'Apple',
   		'instagram'   => 'Instagram',
   		'comment' => 'Comment',
   		'title' => 'Title',

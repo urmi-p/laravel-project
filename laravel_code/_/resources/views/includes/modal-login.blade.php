@@ -6,8 +6,14 @@
 
 						<h6 class="modal-title text-center mb-3" id="loginRegisterContinue">{{ __('general.login_continue') }}</h6>
 
-						@if ($settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
+						@if ($settings->apple_login == 'on' || $settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
 						<div class="mb-2 w-100">
+
+							@if ($settings->apple_login == 'on')
+								<a href="{{url('oauth/apple')}}" class="btn btn-apple auth-form-btn flex-grow mb-2 w-100">
+									<i class="fab fa-apple mr-2"></i> <span class="loginRegisterWith">{{ __('auth.login_with') }}</span> {{ __('general.apple') }}
+								</a>
+							@endif
 
 							@if ($settings->facebook_login == 'on')
 								<a href="{{url('oauth/facebook')}}" class="btn btn-facebook auth-form-btn flex-grow mb-2 w-100">

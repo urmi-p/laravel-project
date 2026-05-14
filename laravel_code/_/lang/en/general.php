@@ -368,6 +368,7 @@ return array(
 	'landing_faq_question_6' => 'Who can become a creator on CloseOnly?',
 	'landing_faq_answer_6' => 'Anyone who wants to share content and monetize their audience can become a creator on Close Only. Whether you’re an influencer, artist, coach, or independent creator, the platform provides all the tools needed to grow your audience and generate income. Simply create an account, set up your profile, and start publishing.',
 	'google' => 'Google',
+	'apple' => 'Apple',
 	'privacy' => 'Privacy',
 	'terms' => 'Terms',
 	'discover_exclusive_content_title' => 'Unlock exclusive content prenium 💥',

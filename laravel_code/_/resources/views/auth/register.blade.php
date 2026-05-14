@@ -22,8 +22,14 @@
 
         @include('errors.errors-forms')
 
-        @if($settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
+        @if($settings->apple_login == 'on' || $settings->facebook_login == 'on' || $settings->google_login == 'on' || $settings->twitter_login == 'on')
         <div class="mb-2 w-100">
+          @if ($settings->apple_login == 'on')
+          <a href="{{url('oauth/apple')}}" class="btn btn-apple auth-form-btn mb-2 w-100">
+            <i class="fab fa-apple mr-2"></i> {{ __('auth.sign_up_with') }}<span class="auth-provider-name">{{ __('general.apple') }}</span>
+          </a>
+          @endif
+
           @if ($settings->google_login == 'on')
           <a href="{{url('oauth/google')}}" class="btn btn-google auth-form-btn mb-2 w-100">
             <img src="{{ url('img/google.svg') }}" class="mr-2" width="18" height="18"> {{ __('auth.sign_up_with') }}<span class="auth-provider-name">{{ __('general.google') }}</span>

@@ -131,8 +131,8 @@ Route::view('offline','vendor.laravelpwa.offline');
 
 // Social Login
 Route::group(['middleware' => 'guest'], function() {
-	Route::get('oauth/{provider}', [SocialAuthController::class, 'redirect'])->where('provider', '(facebook|google|twitter)$');
-	Route::get('oauth/{provider}/callback', [SocialAuthController::class, 'callback'])->where('provider', '(facebook|google|twitter)$');
+	Route::get('oauth/{provider}', [SocialAuthController::class, 'redirect'])->where('provider', '(apple|facebook|google|twitter)$');
+	Route::get('oauth/{provider}/callback', [SocialAuthController::class, 'callback'])->where('provider', '(apple|facebook|google|twitter)$');
 });//<--- End Group guest
 
 // Verify Account
