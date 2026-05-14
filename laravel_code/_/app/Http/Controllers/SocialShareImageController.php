@@ -2,11 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class SocialShareImageController extends Controller
 {
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
+    {
+        $image = $this->renderImage();
+        $headers = [
+            'Content-Type' => 'image/png',
+            'Cache-Control' => 'public, max-age=3600',
+            'Content-Length' => (string) strlen($image),
+            'Content-Disposition' => 'inline; filename="social-share-image.png"',
+            'X-Content-Type-Options' => 'nosniff',
+        ];
+
+        if ($request->isMethod('head')) {
+            return response('', 200, $headers);
+        }
+
+        return response($image, 200, $headers);
+    }
+
+    private function renderImage(): string
     {
         $width = 1200;
         $height = 630;
@@ -17,24 +36,21 @@ class SocialShareImageController extends Controller
         imagesavealpha($canvas, true);
 
         $this->paintBackground($canvas, $width, $height);
-        $this->paintLogoCard($canvas, $width, $height);
+        $this->paintHero($canvas, $width, $height);
 
         ob_start();
         imagepng($canvas);
-        $image = ob_get_clean();
+        $image = (string) ob_get_clean();
 
         imagedestroy($canvas);
 
-        return response($image, 200, [
-            'Content-Type' => 'image/png',
-            'Cache-Control' => 'public, max-age=3600',
-        ]);
+        return $image;
     }
 
     private function paintBackground($canvas, int $width, int $height): void
     {
-        [$startR, $startG, $startB] = $this->hexToRgb((string) config('settings.theme_color_pwa', '#111827'));
-        [$endR, $endG, $endB] = [17, 24, 39];
+        [$startR, $startG, $startB] = $this->hexToRgb((string) config('settings.theme_color_pwa', '#C92D39'));
+        [$endR, $endG, $endB] = [13, 18, 35];
 
         for ($y = 0; $y < $height; $y++) {
             $ratio = $height > 1 ? $y / ($height - 1) : 0;
@@ -45,49 +61,36 @@ class SocialShareImageController extends Controller
             imageline($canvas, 0, $y, $width, $y, $color);
         }
 
-        $glow = imagecolorallocatealpha($canvas, 255, 255, 255, 110);
-        imagefilledellipse($canvas, (int) ($width * 0.18), (int) ($height * 0.2), 280, 280, $glow);
-        imagefilledellipse($canvas, (int) ($width * 0.82), (int) ($height * 0.78), 360, 360, $glow);
+        $glow = imagecolorallocatealpha($canvas, 255, 255, 255, 120);
+        imagefilledellipse($canvas, (int) ($width * 0.14), (int) ($height * 0.2), 220, 220, $glow);
+        imagefilledellipse($canvas, (int) ($width * 0.86), (int) ($height * 0.24), 170, 170, $glow);
+        imagefilledellipse($canvas, (int) ($width * 0.82), (int) ($height * 0.82), 320, 320, $glow);
 
-        $accent = imagecolorallocatealpha($canvas, 255, 255, 255, 118);
-        imagefilledellipse($canvas, (int) ($width * 0.78), (int) ($height * 0.2), 180, 180, $accent);
-        imagefilledellipse($canvas, (int) ($width * 0.24), (int) ($height * 0.82), 220, 220, $accent);
+        $sheen = imagecolorallocatealpha($canvas, 255, 255, 255, 122);
+        imagefilledrectangle($canvas, 0, 0, $width, 88, $sheen);
     }
 
-    private function paintLogoCard($canvas, int $width, int $height): void
+    private function paintHero($canvas, int $width, int $height): void
     {
-        $cardWidth = 560;
-        $cardHeight = 520;
-        $cardX = (int) (($width - $cardWidth) / 2);
-        $cardY = (int) (($height - $cardHeight) / 2);
-        $cornerRadius = 40;
-
-        $shadow = imagecolorallocatealpha($canvas, 8, 12, 24, 96);
-        $card = imagecolorallocatealpha($canvas, 10, 16, 30, 0);
-        $border = imagecolorallocatealpha($canvas, 255, 255, 255, 78);
-
-        $this->drawRoundedRectangle($canvas, $cardX, $cardY + 22, $cardWidth, $cardHeight, $cornerRadius, $shadow);
-        $this->drawRoundedRectangle($canvas, $cardX, $cardY, $cardWidth, $cardHeight, $cornerRadius, $card);
-        $this->drawRoundedOutline($canvas, $cardX, $cardY, $cardWidth, $cardHeight, $cornerRadius, $border, 2);
-
         $logoPath = $this->resolveShareImageAssetPath();
-
         $logo = $this->loadImage($logoPath);
+
         if (!$logo) {
+            $this->paintFallbackText($canvas, $width, $height);
             return;
         }
 
         $logoWidth = imagesx($logo);
         $logoHeight = imagesy($logo);
 
-        $maxWidth = 260;
-        $maxHeight = 90;
+        $maxWidth = 560;
+        $maxHeight = 180;
         $scale = min($maxWidth / max($logoWidth, 1), $maxHeight / max($logoHeight, 1), 1.0);
 
         $targetWidth = max(1, (int) round($logoWidth * $scale));
         $targetHeight = max(1, (int) round($logoHeight * $scale));
         $targetX = (int) (($width - $targetWidth) / 2);
-        $targetY = (int) ($cardY + 140);
+        $targetY = (int) (($height - $targetHeight) / 2) - 40;
 
         imagealphablending($canvas, true);
         imagesavealpha($canvas, true);
@@ -104,7 +107,7 @@ class SocialShareImageController extends Controller
             $logoHeight
         );
 
-        $this->paintLabel($canvas, $cardX, $cardY, $cardWidth, $cardHeight);
+        $this->paintTagline($canvas, $width, $height);
 
         imagedestroy($logo);
     }
@@ -128,20 +131,49 @@ class SocialShareImageController extends Controller
         return public_path('images/icons/icon-512x512.png');
     }
 
-    private function paintLabel($canvas, int $cardX, int $cardY, int $cardWidth, int $cardHeight): void
+    private function paintTagline($canvas, int $width, int $height): void
     {
+        $title = trim((string) config('settings.title')) !== '' ? trim((string) config('settings.title')) : 'Close Only';
         $description = __('seo.slogan');
-        $description = trim($description) !== '' ? trim($description) : 'Exclusive content platform';
-        $description = $this->truncateText($description, 38);
+        $description = trim($description) !== '' ? trim($description) : 'Access exclusive content and private interactions';
+        $description = $this->truncateText($description, 68);
 
-        $subtitleColor = imagecolorallocatealpha($canvas, 226, 232, 240, 30);
-        $subtitleFont = 3;
-
+        $titleFont = 5;
+        $subtitleFont = 4;
+        $titleColor = imagecolorallocate($canvas, 255, 255, 255);
+        $subtitleColor = imagecolorallocate($canvas, 230, 234, 242);
+        $dividerColor = imagecolorallocatealpha($canvas, 255, 255, 255, 96);
+        $titleWidth = imagefontwidth($titleFont) * strlen($title);
         $subtitleWidth = imagefontwidth($subtitleFont) * strlen($description);
-        $subtitleX = (int) ($cardX + (($cardWidth - $subtitleWidth) / 2));
-        $subtitleY = (int) min($cardY + 335, $cardY + $cardHeight - 54);
 
+        $titleX = (int) (($width - $titleWidth) / 2);
+        $subtitleX = (int) (($width - $subtitleWidth) / 2);
+        $titleY = $height - 120;
+        $subtitleY = $height - 78;
+
+        imageline($canvas, 250, $height - 142, 950, $height - 142, $dividerColor);
+        imagestring($canvas, $titleFont, $titleX, $titleY, $title, $titleColor);
         imagestring($canvas, $subtitleFont, $subtitleX, $subtitleY, $description, $subtitleColor);
+    }
+
+    private function paintFallbackText($canvas, int $width, int $height): void
+    {
+        $title = trim((string) config('settings.title')) !== '' ? trim((string) config('settings.title')) : 'Close Only';
+        $title = $this->truncateText($title, 30);
+        $description = __('seo.slogan');
+        $description = trim($description) !== '' ? trim($description) : 'Exclusive creator platform';
+        $description = $this->truncateText($description, 48);
+
+        $titleFont = 5;
+        $subtitleFont = 4;
+        $titleColor = imagecolorallocate($canvas, 255, 255, 255);
+        $subtitleColor = imagecolorallocate($canvas, 232, 236, 245);
+
+        $titleX = (int) (($width - (imagefontwidth($titleFont) * strlen($title))) / 2);
+        $subtitleX = (int) (($width - (imagefontwidth($subtitleFont) * strlen($description))) / 2);
+
+        imagestring($canvas, $titleFont, $titleX, 250, $title, $titleColor);
+        imagestring($canvas, $subtitleFont, $subtitleX, 290, $description, $subtitleColor);
     }
 
     private function drawRoundedRectangle($image, int $x, int $y, int $width, int $height, int $radius, int $color): void

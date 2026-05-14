@@ -30,7 +30,9 @@
     <link rel="canonical" href="{{url()->current()}}"/>
     <meta property="og:site_name" content="{{ $response->title }}"/>
     <meta property="og:url" content="{{url()->current()}}"/>
-    <meta property="og:image" content="{{Helper::getFile(config('path.admin').$response->image)}}"/>
+    <meta property="og:image" content="{{Helper::getFile(config('path.admin').$response->image)}}"/>
+    <meta property="og:image:secure_url" content="{{Helper::getFile(config('path.admin').$response->image)}}"/>
+    <meta property="og:image:alt" content="{{ $response->title }}"/>
 
     <meta property="og:title" content="{{ $response->title }}"/>
     <meta property="og:description" content="{{strip_tags($response->content)}}"/>

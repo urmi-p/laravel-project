@@ -87,7 +87,20 @@ use App\Http\Controllers\SocialShareImageController;
  |-----------------------------------
  */
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('social-share-image.png', SocialShareImageController::class)->name('social.share-image');
+Route::get('social-share-image.png', SocialShareImageController::class)
+    ->withoutMiddleware([
+        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\Language::class,
+        \App\Http\Middleware\UserOnline::class,
+        \App\Http\Middleware\UserCountry::class,
+        \App\Http\Middleware\Referred::class,
+        \App\Http\Middleware\AgeVerificationStatus::class,
+    ])
+    ->name('social.share-image');
 
 Route::get('home', function() {
     \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {

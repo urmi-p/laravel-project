@@ -52,6 +52,8 @@
     <meta property="og:url" content="{{url()->current()}}"/>
 
     <meta property="og:image" content="{{ Helper::shopFileUrl($product->previews[0]->name) }}"/>
+    <meta property="og:image:secure_url" content="{{ Helper::shopFileUrl($product->previews[0]->name) }}"/>
+    <meta property="og:image:alt" content="{{ $product->name }}"/>
 
 
 

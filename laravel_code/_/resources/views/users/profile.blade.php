@@ -52,6 +52,8 @@
     <meta property="og:url" content="{{ url('profile/' . $user->username . $media) }}" />
 
     <meta property="og:image" content="{{ Helper::getFile(config('path.avatar') . $user->avatar) }}" />
+    <meta property="og:image:secure_url" content="{{ Helper::getFile(config('path.avatar') . $user->avatar) }}" />
+    <meta property="og:image:alt" content="{{ $user->hide_name == 'yes' ? $user->username : $user->name }}" />
 
 
 
@@ -3065,4 +3067,3 @@
 @php session()->forget('subscription_cancel') @endphp
 
 @php session()->forget('subscription_success') @endphp
-

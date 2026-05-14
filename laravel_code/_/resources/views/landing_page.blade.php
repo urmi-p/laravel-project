@@ -4,7 +4,7 @@
   @php
     $shareTitle = trim($settings->title) !== '' ? $settings->title : 'Close Only';
     $shareDescription = __('general.landing_hero_text');
-    $shareImageUrl = route('social.share-image', ['v' => '6']);
+    $shareImageUrl = route('social.share-image', ['v' => '9']);
   @endphp
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,8 +21,10 @@
     <meta property="og:description" content="{{ $shareDescription }}" />
     <meta property="og:image" content="{{ $shareImageUrl }}" />
     <meta property="og:image:secure_url" content="{{ $shareImageUrl }}" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="{{ $settings->title }}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $shareTitle }}" />
     <meta name="twitter:description" content="{{ $shareDescription }}" />
