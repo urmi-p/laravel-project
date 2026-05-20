@@ -12,10 +12,10 @@ use App\Http\Controllers\ReelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PagesController;
-use App\Http\Controllers\PaxumController;
+// use App\Http\Controllers\PaxumController;
 use App\Http\Controllers\CCBillController;
 use App\Http\Controllers\PayPalController;
-use App\Http\Controllers\RedsysController;
+// use App\Http\Controllers\RedsysController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\StickerController;
@@ -27,7 +27,7 @@ use App\Http\Controllers\AddFundsController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikeReelController;
 use App\Http\Controllers\MessagesController;
-use App\Http\Controllers\NetvalveController;
+// use App\Http\Controllers\NetvalveController;
 use App\Http\Controllers\PaystackController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TaxRatesController;
@@ -58,7 +58,7 @@ use App\Http\Controllers\CountriesStatesController;
 use App\Http\Controllers\UploadMediaReelController;
 use App\Http\Controllers\UploadMediaStoryController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\WebhookCard2CryptoController;
+// use App\Http\Controllers\WebhookCard2CryptoController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\UploadMediaFileShopController;
 use App\Http\Controllers\UploadMediaMessageController; 
@@ -145,7 +145,7 @@ Route::view('offline','vendor.laravelpwa.offline');
 // Social Login
 Route::group(['middleware' => 'guest'], function() {
 	Route::get('oauth/{provider}', [SocialAuthController::class, 'redirect'])->where('provider', '(apple|facebook|google|twitter)$');
-	Route::get('oauth/{provider}/callback', [SocialAuthController::class, 'callback'])->where('provider', '(apple|facebook|google|twitter)$');
+	Route::match(['get', 'post'], 'oauth/{provider}/callback', [SocialAuthController::class, 'callback'])->where('provider', '(apple|facebook|google|twitter)$');
 });//<--- End Group guest
 
 // Verify Account
@@ -1160,19 +1160,19 @@ Route::get('verify/squad', [AddFundsController::class, 'verifySquad'])->name('we
 Route::any('webhook/binance', [AddFundsController::class, 'webhookBinance'])->name('webhook.binance');
 
 // Redsys
-Route::get('payment/redsys', [RedsysController::class, 'show'])->name('redsys');
-Route::post('subscription/redsys/cancel/{id}',[RedsysController::class, 'cancelSubscription']);
-Route::any('webhook/redsys', [RedsysController::class, 'webhook'])->name('webhook.redsys');
+// Route::get('payment/redsys', [RedsysController::class, 'show'])->name('redsys');
+// Route::post('subscription/redsys/cancel/{id}',[RedsysController::class, 'cancelSubscription']);
+// Route::any('webhook/redsys', [RedsysController::class, 'webhook'])->name('webhook.redsys');
 
 // Paxum
-Route::get('payment/paxum', [PaxumController::class, 'show'])->name('paxum');
-Route::any('webhook/paxum', [PaxumController::class, 'webhook'])->name('webhook.paxum');
+// Route::get('payment/paxum', [PaxumController::class, 'show'])->name('paxum');
+// Route::any('webhook/paxum', [PaxumController::class, 'webhook'])->name('webhook.paxum');
 Route::view('a/testing', 'paxum-form');
 
 // Netvalve
-Route::get('payment/netvalve', [NetvalveController::class, 'show'])->name('netvalve');
-Route::post('subscription/netvalve/cancel/{id}',[NetvalveController::class, 'cancelSubscription']);
-Route::any('webhook/netvalve', [NetvalveController::class, 'webhook'])->name('webhook.netvalve');
+// Route::get('payment/netvalve', [NetvalveController::class, 'show'])->name('netvalve');
+// Route::post('subscription/netvalve/cancel/{id}',[NetvalveController::class, 'cancelSubscription']);
+// Route::any('webhook/netvalve', [NetvalveController::class, 'webhook'])->name('webhook.netvalve');
 
 // Payway
 Route::any('webhook/payway', [AddFundsController::class, 'webhookPayway'])->name('webhook.payway');
@@ -1184,7 +1184,7 @@ Route::any('webhook/wompi', [AddFundsController::class, 'webhookWompi'])->name('
 Route::post('webhook/openpix', [WebhookOpenPixController::class, 'receive']);
 
 // Card2Crypto
-Route::post('webhook/card2crypto', [WebhookCard2CryptoController::class, 'receive'])->name('webhook.card2crypto');
+// Route::post('webhook/card2crypto', [WebhookCard2CryptoController::class, 'receive'])->name('webhook.card2crypto');
 
 // Atlos
 Route::post('webhook/atlos', [AtlosWebhookController::class, 'webhook'])->name('webhook.atlos');

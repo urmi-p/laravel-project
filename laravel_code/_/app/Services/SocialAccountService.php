@@ -15,6 +15,29 @@ class SocialAccountService
 {
   use Functions;
 
+  protected function resolveDisplayName(ProviderUser $providerUser, $provider)
+  {
+    $name = trim((string) $providerUser->getName());
+
+    if ($name !== '') {
+      return $name;
+    }
+
+    $nickname = trim((string) $providerUser->getNickname());
+
+    if ($nickname !== '') {
+      return $nickname;
+    }
+
+    $email = trim((string) $providerUser->getEmail());
+
+    if ($email !== '' && str_contains($email, '@')) {
+      return Str::of($email)->before('@')->replace(['.', '_', '-'], ' ')->title()->value();
+    }
+
+    return ucfirst($provider) . ' User';
+  }
+
   public function createOrGetUser(ProviderUser $providerUser, $provider)
   {
     $user = User::whereOauthProvider($provider)
@@ -80,11 +103,12 @@ class SocialAccountService
 
       // Get user country
       $country = Countries::whereCountryCode(Helper::userCountry())->first();
+      $displayName = $this->resolveDisplayName($providerUser, $provider);
 
       $user = User::create([
         'username'          => Helper::strRandom(),
         'countries_id'      => $country->id ?? '',
-        'name'              => $providerUser->getName(),
+        'name'              => $displayName,
         'email'             => strtolower($providerUser->getEmail()),
         'password'          => '',
         'avatar'            => $avatar,

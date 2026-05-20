@@ -16,6 +16,7 @@ class VerifyCsrfToken extends Middleware
       'paypal/*',
       'webhook/*',
       'ccbill/approved',
-      'coinpayments/*'
+      'coinpayments/*',
+      'oauth/apple/callback',
     ];
 }
