@@ -66,6 +66,38 @@
       .messages-chat-page .visit-profile-btn {
         display: none !important;
       }
+      .messages-chat-page .card-header {
+        padding-bottom: .4rem !important;
+      }
+      .messages-chat-page .card-header .media {
+        align-items: flex-start;
+      }
+      .messages-chat-page .card-header .mr-3 {
+        margin-right: .6rem !important;
+      }
+      .messages-chat-page .media-message-profile-center {
+        gap: .45rem;
+        margin-left: .5rem;
+      }
+      .messages-chat-page .media-message-profile-center .rounded-circle {
+        width: 68px !important;
+        height: 68px !important;
+      }
+      body.messages-detail-page.app-auth-shell main[role="main"] .messages-chat-page .profile-card h6.fs-24 {
+        font-size: 1rem !important;
+        line-height: 1.15;
+      }
+      .messages-chat-page .profile-card small,
+      .messages-chat-page .profile-card #timeAgo {
+        font-size: .82rem;
+        line-height: 1.15;
+      }
+      .messages-chat-page .startAudioCall,
+      .messages-chat-page .startVideoCall,
+      .messages-chat-page .vertical-ellipsis {
+        padding: 8px;
+        border-radius: 10px;
+      }
       body.messages-detail-page.app-auth-shell .app-footer-shell {
         display: none !important;
       }

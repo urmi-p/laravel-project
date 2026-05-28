@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\SocialAccountService;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
@@ -36,8 +37,20 @@ class SocialAuthController extends Controller
         return $user;
       } else {
         auth()->login($user);
+
+        if ($user->created_social_account) {
+          session()->flash('show_age_verification_after_register', true);
+          session()->put('show_language_after_register', true);
+        }
       }
     } catch (\Exception $e) {
+      Log::error('Social login failed', [
+        'provider' => $provider,
+        'method' => request()->method(),
+        'url' => request()->fullUrl(),
+        'message' => $e->getMessage(),
+      ]);
+
       return redirect('login')->with(['error_social_login' => $e->getMessage()]);
     }
 

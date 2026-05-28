@@ -40,6 +40,8 @@ class SocialAccountService
 
   public function createOrGetUser(ProviderUser $providerUser, $provider)
   {
+    $createdSocialAccount = false;
+
     $user = User::whereOauthProvider($provider)
       ->whereOauthUid($providerUser->getId())
       ->first();
@@ -127,6 +129,7 @@ class SocialAccountService
         'hide_name'         => 'yes',
         'dark_mode'         => config('settings.theme') == 'light' ? 'off' : 'on',
       ]);
+      $createdSocialAccount = true;
 
       // Check Referral
       if (config('settings.referral_system') == 'on') {
@@ -153,6 +156,9 @@ class SocialAccountService
       // Insert Login Session
       $this->loginSession($user->id);
     } // !$user
+
+    $user->setAttribute('created_social_account', $createdSocialAccount);
+
     return $user;
   }
 }
