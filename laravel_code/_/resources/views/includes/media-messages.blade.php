@@ -187,9 +187,9 @@
 	 @endif
 
 	 @if ($msg->gift_id)
-	<div class="card border-0">
+	<div class="card border-0 chat-gift-card">
 		@if (isset($msg->gift->id))
-          <span class="d-block text-center">
+          <span class="d-block text-center chat-gift-figure">
             <img src="{{ Helper::giftImageUrl($msg->gift->image) }}" width="100">
           </span>
         @endif
@@ -197,7 +197,7 @@
 		 <div class="row no-gutters">
 			 <div class="col-md-12">
 				 <div class="card-body py-2 px-4">
-					 <h6 class="card-title text-primary text-truncate mb-0">
+					 <h6 class="card-title text-primary text-truncate mb-0 chat-gift-price">
 						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi-gift mr-1" viewBox="0 0 16 16">
 							<path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A3 3 0 0 1 3 2.506zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43zM9 3h2.932l.023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0zM1 4v2h6V4zm8 0v2h6V4zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5z"/>
 						  </svg> 

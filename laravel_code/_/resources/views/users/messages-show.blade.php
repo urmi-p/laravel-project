@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title'){{__('general.messages')}} -@endsection
-@section('body_class', 'messages-detail-page')
+@section('body_class', 'messages-detail-page chat-detail-route-body')
 
 @section('css')
   <script type="text/javascript">
@@ -13,197 +13,691 @@
 
   <style>
     @media (min-width: 991px) {
-    .fileuploader-theme-thumbnails .fileuploader-thumbnails-input,
-    .fileuploader-theme-thumbnails .fileuploader-items-list .fileuploader-item {
-      width: calc(14% - 16px);
-      padding-top: 12%;
+      .fileuploader-theme-thumbnails .fileuploader-thumbnails-input,
+      .fileuploader-theme-thumbnails .fileuploader-items-list .fileuploader-item {
+        width: calc(14% - 16px);
+        padding-top: 12%;
       }
     }
+
     .profile-card {
       text-align: center;
     }
+
     .profile-desc {
-      font-weight:400;
+      font-weight: 400;
       font-size: 14px;
       max-width: 320px;
       margin: 10px auto 18px;
       line-height: 1.5;
     }
+
     [data-bs-theme="dark"] .profile-desc {
       color: #FFFFFF;
     }
+
     [data-bs-theme="light"] .profile-desc {
       color: #222;
     }
+
     .visit-profile-btn {
       display: block;
-      width:fit-content;
+      width: fit-content;
       background: #E2394C;
       color: #fff;
       padding: 8px 14px;
       border-radius: 12px;
       text-decoration: none;
       transition: 0.25s;
-      margin: 0 auto; 
+      margin: 0 auto;
     }
+
     .desc-break {
       display: block;
     }
+
     .message-composer-toolbar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
     }
+
     .message-send-wrap {
       margin-left: auto;
     }
+
     @media (max-width: 767.98px) {
-      body.messages-detail-page.app-auth-shell {
-        overflow-x: hidden;
+      html,
+      body.messages-detail-page.chat-detail-route-body {
+        background: #1f1f1f !important;
       }
-      .messages-chat-page .profile-desc,
-      .messages-chat-page .visit-profile-btn {
-        display: none !important;
+
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell main[role="main"] .section.section-sm.section-msg.chat-detail-route.messages-chat-page {
+        width: 100vw !important;
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #1f1f1f !important;
       }
-      .messages-chat-page .card-header {
-        padding-bottom: .4rem !important;
-      }
-      .messages-chat-page .card-header .media {
-        align-items: flex-start;
-      }
-      .messages-chat-page .card-header .mr-3 {
-        margin-right: .6rem !important;
-      }
-      .messages-chat-page .media-message-profile-center {
-        gap: .45rem;
-        margin-left: .5rem;
-      }
-      .messages-chat-page .media-message-profile-center .rounded-circle {
-        width: 68px !important;
-        height: 68px !important;
-      }
-      body.messages-detail-page.app-auth-shell main[role="main"] .messages-chat-page .profile-card h6.fs-24 {
-        font-size: 1rem !important;
-        line-height: 1.15;
-      }
-      .messages-chat-page .profile-card small,
-      .messages-chat-page .profile-card #timeAgo {
-        font-size: .82rem;
-        line-height: 1.15;
-      }
-      .messages-chat-page .startAudioCall,
-      .messages-chat-page .startVideoCall,
-      .messages-chat-page .vertical-ellipsis {
-        padding: 8px;
-        border-radius: 10px;
-      }
-      body.messages-detail-page.app-auth-shell .app-footer-shell {
-        display: none !important;
-      }
-      body.messages-detail-page.app-auth-shell main[role="main"] {
-        height: calc(100dvh - 6.5rem);
-        min-height: calc(100dvh - 6.5rem);
-        padding-bottom: 0 !important;
-        overflow: hidden;
-      }
-      body.messages-detail-page.app-auth-shell .messages-chat-page.section-sm {
-        height: 100% !important;
-        min-height: 100% !important;
-        margin-bottom: 0 !important;
-        padding-bottom: calc(5.5rem + 0.75rem) !important;
-        overflow: hidden !important;
-      }
-      .messages-chat-page .messageDiv {
-        padding: 14px !important;
-        gap: 14px !important;
-        margin-right: 0 !important;
-        margin-bottom: 0 !important;
-        border-radius: 18px !important;
+
+      .chat-detail-route.messages-chat-page .messages-middle-col {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
         display: flex !important;
-        flex-direction: column;
-        height: 100% !important;
-        min-height: 0 !important;
+        flex-direction: column !important;
+      }
+
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell {
+        overflow: hidden !important;
+        background: #1f1f1f;
+      }
+
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell .modern-navbar.site-header,
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell .app-mobile-top-tabs,
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell .menuMobile,
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell .app-footer-shell {
+        display: none !important;
+      }
+
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell main[role="main"] {
+        height: 100dvh;
+        min-height: 100dvh;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        background: #1f1f1f !important;
         overflow: hidden !important;
       }
-      .messages-chat-page > .container-fluid,
-      .messages-chat-page > .container-fluid > .row.justify-content-center.h-100,
-      .messages-chat-page .messages-middle-col {
+
+      .chat-detail-route.messages-chat-page {
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        width: 100vw !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #1f1f1f;
+        overflow: hidden !important;
+      }
+
+      .chat-detail-route.messages-chat-page > .container-fluid,
+      .chat-detail-route.messages-chat-page > .container-fluid > .row.justify-content-center.h-100,
+      .chat-detail-route.messages-chat-page .messages-middle-col {
         height: 100% !important;
         min-height: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }
-      .messages-chat-page .container-msg {
+
+      .chat-detail-route.messages-chat-page > .container-fluid.pt-lg-5.pt-2.px-lg-5 {
+        padding-top: 0 !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
+      }
+
+      .chat-detail-route.messages-chat-page #messagesContainer.wrapper-msg-inbox {
+        display: none !important;
+      }
+
+      .chat-detail-route .profile-desc,
+      .chat-detail-route .visit-profile-btn {
+        display: none !important;
+      }
+
+      .chat-detail-route .messageDiv {
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        display: flex !important;
+        flex-direction: column;
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        max-height: 100dvh !important;
+        box-shadow: none !important;
+        isolation: auto !important;
+        overflow: hidden !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 1rem 1.1rem 1rem !important;
+        background: none;
+        border-bottom: 0.0625rem solid #ffffff !important;
+        overflow: visible !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-header-row {
+        width: 100%;
+        align-items: center;
+        gap: 0;
+        flex-wrap: nowrap;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-back-link {
+        margin-right: 0 !important;
+        flex: 0 0 auto;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-back-link i {
+        font-size: 1.75rem;
+        color: #fff;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-profile {
+        display: grid;
+        grid-template-columns: 3.55rem minmax(0, 1fr);
+        align-items: center;
+        gap: 0.95rem;
         flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+        margin-left: 0 !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-avatar-link {
+        margin-right: 0 !important;
+        flex: 0 0 auto;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-avatar {
+        width: 3.55rem !important;
+        height: 3.55rem !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .user-status::before,
+      .chat-detail-route .card-header.chat-detail-page-header .user-status::after {
+        display: none !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        text-align: left;
+      }
+
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell main[role="main"] .chat-detail-route .card-header.chat-detail-page-header .chat-detail-name {
+        display: flex;
+        align-items: center;
+        gap: 0.32rem;
+        margin: 0 0 0.12rem !important;
+        min-width: 0;
+        color: #fff;
+        font-size: 1.22rem !important;
+        line-height: 1.08 !important;
+        font-weight: 700 !important;
+        white-space: nowrap;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-name a,
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-name .verified {
+        color: #fff !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-name a {
+        display: block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-name .verified {
+        flex: 0 0 auto;
+        font-size: 0.86rem;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-username {
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 0.96rem;
+        line-height: 1.18;
+        color: rgba(255, 255, 255, 0.84);
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-status {
+        display: none !important;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 0.2rem;
+        font-size: 0.8rem;
+        line-height: 1.1;
+        color: rgba(164, 173, 194, 0.78);
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-action-link {
+        width: 2rem;
+        height: 2rem;
+        min-width: 2rem;
+        min-height: 2rem;
+        padding: 0 !important;
+        border-radius: 999rem;
+        background: transparent;
+        box-shadow: none;
+        color: rgba(96, 105, 130, 0.95);
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-action-link.float-right {
+        flex: 0 0 auto;
+        margin-right: 0 !important;
+        margin-left: 0.15rem;
+      }
+
+      .chat-detail-route .container-msg {
+        flex: 1 1 auto;
+        padding: 1rem 1.1rem 1rem !important;
         min-height: 0 !important;
+        height: auto !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch;
+        background: none;
+        border-bottom: 0.0625rem solid #ffffff !important;
       }
-      .messages-chat-page .chatlist {
-        padding-top: .35rem !important;
-        padding-bottom: .35rem !important;
+
+      .chat-detail-route .chatlist {
+        padding-top: 1.1rem !important;
+        padding-bottom: 1.1rem !important;
       }
-      .messages-chat-page .chatlist > a.align-self-end.mr-3 {
-        margin-right: .5rem !important;
+
+      .chat-detail-route .chatlist > a.align-self-end.mr-3 {
+        margin-right: 0.625rem !important;
       }
-      .messages-chat-page .chatlist .avatar-chat {
-        width: 36px !important;
-        height: 36px !important;
+
+      .chat-detail-route .chatlist .avatar-chat {
+        width: 2rem !important;
+        height: 2rem !important;
       }
-      .messages-chat-page .chatlist .wrapper-msg-left,
-      .messages-chat-page .chatlist .wrapper-msg-right {
-        max-width: min(88vw, 420px) !important;
+
+      .chat-detail-route .chatlist .wrapper-msg-left,
+      .chat-detail-route .chatlist .wrapper-msg-right {
+        max-width: min(76vw, 21rem) !important;
       }
-      .messages-chat-page .chatlist .message.media-container {
+
+      .chat-detail-route .chatlist .message.media-container {
         padding: 0 !important;
         background: transparent !important;
         border-radius: 0 !important;
         gap: 0 !important;
         box-shadow: none !important;
       }
-      .messages-chat-page .chatlist .message.media-container .media-wrapper,
-      .messages-chat-page .chatlist .message.media-container .container-media-msg {
-        border-radius: 12px !important;
+
+      .chat-detail-route .chatlist .message.media-container .media-wrapper,
+      .chat-detail-route .chatlist .message.media-container .container-media-msg {
+        border-radius: 1rem !important;
         overflow: hidden;
       }
-      .messages-chat-page .chatlist .message:not(.media-container) {
-        font-size: 14px;
-        line-height: 1.4;
-        padding: 8px 12px !important;
+
+      .chat-detail-route .chatlist .message:not(.media-container) {
+        font-size: 1rem;
+        line-height: 1.45;
+        padding: 0.9rem 1.05rem !important;
+        border-radius: 1.2rem !important;
       }
-      .messages-chat-page .card-footer .btn-upload {
-        width: 40px;
-        height: 40px;
+
+      .chat-detail-route .chatlist .media-body > .small,
+      .chat-detail-route .chatlist .timeAgo,
+      .chat-detail-route .chatlist .text-muted {
+        color: rgba(159, 169, 189, 0.95) !important;
       }
-      .messages-chat-page .message-composer-toolbar {
-        gap: 6px;
+
+      .chat-detail-route .chatlist .small {
+        font-size: 0.78rem;
       }
-      .messages-chat-page .message-send-wrap {
+
+      .chat-detail-route .chatlist .chat-gift-card {
+        padding: 0 !important;
+        background: transparent !important;
+        text-align: right;
+      }
+
+      .chat-detail-route .chatlist .chat-gift-figure {
+        display: block;
+        width: 7.25rem;
+        margin: 0 0 0.75rem auto;
+      }
+
+      .chat-detail-route .chatlist .chat-gift-figure img {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .chat-detail-route .chatlist .chat-gift-price {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         margin-left: auto;
+        color: #fff !important;
+        font-size: 0.95rem !important;
+        font-weight: 700;
       }
-      .messages-chat-page #button-reply-msg {
-        width: auto !important;
-        min-width: 64px;
+
+      .chat-detail-route .chatlist .chat-gift-price small,
+      .chat-detail-route .chatlist .chat-gift-price strong {
+        color: inherit !important;
+        font-size: inherit !important;
+      }
+
+      .chat-detail-route .card-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 25;
+        margin-top: auto !important;
+        padding: 1.05rem 1.1rem calc(1.15rem + env(safe-area-inset-bottom)) !important;
+        background: transparent !important;
+        border-top: 0.0625rem solid #ffffff !important;
+      }
+
+      .chat-detail-route .chat-detail-input-wrap {
+        margin-right: 0 !important;
+      }
+
+      .chat-detail-route .chat-detail-input-wrap .triggerEmoji {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        z-index: 2;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.5rem;
+      }
+
+      .chat-detail-route #message {
+        min-height: 4.45rem;
+        max-height: 7rem;
+        padding: 1.05rem 3.35rem 1.05rem 1.15rem;
+        border: 0 !important;
+        border-radius: 1.2rem !important;
+        background: rgba(255, 255, 255, 0.07) !important;
+        color: #fff !important;
+        font-size: 1.02rem !important;
+        line-height: 1.35;
+        box-shadow: none !important;
+      }
+
+      .chat-detail-route #message::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      .chat-detail-route .message-composer-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 1.1rem;
+        margin-top: 1.05rem !important;
+      }
+
+      .chat-detail-route .chatlist .iconmoon.icon-Delete,
+      .chat-detail-route .chatlist .fa-trash,
+      .chat-detail-route .chatlist .actionDeleteMsg,
+      .chat-detail-route .chatlist .deleteMsg {
+        opacity: 0.45;
+      }
+
+      .chat-detail-route .chat-detail-action-icons {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-width: 0;
+        overflow-x: auto;
+        padding-bottom: 0.125rem;
+        scrollbar-width: none;
+        justify-content: flex-start;
+      }
+
+      .chat-detail-route .chat-detail-action-icons::-webkit-scrollbar {
+        display: none;
+      }
+
+      .chat-detail-route .card-footer .btn-upload {
+        width: 2.875rem;
+        height: 2.875rem;
+        min-width: 2.875rem;
+        padding: 0 !important;
+        border-radius: 999rem !important;
+        color: rgba(255, 255, 255, 0.92) !important;
+      }
+
+      .chat-detail-route .message-send-wrap {
+        margin: 0 !important;
+        width: auto;
+      }
+
+      .chat-detail-route .message-send-wrap #button-reply-msg {
+        width: 5.75rem;
+        min-width: 5.75rem;
+        height: 3.25rem;
+        padding: 0;
+        border-radius: 999rem !important;
         float: none !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        box-shadow: none;
       }
-      .messages-chat-page #message {
-        white-space: pre-wrap;
-        word-break: break-word;
-        overflow-wrap: anywhere;
-        padding-right: 40px;
+
+      .chat-detail-route .message-send-wrap #button-reply-msg i {
+        margin: 0;
       }
-      .messages-chat-page .card-header,
-      .messages-chat-page .card-footer {
+
+      .chat-detail-route .card-header,
+      .chat-detail-route .card-footer {
         flex: 0 0 auto;
+      }
+
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell main .container-fluid,
+      body.messages-detail-page.chat-detail-route-body.app-auth-shell main .row {
+        max-width: none !important;
+      }
+
+      .chat-detail-route.messages-chat-page .card,
+      .chat-detail-route.messages-chat-page .messageDiv {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        border: 0 !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        background: transparent !important;
+      }
+
+      .chat-detail-route.messages-chat-page > .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .chat-detail-route.messages-chat-page .messages-middle-col .messageDiv {
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        max-height: 100dvh !important;
+        gap: 0 !important;
+      }
+
+      .chat-detail-route.messages-chat-page > .container-fluid > .row.justify-content-center.h-100 {
+        --bs-gutter-x: 0 !important;
+        --bs-gutter-y: 0 !important;
+        width: 100% !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-header-row {
+        display: grid;
+        grid-template-columns: 1.8rem minmax(0, 1fr) auto;
+        column-gap: 0.6rem;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-back-link {
+        width: 1.8rem;
+        min-width: 1.8rem;
+        margin: 0 !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-status .timeAgo {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.42rem;
+        margin-left: 0.35rem;
+        padding-top: 0;
+        flex: 0 0 auto;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-more {
+        position: relative;
+        flex: 0 0 auto;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-actions .float-right,
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-actions #dropdown_options {
+        margin: 0 !important;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-action-link {
+        width: 2rem;
+        height: 2rem;
+        min-width: 2rem;
+        min-height: 2rem;
+        align-self: center;
+        font-size: 1.15rem;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .chat-detail-action-link i {
+        font-size: 1.15rem;
+      }
+
+      .chat-detail-route .card-header.chat-detail-page-header .dropdown-menu {
+        top: calc(100% + 0.15rem) !important;
+        right: 0 !important;
+        left: auto !important;
+        min-width: 12rem;
+        z-index: 40;
+        margin: 0 !important;
+        transform: none !important;
+      }
+
+      .chat-detail-route .container-msg {
+        padding: 0.35rem 1.25rem 1.25rem !important;
+      }
+
+      .chat-detail-route .chatlist {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+      }
+
+      .chat-detail-route .chatlist > a.align-self-end.mr-3 {
+        display: none !important;
+      }
+
+      .chat-detail-route .chatlist .media-body {
+        width: 100%;
+      }
+
+      .chat-detail-route .chatlist .wrapper-msg-left,
+      .chat-detail-route .chatlist .wrapper-msg-right,
+      .chat-detail-route .chatlist .float-left,
+      .chat-detail-route .chatlist .float-right {
+        max-width: min(74vw, 21rem) !important;
+      }
+
+      .chat-detail-route .chatlist .message.bg-primary {
+        border-radius: 1.35rem !important;
+      }
+
+      .chat-detail-route .chatlist .message.rounded-top-right-0,
+      .chat-detail-route .chatlist .message.rounded-bottom-right-0 {
+        border-top-right-radius: 0.5rem !important;
+        border-bottom-right-radius: 0.5rem !important;
+      }
+
+      .chat-detail-route .chatlist .message.rounded-top-left-0,
+      .chat-detail-route .chatlist .message.rounded-bottom-left-0 {
+        border-top-left-radius: 0.5rem !important;
+        border-bottom-left-radius: 0.5rem !important;
+      }
+
+      .chat-detail-route .chatlist .chat-gift-card {
+        margin-left: auto;
+        width: min(74vw, 14rem);
+      }
+
+      .chat-detail-route .chatlist .chat-gift-figure {
+        width: 8.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .chat-detail-route .chatlist .chat-gift-price {
+        font-size: 1rem !important;
+      }
+
+      .chat-detail-route .chatlist .chat-gift-card .card-body {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+      }
+
+      .chat-detail-route .card-footer {
+        padding: 1rem 1.25rem calc(1.1rem + env(safe-area-inset-bottom)) !important;
+      }
+
+      .chat-detail-route #message {
+        min-height: 4.5rem;
+        border-radius: 1.1rem !important;
+      }
+
+      .chat-detail-route .message-composer-toolbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1.1rem;
+      }
+
+      .chat-detail-route .chat-detail-action-icons {
+        justify-content: space-between;
+        gap: 0.65rem;
+      }
+
+      .chat-detail-route .card-footer .btn-upload {
+        width: 3rem;
+        height: 3rem;
+        min-width: 3rem;
+      }
+
+      .chat-detail-route .message-send-wrap #button-reply-msg {
+        width: 6.5rem;
+        min-width: 6.5rem;
+        height: 3.35rem;
       }
     }
   </style>
 @endsection
 
 @section('content')
-<section class="section section-sm pb-0 section-msg messages-chat-page">
+<section class="section section-sm pb-0 section-msg messages-chat-page chat-detail-route">
     <div class="container-fluid pt-lg-5 pt-2 px-lg-5">
       <div class="row justify-content-center h-100 mx-0">
         @if (auth()->check() && auth()->user()->role === 'admin')
@@ -219,18 +713,18 @@
           <div class="col-md-6 col-sm-6 h-100 p-0 first messages-middle-col">
 
           <div class="card  border-0  messageDiv">
-            <div class="card-header border-0 p-0">
-              <div class="media">
-                <a href="{{url()->previous()}}" class="mr-3"><i class="fa fa-arrow-left"></i></a>
-                <div class="media-message-profile-center">
-                  <a href="{{url('profile', $user->username)}}" class="mr-3">
+            <div class="card-header chat-detail-page-header border-0 p-0">
+              <div class="media chat-detail-header-row">
+                <a href="{{url()->previous()}}" class="mr-3 chat-detail-back-link"><i class="fa fa-arrow-left"></i></a>
+                <div class="media-message-profile-center chat-detail-profile">
+                  <a href="{{url('profile', $user->username)}}" class="mr-3 chat-detail-avatar-link">
                     <span class="position-relative user-status @if ($user->active_status_online == 'yes') @if (Helper::isOnline($user->id)) user-online @else user-offline @endif @endif d-block">
-                      <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle" width="95" height="95">
+                      <img src="{{Helper::getFile(config('path.avatar').$user->avatar)}}" class="rounded-circle chat-detail-avatar" width="95" height="95">
                     </span>
                   </a>
 
-                  <div class="media-body profile-card">
-                    <h6 class="m-0 fs-24 font_weight_500">
+                  <div class="media-body profile-card chat-detail-copy">
+                    <h6 class="m-0 fs-24 font_weight_500 chat-detail-name">
                       <a href="{{url('profile', $user->username)}}">
                         {{$user->hide_name == 'yes' ? $user->username : $user->name}}
                       </a>
@@ -241,6 +735,15 @@
                           </small>
                       @endif
                     </h6>
+                    <div class="chat-detail-mobile-handle chat-detail-username d-md-none">
+                      {{ '@' . $user->username }}
+                    </div>
+                    @if ($user->active_status_online == 'yes' && $user->hide_last_seen == 'no')
+                      <div class="chat-detail-mobile-status chat-detail-status d-md-none">
+                        <span>{{ __('general.active') }}</span>
+                        <small class="timeAgo @if (Helper::isOnline($user->id)) display-none @endif" data="{{ date('c', strtotime($user->last_seen ?? $user->date)) }}"></small>
+                      </div>
+                    @endif
                     <!-- Description line -->
                     <p class="profile-desc d-none d-md-block">
                       {{ __('general.chat_with') }}
@@ -255,6 +758,7 @@
                       {{__('general.visit_profile')}}
                     </a>
 
+                    <div class="d-none d-md-block">
                     @if ($user->active_status_online == 'yes')
 
                         @if ($user->hide_last_seen == 'no')
@@ -268,66 +772,71 @@
                     @else
                       {{'@'.$user->username}}
                     @endif
+                    </div>
                     
                   </div>
                 </div>
-                @if (auth()->user()->verified_id == 'yes' 
-                    && $settings->audio_call_status
-                    && auth()->user()->price_audio_call
-                    && !auth()->user()->isRestricted($user->id)
-                    )
-                <a href="javascript:void(0);" class="float-right vertical-ellipsis mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
-                  <i class="feather icon-phone"></i>
-                </a>
-                @endif
+                <div class="chat-detail-mobile-actions chat-detail-actions">
+                  @if (auth()->user()->verified_id == 'yes' 
+                      && $settings->audio_call_status
+                      && auth()->user()->price_audio_call
+                      && !auth()->user()->isRestricted($user->id)
+                      )
+                  <a href="javascript:void(0);" class="float-right vertical-ellipsis chat-detail-action-link mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startAudioCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_audio_call') }}" @endif role="button">
+                    <i class="feather icon-phone"></i>
+                  </a>
+                  @endif
 
-                @if (auth()->user()->verified_id == 'yes' 
-                    && $settings->video_call_status
-                    && auth()->user()->price_video_call
-                    && !auth()->user()->isRestricted($user->id)
-                    )
-                <a href="javascript:void(0);" class="float-right vertical-ellipsis mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
-                  <i class="feather icon-video"></i>
-                </a>
-                @endif
+                  @if (auth()->user()->verified_id == 'yes' 
+                      && $settings->video_call_status
+                      && auth()->user()->price_video_call
+                      && !auth()->user()->isRestricted($user->id)
+                      )
+                  <a href="javascript:void(0);" class="float-right vertical-ellipsis chat-detail-action-link mr-1 text-decoration-none @if (Helper::isOnline($user->id)) startVideoCall @else buttonDisabled @endif" @if (Helper::isOnline($user->id)) data-toggle="tooltip" data-placement="bottom" title="{{ __('general.new_video_call') }}" @endif role="button">
+                    <i class="feather icon-video"></i>
+                  </a>
+                  @endif
 
-                <a href="javascript:void(0);" class="float-right vertical-ellipsis " id="dropdown_options" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-ellipsis-v"></i>
-                </a>
+                  <div class="dropdown chat-detail-more">
+                    <a href="javascript:void(0);" class="float-right vertical-ellipsis chat-detail-action-link" id="dropdown_options" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-ellipsis-v"></i>
+                    </a>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_options">
 
-                  @if ($user->verified_id == 'yes' 
-                    && $settings->live_streaming_private == 'on' 
-                    && $user->allow_live_streaming_private == 'on' 
-                    && !auth()->user()->isRestricted($user->id)
-                    && Helper::isOnline($user->id)
-                    )
-                  <button type="button" class="dropdown-item requestLivePrivateModal" data-toggle="tooltip" data-placement="bottom">
-                        <i class="feather icon-video mr-2"></i> {{ __('general.request_private_live_stream') }}
-                    </button>
+                    @if ($user->verified_id == 'yes' 
+                      && $settings->live_streaming_private == 'on' 
+                      && $user->allow_live_streaming_private == 'on' 
+                      && !auth()->user()->isRestricted($user->id)
+                      && Helper::isOnline($user->id)
+                      )
+                    <button type="button" class="dropdown-item requestLivePrivateModal" data-toggle="tooltip" data-placement="bottom">
+                          <i class="feather icon-video mr-2"></i> {{ __('general.request_private_live_stream') }}
+                      </button>
+                      @endif
+
+                  @if ($messages->count() != 0 && $settings->users_can_delete_messages)
+                    <form method="POST" action="{{ url('conversation/delete', $user->id) }}" class="d-inline">
+                      @csrf
+                      <button type="submit" class="dropdown-item actionDelete">
+                          <i class="feather icon-trash-2 mr-2"></i> {{ __('general.delete') }}
+                      </button>
+                  </form>
+
                     @endif
 
-                @if ($messages->count() != 0 && $settings->users_can_delete_messages)
-                  <form method="POST" action="{{ url('conversation/delete', $user->id) }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="dropdown-item actionDelete">
-                        <i class="feather icon-trash-2 mr-2"></i> {{ __('general.delete') }}
-                    </button>
-                </form>
+                    @if (auth()->user()->isRestricted($user->id))
+                      <button type="button" class="dropdown-item removeRestriction" data-user="{{$user->id}}" id="restrictUser">
+                        <i class="fas fa-ban mr-2"></i> {{__('general.remove_restriction')}}
+                      </button>
 
-                  @endif
-
-                  @if (auth()->user()->isRestricted($user->id))
-                    <button type="button" class="dropdown-item removeRestriction" data-user="{{$user->id}}" id="restrictUser">
-                      <i class="fas fa-ban mr-2"></i> {{__('general.remove_restriction')}}
-                    </button>
-
-                  @else
-                    <button type="button" class="dropdown-item" data-user="{{$user->id}}" id="restrictUser">
-                      <i class="fas fa-ban mr-2"></i> {{__('general.restrict')}}
-                    </button>
-                  @endif
+                    @else
+                      <button type="button" class="dropdown-item" data-user="{{$user->id}}" id="restrictUser">
+                        <i class="fas fa-ban mr-2"></i> {{__('general.restrict')}}
+                      </button>
+                    @endif
+                  </div>
+                </div>
                 </div>
 
               </div>
@@ -369,7 +878,7 @@
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
                       <input type="file" name="zip" id="zipFile" accept="application/x-zip-compressed" class="visibility-hidden">
 
-                      <div class="w-100 mr-2 position-relative">
+                      <div class="w-100 mr-2 position-relative chat-detail-input-wrap">
                         <div>
                         <span class="triggerEmoji" data-toggle="dropdown">
                           <i class="bi-emoji-smile"></i>
@@ -404,6 +913,7 @@
                       <input type="file" name="media[]" id="file" accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple class="visibility-hidden filepond input-fileuploader">
 
                       <div class="message-composer-toolbar justify-content-between mt-3 align-items-center">
+                        <div class="chat-detail-action-icons">
 
                             <button type="button" class="btnMultipleUpload btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
                               <i class="feather icon-image align-middle f-size-25"></i>
@@ -450,6 +960,7 @@
                           <i class="bi-gift f-size-25 align-middle"></i>
                         </button>
                         @endif
+                        </div>
 
                   <div class="d-inline-block message-send-wrap rounded-pill mt-1 position-relative">
                     <div class="btn-blocked display-none"></div>
