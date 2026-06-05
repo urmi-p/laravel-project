@@ -817,9 +817,13 @@ overflow: hidden;
 
 height: 280px;
 
+aspect-ratio: 3 / 4;
+
 background-size: cover;
 
 background-position: center;
+
+background-repeat: no-repeat;
 
 cursor: pointer;
 
@@ -915,7 +919,19 @@ font-size: 14px;
 
 font-weight: 500;
 
-margin-bottom: 4px;
+margin-bottom: 0;
+
+overflow: hidden;
+
+text-overflow: ellipsis;
+
+display: -webkit-box;
+
+-webkit-line-clamp: 2;
+
+-webkit-box-orient: vertical;
+
+word-break: break-word;
 
 }
 
@@ -937,13 +953,13 @@ align-items: center;
 
     position: absolute;
 
-    top: 0;
+    top: 8px;
 
-    right: 0;
+    right: 8px;
 
-    width: 50px;
+    width: 36px;
 
-    height: 50px;
+    height: 36px;
 
     display: flex;
 

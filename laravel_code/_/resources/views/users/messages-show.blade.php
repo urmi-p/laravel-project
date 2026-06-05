@@ -415,7 +415,7 @@
         font-size: 1.5rem;
       }
 
-      .chat-detail-route #message {
+      .chat-detail-route #messageChat {
         min-height: 4.45rem;
         max-height: 7rem;
         padding: 1.05rem 3.35rem 1.05rem 1.15rem;
@@ -428,14 +428,14 @@
         box-shadow: none !important;
       }
 
-      .chat-detail-route #message::placeholder {
+      .chat-detail-route #messageChat::placeholder {
         color: rgba(255, 255, 255, 0.45);
       }
 
       .chat-detail-route .message-composer-toolbar {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
         gap: 1.1rem;
         margin-top: 1.05rem !important;
       }
@@ -449,13 +449,17 @@
 
       .chat-detail-route .chat-detail-action-icons {
         display: flex;
+        flex: 0 0 auto;
+        width: 100%;
+        flex-wrap: wrap;
         align-items: center;
         gap: 0.75rem;
         min-width: 0;
-        overflow-x: auto;
+        overflow: visible;
         padding-bottom: 0.125rem;
-        scrollbar-width: none;
         justify-content: flex-start;
+        position: relative;
+        z-index: 2;
       }
 
       .chat-detail-route .chat-detail-action-icons::-webkit-scrollbar {
@@ -473,10 +477,14 @@
 
       .chat-detail-route .message-send-wrap {
         margin: 0 !important;
-        width: auto;
+        width: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: flex-end;
+        z-index: 3;
       }
 
-      .chat-detail-route .message-send-wrap #button-reply-msg {
+      .chat-detail-route .message-send-wrap #buttonReplyMsgChat {
         width: 5.75rem;
         min-width: 5.75rem;
         height: 3.25rem;
@@ -490,7 +498,7 @@
         box-shadow: none;
       }
 
-      .chat-detail-route .message-send-wrap #button-reply-msg i {
+      .chat-detail-route .message-send-wrap #buttonReplyMsgChat i {
         margin: 0;
       }
 
@@ -666,18 +674,17 @@
         padding: 1rem 1.25rem calc(1.1rem + env(safe-area-inset-bottom)) !important;
       }
 
-      .chat-detail-route #message {
+      .chat-detail-route #messageChat {
         min-height: 4.5rem;
         border-radius: 1.1rem !important;
       }
 
       .chat-detail-route .message-composer-toolbar {
-        grid-template-columns: minmax(0, 1fr) auto;
         gap: 1.1rem;
       }
 
       .chat-detail-route .chat-detail-action-icons {
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 0.65rem;
       }
 
@@ -687,7 +694,7 @@
         min-width: 3rem;
       }
 
-      .chat-detail-route .message-send-wrap #button-reply-msg {
+      .chat-detail-route .message-send-wrap #buttonReplyMsgChat {
         width: 6.5rem;
         min-width: 6.5rem;
         height: 3.35rem;
@@ -859,9 +866,9 @@
 
                   @if ($subscribedToYourContent || $subscribedToMyContent || auth()->user()->isSuperAdmin() || $user->isSuperAdmin())
 
-                    <div class="w-100 display-none" id="previewFile">
+                    <div class="w-100 display-none" id="previewFileChat">
                       <div class="previewFile d-inline"></div>
-                      <a href="javascript:;" class="text-danger" id="removeFile"><i class="fa fa-times-circle"></i></a>
+                      <a href="javascript:;" class="text-danger" id="removeFileChat"><i class="fa fa-times-circle"></i></a>
                     </div>
 
                     <div class="progress-upload-cover" style="width: 0%; top:0;"></div>
@@ -869,14 +876,14 @@
                     <div class="blocked display-none"></div>
 
                     <!-- Alert -->
-                    <div class="alert alert-danger my-3" id="errorMsg" style="display: none;">
-                    <ul class="list-unstyled m-0" id="showErrorMsg"></ul>
+                    <div class="alert alert-danger my-3" id="errorMsgChat" style="display: none;">
+                    <ul class="list-unstyled m-0" id="showErrorMsgChat"></ul>
                   </div><!-- Alert -->
 
-                    <form action="{{url('message/send')}}" class="w-100" method="post" accept-charset="UTF-8" id="formSendMsg" enctype="multipart/form-data">
+                    <form action="{{url('message/send')}}" class="w-100 chat-composer-form" method="post" accept-charset="UTF-8" id="formSendMsgChat" enctype="multipart/form-data">
                       <input type="hidden" name="id_user" id="id_user" value="{{$user->id}}">
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                      <input type="file" name="zip" id="zipFile" accept="application/x-zip-compressed" class="visibility-hidden">
+                      <input type="file" name="zip" id="zipFileChat" accept="application/x-zip-compressed" class="visibility-hidden">
 
                       <div class="w-100 mr-2 position-relative chat-detail-input-wrap">
                         <div>
@@ -888,10 +895,10 @@
                           @include('includes.emojis')
                         </div>
                       </div>
-                        <textarea class="form-control textareaAutoSize emojiArea" data-post-length="{{$settings->update_length}}" rows="1" placeholder="{{__('general.write_something')}}" id="message" name="message"></textarea>
+                        <textarea class="form-control textareaAutoSize emojiArea" data-post-length="{{$settings->update_length}}" rows="1" placeholder="{{__('general.write_something')}}" id="messageChat" name="message"></textarea>
                       </div>
 
-                      <div class="form-group display-none mt-2" id="price">
+                      <div class="form-group display-none mt-2" id="priceChat">
                         <div class="input-group mb-2">
                         <div class="input-group-prepend">
                           <span class="input-group-text">{{$settings->currency_symbol}}</span>
@@ -901,34 +908,34 @@
                       </div><!-- End form-group -->
 
                       <div class="w-100 mb-2">
-                        <small id="previewImage"></small>
-                        <a href="javascript:void(0)" id="removePhoto" class="text-danger p-1 small display-none btn-tooltip" data-toggle="tooltip" data-placement="top" title="{{__('general.delete')}}"><i class="fa fa-times-circle"></i></a>
+                        <small id="previewImageChat"></small>
+                        <a href="javascript:void(0)" id="removePhotoChat" class="text-danger p-1 small display-none btn-tooltip" data-toggle="tooltip" data-placement="top" title="{{__('general.delete')}}"><i class="fa fa-times-circle"></i></a>
                       </div>
 
                       <div class="w-100 mb-2">
-                        <small id="previewEpub"></small>
-                        <a href="javascript:void(0)" id="removeEpub" class="text-danger p-1 small display-none btn-tooltip-form" data-toggle="tooltip" data-placement="top" title="{{__('general.delete')}}"><i class="fa fa-times-circle"></i></a>
+                        <small id="previewEpubChat"></small>
+                        <a href="javascript:void(0)" id="removeEpubChat" class="text-danger p-1 small display-none btn-tooltip-form" data-toggle="tooltip" data-placement="top" title="{{__('general.delete')}}"><i class="fa fa-times-circle"></i></a>
                       </div>
 
-                      <input type="file" name="media[]" id="file" accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple class="visibility-hidden filepond input-fileuploader">
+                      <input type="file" name="media[]" id="fileChat" accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple class="visibility-hidden filepond input-fileuploader">
 
                       <div class="message-composer-toolbar justify-content-between mt-3 align-items-center">
                         <div class="chat-detail-action-icons">
 
-                            <button type="button" class="btnMultipleUpload btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
+                            <button type="button" class="btnChatMultipleUpload btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ $settings->disable_audio ? __('general.photo_video') : __('general.media_type_upload') }})">
                               <i class="feather icon-image align-middle f-size-25"></i>
                             </button>
 
                             @if ($settings->allow_zip_files)
-                            <button type="button" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_file_zip')}}" onclick="$('#zipFile').trigger('click')">
+                            <button type="button" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_file_zip')}}" onclick="$('#zipFileChat').trigger('click')">
                               <i class="bi bi-file-earmark-zip align-middle f-size-25"></i>
                             </button>
                           @endif
 
                           @if (auth()->user()->verified_id == 'yes' && $settings->allow_epub_files)
-                          <input type="file" name="epub" id="ePubFile" accept="application/epub+zip" class="visibility-hidden">
+                          <input type="file" name="epub" id="ePubFileChat" accept="application/epub+zip" class="visibility-hidden">
 
-                          <button type="button" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_epub_file')}}" onclick="$('#ePubFile').trigger('click')">
+                          <button type="button" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_epub_file')}}" onclick="$('#ePubFileChat').trigger('click')">
                             <i class="bi-book f-size-25 align-middle"></i>
                           </button>
                         @endif
@@ -940,7 +947,7 @@
                         @endif
 
                           @if (auth()->user()->verified_id == 'yes' && auth()->user()->free_subscription == 'yes' && $settings->ppv_only_free_accounts || !$settings->ppv_only_free_accounts && auth()->user()->verified_id == 'yes')
-                          <button type="button" id="setPrice" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.set_price_for_msg')}}">
+                          <button type="button" id="setPriceChat" class="btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.set_price_for_msg')}}">
                             <i class="bi bi-tag align-middle" style="font-size: 27px;"></i>
                           </button>
                         @endif
@@ -964,7 +971,7 @@
 
                   <div class="d-inline-block message-send-wrap rounded-pill mt-1 position-relative">
                     <div class="btn-blocked display-none"></div>
-                    <button type="submit" id="button-reply-msg" disabled data-send="{{ __('auth.send') }}" data-wait="{{ __('general.send_wait') }}" class="btn btn-sm btn-primary rounded-pill float-right e-none w-100-mobile">
+                    <button type="submit" id="buttonReplyMsgChat" disabled data-send="{{ __('auth.send') }}" data-wait="{{ __('general.send_wait') }}" class="btn btn-sm btn-primary rounded-pill float-right e-none w-100-mobile">
                       <i class="far fa-paper-plane"></i>
                     </button>
                     </div>

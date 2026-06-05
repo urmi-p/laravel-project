@@ -25,27 +25,95 @@
 	// Remover Items of fileuploader
 	function removeItemsUploader()
 	{
-		var api = $.fileuploader.getInstance($('input[name="media[]"]'));
-		api.reset();
-		$('.fileuploader-thumbnails-input').show();
+		var api = $.fileuploader.getInstance($('#fileChat').get(0) || $('input[name="media[]"]').get(0));
+		if (api) {
+			api.reset();
+		}
+		$('#formSendMsgChat .fileuploader-thumbnails-input, .fileuploader-thumbnails-input').show();
 
-			 if ($('.fileuploader').hasClass('d-block')) {
-				 $('.fileuploader').toggleClass('d-block');
+			 if ($('#formSendMsgChat .fileuploader').hasClass('d-block')) {
+				 $('#formSendMsgChat .fileuploader').toggleClass('d-block');
+
+			 } else if ($('.fileuploader').hasClass('d-block')) {
+
+				 $('.fileuploader').toggleClass('d-block');
 			 }
 	}
 
-	$(document).on('click','#button-reply-msg',function(s) {
+	$(document).on('click', '.btnChatMultipleUpload', function() {
+
+		$(this).closest('form').find('.fileuploader').first().toggleClass('d-block');
+
+	});
+
+	$(document).on('click', '#setPriceChat', function () {
+
+		var form = $(this).closest('form');
+
+		var input = form.find('input[name=price]');
+
+		form.find('#priceChat').stop(true, true).slideToggle(100);
+
+		input.toggleClass('active');
+
+		$(this).toggleClass('btn-active-hover');
+
+		input.focus();
+
+		if (!input.hasClass('active')) {
+
+			input.val('');
+
+		}
+
+	});
+
+	$(document).on('keyup', '#messageChat', function () {
+
+		var element = $(this).val();
+
+		if (trimSpace(element).length >= 1) {
+
+			$('#buttonReplyMsgChat').removeAttr('disabled').removeClass('e-none');
+
+			return false;
+
+		} else {
+
+			$('#buttonReplyMsgChat').attr({ 'disabled': 'true' }).addClass('e-none');
+
+			return false;
+
+		}
+
+	});
+
+	$(document).on('change', '#fileChat, #zipFileChat, #ePubFileChat', function () {
+
+		var form = $('#formSendMsgChat');
+
+		if (form.find('#fileChat').val() || form.find('#zipFileChat').val() || form.find('#ePubFileChat').val()) {
+
+			$('#buttonReplyMsgChat').removeAttr('disabled').removeClass('e-none');
+
+		}
+
+	});
+
+	$(document).on('click','#buttonReplyMsgChat',function(s) {
 
 	 s.preventDefault();
 
-	 var element     = $(this);
+	 var element     = $(this);
+
+	 var form        = $('#formSendMsgChat');
 	 var error       = false;
 	 var param       = /^[0-9]+$/i;
 	 var _lastId     = $('div.chatlist:last').attr('data');
-	 var _message    = $('#message').val();
-	 var file        = $('#file').val();
-	 var zipFile     = $('#zipFile').val();
-	 var input       = $('input[name=price]');
+	 var _message    = form.find('#messageChat').val();
+	 var file        = form.find('#fileChat').val();
+	 var zipFile     = form.find('#zipFileChat').val();
+	 var input       = form.find('input[name=price]');
 
 	 if (trimSpace(_message).length == 0 && file == '' && zipFile == '') {
 		 var error = true;
@@ -53,28 +121,28 @@
 	 }
 
 	 if (error == false) {
-		 $('#button-reply-msg').attr({'disabled' : 'true'});
-	   $('.blocked').show();
+		 $('#buttonReplyMsgChat').attr({'disabled' : 'true'});
+	   form.find('.blocked').show();
 
-	     $('.progress-upload-cover').show();
+	     form.siblings('.progress-upload-cover').show();
 
 	 (function() {
-	   var percent = $('.progress-upload-cover');
+	   var percent = form.siblings('.progress-upload-cover');
 	   var percentVal = '0%';
 
-			$("#formSendMsg").ajaxForm({
+			form.ajaxForm({
 			dataType : 'json',
 	    error: function(responseText, statusText, xhr, $form) {
 	     element.removeAttr('disabled');
 	     percent.width(percentVal);
 
 	     $('.popout').removeClass('popout-success').addClass('popout-error').html(error_occurred + ' ' + xhr).fadeIn('500').delay('5000').fadeOut('500');
-	     $('#button-reply-msg').removeAttr('disabled');
-	     $('.blocked').hide();
-			 $('#file').val('');
-			 $('#zipFile').val('');
-			 $('#removePhoto, #removeEpub').hide();
-			 $('#previewImage, #previewEpub').html('');
+	     $('#buttonReplyMsgChat').removeAttr('disabled');
+	     form.find('.blocked').hide();
+			 form.find('#fileChat').val('');
+			 form.find('#zipFileChat').val('');
+			 form.find('#removePhotoChat, #removeEpubChat').hide();
+			 form.find('#previewImageChat, #previewEpubChat').html('');
 	    },
 	    beforeSend: function() {
 	       percent.width(percentVal);
@@ -87,7 +155,7 @@
 
 	      if (result.success && result.fromChat && ! param.test(_lastId) && ! result.encode) {
 	        Chat(result.last_id);
-	        $('.progress-upload-cover').hide();
+	        form.siblings('.progress-upload-cover').hide();
 	      }
 
 				if (result.success && ! result.fromChat && ! result.encode) {
@@ -112,43 +180,43 @@
 			//===== SUCCESS =====//
 			if (result.success != false) {
 
-				$('#message').val('').css({height: '44px', transition: 'height .6s ease'});
+				form.find('#messageChat').val('').css({height: '44px', transition: 'height .6s ease'});
 
-	       $('#file').val('');
-				 $('#zipFile').val('');
-	       $('#removeFile').hide();
-	       $('.previewFile').html('');
-	       $('#previewFile').html('');
-					$('#errorMsg').fadeOut();
-	        $('#showErrorMsg').html('');
-					$('#button-reply-msg').attr({'disabled' : 'true'}).addClass('e-none');
-	        $('.blocked').hide();
-	        $('.progress-upload-cover').hide();
+	       form.find('#fileChat').val('');
+				 form.find('#zipFileChat').val('');
+	       form.find('#removeFileChat').hide();
+	       form.find('.previewFile').html('');
+	       form.find('#previewFileChat').html('');
+					form.find('#errorMsgChat').fadeOut();
+	        form.find('#showErrorMsgChat').html('');
+					$('#buttonReplyMsgChat').attr({'disabled' : 'true'}).addClass('e-none');
+	        form.find('.blocked').hide();
+	        form.siblings('.progress-upload-cover').hide();
 	        percent.width(percentVal);
-					$('#removePhoto, #removeEpub').hide();
-					$('#previewImage, #previewEpub').html('');
+					form.find('#removePhotoChat, #removeEpubChat').hide();
+					form.find('#previewImageChat, #previewEpubChat').html('');
 
 					if (input.hasClass('active')) {
 			 		 input.val('');
-			 		 $('#price').slideToggle(100);
+			 		 form.find('#priceChat').slideToggle(100);
 			 		 input.removeClass('active');
-			 		 $('#setPrice').removeClass('btn-active-hover');
+			 		 form.find('#setPriceChat').removeClass('btn-active-hover');
 			 		 input.blur();
 			 	 }
 
 				removeItemsUploader();
 
 			 } else if (result.error_custom ) {
-				 $('#button-reply-msg').removeAttr('disabled');
-	       $('.blocked').hide();
-	       $('#errorMsg').fadeIn();
-				 $('#showErrorMsg').html(result.error_custom).fadeIn(500);
-	       $('.progress-upload-cover').hide();
+				 $('#buttonReplyMsgChat').removeAttr('disabled');
+	       form.find('.blocked').hide();
+	       form.find('#errorMsgChat').fadeIn();
+				 form.find('#showErrorMsgChat').html(result.error_custom).fadeIn(500);
+	       form.siblings('.progress-upload-cover').hide();
 	       percent.width(percentVal);
-				 $('#file').val('');
-				 $('#zipFile').val('');
-				 $('#removePhoto, #removeEpub').hide();
-				 $('#previewImage, #previewEpub').html('');
+				 form.find('#fileChat').val('');
+				 form.find('#zipFileChat').val('');
+				 form.find('#removePhotoChat, #removeEpubChat').hide();
+				 form.find('#previewImageChat, #previewEpubChat').html('');
 
 				 removeItemsUploader();
 
@@ -161,11 +229,11 @@
 	  			 error += '<li><i class="fa fa-times-circle"></i> ' + result.errors[$key] + '</li>';
 	  		 }
 
-	       $('#errorMsg').fadeIn();
-	    	 $('#showErrorMsg').html(error).fadeIn(500);
-	       $('#button-reply-msg').removeAttr('disabled');
-	       $('.blocked').hide();
-	       $('.progress-upload-cover').hide();
+	       form.find('#errorMsgChat').fadeIn();
+	    	 form.find('#showErrorMsgChat').html(error).fadeIn(500);
+	       $('#buttonReplyMsgChat').removeAttr('disabled');
+	       form.find('.blocked').hide();
+	       form.siblings('.progress-upload-cover').hide();
 	       percent.width(percentVal);
 			 }
 
@@ -370,9 +438,9 @@
 	});
 
 	// Remove file
-	$('#removeFile').on('click', function() {
-	    $('#file').val('');
-	    $('#previewImage').html('');
+	$('#removeFileChat').on('click', function() {
+	    $('#fileChat').val('');
+	    $('#previewImageChat').html('');
 	    $(this).hide();
 	   });
 
@@ -484,11 +552,11 @@
 		 //============ END UPLOAD FILE
 
 		 //======= Upload File
-		 $("#zipFile").on('change', function() {
+		 $("#zipFileChat").on('change', function() {
 
-			 $('#previewImage').html('');
-			 $('#removePhoto').hide();
-			 $('#file').val('');
+			 $('#previewImageChat').html('');
+			 $('#removePhotoChat').hide();
+			 $('#fileChat').val('');
 
 		 var loaded = false;
 		 if(window.File && window.FileReader && window.FileList && window.Blob) {
@@ -502,7 +570,7 @@
 		 	 var ftype = $(this)[0].files[0].type; // get file type
 
 		 		if(!rFilter.test(oFile.type)) {
-		 		 $('#zipFile').val('');
+		 		 $('#zipFileChat').val('');
 		 			swal({
 		 			 title: error_oops,
 		 			 text: formats_available_upload_file,
@@ -524,8 +592,8 @@
 		 		return false;
 		 	 }
 
-			 $('#previewImage').html('<em><strong>' + oFile.name + '</strong></em>');
-			 $('#removePhoto').show();
+			 $('#previewImageChat').html('<em><strong>' + oFile.name + '</strong></em>');
+			 $('#removePhotoChat').show();
 
 		  }
 		 } else{

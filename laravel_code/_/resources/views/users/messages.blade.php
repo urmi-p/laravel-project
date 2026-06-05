@@ -24,6 +24,26 @@
       padding-left: 1rem;
       padding-right: 1rem;
     }
+
+    .messages-mobile-new-message {
+      position: fixed;
+      right: 1rem;
+      bottom: calc(5.5rem + env(safe-area-inset-bottom));
+      width: 3.75rem;
+      height: 3.75rem;
+      border-radius: 999rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.35);
+      z-index: 1035;
+      padding: 0;
+    }
+
+    .messages-mobile-new-message i {
+      font-size: 1.5rem;
+      margin: 0;
+    }
   }
 </style>
 @endsection
@@ -66,6 +86,12 @@
       </div>
     </div><!-- end row -->
   </div><!-- end container -->
+
+  @if (auth()->user()->verified_id == 'yes' && request()->is('messages') && auth()->user()->totalSubscriptionsActive() > 1)
+    <button type="button" class="btn btn-primary d-md-none messages-mobile-new-message" data-toggle="modal" data-target="#newMessageForm" aria-label="{{ trans('general.new_message') }}">
+      <i class="bi bi-plus-lg"></i>
+    </button>
+  @endif
 </section>
 @include('includes.modal-new-message')
 @endsection

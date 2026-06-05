@@ -76,7 +76,7 @@
 
 				</div><!-- card-body -->
 
-				<div class="card-footer bg-white border-0 pt-0 position-relative">
+				<div class="card-footer bg-white border-0 pt-0 position-relative" style="position: relative; display: block; left: auto; right: auto; bottom: auto;">
 
 					<div class="progress-upload-cover" style="width: 0%; top:0;"></div>
 
@@ -102,9 +102,8 @@
 					<input type="file" name="media[]" id="file" accept="image/*,video/mp4,video/x-m4v,video/quicktime,audio/mp3" multiple class="visibility-hidden filepond input-fileuploader">
 
 
-					<div class="justify-content-between align-items-center">
-
-
+					<div class="d-flex justify-content-between align-items-center mt-3 w-100">
+						<div class="d-flex flex-wrap align-items-center">
 						<button type="button" class="btnMultipleUpload btn btn-upload btn-tooltip e-none align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.upload_media')}} ({{ __('general.media_type_upload') }})">
 							<i class="feather icon-image align-middle f-size-25"></i>
 						</button>
@@ -132,8 +131,9 @@
 						<button type="button" id="setPrice" class="btn btn-upload btn-tooltip align-bottom @if (auth()->user()->dark_mode == 'off') text-primary @else text-white @endif rounded-pill" data-toggle="tooltip" data-placement="top" title="{{__('general.set_price_for_msg')}}">
 							<i class="feather icon-tag align-middle" style="font-size: 27px;"></i>
 						</button>
+						</div>
 
-						<div class="d-inline-block float-right mt-1 rounded-pill position-relative">
+						<div class="d-inline-flex rounded-pill position-relative">
 							<div class="btn-blocked display-none"></div>
 							<button disabled type="submit" id="button-reply-msg" class="btn btn-sm btn-primary rounded-pill float-right e-none"><i class="far fa-paper-plane"></i></button>
 						</div>
