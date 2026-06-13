@@ -11,6 +11,8 @@ use App\Http\Controllers\LangController;
 use App\Http\Controllers\ReelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PromoCodesController;
+use App\Http\Controllers\AdminPromoCodesController;
 use App\Http\Controllers\PagesController;
 // use App\Http\Controllers\PaxumController;
 use App\Http\Controllers\CCBillController;
@@ -238,6 +240,7 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
 
 	 // Buy Subscription
 	 Route::post('buy/subscription', [SubscriptionsController::class, 'buy']);
+	 Route::post('subscription/promo/preview', [SubscriptionsController::class, 'previewPromo']);
 
 	 // Free Subscription
 	 Route::post('subscription/free', [SubscriptionsController::class, 'subscriptionFree']);
@@ -273,6 +276,10 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
 	// Subscription Page
    	Route::view('settings/subscription','users.subscription');
    	Route::post('settings/subscription', [UserController::class, 'saveSubscription']);
+	Route::get('settings/promo-codes', [PromoCodesController::class, 'index']);
+	Route::post('settings/promo-codes', [PromoCodesController::class, 'store']);
+	Route::post('settings/promo-codes/{id}', [PromoCodesController::class, 'update']);
+	Route::post('settings/promo-codes/{id}/disable', [PromoCodesController::class, 'disable']);
 
 	// Verify Account
    	Route::get('settings/verify/account', [UserController::class, 'verifyAccount']);
@@ -771,6 +778,8 @@ Route::group(['middleware' => 'private.content'], function() {
 	
 		// Subscriptions
 		Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('subscriptions');
+		Route::get('/promo-codes', [AdminPromoCodesController::class, 'index']);
+		Route::post('/promo-codes/{id}/disable', [AdminPromoCodesController::class, 'disable']);
 	
 		// Transactions
 		Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions');

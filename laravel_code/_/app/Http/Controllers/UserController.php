@@ -234,8 +234,12 @@ class UserController extends Controller
       $media = '/' . $media;
     }
 
-    // All Payments
-    $allPayment = PaymentGateways::where('enabled', '1')->whereSubscription('yes')->get();
+    // Subscription checkout is client-approved only for PayPal, Stripe, and wallet.
+    // Wallet is rendered separately below, so this list only includes gateway-backed options.
+    $allPayment = PaymentGateways::where('enabled', '1')
+      ->whereSubscription('yes')
+      ->whereIn('name', ['PayPal', 'Stripe'])
+      ->get();
 
     // Stripe Key
     $_stripe = PaymentGateways::whereName('Stripe')->where('enabled', '1')->select('key')->first();
@@ -1894,10 +1898,19 @@ class UserController extends Controller
   public function formAddUpdatePaymentCard()
   {
     $payment = PaymentGateways::whereName('Stripe')->whereEnabled(1)->firstOrFail();
-    \Stripe\Stripe::setApiKey($payment->key_secret);
+    $this->syncStripeConfiguration($payment);
+    $user = auth()->user();
+    $this->ensureStripeCustomerExists($user, $payment);
+
+    $stripe = new \Stripe\StripeClient($payment->key_secret);
+    $intent = $stripe->setupIntents->create([
+      'customer' => $user->stripe_id,
+      'payment_method_types' => ['card'],
+      'usage' => 'off_session',
+    ]);
 
     return view('users.add_payment_card', [
-      'intent' => auth()->user()->createSetupIntent(),
+      'intent' => $intent,
       'key' => $payment->key
     ]);
   } // End Method
@@ -1905,7 +1918,7 @@ class UserController extends Controller
   public function addUpdatePaymentCard()
   {
     $payment = PaymentGateways::whereName('Stripe')->whereEnabled(1)->firstOrFail();
-    \Stripe\Stripe::setApiKey($payment->key_secret);
+    $this->syncStripeConfiguration($payment);
 
     if (!$this->request->payment_method) {
       return response()->json([
@@ -1914,7 +1927,7 @@ class UserController extends Controller
     }
 
     $user = auth()->user();
-    $user->createOrGetStripeCustomer();
+    $this->ensureStripeCustomerExists($user, $payment);
 
     $user->addPaymentMethod($this->request->payment_method);
 
@@ -1932,6 +1945,49 @@ class UserController extends Controller
       'success' => true,
       'url' => url('my/cards')
     ]);
+  }
+
+  protected function syncStripeConfiguration(PaymentGateways $payment): void
+  {
+    config([
+      'services.stripe.key' => $payment->key,
+      'services.stripe.secret' => $payment->key_secret,
+    ]);
+
+    \Stripe\Stripe::setApiKey($payment->key_secret);
+  }
+
+  protected function ensureStripeCustomerExists($user, PaymentGateways $payment): void
+  {
+    $stripe = new \Stripe\StripeClient($payment->key_secret);
+
+    if ($user->stripe_id === '') {
+      $user->forceFill(['stripe_id' => null])->save();
+      $user->refresh();
+    }
+
+    if ($user->stripe_id) {
+      try {
+        $stripe->customers->retrieve($user->stripe_id, []);
+        return;
+      } catch (\Stripe\Exception\InvalidRequestException $e) {
+        if ($e->getStripeCode() !== 'resource_missing') {
+          throw $e;
+        }
+
+        $user->forceFill(['stripe_id' => null])->save();
+        $user->refresh();
+      }
+    }
+
+    $customer = $stripe->customers->create([
+      'name' => $user->name,
+      'email' => $user->email,
+      'phone' => $user->phone ?: null,
+    ]);
+
+    $user->forceFill(['stripe_id' => $customer->id])->save();
+    $user->refresh();
   }
 
 

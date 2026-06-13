@@ -13,6 +13,8 @@ use Cardinity\Exception;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Models\Notifications;
+use App\Services\PromoCodeService;
+use App\Models\PromoCodeUsages;
 use App\Models\Subscriptions;
 use Cardinity\Method\Payment;
 use App\Models\PaymentGateways;
@@ -20,6 +22,13 @@ use App\Models\PaymentGateways;
 class CardinityController extends Controller
 {
   use Traits\Functions;
+
+  protected $promoCodeService;
+
+  public function __construct()
+  {
+    $this->promoCodeService = app(PromoCodeService::class);
+  }
 
   public function show(Request $request)
   {
@@ -42,16 +51,30 @@ class CardinityController extends Controller
     // Get Payment Gateway
     $payment = PaymentGateways::whereName($request->payment_gateway)->whereEnabled(1)->firstOrFail();
 
+    $checkout = $this->buildCheckoutContext($user, $plan, $request);
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => $checkout['error']]
+      ]);
+    }
+
+    $pricing = $checkout['pricing'];
+
     $data = base64_encode(http_build_query([
       'id' => $request->id,
-      'amount' => $plan->price,
+      'amount' => $pricing['charged_amount'],
+      'original_amount' => $pricing['original_amount'],
+      'discount_amount' => $pricing['discount_amount'],
+      'tax_amount' => $pricing['tax_amount'],
       'subscriber' => auth()->id(),
       'plan' => $plan->name,
       'taxes' => auth()->user()->taxesPayable(),
-      'type' => 'subscription'
+      'type' => 'subscription',
+      'promo_usage_token' => $checkout['checkout_token'],
     ]));
 
-    $amount       = Helper::amountGross($plan->price);
+    $amount       = $pricing['charged_amount'] + $pricing['tax_amount'];
     $cancel_url   = route('cardinity.cancel', ['url' => 'home']);
     $country      = auth()->user()->getCountry();
     $language     = strtoupper(config('app.locale'));
@@ -184,14 +207,14 @@ class CardinityController extends Controller
 
               $this->sendWelcomeMessageAction($user, $data['subscriber']);
 
-              // Admin and user earnings calculation
-              $earnings = $this->earningsAdminUser($user->custom_fee, $data['amount'], $payment->fee, $payment->fee_cents);
+              $baseEarnings = $this->earningsAdminUser($user->custom_fee, $data['original_amount'] ?? $data['amount'], null, null);
+              $earnings = $this->promoCodeService->buildNetEarningsSnapshot($data['amount'], $baseEarnings, $payment->fee, $payment->fee_cents);
 
               $verifiedTxnId = Transactions::where('txn_id', $paymentId)->first();
 
               if (!isset($verifiedTxnId)) {
                 // Insert Transaction
-                $this->transaction(
+                $txn = $this->transaction(
                   $paymentId,
                   $data['subscriber'],
                   $subscription->id,
@@ -207,6 +230,32 @@ class CardinityController extends Controller
 
                 // Add Earnings to User
                 $user->increment('balance', $earnings['user']);
+
+                if (! empty($data['promo_usage_token'])) {
+                  $usage = PromoCodeUsages::where('checkout_token', $data['promo_usage_token'])->first();
+
+                  if ($usage && $usage->status !== 'completed') {
+                    $this->promoCodeService->markUsageCompleted($usage, [
+                      'subscription_id' => $subscription->id,
+                      'transaction_id' => $txn->id,
+                      'gateway_reference' => $paymentId,
+                    ]);
+
+                    $this->promoCodeService->createHistory(
+                      $usage->promo_code_id,
+                      $data['subscriber'],
+                      'system',
+                      'used',
+                      null,
+                      [
+                        'subscription_id' => $subscription->id,
+                        'transaction_id' => $txn->id,
+                        'gateway_name' => 'Cardinity',
+                        'charged_amount' => $data['amount'],
+                      ]
+                    );
+                  }
+                }
               } // End verifiedTxnId
 
               return redirect($user->username);
@@ -373,5 +422,76 @@ class CardinityController extends Controller
     session()->put('subscription_cancel', __('general.subscription_cancel'));
 
     return redirect($creator->user()->username);
+  }
+
+  protected function buildCheckoutContext(User $creator, Plans $plan, Request $request): array
+  {
+    $originalAmount = round((float) $plan->price, 2);
+    $grossAmount = (float) Helper::amountGross($originalAmount);
+    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
+
+    $pricing = [
+      'original_amount' => $originalAmount,
+      'discount_amount' => 0.00,
+      'charged_amount' => $originalAmount,
+      'tax_amount' => $taxAmount,
+    ];
+
+    $checkoutToken = null;
+
+    if ($request->filled('promo_code')) {
+      $result = $this->promoCodeService->validateForCheckout(
+        $creator->id,
+        auth()->id(),
+        $request->promo_code,
+        $originalAmount
+      );
+
+      if (! $result['valid']) {
+        return [
+          'success' => false,
+          'error' => $this->promoValidationMessage($result['reason']),
+        ];
+      }
+
+      $pricing = array_merge($pricing, $result['pricing']);
+      $checkoutToken = str_random(40);
+
+      $this->promoCodeService->createUsage($result['promo_code'], [
+        'user_id' => auth()->id(),
+        'plan_id' => $plan->id,
+        'plan_interval' => $plan->interval,
+        'gateway_name' => 'Cardinity',
+        'checkout_token' => $checkoutToken,
+        'original_amount' => $pricing['original_amount'],
+        'discount_amount' => $pricing['discount_amount'],
+        'charged_amount' => $pricing['charged_amount'],
+        'creator_earning_impact' => $pricing['discount_amount'],
+        'tax_amount' => $pricing['tax_amount'],
+      ]);
+    }
+
+    return [
+      'success' => true,
+      'pricing' => $pricing,
+      'checkout_token' => $checkoutToken,
+    ];
+  }
+
+  protected function promoValidationMessage(string $reason): string
+  {
+    switch ($reason) {
+      case 'disabled':
+        return 'This promo code is disabled.';
+      case 'expired':
+        return 'This promo code has expired.';
+      case 'limit_total_reached':
+        return 'This promo code has reached its usage limit.';
+      case 'limit_per_user_reached':
+        return 'You have already used this promo code the maximum allowed times.';
+      case 'invalid':
+      default:
+        return 'The promo code is invalid.';
+    }
   }
 }

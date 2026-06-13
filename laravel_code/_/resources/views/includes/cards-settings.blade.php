@@ -275,6 +275,18 @@
                 </a>
                 @endif
 
+                @if (auth()->user()->verified_id == 'yes')
+                <a href="{{ url('settings/promo-codes') }}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between @if (request()->is('settings/promo-codes')) active @endif">
+
+                    <div>
+                        <i class="bi bi-ticket-perforated mr-2"></i>
+                        <span>Promo Codes</span>
+                    </div>
+
+                </a>
+                @endif
+
 
 
                 <a href="{{ url('my/subscriptions') }}"

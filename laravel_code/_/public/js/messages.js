@@ -42,11 +42,23 @@
 
 	$(document).on('click', '.btnChatMultipleUpload', function() {
 
-		$(this).closest('form').find('.fileuploader').first().toggleClass('d-block');
+		var input = $('#fileChat').get(0);
+		var api = input ? $.fileuploader.getInstance(input) : null;
+
+		if (api && typeof api.open === 'function') {
+			api.open();
+			return;
+		}
+
+		if (input) {
+			input.click();
+		}
 
 	});
 
-	$(document).on('click', '#setPriceChat', function () {
+	$(document).on('click', '#setPriceChat', function (e) {
+
+		e.preventDefault();
 
 		var form = $(this).closest('form');
 

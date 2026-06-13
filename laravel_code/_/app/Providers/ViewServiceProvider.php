@@ -18,6 +18,7 @@ use App\Models\AdminSettings;
 use App\Models\LiveStreamings;
 use App\Models\PaymentGateways;
 use App\Models\VerificationRequests;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -39,68 +40,90 @@ class ViewServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
 			return false;
         }
-		
-		// Admin Settings
-		$settings = AdminSettings::first();
 
-		// Updates pending count on Panel Admin
-		$updatesPendingCount = Updates::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first();
+		try {
+			// Admin Settings
+			$settings = AdminSettings::first();
 
-		// Deposits pending count on Panel Admin
-		$depositsPendingCount = Deposits::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first();
+			// Updates pending count on Panel Admin
+			$updatesPendingCount = Schema::hasTable('updates')
+				? Updates::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first()
+				: 0;
 
-		// Reports on Panel Admin
-		$reports = Reports::selectRaw('COUNT(id) as total')->pluck('total')->first();
+			// Deposits pending count on Panel Admin
+			$depositsPendingCount = Schema::hasTable('deposits')
+				? Deposits::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first()
+				: 0;
 
-		// Withdrawals pending count on Panel Admin
-		$withdrawalsPendingCount = Withdrawals::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first();
+			// Reports on Panel Admin
+			$reports = Schema::hasTable('reports')
+				? Reports::selectRaw('COUNT(id) as total')->pluck('total')->first()
+				: 0;
 
-		// Verification Requests count on Panel Admin
-		$verificationRequestsCount = VerificationRequests::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first();
+			// Withdrawals pending count on Panel Admin
+			$withdrawalsPendingCount = Schema::hasTable('withdrawals')
+				? Withdrawals::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first()
+				: 0;
 
-		// Payment Gateways
-		$paymentsGateways = PaymentGateways::all();
+			// Verification Requests count on Panel Admin
+			$verificationRequestsCount = Schema::hasTable('verification_requests')
+				? VerificationRequests::selectRaw('COUNT(id) as total')->whereStatus('pending')->pluck('total')->first()
+				: 0;
 
-		// Payment Gateways Subscription, Tips, PPV
-		$paymentGatewaysSubscription = PaymentGateways::where('enabled', '1')->whereSubscription('yes')->get();
+			// Payment Gateways
+			$paymentsGateways = Schema::hasTable('payment_gateways') ? PaymentGateways::all() : collect();
 
-		// Blogs Count
-		$blogsCount = Blogs::count();
+			// Payment Gateways Subscription, Tips, PPV
+			$paymentGatewaysSubscription = Schema::hasTable('payment_gateways')
+				? PaymentGateways::where('enabled', '1')->whereSubscription('yes')->get()
+				: collect();
 
-		// Categories Count
-		$categoriesCount = Categories::count();
+			// Blogs Count
+			$blogsCount = Schema::hasTable('blogs') ? Blogs::count() : 0;
 
-		// Al categories
-		$categoriesFooter = Categories::where('mode', 'on')->orderBy('name')->take(6)->get();
+			// Categories Count
+			$categoriesCount = Schema::hasTable('categories') ? Categories::count() : 0;
 
-		// Languages
-		$languages = Languages::orderBy('name')->get();
+			// Al categories
+			$categoriesFooter = Schema::hasTable('categories')
+				? Categories::where('mode', 'on')->orderBy('name')->take(6)->get()
+				: collect();
 
-		// Tax Rates
-		$taxRatesCount = TaxRates::whereStatus('1')->count();
+			// Languages
+			$languages = Schema::hasTable('languages') ? Languages::orderBy('name')->get() : collect();
 
-		// Show Section My Cards
-		$showSectionMyCards = Helper::showSectionMyCards();
+			// Tax Rates
+			$taxRatesCount = Schema::hasTable('tax_rates') ? TaxRates::whereStatus('1')->count() : 0;
 
-		// Get Current Live
-		$getCurrentLiveCreators = LiveStreamings::whereType('normal')
-			->where('updated_at', '>', now()->subMinutes(5))
-			->whereStatus('0')
-			->pluck('user_id')
-			->toArray();
+			// Show Section My Cards
+			$showSectionMyCards = Helper::showSectionMyCards();
 
-		// Get Advertising 
-		$advertising = Advertising::where('expired_at', '>', now())
-			->whereStatus(1)
-			->inRandomOrder()
-			->take(1)
-			->get();
+			// Get Current Live
+			$getCurrentLiveCreators = Schema::hasTable('live_streamings')
+				? LiveStreamings::whereType('normal')
+					->where('updated_at', '>', now()->subMinutes(5))
+					->whereStatus('0')
+					->pluck('user_id')
+					->toArray()
+				: [];
 
-		// Get Gifts
-		$gifts = Gift::whereStatus(true)->orderBy('price', 'asc')->get();
+			// Get Advertising 
+			$advertising = Schema::hasTable('advertising')
+				? Advertising::where('expired_at', '>', now())
+					->whereStatus(1)
+					->inRandomOrder()
+					->take(1)
+					->get()
+				: collect();
 
-		// Reels public
-		$reelsPublic = Reel::whereStatus('active')->whereType('public')->count();
+			// Get Gifts
+			$gifts = Schema::hasTable('gifts') ? Gift::whereStatus(true)->orderBy('price', 'asc')->get() : collect();
+
+			// Reels public
+			$reelsPublic = Schema::hasTable('reels') ? Reel::whereStatus('active')->whereType('public')->count() : 0;
+		} catch (\Exception $e) {
+			return false;
+		}
 
 		view()->share(
 			compact(

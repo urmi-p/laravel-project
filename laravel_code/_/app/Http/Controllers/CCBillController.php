@@ -10,7 +10,9 @@ use App\Models\Messages;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Models\AdminSettings;
+use App\Services\PromoCodeService;
 use App\Models\Notifications;
+use App\Models\PromoCodeUsages;
 use App\Models\Subscriptions;
 use App\Models\PaymentGateways;
 use GuzzleHttp\Client as HttpClient;
@@ -23,6 +25,7 @@ class CCBillController extends Controller
   {
     $this->settings = $settings::first();
     $this->request = $request;
+    $this->promoCodeService = app(PromoCodeService::class);
   }
 
   /**
@@ -82,20 +85,30 @@ class CCBillController extends Controller
         break;
     }
 
-    $formPrice = Helper::amountGross($plan->price);
+    $checkout = $this->buildCheckoutContext($user, $plan);
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => $checkout['error']]
+      ]);
+    }
+
+    $pricing = $checkout['pricing'];
+    $formPrice = $pricing['charged_amount'] + $pricing['tax_amount'];
+    $recurringPrice = Helper::amountGross($plan->price);
     $formInitialPeriod = $interval;
     $formNumRebills = 99;
     $currencyCode = array_key_exists($this->settings->currency_code, $currencyCodes) ? $currencyCodes[$this->settings->currency_code] : 840;
 
     // Hash
-    $hash = md5($formPrice . $formInitialPeriod . $formPrice . $formInitialPeriod . $formNumRebills . $currencyCode . $payment->ccbill_salt);
+    $hash = md5($formPrice . $formInitialPeriod . $recurringPrice . $formInitialPeriod . $formNumRebills . $currencyCode . $payment->ccbill_salt);
 
     // Redirect to CCBill
     $input['clientAccnum']    = $payment->ccbill_accnum;
     $input['clientSubacc']    = $payment->ccbill_subacc_subscriptions;
     $input['initialPrice']    = $formPrice;
     $input['initialPeriod']   = $formInitialPeriod;
-    $input['recurringPrice']  = $formPrice;
+    $input['recurringPrice']  = $recurringPrice;
     $input['recurringPeriod'] = $formInitialPeriod;
     $input['numRebills']      = $formNumRebills;
     $input['formDigest']      = $hash;
@@ -107,7 +120,10 @@ class CCBillController extends Controller
     $input['planInterval']    = $plan->interval;
     $input['user']            = auth()->id();
     $input['priceOriginal']   = $plan->price;
+    $input['chargedAmount']   = $pricing['charged_amount'];
+    $input['discountAmount']  = $pricing['discount_amount'];
     $input['taxes']           = auth()->user()->taxesPayable();
+    $input['promoUsageToken'] = $checkout['checkout_token'];
 
     // Base url
     $baseURL = 'https://api.ccbill.com/wap-frontflex/flexforms/' . $payment->ccbill_flexid;
@@ -175,8 +191,9 @@ class CCBillController extends Controller
           // Subscription ID
           $subscr_id = $request->subscriptionId;
 
-          // Amount
-          $amount = $request->{'X-priceOriginal'};
+          // Amounts
+          $originalAmount = (float) $request->{'X-priceOriginal'};
+          $amount = (float) ($request->{'X-chargedAmount'} ?: $request->{'X-priceOriginal'});
 
           $userID = $request->{'X-user'};
 
@@ -202,11 +219,11 @@ class CCBillController extends Controller
             }
           }
 
-          // Admin and user earnings calculation
-          $earnings = $this->earningsAdminUser($creator->custom_fee, $amount, $payment->fee, $payment->fee_cents);
+          $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $originalAmount, null, null);
+          $earnings = $this->promoCodeService->buildNetEarningsSnapshot($amount, $baseEarnings, $payment->fee, $payment->fee_cents);
 
           // Insert Transaction
-          $this->transaction(
+          $txn = $this->transaction(
             $request->transactionId,
             $userID,
             $subscription->id,
@@ -222,6 +239,32 @@ class CCBillController extends Controller
 
           // Add Earnings to User
           $creator->increment('balance', $earnings['user']);
+
+          if ($request->{'X-promoUsageToken'}) {
+            $usage = PromoCodeUsages::where('checkout_token', $request->{'X-promoUsageToken'})->first();
+
+            if ($usage && $usage->status !== 'completed') {
+              $this->promoCodeService->markUsageCompleted($usage, [
+                'subscription_id' => $subscription->id,
+                'transaction_id' => $txn->id,
+                'gateway_reference' => $request->transactionId,
+              ]);
+
+              $this->promoCodeService->createHistory(
+                $usage->promo_code_id,
+                $userID,
+                'system',
+                'used',
+                null,
+                [
+                  'subscription_id' => $subscription->id,
+                  'transaction_id' => $txn->id,
+                  'gateway_name' => 'CCBill',
+                  'charged_amount' => $amount,
+                ]
+              );
+            }
+          }
         } elseif ($request->{'X-type'} == 'tip') {
 
           // Amount
@@ -480,6 +523,77 @@ class CCBillController extends Controller
           return back()->withErrorCancel(true);
         }
       }
+    }
+  }
+
+  protected function buildCheckoutContext(User $creator, $plan): array
+  {
+    $originalAmount = round((float) $plan->price, 2);
+    $grossAmount = (float) Helper::amountGross($originalAmount);
+    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
+
+    $pricing = [
+      'original_amount' => $originalAmount,
+      'discount_amount' => 0.00,
+      'charged_amount' => $originalAmount,
+      'tax_amount' => $taxAmount,
+    ];
+
+    $checkoutToken = null;
+
+    if ($this->request->filled('promo_code')) {
+      $result = $this->promoCodeService->validateForCheckout(
+        $creator->id,
+        auth()->id(),
+        $this->request->promo_code,
+        $originalAmount
+      );
+
+      if (! $result['valid']) {
+        return [
+          'success' => false,
+          'error' => $this->promoValidationMessage($result['reason']),
+        ];
+      }
+
+      $pricing = array_merge($pricing, $result['pricing']);
+      $checkoutToken = str_random(40);
+
+      $this->promoCodeService->createUsage($result['promo_code'], [
+        'user_id' => auth()->id(),
+        'plan_id' => $plan->id,
+        'plan_interval' => $plan->interval,
+        'gateway_name' => 'CCBill',
+        'checkout_token' => $checkoutToken,
+        'original_amount' => $pricing['original_amount'],
+        'discount_amount' => $pricing['discount_amount'],
+        'charged_amount' => $pricing['charged_amount'],
+        'creator_earning_impact' => $pricing['discount_amount'],
+        'tax_amount' => $pricing['tax_amount'],
+      ]);
+    }
+
+    return [
+      'success' => true,
+      'pricing' => $pricing,
+      'checkout_token' => $checkoutToken,
+    ];
+  }
+
+  protected function promoValidationMessage(string $reason): string
+  {
+    switch ($reason) {
+      case 'disabled':
+        return 'This promo code is disabled.';
+      case 'expired':
+        return 'This promo code has expired.';
+      case 'limit_total_reached':
+        return 'This promo code has reached its usage limit.';
+      case 'limit_per_user_reached':
+        return 'You have already used this promo code the maximum allowed times.';
+      case 'invalid':
+      default:
+        return 'The promo code is invalid.';
     }
   }
 }

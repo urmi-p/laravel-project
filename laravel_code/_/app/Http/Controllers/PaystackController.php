@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper;
 use App\Models\User;
 use App\Models\Plans;
 use Yabacon\Paystack;
@@ -9,17 +10,22 @@ use Yabacon\Paystack\Event;
 use Illuminate\Http\Request;
 use App\Models\AdminSettings;
 use App\Models\Notifications;
+use App\Models\PromoCodeUsages;
 use App\Models\Subscriptions;
 use App\Models\PaymentGateways;
+use App\Services\PromoCodeService;
 
 class PaystackController extends Controller
 {
   use Traits\Functions;
 
+  protected $promoCodeService;
+
   public function __construct(AdminSettings $settings, Request $request)
   {
     $this->settings = $settings::first();
     $this->request = $request;
+    $this->promoCodeService = app(PromoCodeService::class);
   }
 
   // Card Authorization
@@ -118,6 +124,15 @@ class PaystackController extends Controller
       ->whereInterval($this->request->interval)
       ->firstOrFail();
 
+    $checkout = $this->buildCheckoutContext($user, $plan);
+
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => $checkout['error']]
+      ]);
+    }
+
     $payment = PaymentGateways::whereName('Paystack')
       ->whereEnabled(1)
       ->firstOrFail();
@@ -125,70 +140,121 @@ class PaystackController extends Controller
     try {
       // initiate the Library's Paystack Object
       $paystack = new Paystack($payment->key_secret);
+      $pricing = $checkout['pricing'];
+      $promoCode = $checkout['promo_code'];
 
       //========== Create Plan if no exists
-      if (!$plan->paystack) {
-        switch ($plan->interval) {
-          case 'weekly':
-            $interval = 'weekly';
-            break;
+      $planCode = $this->resolvePaystackPlan($paystack, $user, $plan);
 
-          case 'monthly':
-            $interval = 'monthly';
-            break;
+      if ($promoCode) {
+        $totalDue = round((float) $pricing['charged_amount'] + (float) $pricing['tax_amount'], 2);
+        $usage = $this->promoCodeService->createUsage($promoCode, [
+          'user_id' => auth()->id(),
+          'plan_id' => $plan->id,
+          'plan_interval' => $plan->interval,
+          'gateway_name' => 'Paystack',
+          'original_amount' => $pricing['original_amount'],
+          'discount_amount' => $pricing['discount_amount'],
+          'charged_amount' => $pricing['charged_amount'],
+          'creator_earning_impact' => $pricing['discount_amount'],
+          'tax_amount' => $pricing['tax_amount'],
+          'checkout_token' => str_random(40),
+          'gateway_reference' => 'pstkpromo_' . str_random(25),
+        ]);
 
-          case 'quarterly':
-            $interval = 'quarterly';
-            break;
+        if ($totalDue <= 0) {
+          $subscriptionStartDate = $user->planInterval($plan->interval);
+          $gatewaySubscription = $paystack->subscription->create([
+            'plan' => $planCode,
+            'customer' => auth()->user()->email,
+            'authorization' => auth()->user()->paystack_authorization_code,
+            'start_date' => $subscriptionStartDate->toIso8601String(),
+          ]);
 
-          case 'biannually':
-            $interval = 'biannually';
-            break;
+          $subscription = Subscriptions::firstOrNew([
+            'subscription_id' => $gatewaySubscription->data->subscription_code,
+          ]);
 
-          case 'yearly':
-            $interval = 'annually';
-            break;
-        }
+          $subscription->user_id = auth()->id();
+          $subscription->creator_id = $user->id;
+          $subscription->stripe_price = $plan->name;
+          $subscription->subscription_id = $gatewaySubscription->data->subscription_code;
+          $subscription->ends_at = $subscriptionStartDate;
+          $subscription->interval = $plan->interval;
+          $subscription->save();
 
-        $userPlan = $paystack->plan->create([
-          'name' => __('general.subscription_for') . ' @' . $user->username,
-          'amount' => ($plan->price * 100),
-          'interval' => $interval,
-          'currency' => $this->settings->currency_code,
-          'description' => http_build_query([
-            'user' => $this->request->user()->id,
+          $this->updatePaystackPlanDescription($paystack, $planCode, [
+            'user' => auth()->id(),
             'creator' => $user->id,
             'plan' => $plan->name,
             'interval' => $plan->interval,
-          ])
-        ]);
+            'subsId' => $gatewaySubscription->data->subscription_code,
+          ]);
 
-        $planCode = $userPlan->data->plan_code;
+          $baseEarnings = $this->earningsAdminUser($user->custom_fee, $pricing['original_amount'], null, null);
+          $earnings = $this->promoCodeService->buildNetEarningsSnapshot(0, $baseEarnings, $payment->fee, $payment->fee_cents);
 
-        // Insert Plan Code to User
-        $plan->paystack = $planCode;
-        $plan->save();
-      } else {
-        $planCode = $plan->paystack;
+          $txn = $this->transaction(
+            $usage->gateway_reference,
+            auth()->id(),
+            $subscription->id,
+            $user->id,
+            0,
+            $earnings['user'],
+            $earnings['admin'],
+            'Paystack',
+            'subscription',
+            $earnings['percentageApplied'],
+            null
+          );
 
-        try {
-          $planCurrent = $paystack->plan->fetch(['id' => $planCode]);
-          $pricePlanOnPaystack = ($planCurrent->data->amount / 100);
+          $this->promoCodeService->markUsageCompleted($usage, [
+            'subscription_id' => $subscription->id,
+            'transaction_id' => $txn->id,
+            'used_at' => now(),
+            'platform_commission_amount' => $earnings['admin'],
+          ]);
 
-          // We check if the plan changed price
-          if ($pricePlanOnPaystack != $plan->price) {
-            // Update price
-            $paystack->plan->update([
-              'name' => __('general.subscription_for') . ' @' . $user->username,
-              'amount' => ($plan->price * 100),
-            ], ['id' => $planCode]);
-          }
-        } catch (\Exception $e) {
+          $this->promoCodeService->createHistory(
+            $usage->promo_code_id,
+            auth()->id(),
+            'system',
+            'used',
+            null,
+            [
+              'subscription_id' => $subscription->id,
+              'transaction_id' => $txn->id,
+              'gateway_name' => 'Paystack',
+              'charged_amount' => 0,
+            ]
+          );
+
+          Subscriptions::sendEmailAndNotify(auth()->user()->name, $user->id);
+          $this->sendWelcomeMessageAction($user, auth()->id());
+
           return response()->json([
-            "success" => false,
-            'errors' => ['error' => $e->getMessage()]
+            'success' => true,
+            'url' => route('subscription.success', ['user' => $user->username, 'delay' => 'paystack'])
           ]);
         }
+
+        $paystack->transaction->charge([
+          'reference' => $usage->gateway_reference,
+          'authorization_code' => auth()->user()->paystack_authorization_code,
+          'email' => auth()->user()->email,
+          'amount' => (int) round($totalDue * 100),
+          'metadata' => json_encode([
+            'promo_usage_token' => $usage->checkout_token,
+            'plan_id' => $plan->id,
+            'creator_id' => $user->id,
+            'subscriber_id' => auth()->id(),
+          ]),
+        ]);
+
+        return response()->json([
+          'success' => true,
+          'url' => route('subscription.success', ['user' => $user->username, 'delay' => 'paystack'])
+        ]);
       }
 
       //========== Create Subscription
@@ -199,16 +265,12 @@ class PaystackController extends Controller
         'authorization' => auth()->user()->paystack_authorization_code
       ]);
 
-      $paystack->plan->update([
-        'description' => http_build_query([
-          'user' => $this->request->user()->id,
-          'creator' => $user->id,
-          'plan' => $plan->name,
-          'interval' => $plan->interval,
-          'subsId' => $subscription->data->subscription_code,
-        ]),
-      ], [
-        'id' => $planCode
+      $this->updatePaystackPlanDescription($paystack, $planCode, [
+        'user' => $this->request->user()->id,
+        'creator' => $user->id,
+        'plan' => $plan->name,
+        'interval' => $plan->interval,
+        'subsId' => $subscription->data->subscription_code,
       ]);
 
       // Send Email to User and Notification
@@ -216,6 +278,10 @@ class PaystackController extends Controller
 
       $this->sendWelcomeMessageAction($user, auth()->id());
     } catch (\Exception $exception) {
+      if (isset($usage) && $usage instanceof PromoCodeUsages) {
+        $this->promoCodeService->markUsageFailed($usage, $exception->getMessage());
+      }
+
       return response()->json([
         'success' => false,
         'errors' => ['error' => $exception->getMessage()]
@@ -269,14 +335,18 @@ class PaystackController extends Controller
         parse_str($data->plan->description ?? null, $metadata);
 
         if ($metadata) {
-          $subscription = new Subscriptions();
-          $subscription->user_id = $metadata['user'];
-          $subscription->creator_id = $metadata['creator'];
-          $subscription->stripe_price = $metadata['plan'];
-          $subscription->subscription_id = $subscrId;
-          $subscription->ends_at = null;
-          $subscription->interval = $metadata['interval'];
-          $subscription->save();
+          $subscription = Subscriptions::where('subscription_id', $subscrId)->first();
+
+          if (! $subscription) {
+            $subscription = new Subscriptions();
+            $subscription->user_id = $metadata['user'];
+            $subscription->creator_id = $metadata['creator'];
+            $subscription->stripe_price = $metadata['plan'];
+            $subscription->subscription_id = $subscrId;
+            $subscription->ends_at = null;
+            $subscription->interval = $metadata['interval'];
+            $subscription->save();
+          }
         }
 
         break;
@@ -292,6 +362,94 @@ class PaystackController extends Controller
         $data = $event->obj->data;
         // Amount
         $amount = ($data->amount / 100);
+        $promoUsage = PromoCodeUsages::where('gateway_name', 'Paystack')
+          ->where('gateway_reference', $data->reference)
+          ->where('status', 'pending')
+          ->first();
+
+        if ($promoUsage) {
+          $subscriber = User::find($promoUsage->user_id);
+          $creator = User::whereId($promoUsage->creator_id)->whereVerifiedId('yes')->first();
+          $plan = Plans::whereId($promoUsage->plan_id)->first();
+
+          if ($subscriber && $creator && $plan) {
+            $planCode = $this->resolvePaystackPlan(new Paystack($payment->key_secret), $creator, $plan);
+            $subscriptionStartDate = $creator->planInterval($plan->interval);
+
+            $gatewaySubscription = (new Paystack($payment->key_secret))->subscription->create([
+              'plan' => $planCode,
+              'customer' => $subscriber->email,
+              'authorization' => $subscriber->paystack_authorization_code,
+              'start_date' => $subscriptionStartDate->toIso8601String(),
+            ]);
+
+            $subscription = Subscriptions::firstOrNew([
+              'subscription_id' => $gatewaySubscription->data->subscription_code,
+            ]);
+
+            $subscription->user_id = $subscriber->id;
+            $subscription->creator_id = $creator->id;
+            $subscription->stripe_price = $plan->name;
+            $subscription->subscription_id = $gatewaySubscription->data->subscription_code;
+            $subscription->ends_at = $subscriptionStartDate;
+            $subscription->interval = $plan->interval;
+            $subscription->save();
+
+            $this->updatePaystackPlanDescription(new Paystack($payment->key_secret), $planCode, [
+              'user' => $subscriber->id,
+              'creator' => $creator->id,
+              'plan' => $plan->name,
+              'interval' => $plan->interval,
+              'subsId' => $gatewaySubscription->data->subscription_code,
+            ]);
+
+            $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $promoUsage->original_amount, null, null);
+            $earnings = $this->promoCodeService->buildNetEarningsSnapshot($promoUsage->charged_amount, $baseEarnings, $payment->fee, $payment->fee_cents);
+
+            $txn = $this->transaction(
+              $data->reference,
+              $subscriber->id,
+              $subscription->id,
+              $creator->id,
+              $promoUsage->charged_amount,
+              $earnings['user'],
+              $earnings['admin'],
+              'Paystack',
+              'subscription',
+              $earnings['percentageApplied'],
+              null
+            );
+
+            $creator->increment('balance', $txn->earning_net_user);
+
+            $this->promoCodeService->markUsageCompleted($promoUsage, [
+              'subscription_id' => $subscription->id,
+              'transaction_id' => $txn->id,
+              'platform_commission_amount' => $earnings['admin'],
+              'used_at' => now(),
+            ]);
+
+            $this->promoCodeService->createHistory(
+              $promoUsage->promo_code_id,
+              $subscriber->id,
+              'system',
+              'used',
+              null,
+              [
+                'subscription_id' => $subscription->id,
+                'transaction_id' => $txn->id,
+                'gateway_name' => 'Paystack',
+                'charged_amount' => $promoUsage->charged_amount,
+              ]
+            );
+
+            Subscriptions::sendEmailAndNotify($subscriber->name, $creator->id);
+            $this->sendWelcomeMessageAction($creator, $subscriber->id);
+          }
+
+          break;
+        }
+
         // Metadata
         parse_str($data->plan->description ?? null, $metadata);
 
@@ -366,6 +524,129 @@ class PaystackController extends Controller
         $subscription->save();
 
         break;
+    }
+  }
+
+  protected function resolvePaystackPlan(Paystack $paystack, User $creator, Plans $plan): string
+  {
+    if (!$plan->paystack) {
+      $userPlan = $paystack->plan->create([
+        'name' => __('general.subscription_for') . ' @' . $creator->username,
+        'amount' => ($plan->price * 100),
+        'interval' => $this->paystackInterval($plan->interval),
+        'currency' => $this->settings->currency_code,
+        'description' => http_build_query([
+          'user' => auth()->id(),
+          'creator' => $creator->id,
+          'plan' => $plan->name,
+          'interval' => $plan->interval,
+        ])
+      ]);
+
+      $plan->paystack = $userPlan->data->plan_code;
+      $plan->save();
+
+      return $plan->paystack;
+    }
+
+    $planCode = $plan->paystack;
+    $planCurrent = $paystack->plan->fetch(['id' => $planCode]);
+    $pricePlanOnPaystack = ($planCurrent->data->amount / 100);
+
+    if ($pricePlanOnPaystack != $plan->price) {
+      $paystack->plan->update([
+        'name' => __('general.subscription_for') . ' @' . $creator->username,
+        'amount' => ($plan->price * 100),
+      ], ['id' => $planCode]);
+    }
+
+    return $planCode;
+  }
+
+  protected function updatePaystackPlanDescription(Paystack $paystack, string $planCode, array $description): void
+  {
+    $paystack->plan->update([
+      'description' => http_build_query($description),
+    ], [
+      'id' => $planCode
+    ]);
+  }
+
+  protected function paystackInterval(string $interval): string
+  {
+    switch ($interval) {
+      case 'weekly':
+        return 'weekly';
+      case 'monthly':
+        return 'monthly';
+      case 'quarterly':
+        return 'quarterly';
+      case 'biannually':
+        return 'biannually';
+      case 'yearly':
+        return 'annually';
+      default:
+        return 'monthly';
+    }
+  }
+
+  protected function buildCheckoutContext(User $creator, Plans $plan): array
+  {
+    $originalAmount = round((float) $plan->price, 2);
+    $grossAmount = (float) Helper::amountGross($originalAmount);
+    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
+
+    $pricing = [
+      'original_amount' => $originalAmount,
+      'discount_amount' => 0.00,
+      'charged_amount' => $originalAmount,
+      'tax_amount' => $taxAmount,
+    ];
+
+    $promoCode = null;
+
+    if ($this->request->filled('promo_code')) {
+      $result = $this->promoCodeService->validateForCheckout(
+        $creator->id,
+        auth()->id(),
+        $this->request->promo_code,
+        $originalAmount
+      );
+
+      if (! $result['valid']) {
+        return [
+          'success' => false,
+          'error' => $this->promoValidationMessage($result['reason']),
+        ];
+      }
+
+      $promoCode = $result['promo_code'];
+      $pricing = array_merge($pricing, $result['pricing']);
+    }
+
+    return [
+      'success' => true,
+      'creator' => $creator,
+      'plan' => $plan,
+      'promo_code' => $promoCode,
+      'pricing' => $pricing,
+    ];
+  }
+
+  protected function promoValidationMessage(string $reason): string
+  {
+    switch ($reason) {
+      case 'disabled':
+        return 'This promo code is disabled.';
+      case 'expired':
+        return 'This promo code has expired.';
+      case 'limit_total_reached':
+        return 'This promo code has reached its usage limit.';
+      case 'limit_per_user_reached':
+        return 'You have already used this promo code the maximum allowed times.';
+      case 'invalid':
+      default:
+        return 'The promo code is invalid.';
     }
   }
 

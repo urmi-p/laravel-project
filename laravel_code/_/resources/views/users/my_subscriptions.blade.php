@@ -179,10 +179,16 @@
                                         <div class="label">{{ __('admin.ends_at') }}</div>
                                         <div class="value">
                                             @php
-                                                $cashierSubscription = $subscription->stripe_id != ''
-                                                    ? auth()->user()->subscription('main', $subscription->stripe_price)
-                                                    : null;
-                                                $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                                                $stripePeriodEnd = null;
+
+                                                try {
+                                                    $cashierSubscription = $subscription->stripe_id != ''
+                                                        ? auth()->user()->subscription('main', $subscription->stripe_price)
+                                                        : null;
+                                                    $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                                                } catch (\Throwable $e) {
+                                                    $stripePeriodEnd = null;
+                                                }
                                             @endphp
 
                                             @if ($subscription->ends_at)

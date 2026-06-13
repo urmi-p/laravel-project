@@ -6,7 +6,9 @@ use App\Helper;
 use App\Models\User;
 use App\Models\Plans;
 use Illuminate\Http\Request;
+use App\Services\PromoCodeService;
 use App\Models\Notifications;
+use App\Models\PromoCodeUsages;
 use App\Models\Subscriptions;
 use App\Models\PaymentGateways;
 use App\Models\SubscriptionDeleted;
@@ -16,9 +18,14 @@ class SubscriptionsController extends Controller
 {
   use Traits\Functions;
 
+  protected const PROMO_SUBSCRIPTION_GATEWAYS = ['wallet', 'PayPal', 'Stripe'];
+
+  protected $promoCodeService;
+
   public function __construct(Request $request)
   {
     $this->request = $request;
+    $this->promoCodeService = app(PromoCodeService::class);
   }
 
   /**
@@ -61,8 +68,9 @@ class SubscriptionsController extends Controller
 
     //<---- Validation
     $validator = Validator::make($this->request->all(), [
-      'payment_gateway' => 'required',
+      'payment_gateway' => 'required|in:' . implode(',', self::PROMO_SUBSCRIPTION_GATEWAYS),
       'agree_terms' => 'required',
+      'promo_code' => 'nullable|string|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -72,16 +80,93 @@ class SubscriptionsController extends Controller
       ]);
     }
 
+    $checkout = $this->buildCheckoutContext($user, $plan);
+
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => $checkout['error']],
+      ]);
+    }
+
     // Wallet
     if ($this->request->payment_gateway == 'wallet') {
-      return $this->sendWallet();
+      return $this->sendWallet($checkout);
     }
 
     // Get name of Payment Gateway
-    $payment = PaymentGateways::whereName($this->request->payment_gateway)->whereEnabled(1)->firstOrFail();
+    $payment = PaymentGateways::whereIn('name', ['PayPal', 'Stripe'])
+      ->whereName($this->request->payment_gateway)
+      ->whereEnabled(1)
+      ->firstOrFail();
 
     // Send data to the payment processor
     return redirect()->route(str_slug($payment->name), $this->request->except(['_token']));
+  }
+
+  public function previewPromo()
+  {
+    $validator = Validator::make($this->request->all(), [
+      'id' => 'required|integer',
+      'interval' => 'required|string',
+      'promo_code' => 'nullable|string|max:100',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Unable to validate the promo code right now.',
+        'errors' => $validator->getMessageBag()->toArray(),
+      ], 422);
+    }
+
+    $creator = User::whereVerifiedId('yes')
+      ->whereId($this->request->id)
+      ->where('id', '<>', auth()->id())
+      ->firstOrFail();
+
+    $plan = $creator->plans()
+      ->whereInterval($this->request->interval)
+      ->firstOrFail();
+
+    if (!$plan->status) {
+      return response()->json([
+        'success' => true,
+        'valid' => false,
+        'message' => __('general.subscription_not_available'),
+      ]);
+    }
+
+    $checkSubscription = auth()->user()->userSubscriptions()
+      ->whereStripePrice($plan->name)
+      ->where('ends_at', '>=', now())
+      ->first();
+
+    if ($checkSubscription) {
+      return response()->json([
+        'success' => true,
+        'valid' => false,
+        'message' => __('general.subscription_exists'),
+      ]);
+    }
+
+    $checkout = $this->buildCheckoutContext($creator, $plan);
+
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => true,
+        'valid' => false,
+        'message' => $checkout['error'],
+      ]);
+    }
+
+    return response()->json([
+      'success' => true,
+      'valid' => true,
+      'message' => 'Promo code is valid.',
+      'interval' => $plan->interval,
+      'is_free_checkout' => ((round((float) $checkout['pricing']['charged_amount'] + (float) $checkout['pricing']['tax_amount'], 2)) <= 0),
+    ]);
   }
 
   /**
@@ -180,19 +265,13 @@ class SubscriptionsController extends Controller
    *
    * @return Response
    */
-  protected function sendWallet()
+  protected function sendWallet(array $checkout)
   {
-    // Find user
-    $creator = User::whereId($this->request->id)
-      ->whereVerifiedId('yes')
-      ->firstOrFail();
-
-    // Check if Plan exists
-    $plan = $creator->plans()
-      ->whereInterval($this->request->interval)
-      ->firstOrFail();
-
-    $amount = $plan->price;
+    $creator = $checkout['creator'];
+    $plan = $checkout['plan'];
+    $pricing = $checkout['pricing'];
+    $promoCode = $checkout['promo_code'];
+    $amount = $pricing['charged_amount'];
 
     // Verify plan no is empty
     if (!$creator->plan) {
@@ -200,7 +279,9 @@ class SubscriptionsController extends Controller
       $creator->save();
     }
 
-    if (auth()->user()->wallet < Helper::amountGross($amount)) {
+    $walletCharge = $pricing['charged_amount'] + $pricing['tax_amount'];
+
+    if (auth()->user()->wallet < $walletCharge) {
       return response()->json([
         "success" => false,
         "errors" => ['error' => __('general.not_enough_funds')]
@@ -215,32 +296,66 @@ class SubscriptionsController extends Controller
     $subscription->ends_at     = $creator->planInterval($plan->interval);
     $subscription->rebill_wallet = 'on';
     $subscription->interval = $plan->interval;
-    $subscription->taxes = auth()->user()->taxesPayable();
+    $subscription->taxes = $checkout['taxes'];
     $subscription->save();
 
-    // Admin and user earnings calculation
-    $earnings = $this->earningsAdminUser($creator->custom_fee, $amount, null, null);
+    $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $pricing['original_amount'], null, null);
+    $earnings = $this->promoCodeService->buildNetEarningsSnapshot($pricing['charged_amount'], $baseEarnings);
 
     // Insert Transaction
-    $this->transaction(
+    $txn = $this->transaction(
       'subw_' . str_random(25),
       auth()->id(),
       $subscription->id,
       $creator->id,
-      $amount,
+      $pricing['charged_amount'],
       $earnings['user'],
       $earnings['admin'],
       'Wallet',
       'subscription',
       $earnings['percentageApplied'],
-      auth()->user()->taxesPayable()
+      $checkout['taxes']
     );
 
     // Subtract user funds
-    auth()->user()->decrement('wallet', Helper::amountGross($amount));
+    auth()->user()->decrement('wallet', $walletCharge);
 
     // Add Earnings to User
     $creator->increment('balance', $earnings['user']);
+
+    if ($promoCode) {
+      $usage = $this->promoCodeService->createUsage($promoCode, [
+        'user_id' => auth()->id(),
+        'subscription_id' => $subscription->id,
+        'transaction_id' => $txn->id,
+        'plan_id' => $plan->id,
+        'plan_interval' => $plan->interval,
+        'gateway_name' => 'Wallet',
+        'original_amount' => $pricing['original_amount'],
+        'discount_amount' => $pricing['discount_amount'],
+        'charged_amount' => $pricing['charged_amount'],
+        'creator_earning_impact' => $pricing['discount_amount'],
+        'platform_commission_amount' => $earnings['admin'],
+        'tax_amount' => $pricing['tax_amount'],
+        'status' => 'completed',
+        'used_at' => now(),
+      ]);
+
+      $this->promoCodeService->markUsageCompleted($usage);
+      $this->promoCodeService->createHistory(
+        $promoCode->id,
+        auth()->id(),
+        'system',
+        'used',
+        null,
+        [
+          'subscription_id' => $subscription->id,
+          'transaction_id' => $txn->id,
+          'gateway_name' => 'Wallet',
+          'charged_amount' => $pricing['charged_amount'],
+        ]
+      );
+    }
 
     // Send Email to User and Notification
     Subscriptions::sendEmailAndNotify(auth()->user()->name, $creator->id);
@@ -265,4 +380,129 @@ class SubscriptionsController extends Controller
       ->whereType(1)
       ->delete();
   }
+
+  protected function sendZeroPaymentSubscription(array $checkout)
+  {
+    $creator = $checkout['creator'];
+    $plan = $checkout['plan'];
+    $pricing = $checkout['pricing'];
+    $promoCode = $checkout['promo_code'];
+
+    if (!$creator->plan) {
+      $creator->plan = 'plan_user_' . $creator->id;
+      $creator->save();
+    }
+
+    $subscription = new Subscriptions();
+    $subscription->user_id = auth()->id();
+    $subscription->creator_id = $creator->id;
+    $subscription->stripe_price = $plan->name;
+    $subscription->ends_at = $creator->planInterval($plan->interval);
+    $subscription->interval = $plan->interval;
+    $subscription->taxes = $checkout['taxes'];
+    $subscription->save();
+
+    if ($promoCode) {
+      $usage = $this->promoCodeService->createUsage($promoCode, [
+        'user_id' => auth()->id(),
+        'subscription_id' => $subscription->id,
+        'plan_id' => $plan->id,
+        'plan_interval' => $plan->interval,
+        'gateway_name' => 'PromoZeroPay',
+        'original_amount' => $pricing['original_amount'],
+        'discount_amount' => $pricing['discount_amount'],
+        'charged_amount' => 0,
+        'creator_earning_impact' => $pricing['discount_amount'],
+        'platform_commission_amount' => 0,
+        'tax_amount' => $pricing['tax_amount'],
+        'status' => 'completed',
+        'used_at' => now(),
+      ]);
+
+      $this->promoCodeService->markUsageCompleted($usage);
+      $this->promoCodeService->createHistory(
+        $promoCode->id,
+        auth()->id(),
+        'system',
+        'used',
+        null,
+        [
+          'subscription_id' => $subscription->id,
+          'gateway_name' => 'PromoZeroPay',
+          'charged_amount' => 0,
+        ]
+      );
+    }
+
+    Subscriptions::sendEmailAndNotify(auth()->user()->name, $creator->id);
+    $this->sendWelcomeMessageAction($creator, auth()->id());
+
+    return response()->json([
+      'success' => true,
+      'url' => url('buy/subscription/success', $creator->username)
+    ]);
+  }
+
+  protected function buildCheckoutContext(User $creator, Plans $plan): array
+  {
+    $originalAmount = round((float) $plan->price, 2);
+    $grossAmount = (float) Helper::amountGross($originalAmount);
+    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
+    $taxes = auth()->user()->taxesPayable();
+
+    $pricing = [
+      'original_amount' => $originalAmount,
+      'discount_amount' => 0.00,
+      'charged_amount' => $originalAmount,
+      'tax_amount' => $taxAmount,
+    ];
+
+    $promoCode = null;
+
+    if ($this->request->filled('promo_code')) {
+      $result = $this->promoCodeService->validateForCheckout(
+        $creator->id,
+        auth()->id(),
+        $this->request->promo_code,
+        $originalAmount
+      );
+
+      if (! $result['valid']) {
+        return [
+          'success' => false,
+          'error' => $this->promoValidationMessage($result['reason']),
+        ];
+      }
+
+      $promoCode = $result['promo_code'];
+      $pricing = array_merge($pricing, $result['pricing']);
+    }
+
+    return [
+      'success' => true,
+      'creator' => $creator,
+      'plan' => $plan,
+      'promo_code' => $promoCode,
+      'pricing' => $pricing,
+      'taxes' => $taxes,
+    ];
+  }
+
+  protected function promoValidationMessage(string $reason): string
+  {
+    switch ($reason) {
+      case 'disabled':
+        return 'This promo code is disabled.';
+      case 'expired':
+        return 'This promo code has expired.';
+      case 'limit_total_reached':
+        return 'This promo code has reached its usage limit.';
+      case 'limit_per_user_reached':
+        return 'You have already used this promo code the maximum allowed times.';
+      case 'invalid':
+      default:
+        return 'The promo code is invalid.';
+    }
+  }
+
 }

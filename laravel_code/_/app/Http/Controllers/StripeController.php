@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Plans;
+use App\Models\PromoCodeUsages;
 use App\Models\Subscriptions;
+use App\Services\PromoCodeService;
 use App\Models\PaymentGateways;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 
@@ -12,9 +16,12 @@ class StripeController extends Controller
 {
   use Traits\Functions;
 
+  protected $promoCodeService;
+
   public function __construct(Request $request)
   {
     $this->request = $request;
+    $this->promoCodeService = app(PromoCodeService::class);
   }
 
   /**
@@ -47,10 +54,23 @@ class StripeController extends Controller
       ->latest()
       ->firstOrFail();
 
+    $checkout = $this->buildCheckoutContext($user, $plan);
+
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => $checkout['error']]
+      ]);
+    }
+
     $payment = PaymentGateways::whereName($this->request->payment_gateway)->whereEnabled(1)->firstOrFail();
 
     try {
       $userPlan = $this->createPlan($payment->key_secret, $plan, $user);
+      $pricing = $checkout['pricing'];
+      $promoCode = $checkout['promo_code'];
+      $promoUsage = null;
+      $couponId = null;
 
       // Check Payment Incomplete
       if (auth()->user()
@@ -65,16 +85,42 @@ class StripeController extends Controller
         ]);
       }
 
+      if ($promoCode) {
+        $promoUsage = $this->promoCodeService->createUsage($promoCode, [
+          'user_id' => auth()->id(),
+          'plan_id' => $plan->id,
+          'plan_interval' => $plan->interval,
+          'gateway_name' => 'Stripe',
+          'original_amount' => $pricing['original_amount'],
+          'discount_amount' => $pricing['discount_amount'],
+          'charged_amount' => $pricing['charged_amount'],
+          'creator_earning_impact' => $pricing['discount_amount'],
+          'tax_amount' => $pricing['tax_amount'],
+          'checkout_token' => str_random(40),
+        ]);
+
+        $couponId = $this->createPromoCoupon($payment->key_secret, $promoUsage->checkout_token, $pricing);
+      }
+
       // Create New subscription
       $metadata = [
         'interval' => $plan->interval,
         'creator_id' => $user->id,
-        'taxes' => auth()->user()->taxesPayable()
+        'taxes' => auth()->user()->taxesPayable(),
+        'promo_usage_token' => optional($promoUsage)->checkout_token,
+        'original_amount' => $pricing['original_amount'],
+        'discount_amount' => $pricing['discount_amount'],
+        'charged_amount' => $pricing['charged_amount'],
       ];
 
-      auth()->user()->newSubscription('main', $userPlan)
-        ->withMetadata($metadata)
-        ->create();
+      $subscriptionBuilder = auth()->user()->newSubscription('main', $userPlan)
+        ->withMetadata($metadata);
+
+      if ($couponId) {
+        $subscriptionBuilder->withCoupon($couponId);
+      }
+
+      $subscriptionBuilder->create();
 
       // Send Email to User and Notification
       Subscriptions::sendEmailAndNotify(auth()->user()->name, $user->id);
@@ -94,14 +140,19 @@ class StripeController extends Controller
         ->whereStripeStatus('incomplete')
         ->first();
 
-      $subscriptions->last_payment = $exception->payment->id;
-      $subscriptions->save();
+      if ($subscriptions) {
+        $subscriptions->last_payment = $exception->payment->id;
+        $subscriptions->save();
+      }
 
       return response()->json([
         'success' => true,
         'url' => url('stripe/payment', $exception->payment->id), // Redirect customer to page confirmation payment (SCA)
       ]);
     } catch (\Exception $exception) {
+      if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
+        $this->promoCodeService->markUsageFailed($promoUsage, $exception->getMessage());
+      }
 
       \Log::debug($exception);
 
@@ -158,6 +209,99 @@ class StripeController extends Controller
       return $response->id;
     } catch (\Exception $e) {
       throw new \Exception($e->getMessage());
+    }
+  }
+
+  private function createPromoCoupon(string $keySecret, string $checkoutToken, array $pricing): string
+  {
+    try {
+      $stripe = new \Stripe\StripeClient($keySecret);
+
+      $payload = [
+        'duration' => 'once',
+        'name' => 'Promo ' . substr($checkoutToken, 0, 34),
+        'metadata' => [
+          'promo_usage_token' => $checkoutToken,
+        ],
+      ];
+
+      if ($pricing['discount_amount'] <= 0) {
+        throw new \Exception('Invalid promo discount amount for Stripe.');
+      }
+
+      if (in_array(config('settings.currency_code'), config('currencies.zero-decimal'))) {
+        $payload['amount_off'] = (int) round($pricing['discount_amount']);
+      } else {
+        $payload['amount_off'] = (int) round($pricing['discount_amount'] * 100);
+      }
+
+      $payload['currency'] = strtolower(config('settings.currency_code'));
+
+      $coupon = $stripe->coupons->create($payload);
+
+      return $coupon->id;
+    } catch (\Exception $e) {
+      throw new \Exception($e->getMessage());
+    }
+  }
+
+  protected function buildCheckoutContext(User $creator, Plans $plan): array
+  {
+    $originalAmount = round((float) $plan->price, 2);
+    $grossAmount = (float) Helper::amountGross($originalAmount);
+    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
+
+    $pricing = [
+      'original_amount' => $originalAmount,
+      'discount_amount' => 0.00,
+      'charged_amount' => $originalAmount,
+      'tax_amount' => $taxAmount,
+    ];
+
+    $promoCode = null;
+
+    if ($this->request->filled('promo_code')) {
+      $result = $this->promoCodeService->validateForCheckout(
+        $creator->id,
+        auth()->id(),
+        $this->request->promo_code,
+        $originalAmount
+      );
+
+      if (! $result['valid']) {
+        return [
+          'success' => false,
+          'error' => $this->promoValidationMessage($result['reason']),
+        ];
+      }
+
+      $promoCode = $result['promo_code'];
+      $pricing = array_merge($pricing, $result['pricing']);
+    }
+
+    return [
+      'success' => true,
+      'creator' => $creator,
+      'plan' => $plan,
+      'promo_code' => $promoCode,
+      'pricing' => $pricing,
+    ];
+  }
+
+  protected function promoValidationMessage(string $reason): string
+  {
+    switch ($reason) {
+      case 'disabled':
+        return 'This promo code is disabled.';
+      case 'expired':
+        return 'This promo code has expired.';
+      case 'limit_total_reached':
+        return 'This promo code has reached its usage limit.';
+      case 'limit_per_user_reached':
+        return 'You have already used this promo code the maximum allowed times.';
+      case 'invalid':
+      default:
+        return 'The promo code is invalid.';
     }
   }
 }

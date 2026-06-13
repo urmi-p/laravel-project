@@ -38,27 +38,153 @@
 
 
 
-	$('input[name=payment_gateway]').on('click', function() {
-
-    if($(this).val() == 'Paystack') {
-
-      $('#paystackContainer').slideDown();
-
-    } else {
-
-      $('#paystackContainer').slideUp();
-
-    }
-
-  });
-
-
-
-  $(document).ready(function() {
+	$(document).ready(function() {
 
 
 
     //<---------------- Buy Subscription ----------->>>>
+
+      function setSubscriptionPromoFeedback(message, type) {
+
+        var feedback = $('#subscriptionPromoFeedback');
+
+        if (!feedback.length) {
+          return;
+        }
+
+        feedback.removeClass('text-success text-danger text-muted').show();
+
+        if (type) {
+          feedback.addClass('text-' + type);
+        } else {
+          feedback.addClass('text-muted');
+        }
+
+        feedback.text(message);
+      }
+
+      function resetSubscriptionPromoState(clearValue) {
+
+        var input = $('#subscriptionPromoCode');
+        var resetButton = $('#resetSubscriptionPromoBtn');
+
+        if (!input.length) {
+          return;
+        }
+
+        input.prop('readonly', false).removeData('applied');
+
+        if (clearValue === true) {
+          input.val('');
+          $('#subscriptionPromoFeedback').hide().text('');
+        }
+
+        if (resetButton.length) {
+          resetButton.prop('disabled', true);
+        }
+
+        resetSubscriptionButtonLabels();
+      }
+
+      function resetSubscriptionButtonLabels() {
+
+        $('.subscriptionBtn').each(function() {
+          var label = $(this).data('default-label');
+
+          $(this).find('.subscriptionBtnLabel').text(label);
+        });
+      }
+
+      function updateSubscriptionButtonLabel(interval, isFreeCheckout) {
+
+        var button = $('.subscriptionBtn[data-interval="' + interval + '"]');
+
+        if (!button.length) {
+          return;
+        }
+
+        var label = isFreeCheckout ? button.data('free-label') : button.data('default-label');
+        button.find('.subscriptionBtnLabel').text(label);
+      }
+
+      function validateSubscriptionPromoCode() {
+
+        var input = $('#subscriptionPromoCode');
+        var value = $.trim(input.val());
+        var button = $('#applySubscriptionPromoBtn');
+        var selectedInterval = $('input[name=interval]:checked').val() || 'monthly';
+        var creatorId = $('#formSubscription').find('input[name=id]').val();
+
+        if (!value.length) {
+          setSubscriptionPromoFeedback('Enter a promo code first.', 'danger');
+          return;
+        }
+
+        button.prop('disabled', true);
+
+        $.ajax({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          type: 'POST',
+          url: URL_BASE + '/subscription/promo/preview',
+          data: {
+            id: creatorId,
+            interval: selectedInterval,
+            promo_code: value
+          },
+          success: function(result) {
+
+            button.prop('disabled', false);
+
+            if (result.success && result.valid) {
+              input.val(value).prop('readonly', true).data('applied', true);
+              $('#resetSubscriptionPromoBtn').prop('disabled', false);
+              resetSubscriptionButtonLabels();
+              updateSubscriptionButtonLabel(result.interval, result.is_free_checkout);
+              setSubscriptionPromoFeedback(result.message, 'success');
+              return;
+            }
+
+            input.prop('readonly', false).removeData('applied');
+            $('#resetSubscriptionPromoBtn').prop('disabled', true);
+            resetSubscriptionButtonLabels();
+            setSubscriptionPromoFeedback(result.message || 'The promo code is invalid.', 'danger');
+          },
+          error: function() {
+            button.prop('disabled', false);
+            input.prop('readonly', false).removeData('applied');
+            $('#resetSubscriptionPromoBtn').prop('disabled', true);
+            resetSubscriptionButtonLabels();
+            setSubscriptionPromoFeedback('Unable to validate the promo code right now. Please try again.', 'danger');
+          }
+        });
+      }
+
+      $(document).on('click', '#toggleSubscriptionPromoBtn', function() {
+
+        var panel = $('#subscriptionPromoPanel');
+        var expanded = $(this).attr('aria-expanded') === 'true';
+
+        panel.stop(true, true).slideToggle(150);
+        $(this).attr('aria-expanded', expanded ? 'false' : 'true');
+      });
+
+      $(document).on('click', '#applySubscriptionPromoBtn', function() {
+        validateSubscriptionPromoCode();
+      });
+
+      $(document).on('click', '#resetSubscriptionPromoBtn', function() {
+        resetSubscriptionPromoState(true);
+      });
+
+      $(document).on('input', '#subscriptionPromoCode', function() {
+
+        if ($(this).data('applied')) {
+          resetSubscriptionPromoState(false);
+          setSubscriptionPromoFeedback('Promo code changed. Click Apply to revalidate it.', 'muted');
+        }
+      });
 
 			$(document).on('click','.subscriptionBtn',function(s) {
 
@@ -1047,4 +1173,3 @@ $("#deleteCardStripe").on('click', function(e) {
 
 
 })(jQuery);
-

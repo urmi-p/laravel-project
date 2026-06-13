@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Plans;
 use App\Models\Deposits;
+use App\Models\PromoCodeUsages;
 use Laravel\Cashier\Cashier;
 use App\Models\Notifications;
 use Illuminate\Http\Response;
 use App\Models\PaymentGateways;
+use App\Services\PromoCodeService;
 use Laravel\Cashier\Subscription;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +19,13 @@ use Laravel\Cashier\Http\Controllers\WebhookController;
 class StripeWebHookController extends WebhookController
 {
   use Traits\Functions;
+
+  protected $promoCodeService;
+
+  public function __construct()
+  {
+    $this->promoCodeService = app(PromoCodeService::class);
+  }
 
   /**
    *
@@ -56,6 +65,9 @@ class StripeWebHookController extends WebhookController
       $interval = $object['lines']['data'][0]['metadata']['interval'] ?? 'monthly';
       $creatorId = $object['lines']['data'][0]['metadata']['creator_id'] ?? null;
       $taxes    = $object['lines']['data'][0]['metadata']['taxes'] ?? null;
+      $promoUsageToken = $object['lines']['data'][0]['metadata']['promo_usage_token'] ?? null;
+      $originalAmount = (float) ($object['lines']['data'][0]['metadata']['original_amount'] ?? $amount);
+      $chargedAmount = (float) ($object['lines']['data'][0]['metadata']['charged_amount'] ?? $amount);
 
       $subscriptionId = $object['subscription'] ?? $object['lines']['data'][0]['parent']['subscription_item_details']['subscription'] ?? null;
 
@@ -84,16 +96,16 @@ class StripeWebHookController extends WebhookController
 
           // Get Payment Gateway
           $payment = PaymentGateways::whereName('Stripe')->firstOrFail();
-          // Admin and user earnings calculation
-          $earnings = $this->earningsAdminUser($creator->custom_fee, $amount, $payment->fee, $payment->fee_cents);
+          $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $originalAmount, null, null);
+          $earnings = $this->promoCodeService->buildNetEarningsSnapshot($chargedAmount, $baseEarnings, $payment->fee, $payment->fee_cents);
 
           // Insert Transaction
-          $this->transaction(
+          $transaction = $this->transaction(
             $object['id'],
             $subscription->user_id,
             $subscription->id,
             $creator->id,
-            $amount,
+            $chargedAmount,
             $earnings['user'],
             $earnings['admin'],
             'Stripe',
@@ -104,6 +116,33 @@ class StripeWebHookController extends WebhookController
 
           // Add Earnings to User
           $creator->increment('balance', $earnings['user']);
+
+          if ($promoUsageToken) {
+            $promoUsage = PromoCodeUsages::where('checkout_token', $promoUsageToken)->first();
+
+            if ($promoUsage && $promoUsage->status !== 'completed') {
+              $this->promoCodeService->markUsageCompleted($promoUsage, [
+                'subscription_id' => $subscription->id,
+                'transaction_id' => $transaction->id,
+                'gateway_reference' => $object['id'],
+                'platform_commission_amount' => $earnings['admin'],
+              ]);
+
+              $this->promoCodeService->createHistory(
+                $promoUsage->promo_code_id,
+                $subscription->user_id,
+                'system',
+                'used',
+                null,
+                [
+                  'subscription_id' => $subscription->id,
+                  'transaction_id' => $transaction->id,
+                  'gateway_name' => 'Stripe',
+                  'charged_amount' => $chargedAmount,
+                ]
+              );
+            }
+          }
 
           // Send Notification to user
           if ($object['billing_reason'] == 'subscription_cycle') {

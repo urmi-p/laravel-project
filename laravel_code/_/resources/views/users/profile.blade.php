@@ -79,6 +79,128 @@
 
         var sort_post_by_type_media = "{!! $sortPostByTypeMedia !!}";
     </script>
+
+    <style>
+        .subscription-promo-box {
+            margin: .85rem 0 1rem;
+        }
+
+        .subscription-promo-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: .92rem;
+            font-weight: 500;
+            transition: color .2s ease;
+        }
+
+        .subscription-promo-trigger:hover,
+        .subscription-promo-trigger:focus {
+            color: #fff;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .subscription-promo-trigger-text {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .subscription-promo-panel {
+            display: none;
+            margin-top: .65rem;
+        }
+
+        .subscription-promo-row {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+        }
+
+        .subscription-promo-input {
+            height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            padding: .7rem .95rem;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .subscription-promo-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .subscription-promo-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(239, 63, 88, 0.85);
+            box-shadow: 0 0 0 0.15rem rgba(239, 63, 88, 0.15);
+            color: #fff;
+        }
+
+        .subscription-promo-actions {
+            display: flex;
+            gap: .4rem;
+            flex: 0 0 auto;
+        }
+
+        .subscription-promo-btn {
+            height: 42px;
+            width: 42px;
+            min-width: 42px;
+            border-radius: 999px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .subscription-promo-btn-apply {
+            box-shadow: none;
+        }
+
+        .subscription-promo-btn-reset {
+            border-color: rgba(255, 255, 255, 0.16);
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .subscription-promo-btn-reset:hover,
+        .subscription-promo-btn-reset:focus {
+            border-color: rgba(255, 255, 255, 0.28);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .subscription-promo-feedback {
+            display: none;
+            margin-top: .45rem;
+            font-size: .8rem;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 575.98px) {
+            .subscription-promo-row {
+                flex-wrap: wrap;
+            }
+
+            .subscription-promo-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .subscription-promo-btn {
+                width: 42px;
+                min-width: 42px;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -287,8 +409,14 @@
                                     @if ($checkSubscription->stripe_status == 'active' && $checkSubscription->stripe_id != '')
 
                                         @php
-                                            $cashierSubscription = auth()->user()->subscription('main', $checkSubscription->stripe_price);
-                                            $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                                            $stripePeriodEnd = null;
+
+                                            try {
+                                                $cashierSubscription = auth()->user()->subscription('main', $checkSubscription->stripe_price);
+                                                $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                                            } catch (\Throwable $e) {
+                                                $stripePeriodEnd = null;
+                                            }
                                         @endphp
 
                                         <form method="POST"
@@ -2364,7 +2492,7 @@
 
                                         <input type="hidden" name="id" value="{{ $user->id }}" />
 
-                                        <input name="interval" value="monthly" id="plan-monthly" class="d-none"
+                                        <input name="interval" value="monthly" id="plan-monthly" class="d-none" checked
                                             type="radio">
 
 
@@ -2462,24 +2590,6 @@
 
                                                 </div>
                                             @endif
-
-
-
-                                            @if ($payment->name == 'Paystack' && !auth()->user()->paystack_authorization_code)
-                                                <div id="paystackContainer"
-                                                    class="@if ($allPayment->count() == 1 && $payment->name == 'Paystack') d-block @else display-none @endif">
-
-                                                    <a href="{{ url('my/cards') }}"
-                                                        class="btn btn-secondary btn-sm mb-3 w-100">
-
-                                                        <i class="far fa-credit-card mr-2"></i>
-
-                                                        {{ __('general.add_payment_card') }}
-
-                                                    </a>
-
-                                                </div>
-                                            @endif
                                         @endforeach
 
 
@@ -2542,6 +2652,50 @@
 
 
 
+                                        <div class="subscription-promo-box">
+
+                                            <button type="button" class="subscription-promo-trigger"
+                                                id="toggleSubscriptionPromoBtn" aria-expanded="false"
+                                                aria-controls="subscriptionPromoPanel">
+                                                <i class="fas fa-tag"></i>
+                                                <span class="subscription-promo-trigger-text">Have a promo code?</span>
+                                            </button>
+
+                                            <div class="subscription-promo-panel" id="subscriptionPromoPanel">
+
+                                                <div class="subscription-promo-row">
+
+                                                    <input type="text" name="promo_code" id="subscriptionPromoCode"
+                                                        class="form-control subscription-promo-input" maxlength="100"
+                                                        placeholder="Promo code" autocomplete="off">
+
+                                                    <div class="subscription-promo-actions">
+
+                                                        <button
+                                                            class="btn btn-primary subscription-promo-btn subscription-promo-btn-apply"
+                                                            type="button" title="Apply promo code"
+                                                            aria-label="Apply promo code"
+                                                            id="applySubscriptionPromoBtn"><i class="fas fa-check"></i></button>
+
+                                                        <button
+                                                            class="btn btn-outline-light subscription-promo-btn subscription-promo-btn-reset"
+                                                            type="button" title="Reset promo code"
+                                                            aria-label="Reset promo code"
+                                                            id="resetSubscriptionPromoBtn"
+                                                            disabled><i class="fas fa-times"></i></button>
+
+                                                    </div>
+                                                </div>
+
+                                                <small class="subscription-promo-feedback text-muted"
+                                                    id="subscriptionPromoFeedback"></small>
+
+                                            </div>
+
+                                        </div>
+
+
+
                                         <div class="alert alert-danger display-none" id="error">
 
                                             <ul class="list-unstyled m-0" id="showErrors"></ul>
@@ -2597,10 +2751,13 @@
                                         <div class="text-center">
 
                                             <button type="submit" class="btn btn-primary mt-4 w-100 subscriptionBtn"
+                                                data-interval="monthly"
+                                                data-default-label="{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}"
+                                                data-free-label="{{ __('general.subscribe_for_free') }}"
                                                 onclick="$('#plan-monthly').trigger('click');">
 
                                                 <i></i>
-                                                {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}
+                                                <span class="subscriptionBtnLabel">{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}</span>
 
                                             </button>
 
@@ -2624,10 +2781,13 @@
                                                     @foreach ($plans as $plan)
                                                         <button type="submit"
                                                             class="btn btn-primary mt-2 w-100 subscriptionBtn"
+                                                            data-interval="{{ $plan->interval }}"
+                                                            data-default-label="{{ __('general.subscribe_' . $plan->interval, ['price' => Helper::formatPrice($plan->price, true)]) }}"
+                                                            data-free-label="{{ __('general.subscribe_for_free') }}"
                                                             onclick="$('#plan-{{ $plan->interval }}').trigger('click');">
 
                                                             <i></i>
-                                                            {{ __('general.subscribe_' . $plan->interval, ['price' => Helper::formatPrice($plan->price, true)]) }}
+                                                            <span class="subscriptionBtnLabel">{{ __('general.subscribe_' . $plan->interval, ['price' => Helper::formatPrice($plan->price, true)]) }}</span>
 
                                                         </button>
 

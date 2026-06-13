@@ -53,10 +53,16 @@
                   <td>{{ $subscription->free == 'yes'? __('general.not_applicable') : __('general.'.$subscription->interval)}}</td>
                   <td>
                     @php
-                      $cashierSubscription = $subscription->stripe_id != '' && $subscription->subscriber
-                        ? $subscription->subscriber->subscription('main', $subscription->stripe_price)
-                        : null;
-                      $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                      $stripePeriodEnd = null;
+
+                      try {
+                        $cashierSubscription = $subscription->stripe_id != '' && $subscription->subscriber
+                          ? $subscription->subscriber->subscription('main', $subscription->stripe_price)
+                          : null;
+                        $stripePeriodEnd = $cashierSubscription?->asStripeSubscription()?->current_period_end;
+                      } catch (\Throwable $e) {
+                        $stripePeriodEnd = null;
+                      }
                     @endphp
 
                     @if ($subscription->ends_at)

@@ -434,6 +434,16 @@
 
             </li><!-- /end list -->
 
+            <li class="nav-item">
+
+                <a href="{{ url('panel/admin/promo-codes') }}" class="nav-link text-truncate @if (request()->is('panel/admin/promo-codes')) active @endif">
+
+                    <i class="bi-ticket-perforated me-2"></i> Promo Codes
+
+                </a>
+
+            </li><!-- /end list -->
+
             @endif
 
 
@@ -1335,4 +1345,3 @@
      </body>
 
 </html>
-

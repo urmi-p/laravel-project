@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Helper;
 use App\Models\User;
+use App\Models\Plans;
 use App\Models\Updates;
 use App\Models\Deposits;
 use App\Models\Messages;
+use App\Models\PromoCodeUsages;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Models\AdminSettings;
 use App\Models\Notifications;
 use App\Models\Subscriptions;
 use App\Models\PaymentGateways;
+use App\Services\PromoCodeService;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as HttpClient;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -21,10 +24,13 @@ class PayPalController extends Controller
 {
   use Traits\Functions;
 
+  protected $promoCodeService;
+
   public function __construct(AdminSettings $settings, Request $request)
   {
     $this->settings = $settings::first();
     $this->request = $request;
+    $this->promoCodeService = app(PromoCodeService::class);
   }
 
   /**
@@ -50,6 +56,15 @@ class PayPalController extends Controller
       ->whereInterval($this->request->interval)
       ->whereStatus('1')
       ->firstOrFail();
+
+    $checkout = $this->buildCheckoutContext($user, $plan);
+
+    if (! $checkout['success']) {
+      return response()->json([
+        'success' => false,
+        'errors' => ['error' => $checkout['error']]
+      ]);
+    }
 
     // Get Payment Gateway
     $payment = PaymentGateways::whereName($this->request->payment_gateway)->whereEnabled(1)->firstOrFail();
@@ -113,21 +128,66 @@ class PayPalController extends Controller
     try {
       // Create Plan
       $planPayPal = 'plan_' . $plan->name;
+      $pricing = $checkout['pricing'];
+      $promoCode = $checkout['promo_code'];
+      $promoUsage = null;
+      $firstCycleTotal = round((float) $pricing['charged_amount'] + (float) $pricing['tax_amount'], 2);
+      $billingCycles = [
+        [
+          'frequency' => [
+            'interval_unit' => $interval,
+            'interval_count' => $interval_count,
+          ],
+          'tenure_type' => 'REGULAR',
+          'sequence' => 1,
+          'total_cycles' => 0,
+          'pricing_scheme' => [
+            'fixed_price' => [
+              'value' => Helper::amountGross($plan->price),
+              'currency_code' => $this->settings->currency_code,
+            ],
+          ]
+        ]
+      ];
 
-      $requestIdPlan = 'create-plan-' . time();
+      if ($promoCode) {
+        $promoUsage = $this->promoCodeService->createUsage($promoCode, [
+          'user_id' => auth()->id(),
+          'plan_id' => $plan->id,
+          'plan_interval' => $plan->interval,
+          'gateway_name' => 'PayPal',
+          'original_amount' => $pricing['original_amount'],
+          'discount_amount' => $pricing['discount_amount'],
+          'charged_amount' => $pricing['charged_amount'],
+          'creator_earning_impact' => $pricing['discount_amount'],
+          'tax_amount' => $pricing['tax_amount'],
+          'checkout_token' => str_random(40),
+        ]);
 
-      $paypalPlan = $provider->createPlan([
-        'product_id' => $product['id'],
-        'name' => $planPayPal,
-        'status' => 'ACTIVE',
-        'billing_cycles' => [
+        $planPayPal .= '_promo_' . time();
+        $billingCycles = [
+          [
+            'frequency' => [
+              'interval_unit' => $interval,
+              'interval_count' => $interval_count,
+            ],
+            'tenure_type' => 'TRIAL',
+            'sequence' => 1,
+            'total_cycles' => 1,
+            'pricing_scheme' => [
+              'fixed_price' => [
+                'value' => number_format($firstCycleTotal, 2, '.', ''),
+                'currency_code' => $this->settings->currency_code,
+              ],
+            ]
+          ],
           [
             'frequency' => [
               'interval_unit' => $interval,
               'interval_count' => $interval_count,
             ],
             'tenure_type' => 'REGULAR',
-            'sequence' => 1,
+            'sequence' => 2,
             'total_cycles' => 0,
             'pricing_scheme' => [
               'fixed_price' => [
@@ -136,13 +196,26 @@ class PayPalController extends Controller
               ],
             ]
           ]
-        ],
+        ];
+      }
+
+      $requestIdPlan = 'create-plan-' . time();
+
+      $paypalPlan = $provider->createPlan([
+        'product_id' => $product['id'],
+        'name' => $planPayPal,
+        'status' => 'ACTIVE',
+        'billing_cycles' => $billingCycles,
         'payment_preferences' => [
           'auto_bill_outstanding' => true,
           'payment_failure_threshold' => 0,
         ],
       ], $requestIdPlan);
     } catch (\Exception $e) {
+      if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
+        $this->promoCodeService->markUsageFailed($promoUsage, $e->getMessage());
+      }
+
       return response()->json([
         'success' => false,
         'errors' => ['error' => $e->getMessage()]
@@ -156,29 +229,62 @@ class PayPalController extends Controller
         'application_context' => [
           'brand_name' => $this->settings->title,
           'locale' => 'en-US',
-          'shipping_preference' => 'SET_PROVIDED_ADDRESS',
+          'shipping_preference' => 'NO_SHIPPING',
           'user_action' => 'SUBSCRIBE_NOW',
           'payment_method' => [
             'payer_selected' => 'PAYPAL',
-            'payee_preferred' => 'IMMEDIATE_PAYMENT_REQUIRED',
+            'payee_preferred' => $firstCycleTotal <= 0 ? 'UNRESTRICTED' : 'IMMEDIATE_PAYMENT_REQUIRED',
           ],
           'return_url' => $urlSuccess,
           'cancel_url' => $urlCancel
         ],
         'custom_id' => http_build_query([
-          'id' => $this->request->id,
-          'amount' => $plan->price,
-          'subscriber' => auth()->id(),
-          'plan' => $plan->name,
-          'taxes' => auth()->user()->taxesPayable(),
+          'c' => $this->request->id,
+          's' => auth()->id(),
+          'p' => $plan->id,
+          't' => auth()->user()->taxesPayable(),
+          'u' => optional($promoUsage)->id,
         ])
       ]);
 
+      if (
+        !is_array($subscription)
+        || empty($subscription['links'])
+        || !is_array($subscription['links'])
+      ) {
+        $message = $subscription['message']
+          ?? $subscription['details'][0]['issue']
+          ?? $subscription['name']
+          ?? 'PayPal subscription could not be created.';
+
+        if (is_array($subscription)) {
+          $encodedResponse = json_encode($subscription);
+
+          if ($encodedResponse) {
+            $message .= ' Response: ' . $encodedResponse;
+          }
+        }
+
+        throw new \Exception($message);
+      }
+
+      $approvalLink = collect($subscription['links'])->first(function ($link) {
+        return isset($link['rel']) && $link['rel'] === 'approve' && !empty($link['href']);
+      });
+
+      if (!$approvalLink || empty($approvalLink['href'])) {
+        throw new \Exception('PayPal approval link was not returned.');
+      }
+
       return response()->json([
         'success' => true,
-        'url' => $subscription['links'][0]['href']
+        'url' => $approvalLink['href']
       ]);
     } catch (\Exception $e) {
+      if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
+        $this->promoCodeService->markUsageFailed($promoUsage, $e->getMessage());
+      }
+
       return response()->json([
         'success' => false,
         'errors' => ['error' => $e->getMessage()]
@@ -279,21 +385,133 @@ class PayPalController extends Controller
     parse_str($payload['resource']['custom_id'] ?? ($payload['resource']['custom'] ?? null), $data);
 
     if ($data) {
-      if ($payload['event_type'] == 'PAYMENT.SALE.COMPLETED') {
+      if ($payload['event_type'] == 'BILLING.SUBSCRIPTION.ACTIVATED') {
+        $creatorId = $data['c'] ?? $data['id'] ?? null;
+        $subscriberId = $data['s'] ?? $data['subscriber'] ?? null;
+        $planId = $data['p'] ?? null;
+        $taxes = $data['t'] ?? ($data['taxes'] ?? null);
+        $promoUsage = null;
+
+        if (! empty($data['u'])) {
+          $promoUsage = PromoCodeUsages::find($data['u']);
+        } elseif (! empty($data['promo_usage_token'])) {
+          $promoUsage = PromoCodeUsages::where('checkout_token', $data['promo_usage_token'])->first();
+        }
+
+        $user = User::find($creatorId);
+        $plan = null;
+
+        if ($user && $planId) {
+          $plan = $user->plans()->whereId($planId)->first();
+        } elseif ($user && ! empty($data['plan'])) {
+          $plan = $user->plans()->whereName($data['plan'])->first();
+        }
+
+        $subscriptionId = $payload['resource']['id'] ?? null;
+
+        if ($user && $plan && $subscriptionId && $promoUsage) {
+          $totalDue = round((float) $promoUsage->charged_amount + (float) $promoUsage->tax_amount, 2);
+
+          if ($totalDue <= 0) {
+            $subscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
+
+            if (!$subscription) {
+              $subscription = new Subscriptions();
+              $subscription->user_id = $subscriberId;
+              $subscription->creator_id = $user->id;
+              $subscription->stripe_price = $plan->name;
+              $subscription->subscription_id = $subscriptionId;
+              $subscription->ends_at = $user->planInterval($plan->interval);
+              $subscription->interval = $plan->interval;
+              $subscription->save();
+
+              Notifications::send($creatorId, $subscriberId, '1', $creatorId);
+              $this->sendWelcomeMessageAction($user, $subscriberId);
+            }
+
+            $txnId = 'paypal_zero_' . $subscriptionId;
+            $verifiedTxnId = Transactions::whereTxnId($txnId)->wherePaymentGateway('PayPal')->first();
+
+            if (! $verifiedTxnId) {
+              $baseEarnings = $this->earningsAdminUser($user->custom_fee, (float) $promoUsage->original_amount, null, null);
+              $earnings = $this->promoCodeService->buildNetEarningsSnapshot(0, $baseEarnings, $payment->fee, $payment->fee_cents);
+
+              $transaction = $this->transaction(
+                $txnId,
+                $subscriberId,
+                $subscription->id,
+                $creatorId,
+                0,
+                $earnings['user'],
+                $earnings['admin'],
+                'PayPal',
+                'subscription',
+                $earnings['percentageApplied'],
+                $taxes
+              );
+
+              $user->increment('balance', $earnings['user']);
+
+              if ($promoUsage->status !== 'completed') {
+                $this->promoCodeService->markUsageCompleted($promoUsage, [
+                  'subscription_id' => $subscription->id,
+                  'transaction_id' => $transaction->id,
+                  'gateway_reference' => $subscriptionId,
+                  'platform_commission_amount' => $earnings['admin'],
+                  'used_at' => now(),
+                ]);
+
+                $this->promoCodeService->createHistory(
+                  $promoUsage->promo_code_id,
+                  $subscriberId,
+                  'system',
+                  'used',
+                  null,
+                  [
+                    'subscription_id' => $subscription->id,
+                    'transaction_id' => $transaction->id,
+                    'gateway_name' => 'PayPal',
+                    'charged_amount' => 0,
+                  ]
+                );
+              }
+            }
+          }
+        }
+      } elseif ($payload['event_type'] == 'PAYMENT.SALE.COMPLETED') {
         if (array_key_exists('billing_agreement_id', $payload['resource']) && !empty($payload['resource']['billing_agreement_id'])) {
+          $creatorId = $data['c'] ?? $data['id'] ?? null;
+          $subscriberId = $data['s'] ?? $data['subscriber'] ?? null;
+          $planId = $data['p'] ?? null;
+          $taxes = $data['t'] ?? ($data['taxes'] ?? null);
+          $promoUsage = null;
+
+          if (! empty($data['u'])) {
+            $promoUsage = PromoCodeUsages::find($data['u']);
+          } elseif (! empty($data['promo_usage_token'])) {
+            $promoUsage = PromoCodeUsages::where('checkout_token', $data['promo_usage_token'])->first();
+          }
+
           // Get user data
-          $user = User::find($data['id']);
+          $user = User::find($creatorId);
 
           // Check if Plan exists
-          $plan = $user->plans()
-            ->whereName($data['plan'])
-            ->first();
+          $plan = null;
+
+          if ($user && $planId) {
+            $plan = $user->plans()->whereId($planId)->first();
+          } elseif ($user && ! empty($data['plan'])) {
+            $plan = $user->plans()
+              ->whereName($data['plan'])
+              ->first();
+          }
 
           // Subscription ID
           $subscriptionId = $payload['resource']['billing_agreement_id'];
 
           // Get Subscription
           $subscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
+          $isFirstPayment = ! $subscription;
 
           // Update date if subscription exists
           if ($subscription && $subscription->cancelled == 'no') {
@@ -302,11 +520,11 @@ class PayPalController extends Controller
 
             // Send Notification to User
             Notifications::firstOrCreate([
-              'destination' => $data['id'],
-              'author' => $data['subscriber'],
+              'destination' => $creatorId,
+              'author' => $subscriberId,
               'type' => 12,
               'created_at' => today()->format('Y-m-d'),
-              'target' => $data['subscriber']
+              'target' => $subscriberId
             ]);
             info('PayPal: Subscription updated! ID: ' . $subscriptionId);
           } else {
@@ -317,24 +535,30 @@ class PayPalController extends Controller
           if (!$subscription && isset($plan->interval)) {
             // Insert DB
             $subscription          = new Subscriptions();
-            $subscription->user_id = $data['subscriber'];
+            $subscription->user_id = $subscriberId;
             $subscription->creator_id = $user->id;
-            $subscription->stripe_price = $data['plan'];
+            $subscription->stripe_price = $plan->name;
             $subscription->subscription_id = $subscriptionId;
             $subscription->ends_at = $user->planInterval($plan->interval);
             $subscription->interval = $plan->interval;
             $subscription->save();
 
             // Send Notification to User --- destination, author, type, target
-            Notifications::send($data['id'], $data['subscriber'], '1', $data['id']);
+            Notifications::send($creatorId, $subscriberId, '1', $creatorId);
 
-            $this->sendWelcomeMessageAction($user, $data['subscriber']);
+            $this->sendWelcomeMessageAction($user, $subscriberId);
 
             info('PayPal: Subscription created! ID: ' . $subscriptionId);
           }
 
-          // Admin and user earnings calculation
-          $earnings = $this->earningsAdminUser($user->custom_fee, $data['amount'], $payment->fee, $payment->fee_cents);
+          $originalAmount = $promoUsage
+            ? (float) $promoUsage->original_amount
+            : (float) optional($plan)->price;
+          $chargedAmount = $isFirstPayment
+            ? (float) ($promoUsage ? $promoUsage->charged_amount : $originalAmount)
+            : $originalAmount;
+          $baseEarnings = $this->earningsAdminUser($user->custom_fee, $originalAmount, null, null);
+          $earnings = $this->promoCodeService->buildNetEarningsSnapshot($chargedAmount, $baseEarnings, $payment->fee, $payment->fee_cents);
 
           $txnId = $payload['resource']['id'];
 
@@ -342,22 +566,45 @@ class PayPalController extends Controller
 
           if (!isset($verifiedTxnId)) {
             // Insert Transaction
-            $this->transaction(
+            $transaction = $this->transaction(
               $txnId,
-              $data['subscriber'],
+              $subscriberId,
               $subscription->id,
-              $data['id'],
-              $data['amount'],
+              $creatorId,
+              $chargedAmount,
               $earnings['user'],
               $earnings['admin'],
               'PayPal',
               'subscription',
               $earnings['percentageApplied'],
-              $data['taxes'] ?? null
+              $taxes
             );
 
             // Add Earnings to User
             $user->increment('balance', $earnings['user']);
+
+            if ($promoUsage && $promoUsage->status !== 'completed') {
+              $this->promoCodeService->markUsageCompleted($promoUsage, [
+                'subscription_id' => $subscription->id,
+                'transaction_id' => $transaction->id,
+                'gateway_reference' => $txnId,
+                'platform_commission_amount' => $earnings['admin'],
+              ]);
+
+              $this->promoCodeService->createHistory(
+                $promoUsage->promo_code_id,
+                $subscriberId,
+                'system',
+                'used',
+                null,
+                [
+                  'subscription_id' => $subscription->id,
+                  'transaction_id' => $transaction->id,
+                  'gateway_name' => 'PayPal',
+                  'charged_amount' => $chargedAmount,
+                ]
+              );
+            }
 
             info('PayPal: Transaction successfully inserted and earnings added to creator');
           } // End verifiedTxnId
@@ -583,4 +830,64 @@ class PayPalController extends Controller
       return redirect('/');
     }
   } // End method verifyTransaction
+
+  protected function buildCheckoutContext(User $creator, Plans $plan): array
+  {
+    $originalAmount = round((float) $plan->price, 2);
+    $grossAmount = (float) Helper::amountGross($originalAmount);
+    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
+
+    $pricing = [
+      'original_amount' => $originalAmount,
+      'discount_amount' => 0.00,
+      'charged_amount' => $originalAmount,
+      'tax_amount' => $taxAmount,
+    ];
+
+    $promoCode = null;
+
+    if ($this->request->filled('promo_code')) {
+      $result = $this->promoCodeService->validateForCheckout(
+        $creator->id,
+        auth()->id(),
+        $this->request->promo_code,
+        $originalAmount
+      );
+
+      if (! $result['valid']) {
+        return [
+          'success' => false,
+          'error' => $this->promoValidationMessage($result['reason']),
+        ];
+      }
+
+      $promoCode = $result['promo_code'];
+      $pricing = array_merge($pricing, $result['pricing']);
+    }
+
+    return [
+      'success' => true,
+      'creator' => $creator,
+      'plan' => $plan,
+      'promo_code' => $promoCode,
+      'pricing' => $pricing,
+    ];
+  }
+
+  protected function promoValidationMessage(string $reason): string
+  {
+    switch ($reason) {
+      case 'disabled':
+        return 'This promo code is disabled.';
+      case 'expired':
+        return 'This promo code has expired.';
+      case 'limit_total_reached':
+        return 'This promo code has reached its usage limit.';
+      case 'limit_per_user_reached':
+        return 'You have already used this promo code the maximum allowed times.';
+      case 'invalid':
+      default:
+        return 'The promo code is invalid.';
+    }
+  }
 }

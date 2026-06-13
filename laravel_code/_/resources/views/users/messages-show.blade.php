@@ -433,10 +433,10 @@
       }
 
       .chat-detail-route .message-composer-toolbar {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1.1rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 5.15rem;
+        align-items: end;
+        gap: 0.75rem;
         margin-top: 1.05rem !important;
       }
 
@@ -449,17 +449,14 @@
 
       .chat-detail-route .chat-detail-action-icons {
         display: flex;
-        flex: 0 0 auto;
         width: 100%;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.6rem;
         min-width: 0;
         overflow: visible;
         padding-bottom: 0.125rem;
         justify-content: flex-start;
-        position: relative;
-        z-index: 2;
       }
 
       .chat-detail-route .chat-detail-action-icons::-webkit-scrollbar {
@@ -467,9 +464,9 @@
       }
 
       .chat-detail-route .card-footer .btn-upload {
-        width: 2.875rem;
-        height: 2.875rem;
-        min-width: 2.875rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        min-width: 2.6rem;
         padding: 0 !important;
         border-radius: 999rem !important;
         color: rgba(255, 255, 255, 0.92) !important;
@@ -477,17 +474,21 @@
 
       .chat-detail-route .message-send-wrap {
         margin: 0 !important;
-        width: 100%;
-        flex: 0 0 auto;
+        width: 5.15rem;
+        min-width: 5.15rem;
+        max-width: 5.15rem;
         display: flex;
         justify-content: flex-end;
-        z-index: 3;
+        align-self: flex-end;
+        overflow: visible;
+        padding-left: 0.2rem;
       }
 
       .chat-detail-route .message-send-wrap #buttonReplyMsgChat {
-        width: 5.75rem;
-        min-width: 5.75rem;
-        height: 3.25rem;
+        width: 5.15rem;
+        min-width: 5.15rem;
+        max-width: 5.15rem;
+        height: 3.05rem;
         padding: 0;
         border-radius: 999rem !important;
         float: none !important;
@@ -680,24 +681,67 @@
       }
 
       .chat-detail-route .message-composer-toolbar {
-        gap: 1.1rem;
+        grid-template-columns: minmax(0, 1fr) 5.6rem;
+        gap: 0.6rem;
       }
 
       .chat-detail-route .chat-detail-action-icons {
         justify-content: flex-start;
-        gap: 0.65rem;
+        gap: 0.55rem;
       }
 
       .chat-detail-route .card-footer .btn-upload {
-        width: 3rem;
-        height: 3rem;
-        min-width: 3rem;
+        width: 2.7rem;
+        height: 2.7rem;
+        min-width: 2.7rem;
       }
 
       .chat-detail-route .message-send-wrap #buttonReplyMsgChat {
-        width: 6.5rem;
-        min-width: 6.5rem;
-        height: 3.35rem;
+        width: 5.6rem;
+        min-width: 5.6rem;
+        max-width: 5.6rem;
+        height: 3.05rem;
+      }
+
+      .chat-detail-route .message-send-wrap {
+        width: 5.6rem;
+        min-width: 5.6rem;
+        max-width: 5.6rem;
+        padding-left: 0.15rem;
+      }
+
+      @media (max-width: 420px) {
+        .chat-detail-route .message-composer-toolbar {
+          grid-template-columns: minmax(0, 1fr) 4.85rem;
+          gap: 0.35rem;
+        }
+
+        .chat-detail-route .chat-detail-action-icons {
+          gap: 0.3rem;
+        }
+
+        .chat-detail-route .card-footer .btn-upload {
+          width: 2.35rem;
+          height: 2.35rem;
+          min-width: 2.35rem;
+        }
+
+        .chat-detail-route .card-footer .btn-upload i,
+        .chat-detail-route .card-footer .btn-upload svg {
+          transform: scale(0.9);
+          transform-origin: center;
+        }
+
+        .chat-detail-route .message-send-wrap,
+        .chat-detail-route .message-send-wrap #buttonReplyMsgChat {
+          width: 4.85rem;
+          min-width: 4.85rem;
+          max-width: 4.85rem;
+        }
+
+        .chat-detail-route .message-send-wrap #buttonReplyMsgChat {
+          height: 2.9rem;
+        }
       }
     }
   </style>
@@ -971,7 +1015,7 @@
 
                   <div class="d-inline-block message-send-wrap rounded-pill mt-1 position-relative">
                     <div class="btn-blocked display-none"></div>
-                    <button type="submit" id="buttonReplyMsgChat" disabled data-send="{{ __('auth.send') }}" data-wait="{{ __('general.send_wait') }}" class="btn btn-sm btn-primary rounded-pill float-right e-none w-100-mobile">
+                    <button type="submit" id="buttonReplyMsgChat" disabled data-send="{{ __('auth.send') }}" data-wait="{{ __('general.send_wait') }}" class="btn btn-sm btn-primary rounded-pill float-right e-none">
                       <i class="far fa-paper-plane"></i>
                     </button>
                     </div>
