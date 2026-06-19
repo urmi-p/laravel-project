@@ -185,6 +185,77 @@
             line-height: 1.4;
         }
 
+        .subscription-price-summary {
+            margin-bottom: .5rem;
+        }
+
+        .subscription-price-amounts {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            margin-bottom: .25rem;
+            flex-wrap: wrap;
+        }
+
+        .subscription-price-original {
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 1rem;
+            text-decoration: line-through;
+        }
+
+        .subscription-price-current {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .subscription-price-discount {
+            display: none;
+            color: #38d39f;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .subscription-renewal-note {
+            display: none;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: .78rem;
+            line-height: 1.35;
+            margin-top: .25rem;
+        }
+
+        .subscription-btn-price-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .45rem;
+            flex-wrap: wrap;
+        }
+
+        .subscription-btn-price-original {
+            text-decoration: line-through;
+            opacity: .72;
+            font-size: .92em;
+        }
+
+        .subscription-btn-price-current {
+            font-weight: 700;
+        }
+
+        [data-bs-theme="light"] .subscription-price-original {
+            color: rgba(17, 17, 17, 0.55);
+        }
+
+        [data-bs-theme="light"] .subscription-price-current {
+            color: #111;
+        }
+
+        [data-bs-theme="light"] .subscription-renewal-note {
+            color: rgba(17, 17, 17, 0.65);
+        }
+
         @media (max-width: 575.98px) {
             .subscription-promo-row {
                 flex-wrap: wrap;
@@ -2416,12 +2487,29 @@
                                             alt="{{ $user->hide_name == 'yes' ? $user->username : $user->name }}"
                                             class="avatar-modal rounded-circle mb-1">
 
-                                        <h6 class="font-weight-light">
+                                        <div class="subscription-price-summary"
+                                            id="subscriptionPriceSummary"
+                                            data-default-current-price="{{ Helper::formatPrice($user->getPlan('monthly', 'price'), true) }}"
+                                            data-default-sentence="{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}"
+                                            data-discount-label="{{ __('general.discount') }}"
+                                            data-default-renewal-note=""
+                                            data-promo-empty-message="{{ __('general.enter_promo_code_first') }}"
+                                            data-promo-invalid-message="{{ __('general.promo_code_invalid') }}"
+                                            data-promo-validation-error-message="{{ __('general.unable_validate_promo_code') }}"
+                                            data-promo-changed-message="{{ __('general.promo_code_changed_revalidate') }}">
+                                            <div class="subscription-price-amounts">
+                                                <span class="subscription-price-original display-none"
+                                                    id="subscriptionOriginalPrice"></span>
+                                                <span class="subscription-price-current"
+                                                    id="subscriptionCurrentPrice">{{ Helper::formatPrice($user->getPlan('monthly', 'price'), true) }}</span>
+                                            </div>
+                                            <div class="subscription-price-discount" id="subscriptionDiscountAmount"></div>
+                                            <div class="subscription-renewal-note" id="subscriptionRenewalNote"></div>
+                                        </div>
 
-                                            {!! __('general.subscribe_month', [
-                                                'price' =>
-                                                    '<span class="font-weight-bold">' . Helper::formatPrice($user->getPlan('monthly', 'price'), true) . '</span>',
-                                            ]) !!} {{ __('general.unlocked_content') }}
+                                        <h6 class="font-weight-light">
+                                            <span id="subscriptionPriceSentence">{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}</span>
+                                            {{ __('general.unlocked_content') }}
                                             {{ $user->hide_name == 'yes' ? $user->username : $user->name }}
 
 
@@ -2658,7 +2746,7 @@
                                                 id="toggleSubscriptionPromoBtn" aria-expanded="false"
                                                 aria-controls="subscriptionPromoPanel">
                                                 <i class="fas fa-tag"></i>
-                                                <span class="subscription-promo-trigger-text">Have a promo code?</span>
+                                                <span class="subscription-promo-trigger-text">{{ __('general.have_promo_code') }}</span>
                                             </button>
 
                                             <div class="subscription-promo-panel" id="subscriptionPromoPanel">
@@ -2667,20 +2755,20 @@
 
                                                     <input type="text" name="promo_code" id="subscriptionPromoCode"
                                                         class="form-control subscription-promo-input" maxlength="100"
-                                                        placeholder="Promo code" autocomplete="off">
+                                                        placeholder="{{ __('general.promo_code') }}" autocomplete="off">
 
                                                     <div class="subscription-promo-actions">
 
                                                         <button
                                                             class="btn btn-primary subscription-promo-btn subscription-promo-btn-apply"
-                                                            type="button" title="Apply promo code"
-                                                            aria-label="Apply promo code"
+                                                            type="button" title="{{ __('general.apply_promo_code') }}"
+                                                            aria-label="{{ __('general.apply_promo_code') }}"
                                                             id="applySubscriptionPromoBtn"><i class="fas fa-check"></i></button>
 
                                                         <button
                                                             class="btn btn-outline-light subscription-promo-btn subscription-promo-btn-reset"
-                                                            type="button" title="Reset promo code"
-                                                            aria-label="Reset promo code"
+                                                            type="button" title="{{ __('general.reset_promo_code') }}"
+                                                            aria-label="{{ __('general.reset_promo_code') }}"
                                                             id="resetSubscriptionPromoBtn"
                                                             disabled><i class="fas fa-times"></i></button>
 
@@ -2760,6 +2848,7 @@
                                                 <span class="subscriptionBtnLabel">{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}</span>
 
                                             </button>
+                                            <small class="subscription-renewal-note w-100 d-block text-center" id="subscriptionButtonRenewalNote"></small>
 
 
 

@@ -1,7 +1,7 @@
-@if (! isset($single) && $messages->count() == 10)
+@if (! isset($single) && ($hasMorePages ?? false))
 <div class="btn-block text-center wrap-container containerLoadMore" data-id="{{ $user->id }}">
-  <a href="javascript:void(0)" class="loadMoreMessages d-none" id="paginatorChat">
-    — {{ __('general.load_messages') }}
+  <a href="javascript:void(0)" class="loadMoreMessages" id="paginatorChat">
+    - {{ __('general.load_messages') }}
   </a>
 </div>
 @endif

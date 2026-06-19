@@ -84,6 +84,7 @@
         }
 
         resetSubscriptionButtonLabels();
+        resetSubscriptionPriceSummary();
       }
 
       function resetSubscriptionButtonLabels() {
@@ -95,7 +96,67 @@
         });
       }
 
-      function updateSubscriptionButtonLabel(interval, isFreeCheckout) {
+      function buildSubscriptionButtonLabelHtml(label, pricing) {
+
+        if (!pricing || !pricing.has_discount || !label) {
+          return null;
+        }
+
+        if (label.indexOf(pricing.formatted_charged_amount) === -1) {
+          return null;
+        }
+
+        return label.replace(
+          pricing.formatted_charged_amount,
+          '<span class="subscription-btn-price-wrap"><span class="subscription-btn-price-original">' +
+            pricing.formatted_original_amount +
+          '</span><span class="subscription-btn-price-current">' +
+            pricing.formatted_charged_amount +
+          '</span></span>'
+        );
+      }
+
+      function resetSubscriptionPriceSummary() {
+
+        var summary = $('#subscriptionPriceSummary');
+
+        if (!summary.length) {
+          return;
+        }
+
+        $('#subscriptionOriginalPrice').addClass('display-none').text('');
+        $('#subscriptionCurrentPrice').text(summary.data('default-current-price'));
+        $('#subscriptionDiscountAmount').hide().text('');
+        $('#subscriptionRenewalNote').hide().text(summary.data('default-renewal-note') || '');
+        $('#subscriptionButtonRenewalNote').hide().text('');
+        $('#subscriptionPriceSentence').text(summary.data('default-sentence'));
+      }
+
+      function updateSubscriptionPriceSummary(pricing, buttonLabel) {
+
+        var summary = $('#subscriptionPriceSummary');
+
+        if (!summary.length || !pricing) {
+          return;
+        }
+
+        if (pricing.has_discount) {
+          $('#subscriptionOriginalPrice').removeClass('display-none').text(pricing.formatted_original_amount);
+          $('#subscriptionDiscountAmount').show().text(summary.data('discount-label') + ': ' + pricing.formatted_discount_amount);
+          $('#subscriptionRenewalNote').show().text(pricing.renewal_text || '');
+          $('#subscriptionButtonRenewalNote').show().text(pricing.renewal_text || '');
+        } else {
+          $('#subscriptionOriginalPrice').addClass('display-none').text('');
+          $('#subscriptionDiscountAmount').hide().text('');
+          $('#subscriptionRenewalNote').hide().text('');
+          $('#subscriptionButtonRenewalNote').hide().text('');
+        }
+
+        $('#subscriptionCurrentPrice').text(pricing.formatted_charged_amount);
+        $('#subscriptionPriceSentence').text(buttonLabel);
+      }
+
+      function updateSubscriptionButtonLabel(interval, isFreeCheckout, customLabel, pricing) {
 
         var button = $('.subscriptionBtn[data-interval="' + interval + '"]');
 
@@ -103,7 +164,14 @@
           return;
         }
 
-        var label = isFreeCheckout ? button.data('free-label') : button.data('default-label');
+        var label = customLabel || (isFreeCheckout ? button.data('free-label') : button.data('default-label'));
+        var labelHtml = buildSubscriptionButtonLabelHtml(label, pricing);
+
+        if (labelHtml) {
+          button.find('.subscriptionBtnLabel').html(labelHtml);
+          return;
+        }
+
         button.find('.subscriptionBtnLabel').text(label);
       }
 
@@ -114,9 +182,10 @@
         var button = $('#applySubscriptionPromoBtn');
         var selectedInterval = $('input[name=interval]:checked').val() || 'monthly';
         var creatorId = $('#formSubscription').find('input[name=id]').val();
+        var summary = $('#subscriptionPriceSummary');
 
         if (!value.length) {
-          setSubscriptionPromoFeedback('Enter a promo code first.', 'danger');
+          setSubscriptionPromoFeedback(summary.data('promo-empty-message') || 'Enter a promo code first.', 'danger');
           return;
         }
 
@@ -141,7 +210,9 @@
               input.val(value).prop('readonly', true).data('applied', true);
               $('#resetSubscriptionPromoBtn').prop('disabled', false);
               resetSubscriptionButtonLabels();
-              updateSubscriptionButtonLabel(result.interval, result.is_free_checkout);
+              resetSubscriptionPriceSummary();
+              updateSubscriptionButtonLabel(result.interval, result.is_free_checkout, result.button_label, result.pricing);
+              updateSubscriptionPriceSummary(result.pricing, result.button_label);
               setSubscriptionPromoFeedback(result.message, 'success');
               return;
             }
@@ -149,14 +220,16 @@
             input.prop('readonly', false).removeData('applied');
             $('#resetSubscriptionPromoBtn').prop('disabled', true);
             resetSubscriptionButtonLabels();
-            setSubscriptionPromoFeedback(result.message || 'The promo code is invalid.', 'danger');
+            resetSubscriptionPriceSummary();
+            setSubscriptionPromoFeedback(result.message || summary.data('promo-invalid-message') || 'The promo code is invalid.', 'danger');
           },
           error: function() {
             button.prop('disabled', false);
             input.prop('readonly', false).removeData('applied');
             $('#resetSubscriptionPromoBtn').prop('disabled', true);
             resetSubscriptionButtonLabels();
-            setSubscriptionPromoFeedback('Unable to validate the promo code right now. Please try again.', 'danger');
+            resetSubscriptionPriceSummary();
+            setSubscriptionPromoFeedback(summary.data('promo-validation-error-message') || 'Unable to validate the promo code right now. Please try again.', 'danger');
           }
         });
       }
@@ -181,8 +254,9 @@
       $(document).on('input', '#subscriptionPromoCode', function() {
 
         if ($(this).data('applied')) {
+          var summary = $('#subscriptionPriceSummary');
           resetSubscriptionPromoState(false);
-          setSubscriptionPromoFeedback('Promo code changed. Click Apply to revalidate it.', 'muted');
+          setSubscriptionPromoFeedback(summary.data('promo-changed-message') || 'Promo code changed. Click Apply to revalidate it.', 'muted');
         }
       });
 

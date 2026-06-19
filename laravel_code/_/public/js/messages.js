@@ -402,16 +402,21 @@
 	});//<---- * End Remove Message * ---->
 
 	//<<==================== PAGINATOR Messages Chat
-	$(document).on('click','.loadMoreMessages', function(e) {
+	var loadingOlderMessages = false;
+	$(document).on('click','.loadMoreMessages', function(e) {
 
-	  e.preventDefault();
+	  e.preventDefault();
+	  if (loadingOlderMessages) {
+		return false;
+	  }
 
 	var container = $(this).parents('.content');
 	var allElements = $(container).find('div.chatlist').length;
 	var firstMsg  = $('.chatlist:first');
 	var curOffset = firstMsg.offset().top - $('#contentDIV').scrollTop();
 	var user_id = $(this).parents('.wrap-container').attr('data-id');
-	var wrapContainer = $(this).parents('.wrap-container');
+	var wrapContainer = $(this).parents('.wrap-container');
+	loadingOlderMessages = true;
 
 	wrapContainer.html('<span class="spinner-border align-middle text-primary mb-2 spinnerLoadMsg"></span>');
 
@@ -446,7 +451,9 @@
 	}).fail(function(jqXHR, ajaxOptions, thrownError)
 	{
 	  $('.popout').addClass('popout-error').html(error_reload_page).slideDown('500').delay('5000').slideUp('500');
-	});//<--- AJAX
+	}).always(function() {
+	  loadingOlderMessages = false;
+	});//<--- AJAX
 	});
 
 	// Remove file

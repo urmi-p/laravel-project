@@ -71,6 +71,14 @@ class StripeController extends Controller
       $promoCode = $checkout['promo_code'];
       $promoUsage = null;
       $couponId = null;
+      $defaultPaymentMethod = auth()->user()->defaultPaymentMethod();
+
+      if (! $defaultPaymentMethod) {
+        return response()->json([
+          "success" => false,
+          'errors' => ['error' => __('general.please_add_payment_card')]
+        ]);
+      }
 
       // Check Payment Incomplete
       if (auth()->user()
@@ -120,7 +128,7 @@ class StripeController extends Controller
         $subscriptionBuilder->withCoupon($couponId);
       }
 
-      $subscriptionBuilder->create();
+      $subscriptionBuilder->create($defaultPaymentMethod->id);
 
       // Send Email to User and Notification
       Subscriptions::sendEmailAndNotify(auth()->user()->name, $user->id);

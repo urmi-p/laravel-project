@@ -115,7 +115,7 @@ class SubscriptionsController extends Controller
     if ($validator->fails()) {
       return response()->json([
         'success' => false,
-        'message' => 'Unable to validate the promo code right now.',
+        'message' => __('general.unable_validate_promo_code'),
         'errors' => $validator->getMessageBag()->toArray(),
       ], 422);
     }
@@ -163,9 +163,24 @@ class SubscriptionsController extends Controller
     return response()->json([
       'success' => true,
       'valid' => true,
-      'message' => 'Promo code is valid.',
+      'message' => __('general.promo_code_valid'),
       'interval' => $plan->interval,
       'is_free_checkout' => ((round((float) $checkout['pricing']['charged_amount'] + (float) $checkout['pricing']['tax_amount'], 2)) <= 0),
+      'pricing' => [
+        'has_discount' => ((float) $checkout['pricing']['discount_amount'] > 0),
+        'original_amount' => $checkout['pricing']['original_amount'],
+        'charged_amount' => $checkout['pricing']['charged_amount'],
+        'discount_amount' => $checkout['pricing']['discount_amount'],
+        'formatted_original_amount' => Helper::formatPrice($checkout['pricing']['original_amount'], true),
+        'formatted_charged_amount' => Helper::formatPrice($checkout['pricing']['charged_amount'], true),
+        'formatted_discount_amount' => Helper::formatPrice($checkout['pricing']['discount_amount'], true),
+        'renewal_text' => $this->subscriptionRenewalText($plan->interval, (float) $checkout['pricing']['original_amount']),
+      ],
+      'button_label' => $this->subscriptionButtonLabel(
+        $plan->interval,
+        (float) $checkout['pricing']['charged_amount'],
+        ((round((float) $checkout['pricing']['charged_amount'] + (float) $checkout['pricing']['tax_amount'], 2)) <= 0)
+      ),
     ]);
   }
 
@@ -492,17 +507,46 @@ class SubscriptionsController extends Controller
   {
     switch ($reason) {
       case 'disabled':
-        return 'This promo code is disabled.';
+        return __('general.promo_code_disabled');
       case 'expired':
-        return 'This promo code has expired.';
+        return __('general.promo_code_expired');
       case 'limit_total_reached':
-        return 'This promo code has reached its usage limit.';
+        return __('general.promo_code_limit_total_reached');
       case 'limit_per_user_reached':
-        return 'You have already used this promo code the maximum allowed times.';
+        return __('general.promo_code_limit_per_user_reached');
       case 'invalid':
       default:
-        return 'The promo code is invalid.';
+        return __('general.promo_code_invalid');
     }
+  }
+
+  protected function subscriptionButtonLabel(string $interval, float $amount, bool $isFreeCheckout): string
+  {
+    if ($isFreeCheckout) {
+      return __('general.subscribe_for_free');
+    }
+
+    $translationKey = $interval === 'monthly'
+      ? 'general.subscribe_month'
+      : 'general.subscribe_' . $interval;
+
+    return __($translationKey, ['price' => Helper::formatPrice($amount, true)]);
+  }
+
+  protected function subscriptionRenewalText(string $interval, float $amount): string
+  {
+    $intervalLabel = [
+      'weekly' => __('general.subscription_interval_unit_week'),
+      'monthly' => __('general.subscription_interval_unit_month'),
+      'quarterly' => __('general.subscription_interval_unit_quarterly'),
+      'biannually' => __('general.subscription_interval_unit_biannually'),
+      'yearly' => __('general.subscription_interval_unit_year'),
+    ][$interval] ?? $interval;
+
+    return __('general.subscription_renews_at', [
+      'price' => Helper::formatPrice($amount, true),
+      'interval' => $intervalLabel,
+    ]);
   }
 
 }

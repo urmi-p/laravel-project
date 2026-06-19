@@ -160,8 +160,12 @@ class MessagesController extends Controller
     }
 
     $user = User::whereId($id)->where('id', '<>', auth()->id())->firstOrFail();
+    $messages = Messages::getMessageChat($id, 0, Messages::CHAT_PAGE_SIZE + 1);
+    $hasMorePages = $messages->count() > Messages::CHAT_PAGE_SIZE;
 
-    $messages = Messages::getMessageChat($id);
+    if ($hasMorePages) {
+      $messages = $messages->take(Messages::CHAT_PAGE_SIZE);
+    }
 
     $data = [];
 
@@ -255,10 +259,14 @@ class MessagesController extends Controller
   public function loadmore(Request $request)
   {
     $id   = $request->input('id');
-    $skip = $request->input('skip');
+    $skip = (int) $request->input('skip', 0);
     $user = User::whereId($id)->where('id', '<>', auth()->id())->firstOrFail();
+    $messages = Messages::getMessageChat($id, $skip, Messages::CHAT_PAGE_SIZE + 1);
+    $hasMorePages = $messages->count() > Messages::CHAT_PAGE_SIZE;
 
-    $messages = Messages::getMessageChat($id, $skip);
+    if ($hasMorePages) {
+      $messages = $messages->take(Messages::CHAT_PAGE_SIZE);
+    }
 
     $data = [];
 

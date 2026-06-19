@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Messages extends Model
 {
   protected $guarded = [];
+  public const CHAT_PAGE_SIZE = 10;
 
   public static function conversations()
   {
@@ -89,24 +90,23 @@ class Messages extends Model
     return $this->hasMany(MediaMessages::class)->where('status', 'active')->orderBy('id', 'asc');
   }
 
-  public function scopeGetMessageChat($query, $id, $skip = null)
+  public function scopeGetMessageChat($query, $id, $skip = 0, $limit = null)
   {
     $fields = 'id,avatar,name,username';
 
-    $query->where('to_user_id', auth()->id())
-      ->where('from_user_id', $id)
+    $query->where(function ($q) use ($id) {
+      $q->where(function ($subQuery) use ($id) {
+        $subQuery->where('to_user_id', auth()->id())
+          ->where('from_user_id', $id);
+      })->orWhere(function ($subQuery) use ($id) {
+        $subQuery->where('from_user_id', auth()->id())
+          ->where('to_user_id', $id);
+      });
+    })
       ->whereMode('active')
-      ->orWhere('from_user_id', auth()->id())
-      ->where('to_user_id', $id)
-      ->whereMode('active');
+      ->skip(max((int) $skip, 0));
 
-    $query->when(
-      $skip,
-      fn ($q) =>
-      $q->skip($skip)
-    );
-
-    $query = $query->take(10)
+    $query = $query->take($limit ?? self::CHAT_PAGE_SIZE)
       ->orderBy('messages.id', 'DESC')
       ->with(['sender:' . $fields, 'receiver:' . $fields, 'media'])
       ->get();
