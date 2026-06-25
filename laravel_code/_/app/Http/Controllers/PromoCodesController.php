@@ -60,11 +60,11 @@ class PromoCodesController extends Controller
             $normalizedCode = $this->promoCodeService->normalizeCode($this->request->code);
 
             if (PromoCodes::where('creator_id', auth()->id())->where('normalized_code', $normalizedCode)->exists()) {
-                $validator->errors()->add('code', 'This promo code already exists.');
+                $validator->errors()->add('code', __('general.promo_code_already_exists'));
             }
 
             if ($this->request->discount_type === 'percentage' && (float) $this->request->discount_value > 100) {
-                $validator->errors()->add('discount_value', 'Percentage discount cannot be greater than 100.');
+                $validator->errors()->add('discount_value', __('general.promo_percentage_max_100'));
             }
         });
 
@@ -94,7 +94,7 @@ class PromoCodesController extends Controller
             $promoCode->toArray()
         );
 
-        return back()->with('status', 'Promo code created successfully.');
+        return back()->with('status', __('general.promo_code_created_successfully'));
     }
 
     public function update($id)
@@ -130,11 +130,11 @@ class PromoCodesController extends Controller
                 ->where('normalized_code', $normalizedCode)
                 ->where('id', '<>', $promoCode->id)
                 ->exists()) {
-                $validator->errors()->add('code', 'This promo code already exists.');
+                $validator->errors()->add('code', __('general.promo_code_already_exists'));
             }
 
             if ($this->request->discount_type === 'percentage' && (float) $this->request->discount_value > 100) {
-                $validator->errors()->add('discount_value', 'Percentage discount cannot be greater than 100.');
+                $validator->errors()->add('discount_value', __('general.promo_percentage_max_100'));
             }
         });
 
@@ -167,7 +167,7 @@ class PromoCodesController extends Controller
             $promoCode->fresh()->toArray()
         );
 
-        return back()->with('status', 'Promo code updated successfully.');
+        return back()->with('status', __('general.promo_code_updated_successfully'));
     }
 
     public function disable($id)
@@ -190,7 +190,7 @@ class PromoCodesController extends Controller
             $promoCode->fresh()->toArray()
         );
 
-        return back()->with('status', 'Promo code disabled successfully.');
+        return back()->with('status', __('general.promo_code_disabled_successfully'));
     }
 
     protected function statsForCodes(array $promoCodeIds)

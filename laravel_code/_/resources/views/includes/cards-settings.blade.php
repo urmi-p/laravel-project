@@ -281,7 +281,7 @@
 
                     <div>
                         <i class="bi bi-ticket-perforated mr-2"></i>
-                        <span>Promo Codes</span>
+                        <span>{{ __('general.promo_codes') }}</span>
                     </div>
 
                 </a>

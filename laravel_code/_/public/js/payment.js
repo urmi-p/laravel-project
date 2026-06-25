@@ -191,47 +191,68 @@
 
         button.prop('disabled', true);
 
-        $.ajax({
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-          type: 'POST',
-          url: URL_BASE + '/subscription/promo/preview',
-          data: {
-            id: creatorId,
-            interval: selectedInterval,
-            promo_code: value
-          },
-          success: function(result) {
-
-            button.prop('disabled', false);
-
-            if (result.success && result.valid) {
-              input.val(value).prop('readonly', true).data('applied', true);
-              $('#resetSubscriptionPromoBtn').prop('disabled', false);
-              resetSubscriptionButtonLabels();
-              resetSubscriptionPriceSummary();
-              updateSubscriptionButtonLabel(result.interval, result.is_free_checkout, result.button_label, result.pricing);
-              updateSubscriptionPriceSummary(result.pricing, result.button_label);
-              setSubscriptionPromoFeedback(result.message, 'success');
-              return;
+        function fetchSubscriptionPromoPreview(interval) {
+          return $.ajax({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'POST',
+            url: URL_BASE + '/subscription/promo/preview',
+            data: {
+              id: creatorId,
+              interval: interval,
+              promo_code: value
             }
+          });
+        }
 
+        fetchSubscriptionPromoPreview(selectedInterval).done(function(result) {
+          button.prop('disabled', false);
+
+          if (!(result.success && result.valid)) {
             input.prop('readonly', false).removeData('applied');
             $('#resetSubscriptionPromoBtn').prop('disabled', true);
             resetSubscriptionButtonLabels();
             resetSubscriptionPriceSummary();
             setSubscriptionPromoFeedback(result.message || summary.data('promo-invalid-message') || 'The promo code is invalid.', 'danger');
-          },
-          error: function() {
-            button.prop('disabled', false);
-            input.prop('readonly', false).removeData('applied');
-            $('#resetSubscriptionPromoBtn').prop('disabled', true);
-            resetSubscriptionButtonLabels();
-            resetSubscriptionPriceSummary();
-            setSubscriptionPromoFeedback(summary.data('promo-validation-error-message') || 'Unable to validate the promo code right now. Please try again.', 'danger');
+            return;
           }
+
+          input.val(value).prop('readonly', true).data('applied', true);
+          $('#resetSubscriptionPromoBtn').prop('disabled', false);
+          resetSubscriptionButtonLabels();
+          resetSubscriptionPriceSummary();
+          updateSubscriptionButtonLabel(result.interval, result.is_free_checkout, result.button_label, result.pricing);
+          updateSubscriptionPriceSummary(result.pricing, result.button_label);
+          setSubscriptionPromoFeedback(result.message, 'success');
+
+          $('.subscriptionBtn').each(function() {
+            var interval = $(this).data('interval');
+
+            if (!interval || interval === result.interval) {
+              return;
+            }
+
+            fetchSubscriptionPromoPreview(interval).done(function(previewResult) {
+              if (previewResult.success && previewResult.valid) {
+                updateSubscriptionButtonLabel(
+                  previewResult.interval,
+                  previewResult.is_free_checkout,
+                  previewResult.button_label,
+                  previewResult.pricing
+                );
+              }
+            });
+          });
+        }).fail(function() {
+          button.prop('disabled', false);
+          input.prop('readonly', false).removeData('applied');
+          $('#resetSubscriptionPromoBtn').prop('disabled', true);
+          resetSubscriptionButtonLabels();
+          resetSubscriptionPriceSummary();
+          setSubscriptionPromoFeedback(summary.data('promo-validation-error-message') || 'Unable to validate the promo code right now. Please try again.', 'danger');
         });
+
       }
 
       $(document).on('click', '#toggleSubscriptionPromoBtn', function() {

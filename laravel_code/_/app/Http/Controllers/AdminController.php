@@ -1075,10 +1075,22 @@ class AdminController extends Controller
 			case 'Stripe':
 
 				if (isset($subscription)) {
+					try {
+						$stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 
-					$stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+						$stripe->subscriptions->cancel($subscription->stripe_id, []);
+					} catch (\Stripe\Exception\InvalidRequestException $e) {
+						// If the subscription no longer exists on Stripe, finalize the local cancel anyway.
+						if (!str_contains($e->getMessage(), 'No such subscription')) {
+							throw $e;
+						}
 
-					$stripe->subscriptions->cancel($subscription->stripe_id, []);
+						\Log::warning('Admin transaction cancel: Stripe subscription already missing', [
+							'transaction_id' => $transaction->id,
+							'subscription_id' => $subscription->id,
+							'stripe_id' => $subscription->stripe_id,
+						]);
+					}
 
 				}
 
