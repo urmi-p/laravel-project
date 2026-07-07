@@ -8,6 +8,8 @@ use App\Models\Messages;
 use Illuminate\Support\Str;
 use App\Models\MediaMessages;
 use App\Events\MassMessagesEvent;
+use App\Jobs\BunnyUploadMessageVideo;
+use App\Services\BunnyStreamService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MassMessagesListener implements ShouldQueue
@@ -36,6 +38,9 @@ class MassMessagesListener implements ShouldQueue
     $fileEpub = $event->fileEpub;
     $originalNameEpub = $event->originalNameEpub;
     $sizeEpub = $event->sizeEpub;
+    $bunnyStreamService = app(BunnyStreamService::class);
+    $pendingVideoUploads = [];
+    $temporaryFiles = [];
 
     // Get Subscriptions Active
     $subscriptionsActive = $user->mySubscriptions()
@@ -58,6 +63,7 @@ class MassMessagesListener implements ShouldQueue
       $message->message = trim(Helper::checkTextDb($messageData));
       $message->updated_at = now();
       $message->price = $price;
+      $message->mode = 'active';
       $message->save();
 
       if ($fileuploader) {
@@ -104,30 +110,53 @@ class MassMessagesListener implements ShouldQueue
               \Log::warning("Vault file not found from Mass Messages: {$cleanFilename}");
             }
           } else {
-            $files = MediaMessages::whereFile($filename)
-              ->where('messages_id', '<>', $message->id)
-              ->groupBy('file')
-              ->get();
+            $sourceMedia = MediaMessages::whereFile($filename)
+              ->whereMessagesId(0)
+              ->latest('id')
+              ->first();
 
-            foreach ($files as $key) {
-              $mediaMessages = new MediaMessages();
-              $mediaMessages->messages_id = $message->id;
-              $mediaMessages->type = $key->type;
-              $mediaMessages->file = $key->file;
-              $mediaMessages->bunny_video_id = $key->bunny_video_id;
-              $mediaMessages->video_poster = $key->video_poster;
-              $mediaMessages->width = $key->width;
-              $mediaMessages->height = $key->height;
-              $mediaMessages->file_name = $key->file_name;
-              $mediaMessages->file_size = $key->file_size;
-              $mediaMessages->token = $key->token;
-              $mediaMessages->status = 'active';
-              $mediaMessages->created_at = now();
-              $mediaMessages->save();
+            if (!$sourceMedia) {
+              $sourceMedia = MediaMessages::whereFile($filename)
+                ->latest('id')
+                ->first();
             }
 
-            // Delete Old files
-            MediaMessages::whereFile($media['file'])->whereMessagesId(0)->delete();
+            if (!$sourceMedia) {
+              \Log::warning("Mass message source media not found: {$filename}");
+              continue;
+            }
+
+            $mediaMessage = MediaMessages::create([
+              'messages_id' => $message->id,
+              'type' => $sourceMedia->type,
+              'file' => $sourceMedia->file,
+              'bunny_video_id' => $sourceMedia->bunny_video_id,
+              'width' => $sourceMedia->width,
+              'height' => $sourceMedia->height,
+              'video_poster' => $sourceMedia->video_poster,
+              'duration_video' => $sourceMedia->duration_video,
+              'quality_video' => $sourceMedia->quality_video,
+              'file_name' => $sourceMedia->file_name,
+              'file_size' => $sourceMedia->file_size,
+              'token' => $sourceMedia->token,
+              'encoded' => $sourceMedia->encoded,
+              'job_id' => $sourceMedia->job_id,
+              'vault_id' => $sourceMedia->vault_id,
+              'status' => 'active',
+              'created_at' => now()
+            ]);
+
+            $temporaryFiles[$sourceMedia->file] = $sourceMedia->file;
+
+            if (
+              $mediaMessage->type === 'video'
+              && !$mediaMessage->vault_id
+              && empty($mediaMessage->bunny_video_id)
+              && $mediaMessage->encoded !== 'yes'
+              && !isset($pendingVideoUploads[$mediaMessage->file])
+            ) {
+              $pendingVideoUploads[$mediaMessage->file] = $mediaMessage->id;
+            }
           }
         }
       } // Fileuploader
@@ -159,6 +188,18 @@ class MassMessagesListener implements ShouldQueue
           'created_at' => now()
         ]);
       }
+    }
+
+    foreach ($pendingVideoUploads as $videoId) {
+      if ($bunnyStreamService->isConfigured()) {
+        dispatch(new BunnyUploadMessageVideo($videoId));
+      }
+    }
+
+    if ($temporaryFiles) {
+      MediaMessages::whereIn('file', array_values($temporaryFiles))
+        ->whereMessagesId(0)
+        ->delete();
     }
   }
 }

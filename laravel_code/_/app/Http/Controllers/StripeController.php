@@ -72,6 +72,9 @@ class StripeController extends Controller
       $promoUsage = null;
       $couponId = null;
       $defaultPaymentMethod = auth()->user()->defaultPaymentMethod();
+      $subscriptionOptions = [];
+      $stripeTaxRates = auth()->user()->taxRates();
+      $stripeTaxPercentage = (float) auth()->user()->isTaxable()->sum('percentage');
 
       if (! $defaultPaymentMethod) {
         return response()->json([
@@ -107,7 +110,48 @@ class StripeController extends Controller
           'checkout_token' => str_random(40),
         ]);
 
-        $couponId = $this->createPromoCoupon($payment->key_secret, $promoUsage->checkout_token, $pricing);
+        $couponId = $this->createPromoCoupon(
+          $payment->key_secret,
+          $promoUsage->checkout_token,
+          (float) $plan->price,
+          $pricing
+        );
+      }
+
+      if ((float) $pricing['gateway_fee_amount'] > 0) {
+        $gatewayFeeAmount = (float) $pricing['gateway_fee_amount'];
+
+        // Stripe applies the subscription default tax rates to invoice items too.
+        // Convert the stored gross gateway fee into a pre-tax amount so the final
+        // taxed Stripe total matches the website preview.
+        if (! empty($stripeTaxRates) && $stripeTaxPercentage > 0) {
+          $gatewayFeeAmount = round($gatewayFeeAmount / (1 + ($stripeTaxPercentage / 100)), 2);
+        }
+
+        $gatewayFeeAmount = in_array(config('settings.currency_code'), config('currencies.zero-decimal'))
+          ? (int) round($gatewayFeeAmount)
+          : (int) round($gatewayFeeAmount * 100);
+        $gatewayFeeProductId = $this->createGatewayFeeProduct($payment->key_secret, $user, $plan);
+
+        $subscriptionOptions['add_invoice_items'] = [[
+          'price_data' => [
+            'currency' => strtolower(config('settings.currency_code')),
+            'product' => $gatewayFeeProductId,
+            'unit_amount' => $gatewayFeeAmount,
+          ],
+          'quantity' => 1,
+          'discountable' => false,
+          'tax_rates' => [],
+          'metadata' => [
+            'creator_id' => $user->id,
+            'plan_id' => $plan->id,
+            'type' => 'subscription_gateway_fee',
+          ],
+        ]];
+      }
+
+      if (! empty($stripeTaxRates)) {
+        $subscriptionOptions['default_tax_rates'] = $stripeTaxRates;
       }
 
       // Create New subscription
@@ -119,6 +163,9 @@ class StripeController extends Controller
         'original_amount' => $pricing['original_amount'],
         'discount_amount' => $pricing['discount_amount'],
         'charged_amount' => $pricing['charged_amount'],
+        'tax_amount' => $pricing['tax_amount'],
+        'gateway_fee_amount' => $pricing['gateway_fee_amount'],
+        'total_due' => $pricing['total_due'],
       ];
 
       $subscriptionBuilder = auth()->user()->newSubscription('main', $userPlan)
@@ -128,7 +175,8 @@ class StripeController extends Controller
         $subscriptionBuilder->withCoupon($couponId);
       }
 
-      $subscriptionBuilder->create($defaultPaymentMethod->id);
+      $subscription = $subscriptionBuilder->create($defaultPaymentMethod->id, [], $subscriptionOptions);
+      $this->syncLocalSubscriptionContext($subscription->stripe_id, $user->id, $plan->interval, auth()->user()->taxesPayable());
 
       // Send Email to User and Notification
       Subscriptions::sendEmailAndNotify(auth()->user()->name, $user->id);
@@ -149,6 +197,7 @@ class StripeController extends Controller
         ->first();
 
       if ($subscriptions) {
+        $this->syncLocalSubscriptionContext($subscriptions->stripe_id, $user->id, $plan->interval, auth()->user()->taxesPayable());
         $subscriptions->last_payment = $exception->payment->id;
         $subscriptions->save();
       }
@@ -220,10 +269,11 @@ class StripeController extends Controller
     }
   }
 
-  private function createPromoCoupon(string $keySecret, string $checkoutToken, array $pricing): string
+  private function createPromoCoupon(string $keySecret, string $checkoutToken, float $originalPlanAmount, array $pricing): string
   {
     try {
       $stripe = new \Stripe\StripeClient($keySecret);
+      $discountAmount = round(max($originalPlanAmount - (float) $pricing['charged_amount'], 0), 2);
 
       $payload = [
         'duration' => 'once',
@@ -233,14 +283,14 @@ class StripeController extends Controller
         ],
       ];
 
-      if ($pricing['discount_amount'] <= 0) {
+      if ($discountAmount <= 0) {
         throw new \Exception('Invalid promo discount amount for Stripe.');
       }
 
       if (in_array(config('settings.currency_code'), config('currencies.zero-decimal'))) {
-        $payload['amount_off'] = (int) round($pricing['discount_amount']);
+        $payload['amount_off'] = (int) round($discountAmount);
       } else {
-        $payload['amount_off'] = (int) round($pricing['discount_amount'] * 100);
+        $payload['amount_off'] = (int) round($discountAmount * 100);
       }
 
       $payload['currency'] = strtolower(config('settings.currency_code'));
@@ -253,18 +303,33 @@ class StripeController extends Controller
     }
   }
 
+  private function createGatewayFeeProduct(string $keySecret, User $user, Plans $plan): string
+  {
+    try {
+      $stripe = new \Stripe\StripeClient($keySecret);
+
+      $product = $stripe->products->create([
+        'name' => 'Payment gateway fee',
+        'metadata' => [
+          'creator_id' => $user->id,
+          'plan_id' => $plan->id,
+          'type' => 'subscription_gateway_fee',
+        ],
+      ]);
+
+      return $product->id;
+    } catch (\Exception $e) {
+      throw new \Exception($e->getMessage());
+    }
+  }
+
   protected function buildCheckoutContext(User $creator, Plans $plan): array
   {
     $originalAmount = round((float) $plan->price, 2);
-    $grossAmount = (float) Helper::amountGross($originalAmount);
-    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
-
-    $pricing = [
-      'original_amount' => $originalAmount,
-      'discount_amount' => 0.00,
-      'charged_amount' => $originalAmount,
-      'tax_amount' => $taxAmount,
-    ];
+    $pricing = $this->buildSubscriptionPricing(
+      $originalAmount,
+      $this->request->input('payment_gateway')
+    );
 
     $promoCode = null;
 
@@ -284,7 +349,11 @@ class StripeController extends Controller
       }
 
       $promoCode = $result['promo_code'];
-      $pricing = array_merge($pricing, $result['pricing']);
+      $pricing = $this->buildSubscriptionPricing(
+        $originalAmount,
+        $this->request->input('payment_gateway'),
+        (float) $result['pricing']['discount_amount']
+      );
     }
 
     return [
@@ -311,5 +380,14 @@ class StripeController extends Controller
       default:
         return 'The promo code is invalid.';
     }
+  }
+
+  protected function syncLocalSubscriptionContext(string $stripeSubscriptionId, int $creatorId, string $interval, ?string $taxes): void
+  {
+    Subscriptions::where('stripe_id', $stripeSubscriptionId)->update([
+      'creator_id' => $creatorId,
+      'interval' => $interval,
+      'taxes' => $taxes,
+    ]);
   }
 }

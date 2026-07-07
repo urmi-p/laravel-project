@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helper;
 use App\Models\PromoCodeHistories;
 use App\Models\PromoCodes;
 use App\Models\PromoCodeUsages;
@@ -69,17 +70,68 @@ class PromoCodeService
 
     public function buildPricingSnapshot(PromoCodes $promoCode, float $originalAmount): array
     {
+        $originalGrossAmount = $this->grossAmount($originalAmount);
         $discountAmount = $promoCode->discount_type === 'percentage'
-            ? round(($originalAmount * $promoCode->discount_value) / 100, 2)
+            ? round(($originalGrossAmount * $promoCode->discount_value) / 100, 2)
             : round($promoCode->discount_value, 2);
 
-        $discountAmount = min($discountAmount, round($originalAmount, 2));
+        return $this->buildSubscriptionPricing($originalAmount, $discountAmount);
+    }
+
+    public function buildSubscriptionPricing(
+        float $originalAmount,
+        float $discountAmount = 0.0,
+        ?float $paymentFee = null,
+        ?float $paymentFeeCents = null
+    ): array {
+        $originalAmount = $this->grossAmount($originalAmount);
+        $taxRate = $this->taxRate();
+        $discountAmount = min(round($discountAmount, 2), $originalAmount);
+        $subtotalWithTax = round(max($originalAmount - $discountAmount, 0), 2);
+
+        $chargedAmount = $subtotalWithTax;
+        $taxAmount = 0.00;
+
+        if ($subtotalWithTax > 0 && $taxRate > 0) {
+            $chargedAmount = round($subtotalWithTax / (1 + ($taxRate / 100)), 2);
+            $taxAmount = round(max($subtotalWithTax - $chargedAmount, 0), 2);
+        }
+
+        $gatewayFeeAmount = 0.00;
+
+        if (! is_null($paymentFee) && $subtotalWithTax > 0) {
+            $gatewayFeeAmount = round(
+                ($subtotalWithTax * $paymentFee / 100) + (float) $paymentFeeCents,
+                2
+            );
+        }
 
         return [
-            'original_amount' => round($originalAmount, 2),
+            'original_amount' => $originalAmount,
             'discount_amount' => $discountAmount,
-            'charged_amount' => round(max($originalAmount - $discountAmount, 0), 2),
+            'charged_amount' => $chargedAmount,
+            'tax_amount' => $taxAmount,
+            'subtotal_with_tax' => $subtotalWithTax,
+            'gateway_fee_amount' => $gatewayFeeAmount,
+            'total_due' => round($subtotalWithTax + $gatewayFeeAmount, 2),
         ];
+    }
+
+    protected function grossAmount(float $amount): float
+    {
+        $amount = round($amount, 2);
+        $taxRate = $this->taxRate();
+
+        if ($amount <= 0 || $taxRate <= 0) {
+            return $amount;
+        }
+
+        return round($amount + (($amount * $taxRate) / 100), 2);
+    }
+
+    protected function taxRate(): float
+    {
+        return (float) auth()->user()->isTaxable()->sum('percentage');
     }
 
     public function canEditDiscount(PromoCodes $promoCode): bool

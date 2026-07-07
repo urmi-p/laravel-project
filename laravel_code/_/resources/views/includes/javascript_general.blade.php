@@ -43,7 +43,7 @@
 @if (request()->is('my/wallet'))
 <script src="{{ asset('js/add-funds.js') }}?v={{$settings->version}}"></script>
 @else
-<script src="{{ asset('js/payment.js') }}?v={{$settings->version}}"></script>
+<script src="{{ asset('js/payment.js') }}?v={{$settings->version}}&{{ filemtime(public_path('js/payment.js')) }}"></script>
 <script src="{{ asset('js/payments-ppv.js') }}?v={{$settings->version}}"></script>
 @endif
 <script src="{{ asset('js/send-gift.js') }}?v={{$settings->version}}"></script>

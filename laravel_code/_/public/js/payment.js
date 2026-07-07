@@ -40,6 +40,8 @@
 
 	$(document).ready(function() {
 
+      var subscriptionPreviewRequestId = 0;
+
 
 
     //<---------------- Buy Subscription ----------->>>>
@@ -61,6 +63,168 @@
         }
 
         feedback.text(message);
+      }
+
+      function resetSubscriptionButtonLabels() {
+
+        $('.subscriptionBtn').each(function() {
+          var label = $(this).data('default-label');
+
+          $(this).find('.subscriptionBtnLabel').text(label);
+        });
+      }
+
+      function buildSubscriptionButtonLabelHtml(label, pricing) {
+
+        if (!pricing || !pricing.has_discount || !label) {
+          return null;
+        }
+
+        if (label.indexOf(pricing.formatted_total_due) === -1) {
+          return null;
+        }
+
+        return label.replace(
+          pricing.formatted_total_due,
+          '<span class="subscription-btn-price-wrap"><span class="subscription-btn-price-original">' +
+            pricing.formatted_original_amount +
+          '</span><span class="subscription-btn-price-current">' +
+            pricing.formatted_total_due +
+          '</span></span>'
+        );
+      }
+
+      function resetSubscriptionPriceSummary() {
+
+        var summary = $('#subscriptionPriceSummary');
+
+        if (!summary.length) {
+          return;
+        }
+
+        $('#subscriptionOriginalPrice').addClass('display-none').text('');
+        $('#subscriptionCurrentPrice').text(summary.data('default-current-price'));
+        $('#subscriptionDiscountAmount').hide().text('');
+        $('#subscriptionPriceSentence').text(summary.data('default-sentence'));
+      }
+
+      function updateSubscriptionPriceSummary(pricing, buttonLabel) {
+
+        var summary = $('#subscriptionPriceSummary');
+
+        if (!summary.length || !pricing) {
+          return;
+        }
+
+        if (pricing.has_discount) {
+          $('#subscriptionOriginalPrice').removeClass('display-none').text(pricing.formatted_original_amount);
+          $('#subscriptionDiscountAmount').show().text(summary.data('discount-label') + ': ' + pricing.formatted_discount_amount);
+        } else {
+          $('#subscriptionOriginalPrice').addClass('display-none').text('');
+          $('#subscriptionDiscountAmount').hide().text('');
+        }
+
+        $('#subscriptionCurrentPrice').text(pricing.formatted_total_due || pricing.formatted_subtotal_with_tax || pricing.formatted_charged_amount);
+        $('#subscriptionPriceSentence').text(buttonLabel);
+      }
+
+      function updateSubscriptionButtonLabel(interval, isFreeCheckout, customLabel, pricing) {
+
+        var button = $('.subscriptionBtn[data-interval="' + interval + '"]');
+
+        if (!button.length) {
+          return;
+        }
+
+        var label = customLabel || (isFreeCheckout ? button.data('free-label') : button.data('default-label'));
+        var labelHtml = buildSubscriptionButtonLabelHtml(label, pricing);
+
+        if (labelHtml) {
+          button.find('.subscriptionBtnLabel').html(labelHtml);
+          return;
+        }
+
+        button.find('.subscriptionBtnLabel').text(label);
+      }
+
+      function fetchSubscriptionPreview(interval, promoCode) {
+
+        var creatorId = $('#formSubscription').find('input[name=id]').val();
+        var selectedGateway = $('input[name=payment_gateway]:checked').val() || '';
+
+        return $.ajax({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          type: 'POST',
+          url: URL_BASE + '/subscription/promo/preview',
+          data: {
+            id: creatorId,
+            interval: interval,
+            promo_code: promoCode || '',
+            payment_gateway: selectedGateway
+          }
+        });
+      }
+
+      function refreshSubscriptionPricingPreview(showFeedback) {
+
+        var requestId = ++subscriptionPreviewRequestId;
+        var input = $('#subscriptionPromoCode');
+        var summary = $('#subscriptionPriceSummary');
+        var selectedInterval = $('input[name=interval]:checked').val() || 'monthly';
+        var promoCode = input.data('applied') ? $.trim(input.val()) : '';
+
+        fetchSubscriptionPreview(selectedInterval, promoCode).done(function(result) {
+          if (requestId !== subscriptionPreviewRequestId) {
+            return;
+          }
+
+          if (!(result.success && result.valid)) {
+            if (showFeedback) {
+              setSubscriptionPromoFeedback(result.message || summary.data('promo-invalid-message') || 'The promo code is invalid.', 'danger');
+            }
+            return;
+          }
+
+          resetSubscriptionButtonLabels();
+          resetSubscriptionPriceSummary();
+          updateSubscriptionButtonLabel(result.interval, result.is_free_checkout, result.button_label, result.pricing);
+          updateSubscriptionPriceSummary(result.pricing, result.button_label);
+
+          if (showFeedback && result.message) {
+            setSubscriptionPromoFeedback(result.message, promoCode ? 'success' : 'muted');
+          }
+
+          $('.subscriptionBtn').each(function() {
+            var interval = $(this).data('interval');
+
+            if (!interval || interval === result.interval) {
+              return;
+            }
+
+            fetchSubscriptionPreview(interval, promoCode).done(function(previewResult) {
+              if (requestId !== subscriptionPreviewRequestId) {
+                return;
+              }
+
+              if (previewResult.success && previewResult.valid) {
+                updateSubscriptionButtonLabel(
+                  previewResult.interval,
+                  previewResult.is_free_checkout,
+                  previewResult.button_label,
+                  previewResult.pricing
+                );
+              }
+            });
+          });
+        }).fail(function() {
+          if (requestId !== subscriptionPreviewRequestId || !showFeedback) {
+            return;
+          }
+
+          setSubscriptionPromoFeedback(summary.data('promo-validation-error-message') || 'Unable to validate the promo code right now. Please try again.', 'danger');
+        });
       }
 
       function resetSubscriptionPromoState(clearValue) {
@@ -85,94 +249,7 @@
 
         resetSubscriptionButtonLabels();
         resetSubscriptionPriceSummary();
-      }
-
-      function resetSubscriptionButtonLabels() {
-
-        $('.subscriptionBtn').each(function() {
-          var label = $(this).data('default-label');
-
-          $(this).find('.subscriptionBtnLabel').text(label);
-        });
-      }
-
-      function buildSubscriptionButtonLabelHtml(label, pricing) {
-
-        if (!pricing || !pricing.has_discount || !label) {
-          return null;
-        }
-
-        if (label.indexOf(pricing.formatted_charged_amount) === -1) {
-          return null;
-        }
-
-        return label.replace(
-          pricing.formatted_charged_amount,
-          '<span class="subscription-btn-price-wrap"><span class="subscription-btn-price-original">' +
-            pricing.formatted_original_amount +
-          '</span><span class="subscription-btn-price-current">' +
-            pricing.formatted_charged_amount +
-          '</span></span>'
-        );
-      }
-
-      function resetSubscriptionPriceSummary() {
-
-        var summary = $('#subscriptionPriceSummary');
-
-        if (!summary.length) {
-          return;
-        }
-
-        $('#subscriptionOriginalPrice').addClass('display-none').text('');
-        $('#subscriptionCurrentPrice').text(summary.data('default-current-price'));
-        $('#subscriptionDiscountAmount').hide().text('');
-        $('#subscriptionRenewalNote').hide().text(summary.data('default-renewal-note') || '');
-        $('#subscriptionButtonRenewalNote').hide().text('');
-        $('#subscriptionPriceSentence').text(summary.data('default-sentence'));
-      }
-
-      function updateSubscriptionPriceSummary(pricing, buttonLabel) {
-
-        var summary = $('#subscriptionPriceSummary');
-
-        if (!summary.length || !pricing) {
-          return;
-        }
-
-        if (pricing.has_discount) {
-          $('#subscriptionOriginalPrice').removeClass('display-none').text(pricing.formatted_original_amount);
-          $('#subscriptionDiscountAmount').show().text(summary.data('discount-label') + ': ' + pricing.formatted_discount_amount);
-          $('#subscriptionRenewalNote').show().text(pricing.renewal_text || '');
-          $('#subscriptionButtonRenewalNote').show().text(pricing.renewal_text || '');
-        } else {
-          $('#subscriptionOriginalPrice').addClass('display-none').text('');
-          $('#subscriptionDiscountAmount').hide().text('');
-          $('#subscriptionRenewalNote').hide().text('');
-          $('#subscriptionButtonRenewalNote').hide().text('');
-        }
-
-        $('#subscriptionCurrentPrice').text(pricing.formatted_charged_amount);
-        $('#subscriptionPriceSentence').text(buttonLabel);
-      }
-
-      function updateSubscriptionButtonLabel(interval, isFreeCheckout, customLabel, pricing) {
-
-        var button = $('.subscriptionBtn[data-interval="' + interval + '"]');
-
-        if (!button.length) {
-          return;
-        }
-
-        var label = customLabel || (isFreeCheckout ? button.data('free-label') : button.data('default-label'));
-        var labelHtml = buildSubscriptionButtonLabelHtml(label, pricing);
-
-        if (labelHtml) {
-          button.find('.subscriptionBtnLabel').html(labelHtml);
-          return;
-        }
-
-        button.find('.subscriptionBtnLabel').text(label);
+        refreshSubscriptionPricingPreview(false);
       }
 
       function validateSubscriptionPromoCode() {
@@ -181,7 +258,6 @@
         var value = $.trim(input.val());
         var button = $('#applySubscriptionPromoBtn');
         var selectedInterval = $('input[name=interval]:checked').val() || 'monthly';
-        var creatorId = $('#formSubscription').find('input[name=id]').val();
         var summary = $('#subscriptionPriceSummary');
 
         if (!value.length) {
@@ -191,22 +267,7 @@
 
         button.prop('disabled', true);
 
-        function fetchSubscriptionPromoPreview(interval) {
-          return $.ajax({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: 'POST',
-            url: URL_BASE + '/subscription/promo/preview',
-            data: {
-              id: creatorId,
-              interval: interval,
-              promo_code: value
-            }
-          });
-        }
-
-        fetchSubscriptionPromoPreview(selectedInterval).done(function(result) {
+        fetchSubscriptionPreview(selectedInterval, value).done(function(result) {
           button.prop('disabled', false);
 
           if (!(result.success && result.valid)) {
@@ -220,30 +281,7 @@
 
           input.val(value).prop('readonly', true).data('applied', true);
           $('#resetSubscriptionPromoBtn').prop('disabled', false);
-          resetSubscriptionButtonLabels();
-          resetSubscriptionPriceSummary();
-          updateSubscriptionButtonLabel(result.interval, result.is_free_checkout, result.button_label, result.pricing);
-          updateSubscriptionPriceSummary(result.pricing, result.button_label);
-          setSubscriptionPromoFeedback(result.message, 'success');
-
-          $('.subscriptionBtn').each(function() {
-            var interval = $(this).data('interval');
-
-            if (!interval || interval === result.interval) {
-              return;
-            }
-
-            fetchSubscriptionPromoPreview(interval).done(function(previewResult) {
-              if (previewResult.success && previewResult.valid) {
-                updateSubscriptionButtonLabel(
-                  previewResult.interval,
-                  previewResult.is_free_checkout,
-                  previewResult.button_label,
-                  previewResult.pricing
-                );
-              }
-            });
-          });
+          refreshSubscriptionPricingPreview(true);
         }).fail(function() {
           button.prop('disabled', false);
           input.prop('readonly', false).removeData('applied');
@@ -280,6 +318,12 @@
           setSubscriptionPromoFeedback(summary.data('promo-changed-message') || 'Promo code changed. Click Apply to revalidate it.', 'muted');
         }
       });
+
+      $(document).on('change', 'input[name=payment_gateway], input[name=interval]', function() {
+        refreshSubscriptionPricingPreview(false);
+      });
+
+      refreshSubscriptionPricingPreview(false);
 
 			$(document).on('click','.subscriptionBtn',function(s) {
 

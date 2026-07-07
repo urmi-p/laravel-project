@@ -224,9 +224,13 @@
 
 @if ($messagesInbox->hasMorePages())
 
-<div class="btn-block text-center d-none">
+<div class="btn-block text-center messages-load-more-container">
 
-	{{ $messagesInbox->appends(['q' => request('q')])->links('vendor.pagination.loadmore') }}
+	<div class="d-md-none mb-2 messages-load-more-mobile">
+		{{ $messagesInbox->appends(['q' => request('q')])->links('vendor.pagination.loadmore') }}
+	</div>
+
+	<div class="messages-load-more-sentinel d-md-none" aria-hidden="true"></div>
 
 </div>
 

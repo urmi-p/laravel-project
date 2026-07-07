@@ -147,7 +147,7 @@ class PaystackController extends Controller
       $planCode = $this->resolvePaystackPlan($paystack, $user, $plan);
 
       if ($promoCode) {
-        $totalDue = round((float) $pricing['charged_amount'] + (float) $pricing['tax_amount'], 2);
+        $totalDue = (float) $pricing['total_due'];
         $usage = $this->promoCodeService->createUsage($promoCode, [
           'user_id' => auth()->id(),
           'plan_id' => $plan->id,
@@ -191,8 +191,7 @@ class PaystackController extends Controller
             'subsId' => $gatewaySubscription->data->subscription_code,
           ]);
 
-          $baseEarnings = $this->earningsAdminUser($user->custom_fee, $pricing['original_amount'], null, null);
-          $earnings = $this->promoCodeService->buildNetEarningsSnapshot(0, $baseEarnings, $payment->fee, $payment->fee_cents);
+          $earnings = $this->earningsAdminUser($user->custom_fee, 0, null, null);
 
           $txn = $this->transaction(
             $usage->gateway_reference,
@@ -403,8 +402,7 @@ class PaystackController extends Controller
               'subsId' => $gatewaySubscription->data->subscription_code,
             ]);
 
-            $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $promoUsage->original_amount, null, null);
-            $earnings = $this->promoCodeService->buildNetEarningsSnapshot($promoUsage->charged_amount, $baseEarnings, $payment->fee, $payment->fee_cents);
+            $earnings = $this->earningsAdminUser($creator->custom_fee, $promoUsage->charged_amount, null, null);
 
             $txn = $this->transaction(
               $data->reference,
@@ -593,15 +591,10 @@ class PaystackController extends Controller
   protected function buildCheckoutContext(User $creator, Plans $plan): array
   {
     $originalAmount = round((float) $plan->price, 2);
-    $grossAmount = (float) Helper::amountGross($originalAmount);
-    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
-
-    $pricing = [
-      'original_amount' => $originalAmount,
-      'discount_amount' => 0.00,
-      'charged_amount' => $originalAmount,
-      'tax_amount' => $taxAmount,
-    ];
+    $pricing = $this->buildSubscriptionPricing(
+      $originalAmount,
+      $this->request->input('payment_gateway')
+    );
 
     $promoCode = null;
 
@@ -621,7 +614,11 @@ class PaystackController extends Controller
       }
 
       $promoCode = $result['promo_code'];
-      $pricing = array_merge($pricing, $result['pricing']);
+      $pricing = $this->buildSubscriptionPricing(
+        $originalAmount,
+        $this->request->input('payment_gateway'),
+        (float) $result['pricing']['discount_amount']
+      );
     }
 
     return [

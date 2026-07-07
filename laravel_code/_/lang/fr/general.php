@@ -793,6 +793,7 @@ return array(
 // Version 2.7
 'watermark_on_videos'              => 'Filigrane sur les vidéos',
 'subscription_price'               => 'Prix de l\'abonnement',
+'subscription_price_vat_included'  => 'Prix de l\'abonnement (TVA incluse)',
 'referrals'                        => 'Parrainages',
 'referral_system'                  => 'Système de parrainage',
 'percentage_referred'              => 'Pourcentage de gains pour chaque parrainage',
@@ -965,6 +966,8 @@ return array(
 	'promo_code_disabled_successfully' => 'Code promo desactive avec succes.',
 	'gateway' => 'Passerelle',
 	'tax' => 'Taxe',
+	'gateway_fee' => 'Frais de passerelle',
+	'total_due' => 'Total a payer maintenant',
 	'code' => 'Code',
 	'value' => 'Valeur',
 'available_everyone_paid'           => 'Disponible pour tous (Payant)',

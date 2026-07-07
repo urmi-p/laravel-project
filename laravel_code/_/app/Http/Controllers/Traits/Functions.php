@@ -28,6 +28,7 @@ use App\Models\PaymentGateways;
 use App\Notifications\TipReceived;
 use App\Models\ReferralTransactions;
 use App\Services\CoconutVideoService;
+use App\Services\PromoCodeService;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AdminSettings as Setting;
 use App\Notifications\SendTwoFactorCode;
@@ -143,6 +144,32 @@ trait Functions
 			'url' => $redirectUrl,
 		]);
 	} // End Method
+
+	protected function buildSubscriptionPricing(float $originalAmount, ?string $gatewayName = null, float $discountAmount = 0.0): array
+	{
+		$paymentGateway = null;
+		$applyGatewayFee = true;
+
+		if ($gatewayName) {
+			$paymentGateway = PaymentGateways::whereName($gatewayName)
+				->whereEnabled(1)
+				->first();
+		}
+
+		// Paystack still charges the base subscription amount on standard
+		// recurring signups. Its extra gateway fee is only reflected in special
+		// first-charge flows such as promo-based checkouts.
+		if ($gatewayName === 'Paystack' && $discountAmount <= 0) {
+			$applyGatewayFee = false;
+		}
+
+		return app(PromoCodeService::class)->buildSubscriptionPricing(
+			$originalAmount,
+			$discountAmount,
+			$applyGatewayFee ? optional($paymentGateway)->fee : null,
+			$applyGatewayFee ? optional($paymentGateway)->fee_cents : null
+		);
+	}
 
 	// Admin and user earnings calculation
 	public function earningsAdminUser($userCustomFee, $amount, $paymentFee, $paymentFeeCents)

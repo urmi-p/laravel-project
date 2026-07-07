@@ -74,7 +74,7 @@ class CardinityController extends Controller
       'promo_usage_token' => $checkout['checkout_token'],
     ]));
 
-    $amount       = $pricing['charged_amount'] + $pricing['tax_amount'];
+    $amount       = $pricing['total_due'];
     $cancel_url   = route('cardinity.cancel', ['url' => 'home']);
     $country      = auth()->user()->getCountry();
     $language     = strtoupper(config('app.locale'));
@@ -207,8 +207,7 @@ class CardinityController extends Controller
 
               $this->sendWelcomeMessageAction($user, $data['subscriber']);
 
-              $baseEarnings = $this->earningsAdminUser($user->custom_fee, $data['original_amount'] ?? $data['amount'], null, null);
-              $earnings = $this->promoCodeService->buildNetEarningsSnapshot($data['amount'], $baseEarnings, $payment->fee, $payment->fee_cents);
+              $earnings = $this->earningsAdminUser($user->custom_fee, $data['amount'], null, null);
 
               $verifiedTxnId = Transactions::where('txn_id', $paymentId)->first();
 
@@ -427,15 +426,10 @@ class CardinityController extends Controller
   protected function buildCheckoutContext(User $creator, Plans $plan, Request $request): array
   {
     $originalAmount = round((float) $plan->price, 2);
-    $grossAmount = (float) Helper::amountGross($originalAmount);
-    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
-
-    $pricing = [
-      'original_amount' => $originalAmount,
-      'discount_amount' => 0.00,
-      'charged_amount' => $originalAmount,
-      'tax_amount' => $taxAmount,
-    ];
+    $pricing = $this->buildSubscriptionPricing(
+      $originalAmount,
+      $request->input('payment_gateway')
+    );
 
     $checkoutToken = null;
 
@@ -454,7 +448,11 @@ class CardinityController extends Controller
         ];
       }
 
-      $pricing = array_merge($pricing, $result['pricing']);
+      $pricing = $this->buildSubscriptionPricing(
+        $originalAmount,
+        $request->input('payment_gateway'),
+        (float) $result['pricing']['discount_amount']
+      );
       $checkoutToken = str_random(40);
 
       $this->promoCodeService->createUsage($result['promo_code'], [

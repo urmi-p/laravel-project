@@ -809,6 +809,7 @@ return array(
 	// Version 2.7
 	'watermark_on_videos' => 'Watermark on videos',
 	'subscription_price' => 'Subscription price',
+	'subscription_price_vat_included' => 'Subscription price (VAT included)',
 	'referrals' => 'Referrals',
 	'referral_system' => 'Referral system',
 	'percentage_referred' => 'Percentage of profit for each referral',
@@ -983,6 +984,8 @@ return array(
 	'promo_code_disabled_successfully' => 'Promo code disabled successfully.',
 	'gateway' => 'Gateway',
 	'tax' => 'Tax',
+	'gateway_fee' => 'Gateway fee',
+	'total_due' => 'Total due now',
 	'code' => 'Code',
 	'value' => 'Value',
 	'available_everyone_paid' => 'Available to everyone (Paid)',

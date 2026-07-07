@@ -110,6 +110,7 @@ class SubscriptionsController extends Controller
       'id' => 'required|integer',
       'interval' => 'required|string',
       'promo_code' => 'nullable|string|max:100',
+      'payment_gateway' => 'nullable|string',
     ]);
 
     if ($validator->fails()) {
@@ -163,23 +164,31 @@ class SubscriptionsController extends Controller
     return response()->json([
       'success' => true,
       'valid' => true,
-      'message' => __('general.promo_code_valid'),
+      'message' => $this->request->filled('promo_code') ? __('general.promo_code_valid') : '',
       'interval' => $plan->interval,
-      'is_free_checkout' => ((round((float) $checkout['pricing']['charged_amount'] + (float) $checkout['pricing']['tax_amount'], 2)) <= 0),
+      'is_free_checkout' => ((float) $checkout['pricing']['total_due'] <= 0),
       'pricing' => [
         'has_discount' => ((float) $checkout['pricing']['discount_amount'] > 0),
         'original_amount' => $checkout['pricing']['original_amount'],
         'charged_amount' => $checkout['pricing']['charged_amount'],
         'discount_amount' => $checkout['pricing']['discount_amount'],
-        'formatted_original_amount' => Helper::formatPrice($checkout['pricing']['original_amount'], true),
-        'formatted_charged_amount' => Helper::formatPrice($checkout['pricing']['charged_amount'], true),
-        'formatted_discount_amount' => Helper::formatPrice($checkout['pricing']['discount_amount'], true),
+        'tax_amount' => $checkout['pricing']['tax_amount'],
+        'subtotal_with_tax' => $checkout['pricing']['subtotal_with_tax'],
+        'gateway_fee_amount' => $checkout['pricing']['gateway_fee_amount'],
+        'total_due' => $checkout['pricing']['total_due'],
+        'formatted_original_amount' => Helper::amountFormatDecimal($checkout['pricing']['original_amount']),
+        'formatted_charged_amount' => Helper::amountFormatDecimal($checkout['pricing']['charged_amount']),
+        'formatted_discount_amount' => Helper::amountFormatDecimal($checkout['pricing']['discount_amount']),
+        'formatted_tax_amount' => Helper::amountFormatDecimal($checkout['pricing']['tax_amount']),
+        'formatted_subtotal_with_tax' => Helper::amountFormatDecimal($checkout['pricing']['subtotal_with_tax']),
+        'formatted_gateway_fee_amount' => Helper::amountFormatDecimal($checkout['pricing']['gateway_fee_amount']),
+        'formatted_total_due' => Helper::amountFormatDecimal($checkout['pricing']['total_due']),
         'renewal_text' => $this->subscriptionRenewalText($plan->interval, (float) $checkout['pricing']['original_amount']),
       ],
       'button_label' => $this->subscriptionButtonLabel(
         $plan->interval,
-        (float) $checkout['pricing']['charged_amount'],
-        ((round((float) $checkout['pricing']['charged_amount'] + (float) $checkout['pricing']['tax_amount'], 2)) <= 0)
+        (float) $checkout['pricing']['total_due'],
+        ((float) $checkout['pricing']['total_due'] <= 0)
       ),
     ]);
   }
@@ -294,7 +303,7 @@ class SubscriptionsController extends Controller
       $creator->save();
     }
 
-    $walletCharge = $pricing['charged_amount'] + $pricing['tax_amount'];
+    $walletCharge = $pricing['total_due'];
 
     if (auth()->user()->wallet < $walletCharge) {
       return response()->json([
@@ -314,8 +323,7 @@ class SubscriptionsController extends Controller
     $subscription->taxes = $checkout['taxes'];
     $subscription->save();
 
-    $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $pricing['original_amount'], null, null);
-    $earnings = $this->promoCodeService->buildNetEarningsSnapshot($pricing['charged_amount'], $baseEarnings);
+    $earnings = $this->earningsAdminUser($creator->custom_fee, $pricing['charged_amount'], null, null);
 
     // Insert Transaction
     $txn = $this->transaction(
@@ -461,16 +469,11 @@ class SubscriptionsController extends Controller
   protected function buildCheckoutContext(User $creator, Plans $plan): array
   {
     $originalAmount = round((float) $plan->price, 2);
-    $grossAmount = (float) Helper::amountGross($originalAmount);
-    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
     $taxes = auth()->user()->taxesPayable();
-
-    $pricing = [
-      'original_amount' => $originalAmount,
-      'discount_amount' => 0.00,
-      'charged_amount' => $originalAmount,
-      'tax_amount' => $taxAmount,
-    ];
+    $pricing = $this->buildSubscriptionPricing(
+      $originalAmount,
+      $this->request->input('payment_gateway')
+    );
 
     $promoCode = null;
 
@@ -490,7 +493,11 @@ class SubscriptionsController extends Controller
       }
 
       $promoCode = $result['promo_code'];
-      $pricing = array_merge($pricing, $result['pricing']);
+      $pricing = $this->buildSubscriptionPricing(
+        $originalAmount,
+        $this->request->input('payment_gateway'),
+        (float) $result['pricing']['discount_amount']
+      );
     }
 
     return [
@@ -530,7 +537,7 @@ class SubscriptionsController extends Controller
       ? 'general.subscribe_month'
       : 'general.subscribe_' . $interval;
 
-    return __($translationKey, ['price' => Helper::formatPrice($amount, true)]);
+    return __($translationKey, ['price' => Helper::amountFormatDecimal($amount)]);
   }
 
   protected function subscriptionRenewalText(string $interval, float $amount): string
@@ -544,7 +551,7 @@ class SubscriptionsController extends Controller
     ][$interval] ?? $interval;
 
     return __('general.subscription_renews_at', [
-      'price' => Helper::formatPrice($amount, true),
+      'price' => Helper::amountFormatDecimal($amount),
       'interval' => $intervalLabel,
     ]);
   }

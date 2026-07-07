@@ -131,7 +131,8 @@ class PayPalController extends Controller
       $pricing = $checkout['pricing'];
       $promoCode = $checkout['promo_code'];
       $promoUsage = null;
-      $firstCycleTotal = round((float) $pricing['charged_amount'] + (float) $pricing['tax_amount'], 2);
+      $firstCycleTotal = (float) $pricing['total_due'];
+      $setupFee = max(round($firstCycleTotal - (float) $plan->price, 2), 0);
       $billingCycles = [
         [
           'frequency' => [
@@ -143,7 +144,7 @@ class PayPalController extends Controller
           'total_cycles' => 0,
           'pricing_scheme' => [
             'fixed_price' => [
-              'value' => Helper::amountGross($plan->price),
+              'value' => number_format((float) $plan->price, 2, '.', ''),
               'currency_code' => $this->settings->currency_code,
             ],
           ]
@@ -191,7 +192,7 @@ class PayPalController extends Controller
             'total_cycles' => 0,
             'pricing_scheme' => [
               'fixed_price' => [
-                'value' => Helper::amountGross($plan->price),
+                'value' => number_format((float) $plan->price, 2, '.', ''),
                 'currency_code' => $this->settings->currency_code,
               ],
             ]
@@ -209,6 +210,11 @@ class PayPalController extends Controller
         'payment_preferences' => [
           'auto_bill_outstanding' => true,
           'payment_failure_threshold' => 0,
+          'setup_fee' => [
+            'value' => number_format($promoCode ? 0 : $setupFee, 2, '.', ''),
+            'currency_code' => $this->settings->currency_code,
+          ],
+          'setup_fee_failure_action' => 'CONTINUE',
         ],
       ], $requestIdPlan);
     } catch (\Exception $e) {
@@ -433,8 +439,7 @@ class PayPalController extends Controller
             $verifiedTxnId = Transactions::whereTxnId($txnId)->wherePaymentGateway('PayPal')->first();
 
             if (! $verifiedTxnId) {
-              $baseEarnings = $this->earningsAdminUser($user->custom_fee, (float) $promoUsage->original_amount, null, null);
-              $earnings = $this->promoCodeService->buildNetEarningsSnapshot(0, $baseEarnings, $payment->fee, $payment->fee_cents);
+              $earnings = $this->earningsAdminUser($user->custom_fee, 0, null, null);
 
               $transaction = $this->transaction(
                 $txnId,
@@ -557,8 +562,7 @@ class PayPalController extends Controller
           $chargedAmount = $isFirstPayment
             ? (float) ($promoUsage ? $promoUsage->charged_amount : $originalAmount)
             : $originalAmount;
-          $baseEarnings = $this->earningsAdminUser($user->custom_fee, $originalAmount, null, null);
-          $earnings = $this->promoCodeService->buildNetEarningsSnapshot($chargedAmount, $baseEarnings, $payment->fee, $payment->fee_cents);
+          $earnings = $this->earningsAdminUser($user->custom_fee, $chargedAmount, null, null);
 
           $txnId = $payload['resource']['id'];
 
@@ -834,15 +838,10 @@ class PayPalController extends Controller
   protected function buildCheckoutContext(User $creator, Plans $plan): array
   {
     $originalAmount = round((float) $plan->price, 2);
-    $grossAmount = (float) Helper::amountGross($originalAmount);
-    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
-
-    $pricing = [
-      'original_amount' => $originalAmount,
-      'discount_amount' => 0.00,
-      'charged_amount' => $originalAmount,
-      'tax_amount' => $taxAmount,
-    ];
+    $pricing = $this->buildSubscriptionPricing(
+      $originalAmount,
+      $this->request->input('payment_gateway')
+    );
 
     $promoCode = null;
 
@@ -862,7 +861,11 @@ class PayPalController extends Controller
       }
 
       $promoCode = $result['promo_code'];
-      $pricing = array_merge($pricing, $result['pricing']);
+      $pricing = $this->buildSubscriptionPricing(
+        $originalAmount,
+        $this->request->input('payment_gateway'),
+        (float) $result['pricing']['discount_amount']
+      );
     }
 
     return [

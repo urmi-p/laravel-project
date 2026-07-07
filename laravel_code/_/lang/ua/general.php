@@ -934,6 +934,8 @@ return array(
 	'subscription_interval_unit_biannually' => '6 місяців',
 	'subscription_interval_unit_year' => 'рік',
 	'discount' => 'знижка',
+	'gateway_fee' => 'Комісія шлюзу',
+	'total_due' => 'Усього до сплати зараз',
 	'available_everyone_paid' => 'Доступно для всіх (Платно)',
 	'desc_available_everyone_paid' => 'Усі користувачі повинні заплатити, щоб отримати доступ',
 	'available_free_paid_subscribers' => 'Безкоштовно для платних підписників',

@@ -94,8 +94,8 @@ class CCBillController extends Controller
     }
 
     $pricing = $checkout['pricing'];
-    $formPrice = $pricing['charged_amount'] + $pricing['tax_amount'];
-    $recurringPrice = Helper::amountGross($plan->price);
+    $formPrice = $pricing['total_due'];
+    $recurringPrice = number_format((float) $plan->price, 2, '.', '');
     $formInitialPeriod = $interval;
     $formNumRebills = 99;
     $currencyCode = array_key_exists($this->settings->currency_code, $currencyCodes) ? $currencyCodes[$this->settings->currency_code] : 840;
@@ -219,8 +219,7 @@ class CCBillController extends Controller
             }
           }
 
-          $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $originalAmount, null, null);
-          $earnings = $this->promoCodeService->buildNetEarningsSnapshot($amount, $baseEarnings, $payment->fee, $payment->fee_cents);
+          $earnings = $this->earningsAdminUser($creator->custom_fee, $amount, null, null);
 
           // Insert Transaction
           $txn = $this->transaction(
@@ -529,15 +528,10 @@ class CCBillController extends Controller
   protected function buildCheckoutContext(User $creator, $plan): array
   {
     $originalAmount = round((float) $plan->price, 2);
-    $grossAmount = (float) Helper::amountGross($originalAmount);
-    $taxAmount = round(max($grossAmount - $originalAmount, 0), 2);
-
-    $pricing = [
-      'original_amount' => $originalAmount,
-      'discount_amount' => 0.00,
-      'charged_amount' => $originalAmount,
-      'tax_amount' => $taxAmount,
-    ];
+    $pricing = $this->buildSubscriptionPricing(
+      $originalAmount,
+      $this->request->input('payment_gateway')
+    );
 
     $checkoutToken = null;
 
@@ -556,7 +550,11 @@ class CCBillController extends Controller
         ];
       }
 
-      $pricing = array_merge($pricing, $result['pricing']);
+      $pricing = $this->buildSubscriptionPricing(
+        $originalAmount,
+        $this->request->input('payment_gateway'),
+        (float) $result['pricing']['discount_amount']
+      );
       $checkoutToken = str_random(40);
 
       $this->promoCodeService->createUsage($result['promo_code'], [

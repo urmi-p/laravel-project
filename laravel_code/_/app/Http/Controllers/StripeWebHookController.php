@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Plans;
 use App\Models\Deposits;
+use App\Models\Transactions;
 use App\Models\PromoCodeUsages;
 use Laravel\Cashier\Cashier;
 use App\Models\Notifications;
@@ -60,16 +61,15 @@ class StripeWebHookController extends WebhookController
       $data     = $payload['data'];
       $object   = $data['object'];
       $customer = $object['customer'];
-      $amount   = in_array(config('settings.currency_code'), config('currencies.zero-decimal')) ? $object['subtotal'] : ($object['subtotal'] / 100);
       $user     = $this->getUserByStripeId($customer);
-      $interval = $object['lines']['data'][0]['metadata']['interval'] ?? 'monthly';
-      $creatorId = $object['lines']['data'][0]['metadata']['creator_id'] ?? null;
-      $taxes    = $object['lines']['data'][0]['metadata']['taxes'] ?? null;
-      $promoUsageToken = $object['lines']['data'][0]['metadata']['promo_usage_token'] ?? null;
-      $originalAmount = (float) ($object['lines']['data'][0]['metadata']['original_amount'] ?? $amount);
-      $chargedAmount = (float) ($object['lines']['data'][0]['metadata']['charged_amount'] ?? $amount);
-
       $subscriptionId = $object['subscription'] ?? $object['lines']['data'][0]['parent']['subscription_item_details']['subscription'] ?? null;
+      $metadata = $this->resolveSubscriptionMetadata($object, $subscriptionId);
+      $amountPaid = $this->normalizeStripeAmount($object['amount_paid'] ?? $object['subtotal'] ?? 0);
+      $interval = $metadata['interval'] ?? 'monthly';
+      $creatorId = $metadata['creator_id'] ?? null;
+      $taxes    = $metadata['taxes'] ?? null;
+      $promoUsageToken = $metadata['promo_usage_token'] ?? null;
+      $chargedAmount = (float) ($metadata['charged_amount'] ?? $amountPaid);
 
 
       if ($user && $subscriptionId && $creatorId) {
@@ -92,30 +92,32 @@ class StripeWebHookController extends WebhookController
           $subscription->stripe_status = 'active';
           $subscription->creator_id = $creator->id;
           $subscription->interval = $interval;
+          $subscription->taxes = $taxes;
           $subscription->save();
 
-          // Get Payment Gateway
-          $payment = PaymentGateways::whereName('Stripe')->firstOrFail();
-          $baseEarnings = $this->earningsAdminUser($creator->custom_fee, $originalAmount, null, null);
-          $earnings = $this->promoCodeService->buildNetEarningsSnapshot($chargedAmount, $baseEarnings, $payment->fee, $payment->fee_cents);
+          $transaction = Transactions::where('txn_id', $object['id'])->first();
+          $platformCommissionAmount = $transaction ? $transaction->earning_net_admin : null;
 
-          // Insert Transaction
-          $transaction = $this->transaction(
-            $object['id'],
-            $subscription->user_id,
-            $subscription->id,
-            $creator->id,
-            $chargedAmount,
-            $earnings['user'],
-            $earnings['admin'],
-            'Stripe',
-            'subscription',
-            $earnings['percentageApplied'],
-            $taxes ?? null
-          );
+          if (! $transaction) {
+            $earnings = $this->earningsAdminUser($creator->custom_fee, $chargedAmount, null, null);
+            $platformCommissionAmount = $earnings['admin'];
 
-          // Add Earnings to User
-          $creator->increment('balance', $earnings['user']);
+            $transaction = $this->transaction(
+              $object['id'],
+              $subscription->user_id,
+              $subscription->id,
+              $creator->id,
+              $chargedAmount,
+              $earnings['user'],
+              $earnings['admin'],
+              'Stripe',
+              'subscription',
+              $earnings['percentageApplied'],
+              $taxes ?? null
+            );
+
+            $creator->increment('balance', $earnings['user']);
+          }
 
           if ($promoUsageToken) {
             $promoUsage = PromoCodeUsages::where('checkout_token', $promoUsageToken)->first();
@@ -125,7 +127,7 @@ class StripeWebHookController extends WebhookController
                 'subscription_id' => $subscription->id,
                 'transaction_id' => $transaction->id,
                 'gateway_reference' => $object['id'],
-                'platform_commission_amount' => $earnings['admin'],
+                'platform_commission_amount' => $platformCommissionAmount,
               ]);
 
               $this->promoCodeService->createHistory(
@@ -256,5 +258,80 @@ class StripeWebHookController extends WebhookController
       }
     }
     return $this->successMethod();
+  }
+
+  protected function resolveSubscriptionMetadata(array $invoice, ?string $subscriptionId): array
+  {
+    $metadata = [];
+    $lines = $invoice['lines']['data'] ?? [];
+
+    foreach ($lines as $line) {
+      $lineSubscriptionId = $line['subscription']
+        ?? $line['parent']['subscription_item_details']['subscription']
+        ?? null;
+
+      if ($subscriptionId && $lineSubscriptionId === $subscriptionId && ! empty($line['metadata'])) {
+        $metadata = array_merge($metadata, $line['metadata']);
+      }
+    }
+
+    if (! empty($invoice['subscription_details']['metadata'] ?? [])) {
+      $metadata = array_merge($metadata, $invoice['subscription_details']['metadata']);
+    }
+
+    if (! empty($invoice['parent']['subscription_details']['metadata'] ?? [])) {
+      $metadata = array_merge($metadata, $invoice['parent']['subscription_details']['metadata']);
+    }
+
+    if ($subscriptionId) {
+      $stripeSubscription = $this->retrieveStripeSubscription($subscriptionId);
+
+      if ($stripeSubscription && ! empty($stripeSubscription->metadata)) {
+        $metadata = array_merge($metadata, $stripeSubscription->metadata->toArray());
+      }
+    }
+
+    foreach ($lines as $line) {
+      if (! empty($metadata['creator_id'])) {
+        break;
+      }
+
+      if (! empty($line['metadata']['creator_id'])) {
+        $metadata = array_merge($metadata, $line['metadata']);
+      }
+    }
+
+    return $metadata;
+  }
+
+  protected function retrieveStripeSubscription(string $subscriptionId): ?\Stripe\Subscription
+  {
+    try {
+      $payment = PaymentGateways::whereName('Stripe')
+        ->whereEnabled(1)
+        ->where('key_secret', '<>', '')
+        ->first();
+
+      if (! $payment) {
+        return null;
+      }
+
+      return (new \Stripe\StripeClient($payment->key_secret))
+        ->subscriptions
+        ->retrieve($subscriptionId, []);
+    } catch (\Exception $exception) {
+      Log::debug('Stripe subscription metadata lookup failed: ' . $exception->getMessage());
+
+      return null;
+    }
+  }
+
+  protected function normalizeStripeAmount($amount): float
+  {
+    if (in_array(config('settings.currency_code'), config('currencies.zero-decimal'))) {
+      return (float) $amount;
+    }
+
+    return round(((float) $amount) / 100, 2);
   }
 }

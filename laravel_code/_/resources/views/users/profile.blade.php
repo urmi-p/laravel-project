@@ -218,6 +218,29 @@
             font-weight: 600;
         }
 
+        .subscription-price-breakdown {
+            display: none;
+            margin-top: .45rem;
+            padding-top: .45rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .subscription-price-breakdown-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            color: rgba(255, 255, 255, 0.76);
+            font-size: .77rem;
+            line-height: 1.35;
+            margin-top: .2rem;
+        }
+
+        .subscription-price-breakdown-row strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
         .subscription-renewal-note {
             display: none;
             color: rgba(255, 255, 255, 0.72);
@@ -2492,7 +2515,6 @@
                                             data-default-current-price="{{ Helper::formatPrice($user->getPlan('monthly', 'price'), true) }}"
                                             data-default-sentence="{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}"
                                             data-discount-label="{{ __('general.discount') }}"
-                                            data-default-renewal-note=""
                                             data-promo-empty-message="{{ __('general.enter_promo_code_first') }}"
                                             data-promo-invalid-message="{{ __('general.promo_code_invalid') }}"
                                             data-promo-validation-error-message="{{ __('general.unable_validate_promo_code') }}"
@@ -2504,7 +2526,6 @@
                                                     id="subscriptionCurrentPrice">{{ Helper::formatPrice($user->getPlan('monthly', 'price'), true) }}</span>
                                             </div>
                                             <div class="subscription-price-discount" id="subscriptionDiscountAmount"></div>
-                                            <div class="subscription-renewal-note" id="subscriptionRenewalNote"></div>
                                         </div>
 
                                         <h6 class="font-weight-light">
@@ -2809,33 +2830,6 @@
 
 
 
-                                        @if ($taxRatesCount != 0 && auth()->user()->isTaxable()->count())
-
-                                            <ul class="list-group list-group-flush border-dashed-radius mt-3">
-
-                                                @foreach (auth()->user()->isTaxable() as $tax)
-                                                    <li class="list-group-item py-1 list-taxes">
-
-                                                        <div class="row">
-
-                                                            <div class="col">
-
-                                                                <small>{{ $tax->name }} {{ $tax->percentage }}%
-                                                                    {{ __('general.applied_price') }}</small>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </li>
-                                                @endforeach
-
-                                            </ul>
-
-                                        @endif
-
-
-
                                         <div class="text-center">
 
                                             <button type="submit" class="btn btn-primary mt-4 w-100 subscriptionBtn"
@@ -2848,7 +2842,6 @@
                                                 <span class="subscriptionBtnLabel">{{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}</span>
 
                                             </button>
-                                            <small class="subscription-renewal-note w-100 d-block text-center" id="subscriptionButtonRenewalNote"></small>
 
 
 

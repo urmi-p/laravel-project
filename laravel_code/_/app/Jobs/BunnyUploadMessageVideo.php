@@ -72,13 +72,18 @@ class BunnyUploadMessageVideo implements ShouldQueue
             $durationSeconds = (int) ($videoData['length'] ?? $videoData['Length'] ?? 0);
             $videoWidth = (int) ($videoData['width'] ?? $videoData['Width'] ?? 0);
 
-            $video->update([
+            $sharedVideoData = [
                 'bunny_video_id' => $bunnyVideoId,
                 'video_poster' => $bunnyService->getPosterUrl($bunnyVideoId),
                 'duration_video' => $durationSeconds > 0 ? Helper::getDurationInMinutes($durationSeconds) : null,
                 'quality_video' => $videoWidth > 0 ? Helper::getResolutionVideo($videoWidth) : null,
                 'encoded' => 'yes',
-            ]);
+            ];
+
+            MediaMessages::where('file', $video->file)
+                ->whereType('video')
+                ->whereNull('vault_id')
+                ->update($sharedVideoData);
 
             if (file_exists($localFile)) {
                 unlink($localFile);

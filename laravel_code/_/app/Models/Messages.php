@@ -9,6 +9,7 @@ class Messages extends Model
 {
   protected $guarded = [];
   public const CHAT_PAGE_SIZE = 10;
+  public const INBOX_PAGE_SIZE = 15;
 
   public static function conversations()
   {
@@ -36,7 +37,7 @@ class Messages extends Model
       ->orderByDesc('m1.created_at')
       ->orderByDesc('m1.id')
       ->with(['sender:' . $fields, 'receiver:' . $fields, 'media'])
-      ->simplePaginate(15);
+      ->simplePaginate(self::INBOX_PAGE_SIZE);
   }
 
   public function sender()

@@ -798,6 +798,7 @@ return array(
 	// Version 2.7
 	'watermark_on_videos' => 'Marca de agua en vídeos',
 	'subscription_price' => 'Precio de suscripción',
+	'subscription_price_vat_included' => 'Precio de suscripción (IVA incluido)',
 	'referrals' => 'Referidos',
 	'referral_system' => 'Sistema de referidos',
 	'percentage_referred' => 'Porcentaje de ganancia por cada referido',
@@ -931,6 +932,8 @@ return array(
 	'subscription_interval_unit_biannually' => '6 meses',
 	'subscription_interval_unit_year' => 'ano',
 	'discount' => 'descuento',
+	'gateway_fee' => 'Tarifa de pasarela',
+	'total_due' => 'Total a pagar ahora',
 	'available_everyone_paid' => 'Disponible para todos (Pago)',
 	'desc_available_everyone_paid' => 'Todos los usuarios deben pagar para acceder',
 	'available_free_paid_subscribers' => 'Gratis para suscriptores de pago',
