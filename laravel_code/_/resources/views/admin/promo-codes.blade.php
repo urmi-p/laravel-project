@@ -135,7 +135,7 @@
                                                                 <td>{{ Helper::amountFormatDecimal($usage->original_amount) }}</td>
                                                                 <td>{{ Helper::amountFormatDecimal($usage->discount_amount) }}</td>
                                                                 <td>{{ Helper::amountFormatDecimal($usage->charged_amount) }}</td>
-                                                                <td>{{ Helper::amountFormatDecimal($usage->tax_amount) }}</td>
+                                                                <td>{{ Helper::amountFormatDecimal((float) $usage->tax_amount + (float) $usage->gateway_fee_amount) }}</td>
                                                             </tr>
                                                         @empty
                                                             <tr>

@@ -145,7 +145,12 @@ trait Functions
 		]);
 	} // End Method
 
-	protected function buildSubscriptionPricing(float $originalAmount, ?string $gatewayName = null, float $discountAmount = 0.0): array
+	protected function buildSubscriptionPricing(
+		float $originalAmount,
+		?string $gatewayName = null,
+		float $discountAmount = 0.0,
+		?float $taxRateOverride = null
+	): array
 	{
 		$paymentGateway = null;
 		$applyGatewayFee = true;
@@ -167,7 +172,8 @@ trait Functions
 			$originalAmount,
 			$discountAmount,
 			$applyGatewayFee ? optional($paymentGateway)->fee : null,
-			$applyGatewayFee ? optional($paymentGateway)->fee_cents : null
+			$applyGatewayFee ? optional($paymentGateway)->fee_cents : null,
+			$taxRateOverride
 		);
 	}
 
@@ -274,6 +280,94 @@ trait Functions
 		Notifications::sendPushNotificationAdmin($txn->user_id);
 
 		return $txn;
+	}
+
+	public function createPendingSubscriptionTransaction(
+		$userId,
+		$subscriptionsId,
+		$subscribed,
+		$amount,
+		$paymentGateway,
+		$taxes,
+		$percentageApplied = ''
+	) {
+		$pendingTransaction = Transactions::where('subscriptions_id', $subscriptionsId)
+			->where('payment_gateway', $paymentGateway)
+			->where('type', 'subscription')
+			->where('approved', '0')
+			->first();
+
+		if ($pendingTransaction) {
+			$pendingTransaction->amount = $amount;
+			$pendingTransaction->taxes = $taxes;
+			$pendingTransaction->save();
+
+			return $pendingTransaction;
+		}
+
+		$txn = new Transactions();
+		$txn->txn_id = 'pending_' . strtolower($paymentGateway) . '_sub_' . $subscriptionsId;
+		$txn->user_id = $userId;
+		$txn->subscriptions_id = $subscriptionsId;
+		$txn->subscribed = $subscribed;
+		$txn->amount = $amount;
+		$txn->earning_net_user = 0;
+		$txn->earning_net_admin = 0;
+		$txn->payment_gateway = $paymentGateway;
+		$txn->type = 'subscription';
+		$txn->percentage_applied = $percentageApplied;
+		$txn->approved = '0';
+		$txn->referred_commission = 0;
+		$txn->taxes = $taxes;
+		$txn->direct_payment = false;
+		$txn->save();
+
+		return $txn;
+	}
+
+	public function finalizePendingSubscriptionTransaction(
+		Transactions $transaction,
+		string $txnId,
+		float $amount,
+		float $userEarning,
+		float $adminEarning,
+		string $paymentGateway,
+		string $percentageApplied,
+		$taxes,
+		$subscribed
+	) {
+		if ($transaction->approved == '1' && $transaction->txn_id === $txnId) {
+			return $transaction;
+		}
+
+		$referred = $this->referred($transaction->user_id, $adminEarning, 'subscription');
+		$stripeConnect = null;
+
+		if ($paymentGateway == 'Stripe') {
+			$stripeConnect = $this->stripeConnect($subscribed, 'subscription', $userEarning);
+		}
+
+		$transaction->txn_id = $txnId;
+		$transaction->amount = $amount;
+		$transaction->earning_net_user = $userEarning;
+		$transaction->earning_net_admin = $referred ? $referred['adminEarning'] : $adminEarning;
+		$transaction->payment_gateway = $paymentGateway;
+		$transaction->percentage_applied = $percentageApplied;
+		$transaction->approved = '1';
+		$transaction->referred_commission = $referred ? true : false;
+		$transaction->taxes = $taxes;
+		$transaction->direct_payment = $stripeConnect ?? false;
+		$transaction->save();
+
+		if ($referred) {
+			ReferralTransactions::whereId($referred['txnId'])->update([
+				'transactions_id' => $transaction->id
+			]);
+		}
+
+		Notifications::sendPushNotificationAdmin($transaction->user_id);
+
+		return $transaction;
 	}
 	// Insert PayPerViews
 	public function payPerViews($user_id, $updates_id, $messages_id)

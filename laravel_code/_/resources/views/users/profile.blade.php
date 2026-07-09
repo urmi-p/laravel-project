@@ -489,7 +489,7 @@
                                         class="btn btn-primary btn-profile mr-1 fs-14 font_weight_500">
 
                                         <i class="feather icon-unlock mr-1"></i>
-                                        {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'))]) }}
+                                        {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}
 
                                     </a>
                                 @elseif (auth()->check() && auth()->id() != $user->id && !$checkSubscription && $paymentIncomplete)
@@ -675,7 +675,7 @@
                                             {{ __('general.subscribe_for_free') }}
                                         @else
                                             <i class="feather icon-unlock mr-1"></i>
-                                            {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'))]) }}
+                                            {{ __('general.subscribe_month', ['price' => Helper::formatPrice($user->getPlan('monthly', 'price'), true)]) }}
 
                                         @endif
 

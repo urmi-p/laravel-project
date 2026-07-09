@@ -167,30 +167,38 @@ Route::get('verify/account/{confirmation_code}', [HomeController::class, 'getVer
   | Subscription
   |--------- -------------------------
   */
- Route::get('buy/subscription/success/{user}', function($user) {
+Route::get('buy/subscription/success/{user}', function($user) {
 
 	switch (request()->input('delay')) {
 		case 'paypal':
-			$alertDelayPayment = ' <br><br>' . __('general.alert_paypal_delay');
+			$message = __('general.alert_paypal_delay');
 			break;
 		
 		case 'paystack':
-			$alertDelayPayment = ' <br><br>' . __('general.alert_paystack_delay');
+		case 'stripe':
+			$message = __('general.alert_paystack_delay');
 			break;
 
 		default:
-		$alertDelayPayment = null;
+		$message = __('general.subscription_success');
 		break;
 	}
 	
-
-	 session()->put('subscription_success', __('general.subscription_success') . $alertDelayPayment);
+	 session()->put('subscription_success', $message);
 
 	 return redirect($user);
 	 
  	})->name('subscription.success');
 
- Route::get('buy/subscription/cancel/{user}', function($user){
+ Route::get('buy/subscription/paypal/success/{user}', [PayPalController::class, 'subscriptionSuccess'])
+  ->name('subscription.paypal.success');
+Route::get('buy/subscription/paypal/cancel/{user}', [PayPalController::class, 'subscriptionCancel'])
+  ->name('subscription.paypal.cancel');
+
+Route::get('buy/subscription/stripe/return/{user}', [StripeController::class, 'subscriptionReturn'])
+	->name('subscription.stripe.return');
+
+Route::get('buy/subscription/cancel/{user}', function($user){
 	 session()->put('subscription_cancel', __('general.subscription_cancel'));
 	 return redirect($user);
  	});

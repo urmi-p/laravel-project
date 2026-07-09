@@ -49,9 +49,13 @@
 										</a>
 										@endif
 									</td>
-									<td>{{ Helper::formatDate($subscription->created_at) }}</td>
+									<td>{{ optional($subscription->created_at)->format($settings->date_format . ' H:i') }}</td>
 									<td>
-										@if ($subscription->stripe_id == ''
+										@if ($subscription->stripe_status == 'pending')
+
+										<span class="rounded-pill badge bg-warning">{{trans('admin.pending')}}</span>
+
+										@elseif ($subscription->stripe_id == ''
 										&& strtotime($subscription->ends_at) > strtotime(now()->format('Y-m-d H:i:s'))
 										&& $subscription->cancelled == 'no'
 										|| $subscription->stripe_id != '' && $subscription->stripe_status == 'active'

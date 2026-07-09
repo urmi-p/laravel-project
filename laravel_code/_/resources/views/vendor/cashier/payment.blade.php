@@ -368,6 +368,8 @@
                     const button = this.$refs.goBackButton;
                     const redirect = new URL(button.dataset.redirect);
 
+                    redirect.searchParams.append('payment_intent', this.paymentIntent.id);
+                    redirect.searchParams.append('status', this.paymentIntent.status);
                     redirect.searchParams.append(
                         'success', this.paymentIntent.status === 'succeeded' ? 'true' : 'false'
                     );

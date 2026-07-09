@@ -347,6 +347,15 @@ class SubscriptionsController extends Controller
     $creator->increment('balance', $earnings['user']);
 
     if ($promoCode) {
+      $originalPricing = $this->buildSubscriptionPricing((float) $plan->price, $this->request->input('payment_gateway'));
+      $originalEarnings = $this->earningsAdminUser($creator->custom_fee, $originalPricing['charged_amount'], null, null);
+      $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+        (float) $pricing['total_due'],
+        (float) $pricing['gateway_fee_amount'],
+        $originalEarnings,
+        $earnings
+      );
+
       $usage = $this->promoCodeService->createUsage($promoCode, [
         'user_id' => auth()->id(),
         'subscription_id' => $subscription->id,
@@ -357,8 +366,12 @@ class SubscriptionsController extends Controller
         'original_amount' => $pricing['original_amount'],
         'discount_amount' => $pricing['discount_amount'],
         'charged_amount' => $pricing['charged_amount'],
-        'creator_earning_impact' => $pricing['discount_amount'],
+        'creator_earning_impact' => $usageSnapshot['creator_earning_impact'],
         'platform_commission_amount' => $earnings['admin'],
+        'gateway_fee_amount' => $usageSnapshot['gateway_fee_amount'],
+        'final_paid_amount' => $usageSnapshot['final_paid_amount'],
+        'creator_net_amount' => $usageSnapshot['creator_net_amount'],
+        'admin_net_amount' => $usageSnapshot['admin_net_amount'],
         'tax_amount' => $pricing['tax_amount'],
         'status' => 'completed',
         'used_at' => now(),
@@ -426,6 +439,16 @@ class SubscriptionsController extends Controller
     $subscription->save();
 
     if ($promoCode) {
+      $originalPricing = $this->buildSubscriptionPricing((float) $plan->price);
+      $originalEarnings = $this->earningsAdminUser($creator->custom_fee, $originalPricing['charged_amount'], null, null);
+      $settledEarnings = $this->earningsAdminUser($creator->custom_fee, 0, null, null);
+      $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+        0,
+        0,
+        $originalEarnings,
+        $settledEarnings
+      );
+
       $usage = $this->promoCodeService->createUsage($promoCode, [
         'user_id' => auth()->id(),
         'subscription_id' => $subscription->id,
@@ -435,8 +458,12 @@ class SubscriptionsController extends Controller
         'original_amount' => $pricing['original_amount'],
         'discount_amount' => $pricing['discount_amount'],
         'charged_amount' => 0,
-        'creator_earning_impact' => $pricing['discount_amount'],
+        'creator_earning_impact' => $usageSnapshot['creator_earning_impact'],
         'platform_commission_amount' => 0,
+        'gateway_fee_amount' => 0,
+        'final_paid_amount' => 0,
+        'creator_net_amount' => 0,
+        'admin_net_amount' => 0,
         'tax_amount' => $pricing['tax_amount'],
         'status' => 'completed',
         'used_at' => now(),

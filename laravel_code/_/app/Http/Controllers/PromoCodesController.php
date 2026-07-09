@@ -32,6 +32,7 @@ class PromoCodesController extends Controller
         $this->promoCodeService->logExpiredForCollection($codes->getCollection());
 
         $promoCodeIds = $codes->pluck('id')->all();
+        $this->promoCodeService->reconcilePendingUsages($promoCodeIds);
         $stats = $this->statsForCodes($promoCodeIds);
 
         return view('users.promo-codes', [
@@ -203,7 +204,7 @@ class PromoCodesController extends Controller
             'promo_code_id',
             DB::raw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as usage_count"),
             DB::raw("SUM(CASE WHEN status = 'completed' THEN discount_amount ELSE 0 END) as total_discount_amount"),
-            DB::raw("SUM(CASE WHEN status = 'completed' THEN charged_amount ELSE 0 END) as revenue_generated"),
+            DB::raw("SUM(CASE WHEN status = 'completed' THEN final_paid_amount ELSE 0 END) as revenue_generated"),
             DB::raw("COUNT(DISTINCT CASE WHEN status = 'completed' THEN user_id ELSE NULL END) as subscriber_count"),
             DB::raw("SUM(CASE WHEN status = 'completed' THEN creator_earning_impact ELSE 0 END) as creator_earnings_impact")
         )

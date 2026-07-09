@@ -69,8 +69,15 @@ class PayPalController extends Controller
     // Get Payment Gateway
     $payment = PaymentGateways::whereName($this->request->payment_gateway)->whereEnabled(1)->firstOrFail();
 
-    $urlSuccess = route('subscription.success', ['user' => $user->username, 'delay' => 'paypal']);
-    $urlCancel = url('buy/subscription/cancel', $user->username);
+    $pendingSubscription = $this->createPendingPayPalSubscription($user, $plan, auth()->id(), auth()->user()->taxesPayable());
+    $pendingTransaction = $this->createPendingSubscriptionTransaction(
+      auth()->id(),
+      $pendingSubscription->id,
+      $user->id,
+      (float) $checkout['pricing']['total_due'],
+      'PayPal',
+      auth()->user()->taxesPayable()
+    );
 
     switch ($plan->interval) {
       case 'weekly':
@@ -162,8 +169,14 @@ class PayPalController extends Controller
           'charged_amount' => $pricing['charged_amount'],
           'creator_earning_impact' => $pricing['discount_amount'],
           'tax_amount' => $pricing['tax_amount'],
+          'gateway_fee_amount' => $pricing['gateway_fee_amount'],
+          'final_paid_amount' => $pricing['total_due'],
           'checkout_token' => str_random(40),
         ]);
+
+        $promoUsage->subscription_id = $pendingSubscription->id;
+        $promoUsage->transaction_id = $pendingTransaction->id;
+        $promoUsage->save();
 
         $planPayPal .= '_promo_' . time();
         $billingCycles = [
@@ -200,7 +213,18 @@ class PayPalController extends Controller
         ];
       }
 
+      $urlCancel = route('subscription.paypal.cancel', [
+        'user' => $user->username,
+        'local_subscription' => $pendingSubscription->id,
+        'pending_transaction' => $pendingTransaction->id,
+        'promo_usage' => optional($promoUsage)->id,
+      ]);
+
       $requestIdPlan = 'create-plan-' . time();
+      $urlSuccess = route('subscription.paypal.success', [
+        'user' => $user->username,
+        'local_subscription' => $pendingSubscription->id,
+      ]);
 
       $paypalPlan = $provider->createPlan([
         'product_id' => $product['id'],
@@ -218,6 +242,14 @@ class PayPalController extends Controller
         ],
       ], $requestIdPlan);
     } catch (\Exception $e) {
+      if (isset($pendingTransaction) && $pendingTransaction instanceof Transactions && $pendingTransaction->approved == '0') {
+        $pendingTransaction->delete();
+      }
+
+      if (isset($pendingSubscription) && $pendingSubscription instanceof Subscriptions && $pendingSubscription->subscription_id === '') {
+        $pendingSubscription->delete();
+      }
+
       if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
         $this->promoCodeService->markUsageFailed($promoUsage, $e->getMessage());
       }
@@ -282,11 +314,22 @@ class PayPalController extends Controller
         throw new \Exception('PayPal approval link was not returned.');
       }
 
+      $pendingSubscription->subscription_id = $subscription['id'] ?? $pendingSubscription->subscription_id;
+      $pendingSubscription->save();
+
       return response()->json([
         'success' => true,
         'url' => $approvalLink['href']
       ]);
     } catch (\Exception $e) {
+      if (isset($pendingTransaction) && $pendingTransaction instanceof Transactions && $pendingTransaction->approved == '0') {
+        $pendingTransaction->delete();
+      }
+
+      if (isset($pendingSubscription) && $pendingSubscription instanceof Subscriptions && $pendingSubscription->subscription_id === '') {
+        $pendingSubscription->delete();
+      }
+
       if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
         $this->promoCodeService->markUsageFailed($promoUsage, $e->getMessage());
       }
@@ -297,6 +340,243 @@ class PayPalController extends Controller
       ]);
     }
   } // End methd show
+
+  public function subscriptionSuccess($user)
+  {
+    $creator = User::whereUsername($user)->firstOrFail();
+    $localSubscription = null;
+    $localSubscriptionId = (int) $this->request->input('local_subscription');
+
+    if ($localSubscriptionId > 0) {
+      $localSubscription = Subscriptions::whereId($localSubscriptionId)->first();
+    }
+
+    $subscriptionId = $this->request->input('subscription_id');
+
+    if (! $subscriptionId) {
+      $tokenParam = (string) $this->request->input('token', '');
+      $subscriptionId = str_starts_with($tokenParam, 'I-')
+        ? $tokenParam
+        : optional($localSubscription)->subscription_id;
+    }
+
+    if (! $subscriptionId) {
+      return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+    }
+
+    $provider = new PayPalClient();
+    $token = $provider->getAccessToken();
+    $provider->setAccessToken($token);
+
+    try {
+      $subscriptionDetails = $provider->showSubscriptionDetails($subscriptionId);
+
+      if (($subscriptionDetails['status'] ?? null) !== 'ACTIVE') {
+        return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+      }
+
+      parse_str($subscriptionDetails['custom_id'] ?? '', $subscriptionContext);
+      $creatorId = (int) ($subscriptionContext['c'] ?? $subscriptionContext['id'] ?? 0);
+      $subscriberId = (int) ($subscriptionContext['s'] ?? $subscriptionContext['subscriber'] ?? 0);
+      $planId = (int) ($subscriptionContext['p'] ?? 0);
+      $taxes = $subscriptionContext['t'] ?? ($subscriptionContext['taxes'] ?? null);
+
+      if ((int) $creator->id !== $creatorId || ! $subscriberId || ! $planId) {
+        return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+      }
+
+      $plan = $creator->plans()->whereId($planId)->whereStatus('1')->first();
+
+      if (! $plan) {
+        return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+      }
+
+      if ($localSubscription) {
+        if (
+          (int) $localSubscription->creator_id !== (int) $creator->id
+          || (int) $localSubscription->user_id !== $subscriberId
+          || $localSubscription->stripe_price !== $plan->name
+        ) {
+          return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+        }
+      }
+
+      $promoUsage = null;
+
+      if (! empty($subscriptionContext['u'])) {
+        $promoUsage = PromoCodeUsages::find($subscriptionContext['u']);
+      } elseif (! empty($subscriptionContext['promo_usage_token'])) {
+        $promoUsage = PromoCodeUsages::where('checkout_token', $subscriptionContext['promo_usage_token'])->first();
+      }
+
+      if ($promoUsage) {
+        if (
+          (int) $promoUsage->creator_id !== (int) $creator->id
+          || (int) $promoUsage->user_id !== $subscriberId
+          || (int) $promoUsage->plan_id !== (int) $plan->id
+        ) {
+          return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+        }
+      }
+
+      $taxRate = $this->promoCodeService->resolveTaxRateFromIds($taxes);
+      $discountAmount = $promoUsage ? (float) $promoUsage->discount_amount : 0.0;
+      $pricing = $this->buildSubscriptionPricing((float) $plan->price, 'PayPal', $discountAmount, $taxRate);
+      $expectedTotalDue = $promoUsage
+        ? round((float) $promoUsage->charged_amount + (float) $promoUsage->tax_amount + (float) $promoUsage->gateway_fee_amount, 2)
+        : (float) $pricing['total_due'];
+
+
+      if ($expectedTotalDue <= 0) {
+        $this->settleZeroAmountSubscription($creator, $subscriberId, $plan, $subscriptionId, $taxes, $promoUsage);
+
+        return redirect()->route('subscription.success', ['user' => $user]);
+      }
+
+      $transactionsResponse = $provider->listSubscriptionTransactions(
+        $subscriptionId,
+        now()->subDays(5),
+        now()->addDay()
+      );
+
+      $gatewayTransaction = collect($transactionsResponse['transactions'] ?? [])
+        ->filter(function ($transaction) use ($expectedTotalDue) {
+          $grossAmount = (float) data_get($transaction, 'amount_with_breakdown.gross_amount.value', 0);
+
+          return ($transaction['status'] ?? null) === 'COMPLETED'
+            && $grossAmount + 0.01 >= $expectedTotalDue;
+        })
+        ->sortByDesc('time')
+        ->first();
+
+      if (! $gatewayTransaction) {
+        $lastPaymentAmount = (float) data_get($subscriptionDetails, 'billing_info.last_payment.amount.value', 0);
+        $lastPaymentTime = data_get($subscriptionDetails, 'billing_info.last_payment.time');
+
+        if (
+          $lastPaymentAmount + 0.01 >= $expectedTotalDue
+          && ! empty($lastPaymentTime)
+        ) {
+          $transaction = $this->settlePaidSubscription(
+            $creator,
+            $subscriberId,
+            $plan,
+            $subscriptionId,
+            $taxes,
+            $promoUsage,
+            'paypal_initial_' . $subscriptionId,
+            $pricing
+          );
+
+          return redirect()->route('subscription.success', [
+            'user' => $user,
+            'delay' => $transaction ? null : 'paypal'
+          ]);
+        }
+
+        $existingSubscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
+        $existingTransaction = $existingSubscription
+          ? Transactions::where('subscriptions_id', $existingSubscription->id)
+            ->where('payment_gateway', 'PayPal')
+            ->where('type', 'subscription')
+            ->where('approved', '1')
+            ->exists()
+          : false;
+        $subscriptionSettled = $existingSubscription
+          && $existingSubscription->stripe_status === 'active'
+          && $existingSubscription->cancelled === 'no';
+
+        return redirect()->route('subscription.success', [
+          'user' => $user,
+          'delay' => ($existingTransaction && $subscriptionSettled) ? null : 'paypal'
+        ]);
+      }
+
+      $transaction = $this->settlePaidSubscription(
+        $creator,
+        $subscriberId,
+        $plan,
+        $subscriptionId,
+        $taxes,
+        $promoUsage,
+        $gatewayTransaction['id'],
+        $pricing
+      );
+
+      return redirect()->route('subscription.success', [
+        'user' => $user,
+        'delay' => $transaction ? null : 'paypal'
+      ]);
+    } catch (\Exception $e) {
+      Log::debug($e->getMessage());
+
+      return redirect()->route('subscription.success', ['user' => $user, 'delay' => 'paypal']);
+    }
+  }
+
+  public function subscriptionCancel($user)
+  {
+    $localSubscriptionId = (int) $this->request->input('local_subscription');
+    $pendingTransactionId = (int) $this->request->input('pending_transaction');
+    $promoUsageId = (int) $this->request->input('promo_usage');
+    $subscription = null;
+    $pendingTransaction = null;
+
+    if ($localSubscriptionId > 0) {
+      $subscription = Subscriptions::whereId($localSubscriptionId)->first();
+    }
+
+    if ($pendingTransactionId > 0) {
+      $pendingTransaction = Transactions::whereId($pendingTransactionId)
+        ->where('payment_gateway', 'PayPal')
+        ->where('type', 'subscription')
+        ->first();
+    }
+
+    if (! $subscription && $pendingTransaction && $pendingTransaction->subscriptions_id) {
+      $subscription = Subscriptions::whereId($pendingTransaction->subscriptions_id)->first();
+    }
+
+    if ($subscription) {
+      $subscription->cancelled = 'yes';
+      $subscription->stripe_status = 'canceled';
+      $subscription->save();
+    }
+
+    if ($pendingTransaction) {
+      if ($pendingTransaction->approved == '0') {
+        $pendingTransaction->approved = '2';
+        $pendingTransaction->save();
+      }
+    } elseif ($subscription) {
+      Transactions::where('subscriptions_id', $subscription->id)
+        ->where('payment_gateway', 'PayPal')
+        ->where('type', 'subscription')
+        ->where('approved', '0')
+        ->update(['approved' => '2']);
+    }
+
+    $promoUsageQuery = PromoCodeUsages::where('gateway_name', 'PayPal')
+      ->where('status', 'pending');
+
+    if ($promoUsageId > 0) {
+      $promoUsageQuery->where('id', $promoUsageId);
+    } elseif ($pendingTransaction) {
+      $promoUsageQuery->where('transaction_id', $pendingTransaction->id);
+    } elseif ($subscription) {
+      $promoUsageQuery->where('subscription_id', $subscription->id);
+    } else {
+      $promoUsageQuery->whereRaw('1 = 0');
+    }
+
+    $promoUsageQuery->get()->each(function (PromoCodeUsages $usage) {
+      $this->promoCodeService->markUsageFailed($usage, 'PayPal checkout canceled by user before payment completion.');
+    });
+
+    session()->put('subscription_cancel', __('general.subscription_cancel'));
+
+    return redirect($user);
+  }
 
   public function cancelSubscription($id)
   {
@@ -388,7 +668,7 @@ class PayPalController extends Controller
     }
 
     // Parse the custom data parameters
-    parse_str($payload['resource']['custom_id'] ?? ($payload['resource']['custom'] ?? null), $data);
+    $data = $this->resolveWebhookCustomData($payload, $provider);
 
     if ($data) {
       if ($payload['event_type'] == 'BILLING.SUBSCRIPTION.ACTIVATED') {
@@ -416,7 +696,13 @@ class PayPalController extends Controller
         $subscriptionId = $payload['resource']['id'] ?? null;
 
         if ($user && $plan && $subscriptionId && $promoUsage) {
-          $totalDue = round((float) $promoUsage->charged_amount + (float) $promoUsage->tax_amount, 2);
+          $taxRate = $this->promoCodeService->resolveTaxRateFromIds($taxes);
+          $totalDue = round(
+            (float) $promoUsage->charged_amount
+            + (float) $promoUsage->tax_amount
+            + (float) $promoUsage->gateway_fee_amount,
+            2
+          );
 
           if ($totalDue <= 0) {
             $subscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
@@ -440,31 +726,51 @@ class PayPalController extends Controller
 
             if (! $verifiedTxnId) {
               $earnings = $this->earningsAdminUser($user->custom_fee, 0, null, null);
+              $pendingTransaction = Transactions::where('subscriptions_id', $subscription->id)
+                ->where('payment_gateway', 'PayPal')
+                ->where('type', 'subscription')
+                ->where('approved', '0')
+                ->first() ?: $this->createPendingSubscriptionTransaction(
+                  $subscriberId,
+                  $subscription->id,
+                  $creatorId,
+                  0,
+                  'PayPal',
+                  $taxes,
+                  $earnings['percentageApplied']
+                );
 
-              $transaction = $this->transaction(
+              $transaction = $this->finalizePendingSubscriptionTransaction(
+                $pendingTransaction,
                 $txnId,
-                $subscriberId,
-                $subscription->id,
-                $creatorId,
                 0,
-                $earnings['user'],
-                $earnings['admin'],
+                (float) $earnings['user'],
+                (float) $earnings['admin'],
                 'PayPal',
-                'subscription',
                 $earnings['percentageApplied'],
-                $taxes
+                $taxes,
+                $creatorId
               );
 
               $user->increment('balance', $earnings['user']);
 
               if ($promoUsage->status !== 'completed') {
-                $this->promoCodeService->markUsageCompleted($promoUsage, [
+                $originalPricing = $this->buildSubscriptionPricing((float) $plan->price, 'PayPal', 0.0, $taxRate);
+                $originalEarnings = $this->earningsAdminUser($user->custom_fee, $originalPricing['charged_amount'], null, null);
+                $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+                  0,
+                  0,
+                  $originalEarnings,
+                  $earnings
+                );
+
+                $this->promoCodeService->markUsageCompleted($promoUsage, array_merge([
                   'subscription_id' => $subscription->id,
                   'transaction_id' => $transaction->id,
                   'gateway_reference' => $subscriptionId,
                   'platform_commission_amount' => $earnings['admin'],
                   'used_at' => now(),
-                ]);
+                ], $usageSnapshot));
 
                 $this->promoCodeService->createHistory(
                   $promoUsage->promo_code_id,
@@ -477,6 +783,7 @@ class PayPalController extends Controller
                     'transaction_id' => $transaction->id,
                     'gateway_name' => 'PayPal',
                     'charged_amount' => 0,
+                    'final_paid_amount' => 0,
                   ]
                 );
               }
@@ -489,6 +796,7 @@ class PayPalController extends Controller
           $subscriberId = $data['s'] ?? $data['subscriber'] ?? null;
           $planId = $data['p'] ?? null;
           $taxes = $data['t'] ?? ($data['taxes'] ?? null);
+          $taxRate = $this->promoCodeService->resolveTaxRateFromIds($taxes);
           $promoUsage = null;
 
           if (! empty($data['u'])) {
@@ -516,7 +824,6 @@ class PayPalController extends Controller
 
           // Get Subscription
           $subscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
-          $isFirstPayment = ! $subscription;
 
           // Update date if subscription exists
           if ($subscription && $subscription->cancelled == 'no') {
@@ -556,44 +863,104 @@ class PayPalController extends Controller
             info('PayPal: Subscription created! ID: ' . $subscriptionId);
           }
 
+          $hasRecordedTransaction = $subscription
+            ? Transactions::where('subscriptions_id', $subscription->id)->where('payment_gateway', 'PayPal')->exists()
+            : false;
+          $isFirstPayment = ! $hasRecordedTransaction;
+          $firstPaymentPricing = $this->buildSubscriptionPricing(
+            (float) $plan->price,
+            'PayPal',
+            (float) optional($promoUsage)->discount_amount,
+            $taxRate
+          );
           $originalAmount = $promoUsage
             ? (float) $promoUsage->original_amount
             : (float) optional($plan)->price;
           $chargedAmount = $isFirstPayment
             ? (float) ($promoUsage ? $promoUsage->charged_amount : $originalAmount)
             : $originalAmount;
+          $displayAmount = $isFirstPayment
+            ? (float) $firstPaymentPricing['total_due']
+            : (float) $chargedAmount;
           $earnings = $this->earningsAdminUser($user->custom_fee, $chargedAmount, null, null);
 
           $txnId = $payload['resource']['id'];
 
           $verifiedTxnId = Transactions::where('txn_id', $txnId)->first();
+          $placeholderTxnId = 'paypal_initial_' . $subscriptionId;
+          $placeholderTransaction = $subscription
+            ? Transactions::where('subscriptions_id', $subscription->id)
+              ->where('payment_gateway', 'PayPal')
+              ->where('type', 'subscription')
+              ->where('approved', '1')
+              ->where('txn_id', $placeholderTxnId)
+              ->first()
+            : null;
+
+          if (! $verifiedTxnId && $placeholderTransaction) {
+            $placeholderTransaction->txn_id = $txnId;
+            $placeholderTransaction->save();
+
+            if ($promoUsage && $promoUsage->status === 'completed' && (int) $promoUsage->transaction_id === (int) $placeholderTransaction->id) {
+              $promoUsage->gateway_reference = $txnId;
+              $promoUsage->save();
+            }
+
+            $verifiedTxnId = $placeholderTransaction;
+          }
 
           if (!isset($verifiedTxnId)) {
-            // Insert Transaction
-            $transaction = $this->transaction(
+            $pendingTransaction = Transactions::where('subscriptions_id', $subscription->id)
+              ->where('payment_gateway', 'PayPal')
+              ->where('type', 'subscription')
+              ->where('approved', '0')
+              ->first() ?: $this->createPendingSubscriptionTransaction(
+                $subscriberId,
+                $subscription->id,
+                $creatorId,
+                $displayAmount,
+                'PayPal',
+                $taxes,
+                $earnings['percentageApplied']
+              );
+
+            $transaction = $this->finalizePendingSubscriptionTransaction(
+              $pendingTransaction,
               $txnId,
-              $subscriberId,
-              $subscription->id,
-              $creatorId,
-              $chargedAmount,
-              $earnings['user'],
-              $earnings['admin'],
+              (float) $displayAmount,
+              (float) $earnings['user'],
+              (float) $earnings['admin'],
               'PayPal',
-              'subscription',
               $earnings['percentageApplied'],
-              $taxes
+              $taxes,
+              $creatorId
             );
 
             // Add Earnings to User
             $user->increment('balance', $earnings['user']);
 
             if ($promoUsage && $promoUsage->status !== 'completed') {
-              $this->promoCodeService->markUsageCompleted($promoUsage, [
+              $originalPricing = $this->buildSubscriptionPricing((float) $plan->price, 'PayPal', 0.0, $taxRate);
+              $originalEarnings = $this->earningsAdminUser($user->custom_fee, $originalPricing['charged_amount'], null, null);
+              $promoPricing = $this->buildSubscriptionPricing(
+                (float) $plan->price,
+                'PayPal',
+                (float) $promoUsage->discount_amount,
+                $taxRate
+              );
+              $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+                (float) $promoPricing['total_due'],
+                (float) $promoPricing['gateway_fee_amount'],
+                $originalEarnings,
+                $earnings
+              );
+
+              $this->promoCodeService->markUsageCompleted($promoUsage, array_merge([
                 'subscription_id' => $subscription->id,
                 'transaction_id' => $transaction->id,
                 'gateway_reference' => $txnId,
                 'platform_commission_amount' => $earnings['admin'],
-              ]);
+              ], $usageSnapshot));
 
               $this->promoCodeService->createHistory(
                 $promoUsage->promo_code_id,
@@ -606,6 +973,7 @@ class PayPalController extends Controller
                   'transaction_id' => $transaction->id,
                   'gateway_name' => 'PayPal',
                   'charged_amount' => $chargedAmount,
+                  'final_paid_amount' => (float) $promoPricing['total_due'],
                 ]
               );
             }
@@ -892,5 +1260,267 @@ class PayPalController extends Controller
       default:
         return 'The promo code is invalid.';
     }
+  }
+
+  protected function settleZeroAmountSubscription(
+    User $creator,
+    int $subscriberId,
+    Plans $plan,
+    string $subscriptionId,
+    $taxes,
+    ?PromoCodeUsages $promoUsage
+  ): void {
+    $taxRate = $this->promoCodeService->resolveTaxRateFromIds($taxes);
+    $subscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
+
+    if (! $subscription) {
+      $subscription = new Subscriptions();
+      $subscription->user_id = $subscriberId;
+      $subscription->creator_id = $creator->id;
+      $subscription->stripe_price = $plan->name;
+      $subscription->subscription_id = $subscriptionId;
+      $subscription->ends_at = $creator->planInterval($plan->interval);
+      $subscription->interval = $plan->interval;
+      $subscription->save();
+
+      Notifications::send($creator->id, $subscriberId, '1', $creator->id);
+      $this->sendWelcomeMessageAction($creator, $subscriberId);
+    } else {
+      $subscription->ends_at = $creator->planInterval($plan->interval);
+      $subscription->interval = $plan->interval;
+      $subscription->creator_id = $creator->id;
+      $subscription->stripe_status = 'active';
+      $subscription->save();
+    }
+
+    $txnId = 'paypal_zero_' . $subscriptionId;
+    $transaction = Transactions::whereTxnId($txnId)->wherePaymentGateway('PayPal')->first();
+    $earnings = $this->earningsAdminUser($creator->custom_fee, 0, null, null);
+
+    if (! $transaction) {
+      $transaction = $this->transaction(
+        $txnId,
+        $subscriberId,
+        $subscription->id,
+        $creator->id,
+        0,
+        $earnings['user'],
+        $earnings['admin'],
+        'PayPal',
+        'subscription',
+        $earnings['percentageApplied'],
+        $taxes
+      );
+
+      $creator->increment('balance', $earnings['user']);
+    }
+
+    if ($promoUsage && $promoUsage->status !== 'completed') {
+      $originalPricing = $this->buildSubscriptionPricing((float) $plan->price, 'PayPal', 0.0, $taxRate);
+      $originalEarnings = $this->earningsAdminUser($creator->custom_fee, $originalPricing['charged_amount'], null, null);
+      $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+        0,
+        0,
+        $originalEarnings,
+        $earnings
+      );
+
+      $this->promoCodeService->markUsageCompleted($promoUsage, array_merge([
+        'subscription_id' => $subscription->id,
+        'transaction_id' => $transaction->id,
+        'gateway_reference' => $subscriptionId,
+        'platform_commission_amount' => $earnings['admin'],
+        'used_at' => now(),
+      ], $usageSnapshot));
+
+      $this->promoCodeService->createHistory(
+        $promoUsage->promo_code_id,
+        $subscriberId,
+        'system',
+        'used',
+        null,
+        [
+          'subscription_id' => $subscription->id,
+          'transaction_id' => $transaction->id,
+          'gateway_name' => 'PayPal',
+          'charged_amount' => 0,
+          'final_paid_amount' => 0,
+        ]
+      );
+    }
+  }
+
+  protected function settlePaidSubscription(
+    User $creator,
+    int $subscriberId,
+    Plans $plan,
+    string $subscriptionId,
+    $taxes,
+    ?PromoCodeUsages $promoUsage,
+    string $txnId,
+    array $pricing
+  ): ?Transactions {
+    $taxRate = $this->promoCodeService->resolveTaxRateFromIds($taxes);
+    $subscription = Subscriptions::where('subscription_id', $subscriptionId)->first();
+
+    if ($subscription && $subscription->cancelled == 'no') {
+      $subscription->ends_at = $creator->planInterval($plan->interval);
+      $subscription->interval = $plan->interval;
+      $subscription->creator_id = $creator->id;
+      $subscription->stripe_status = 'active';
+      $subscription->save();
+
+      Notifications::firstOrCreate([
+        'destination' => $creator->id,
+        'author' => $subscriberId,
+        'type' => 12,
+        'created_at' => today()->format('Y-m-d'),
+        'target' => $subscriberId
+      ]);
+    }
+
+    if (! $subscription) {
+      $subscription = new Subscriptions();
+      $subscription->user_id = $subscriberId;
+      $subscription->creator_id = $creator->id;
+      $subscription->stripe_price = $plan->name;
+      $subscription->subscription_id = $subscriptionId;
+      $subscription->ends_at = $creator->planInterval($plan->interval);
+      $subscription->interval = $plan->interval;
+      $subscription->stripe_status = 'active';
+      $subscription->save();
+
+      Notifications::send($creator->id, $subscriberId, '1', $creator->id);
+      $this->sendWelcomeMessageAction($creator, $subscriberId);
+    }
+
+    $isFirstPayment = $promoUsage && $promoUsage->status !== 'completed';
+    $chargedAmount = $isFirstPayment
+      ? (float) $pricing['charged_amount']
+      : (float) $plan->price;
+    $displayAmount = (float) $pricing['total_due'];
+    $transaction = Transactions::where('txn_id', $txnId)->first();
+    $earnings = $this->earningsAdminUser($creator->custom_fee, $chargedAmount, null, null);
+
+    if (! $transaction) {
+      $pendingTransaction = Transactions::where('subscriptions_id', $subscription->id)
+        ->where('payment_gateway', 'PayPal')
+        ->where('type', 'subscription')
+        ->where('approved', '0')
+        ->first() ?: $this->createPendingSubscriptionTransaction(
+          $subscriberId,
+          $subscription->id,
+          $creator->id,
+          $displayAmount,
+          'PayPal',
+          $taxes,
+          $earnings['percentageApplied']
+        );
+
+      $transaction = $this->finalizePendingSubscriptionTransaction(
+        $pendingTransaction,
+        $txnId,
+        $displayAmount,
+        (float) $earnings['user'],
+        (float) $earnings['admin'],
+        'PayPal',
+        $earnings['percentageApplied'],
+        $taxes,
+        $creator->id
+      );
+
+      $creator->increment('balance', $earnings['user']);
+    }
+
+    if ($promoUsage && $promoUsage->status !== 'completed') {
+      $originalPricing = $this->buildSubscriptionPricing((float) $plan->price, 'PayPal', 0.0, $taxRate);
+      $originalEarnings = $this->earningsAdminUser($creator->custom_fee, $originalPricing['charged_amount'], null, null);
+      $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+        (float) $pricing['total_due'],
+        (float) $pricing['gateway_fee_amount'],
+        $originalEarnings,
+        $earnings
+      );
+
+      $this->promoCodeService->markUsageCompleted($promoUsage, array_merge([
+        'subscription_id' => $subscription->id,
+        'transaction_id' => $transaction->id,
+        'gateway_reference' => $txnId,
+        'platform_commission_amount' => $earnings['admin'],
+      ], $usageSnapshot));
+
+      $this->promoCodeService->createHistory(
+        $promoUsage->promo_code_id,
+        $subscriberId,
+        'system',
+        'used',
+        null,
+        [
+          'subscription_id' => $subscription->id,
+          'transaction_id' => $transaction->id,
+          'gateway_name' => 'PayPal',
+          'charged_amount' => $chargedAmount,
+          'final_paid_amount' => (float) $pricing['total_due'],
+        ]
+      );
+    }
+
+    return $transaction;
+  }
+
+  protected function resolveWebhookCustomData(array $payload, PayPalClient $provider): array
+  {
+    $customId = $payload['resource']['custom_id'] ?? ($payload['resource']['custom'] ?? null);
+    $data = [];
+
+    if ($customId) {
+      parse_str($customId, $data);
+    }
+
+    if (! empty($data)) {
+      return $data;
+    }
+
+    $subscriptionId = null;
+
+    if (($payload['event_type'] ?? null) === 'BILLING.SUBSCRIPTION.ACTIVATED') {
+      $subscriptionId = $payload['resource']['id'] ?? null;
+    } elseif (($payload['event_type'] ?? null) === 'PAYMENT.SALE.COMPLETED') {
+      $subscriptionId = $payload['resource']['billing_agreement_id'] ?? null;
+    }
+
+    if (! $subscriptionId) {
+      return [];
+    }
+
+    try {
+      $subscriptionDetails = $provider->showSubscriptionDetails($subscriptionId);
+      parse_str($subscriptionDetails['custom_id'] ?? '', $data);
+    } catch (\Exception $e) {
+      Log::debug($e->getMessage());
+      return [];
+    }
+
+    return is_array($data) ? $data : [];
+  }
+
+  protected function createPendingPayPalSubscription(
+    User $creator,
+    Plans $plan,
+    int $subscriberId,
+    ?string $taxes
+  ): Subscriptions {
+    $subscription = new Subscriptions();
+    $subscription->user_id = $subscriberId;
+    $subscription->creator_id = $creator->id;
+    $subscription->stripe_price = $plan->name;
+    $subscription->subscription_id = '';
+    $subscription->stripe_status = 'pending';
+    $subscription->interval = $plan->interval;
+    $subscription->taxes = $taxes;
+    $subscription->ends_at = null;
+    $subscription->save();
+
+    return $subscription;
   }
 }

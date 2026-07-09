@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Plans;
 use App\Models\PromoCodeUsages;
 use App\Models\Subscriptions;
+use App\Models\Transactions;
 use App\Services\PromoCodeService;
 use App\Models\PaymentGateways;
 use Laravel\Cashier\Exceptions\IncompletePayment;
@@ -106,6 +107,8 @@ class StripeController extends Controller
           'discount_amount' => $pricing['discount_amount'],
           'charged_amount' => $pricing['charged_amount'],
           'creator_earning_impact' => $pricing['discount_amount'],
+          'gateway_fee_amount' => $pricing['gateway_fee_amount'],
+          'final_paid_amount' => $pricing['total_due'],
           'tax_amount' => $pricing['tax_amount'],
           'checkout_token' => str_random(40),
         ]);
@@ -176,18 +179,52 @@ class StripeController extends Controller
       }
 
       $subscription = $subscriptionBuilder->create($defaultPaymentMethod->id, [], $subscriptionOptions);
-      $this->syncLocalSubscriptionContext($subscription->stripe_id, $user->id, $plan->interval, auth()->user()->taxesPayable());
+      $taxes = auth()->user()->taxesPayable();
+      $taxRate = (float) auth()->user()->isTaxable()->sum('percentage');
+      $this->syncLocalSubscriptionContext($subscription->stripe_id, $user->id, $plan->interval, $taxes);
+      $localSubscription = Subscriptions::where('stripe_id', $subscription->stripe_id)->first();
 
-      // Send Email to User and Notification
-      Subscriptions::sendEmailAndNotify(auth()->user()->name, $user->id);
+      if ($localSubscription) {
+        $pendingTransaction = $this->createPendingSubscriptionTransaction(
+          auth()->id(),
+          $localSubscription->id,
+          $user->id,
+          (float) $pricing['total_due'],
+          'Stripe',
+          $taxes
+        );
 
-      $this->sendWelcomeMessageAction($user, auth()->id());
+        if ($promoUsage) {
+          $promoUsage->subscription_id = $localSubscription->id;
+          $promoUsage->transaction_id = $pendingTransaction->id;
+          $promoUsage->save();
+        }
+      }
+
+      $settled = $this->settleInitialSubscription(
+        $payment->key_secret,
+        $subscription->stripe_id,
+        $user,
+        $plan,
+        $pricing,
+        $promoUsage,
+        $taxes,
+        $taxRate
+      );
+
+      if ($settled) {
+        // Only notify once local settlement is confirmed.
+        Subscriptions::sendEmailAndNotify(auth()->user()->name, $user->id);
+        $this->sendWelcomeMessageAction($user, auth()->id());
+      }
 
       sleep(3);
 
       return response()->json([
         'success' => true,
-        'url' => url('buy/subscription/success', $user->username)
+        'url' => $settled
+          ? url('buy/subscription/success', $user->username)
+          : route('subscription.success', ['user' => $user->username, 'delay' => 'stripe'])
       ]);
     } catch (IncompletePayment $exception) {
       // Insert ID Last Payment
@@ -197,14 +234,33 @@ class StripeController extends Controller
         ->first();
 
       if ($subscriptions) {
-        $this->syncLocalSubscriptionContext($subscriptions->stripe_id, $user->id, $plan->interval, auth()->user()->taxesPayable());
+        $taxes = auth()->user()->taxesPayable();
+        $this->syncLocalSubscriptionContext($subscriptions->stripe_id, $user->id, $plan->interval, $taxes);
         $subscriptions->last_payment = $exception->payment->id;
         $subscriptions->save();
+
+        $pendingTransaction = $this->createPendingSubscriptionTransaction(
+          auth()->id(),
+          $subscriptions->id,
+          $user->id,
+          (float) $pricing['total_due'],
+          'Stripe',
+          $taxes
+        );
+
+        if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
+          $promoUsage->subscription_id = $subscriptions->id;
+          $promoUsage->transaction_id = $pendingTransaction->id;
+          $promoUsage->save();
+        }
       }
 
       return response()->json([
         'success' => true,
-        'url' => url('stripe/payment', $exception->payment->id), // Redirect customer to page confirmation payment (SCA)
+        'url' => route('cashier.payment', [
+          'id' => $exception->payment->id,
+          'redirect' => route('subscription.stripe.return', ['user' => $user->username]),
+        ]), // Redirect customer to page confirmation payment (SCA)
       ]);
     } catch (\Exception $exception) {
       if (isset($promoUsage) && $promoUsage instanceof PromoCodeUsages) {
@@ -267,6 +323,126 @@ class StripeController extends Controller
     } catch (\Exception $e) {
       throw new \Exception($e->getMessage());
     }
+  }
+
+  protected function settleInitialSubscription(
+    string $keySecret,
+    string $stripeSubscriptionId,
+    User $creator,
+    Plans $plan,
+    array $pricing,
+    ?PromoCodeUsages $promoUsage,
+    ?string $taxes = null,
+    ?float $taxRate = null
+  ): bool {
+    $localSubscription = Subscriptions::where('stripe_id', $stripeSubscriptionId)->first();
+
+    if (! $localSubscription) {
+      return false;
+    }
+
+    $stripeSubscription = (new \Stripe\StripeClient($keySecret))
+      ->subscriptions
+      ->retrieve($stripeSubscriptionId, ['expand' => ['latest_invoice.payment_intent']]);
+
+    $invoice = $stripeSubscription->latest_invoice ?? null;
+
+    if (! $invoice) {
+      return false;
+    }
+
+    $paymentIntentStatus = $invoice->payment_intent->status ?? null;
+    $invoiceStatus = $invoice->status ?? null;
+    $amountPaid = $this->normalizeStripeAmount($invoice->amount_paid ?? 0);
+    $expectedAmount = round((float) $pricing['total_due'], 2);
+
+    if ($invoiceStatus !== 'paid' && $paymentIntentStatus !== 'succeeded') {
+      return false;
+    }
+
+    if ($amountPaid + 0.01 < $expectedAmount) {
+      return false;
+    }
+
+    $localSubscription->stripe_status = 'active';
+    $localSubscription->creator_id = $creator->id;
+    $localSubscription->interval = $plan->interval;
+    $localSubscription->taxes = $taxes;
+    $localSubscription->save();
+
+    $txnId = $invoice->id ?? ($invoice->payment_intent->id ?? null);
+
+    if (! $txnId) {
+      return false;
+    }
+
+    $transaction = Transactions::where('txn_id', $txnId)->first();
+    $earnings = $this->earningsAdminUser($creator->custom_fee, (float) $pricing['charged_amount'], null, null);
+
+    if (! $transaction) {
+      $pendingTransaction = Transactions::where('subscriptions_id', $localSubscription->id)
+        ->where('payment_gateway', 'Stripe')
+        ->where('type', 'subscription')
+        ->where('approved', '0')
+        ->first() ?: $this->createPendingSubscriptionTransaction(
+          $localSubscription->user_id,
+          $localSubscription->id,
+          $creator->id,
+          (float) $pricing['total_due'],
+          'Stripe',
+          $taxes,
+          $earnings['percentageApplied']
+        );
+
+      $transaction = $this->finalizePendingSubscriptionTransaction(
+        $pendingTransaction,
+        $txnId,
+        (float) $pricing['total_due'],
+        (float) $earnings['user'],
+        (float) $earnings['admin'],
+        'Stripe',
+        $earnings['percentageApplied'],
+        $taxes,
+        $creator->id
+      );
+
+      $creator->increment('balance', $earnings['user']);
+    }
+
+    if ($promoUsage && $promoUsage->status !== 'completed') {
+      $originalPricing = $this->buildSubscriptionPricing((float) $plan->price, 'Stripe', 0.0, $taxRate);
+      $originalEarnings = $this->earningsAdminUser($creator->custom_fee, $originalPricing['charged_amount'], null, null);
+      $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+        (float) $pricing['total_due'],
+        (float) $pricing['gateway_fee_amount'],
+        $originalEarnings,
+        $earnings
+      );
+
+      $this->promoCodeService->markUsageCompleted($promoUsage, array_merge([
+        'subscription_id' => $localSubscription->id,
+        'transaction_id' => $transaction->id,
+        'gateway_reference' => $txnId,
+        'platform_commission_amount' => $earnings['admin'],
+      ], $usageSnapshot));
+
+      $this->promoCodeService->createHistory(
+        $promoUsage->promo_code_id,
+        $localSubscription->user_id,
+        'system',
+        'used',
+        null,
+        [
+          'subscription_id' => $localSubscription->id,
+          'transaction_id' => $transaction->id,
+          'gateway_name' => 'Stripe',
+          'charged_amount' => (float) $pricing['charged_amount'],
+          'final_paid_amount' => (float) $pricing['total_due'],
+        ]
+      );
+    }
+
+    return true;
   }
 
   private function createPromoCoupon(string $keySecret, string $checkoutToken, float $originalPlanAmount, array $pricing): string
@@ -389,5 +565,190 @@ class StripeController extends Controller
       'interval' => $interval,
       'taxes' => $taxes,
     ]);
+  }
+
+  protected function normalizeStripeAmount($amount): float
+  {
+    if (in_array(config('settings.currency_code'), config('currencies.zero-decimal'))) {
+      return (float) $amount;
+    }
+
+    return round(((float) $amount) / 100, 2);
+  }
+
+  public function subscriptionReturn($user)
+  {
+    $status = $this->request->query('status');
+    $success = $this->request->query('success') === 'true';
+    $message = $this->request->query('message');
+    $paymentIntentId = $this->request->query('payment_intent');
+
+    if ($success) {
+      $settled = $paymentIntentId
+        ? $this->settleSuccessfulStripeReturn($paymentIntentId)
+        : false;
+
+      return redirect()->route('subscription.success', [
+        'user' => $user,
+        'delay' => $settled ? null : 'stripe',
+      ]);
+    }
+
+    if ($status === 'processing') {
+      $settled = $paymentIntentId
+        ? $this->settleSuccessfulStripeReturn($paymentIntentId)
+        : false;
+
+      return redirect()->route('subscription.success', [
+        'user' => $user,
+        'delay' => $settled ? null : 'stripe',
+      ]);
+    }
+
+    if ($paymentIntentId) {
+      $this->cancelIncompleteStripeReturn($paymentIntentId);
+    }
+
+    session()->put('subscription_cancel', $message ?: __('general.subscription_cancel'));
+
+    return redirect($user);
+  }
+
+  protected function settleSuccessfulStripeReturn(string $paymentIntentId): bool
+  {
+    $payment = PaymentGateways::whereName('Stripe')
+      ->whereEnabled(1)
+      ->where('key_secret', '<>', '')
+      ->first();
+
+    if (! $payment) {
+      return false;
+    }
+
+    $stripe = new \Stripe\StripeClient($payment->key_secret);
+    $paymentIntent = $stripe->paymentIntents->retrieve($paymentIntentId, ['expand' => ['invoice.subscription']]);
+
+    $stripeSubscriptionId = $paymentIntent->invoice->subscription->id
+      ?? $paymentIntent->invoice->subscription
+      ?? null;
+
+    $localSubscription = Subscriptions::where('last_payment', $paymentIntentId)->first();
+
+    if (! $localSubscription && $stripeSubscriptionId) {
+      $localSubscription = Subscriptions::where('stripe_id', $stripeSubscriptionId)->first();
+    }
+
+    if (! $localSubscription) {
+      return false;
+    }
+
+    $creator = User::whereId($localSubscription->creator_id)
+      ->where('status', 'active')
+      ->where('verified_id', 'yes')
+      ->first();
+
+    if (! $creator) {
+      return false;
+    }
+
+    $promoUsage = PromoCodeUsages::where('subscription_id', $localSubscription->id)
+      ->where('gateway_name', 'Stripe')
+      ->latest('id')
+      ->first();
+
+    $plan = $promoUsage && $promoUsage->plan
+      ? $promoUsage->plan
+      : Plans::where('user_id', $creator->id)
+        ->where('interval', $localSubscription->interval ?: 'monthly')
+        ->latest()
+        ->first();
+
+    if (! $plan) {
+      return false;
+    }
+
+    $taxRate = $this->promoCodeService->resolveTaxRateFromIds($localSubscription->taxes);
+    $pricing = $promoUsage
+      ? [
+        'original_amount' => (float) $promoUsage->original_amount,
+        'discount_amount' => (float) $promoUsage->discount_amount,
+        'charged_amount' => (float) $promoUsage->charged_amount,
+        'tax_amount' => (float) $promoUsage->tax_amount,
+        'gateway_fee_amount' => (float) $promoUsage->gateway_fee_amount,
+        'total_due' => (float) $promoUsage->final_paid_amount,
+      ]
+      : $this->buildSubscriptionPricing((float) $plan->price, 'Stripe', 0.0, $taxRate);
+
+    $hadApprovedTransaction = Transactions::where('subscriptions_id', $localSubscription->id)
+      ->where('payment_gateway', 'Stripe')
+      ->where('type', 'subscription')
+      ->where('approved', '1')
+      ->exists();
+
+    $settled = $this->settleInitialSubscription(
+      $payment->key_secret,
+      $localSubscription->stripe_id,
+      $creator,
+      $plan,
+      $pricing,
+      $promoUsage,
+      $localSubscription->taxes,
+      $taxRate
+    );
+
+    if ($settled && ! $hadApprovedTransaction) {
+      Subscriptions::sendEmailAndNotify(
+        optional($localSubscription->subscriber)->name ?? auth()->user()->name ?? __('general.someone'),
+        $creator->id
+      );
+      $this->sendWelcomeMessageAction($creator, $localSubscription->user_id);
+    }
+
+    return $settled;
+  }
+
+  protected function cancelIncompleteStripeReturn(string $paymentIntentId): void
+  {
+    $subscription = Subscriptions::where('last_payment', $paymentIntentId)
+      ->where('stripe_status', 'incomplete')
+      ->first();
+
+    if (! $subscription) {
+      return;
+    }
+
+    $subscription->cancelled = 'yes';
+    $subscription->stripe_status = 'canceled';
+    $subscription->save();
+
+    $pendingTransactions = Transactions::where('subscriptions_id', $subscription->id)
+      ->where('payment_gateway', 'Stripe')
+      ->where('type', 'subscription')
+      ->where('approved', '0')
+      ->get();
+
+    foreach ($pendingTransactions as $pendingTransaction) {
+      $pendingTransaction->approved = '2';
+      $pendingTransaction->save();
+    }
+
+    $promoUsageQuery = PromoCodeUsages::where('gateway_name', 'Stripe')
+      ->where('status', 'pending')
+      ->where('subscription_id', $subscription->id);
+
+    if ($pendingTransactions->count()) {
+      $promoUsageQuery->orWhere(function ($query) use ($pendingTransactions) {
+        $query->where('gateway_name', 'Stripe')
+          ->where('status', 'pending')
+          ->whereIn('transaction_id', $pendingTransactions->pluck('id')->all());
+      });
+    }
+
+    $promoUsageQuery->get()->each(function (PromoCodeUsages $usage) {
+      $this->promoCodeService->markUsageFailed(
+        $usage,
+        'Stripe payment confirmation was canceled by the user before completion.'
+      );
+    });
   }
 }

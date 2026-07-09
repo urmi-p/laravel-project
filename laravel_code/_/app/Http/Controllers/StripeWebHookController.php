@@ -101,34 +101,73 @@ class StripeWebHookController extends WebhookController
           if (! $transaction) {
             $earnings = $this->earningsAdminUser($creator->custom_fee, $chargedAmount, null, null);
             $platformCommissionAmount = $earnings['admin'];
+            $displayAmount = (float) ($metadata['total_due'] ?? $amountPaid);
 
-            $transaction = $this->transaction(
+            $pendingTransaction = Transactions::where('subscriptions_id', $subscription->id)
+              ->where('payment_gateway', 'Stripe')
+              ->where('type', 'subscription')
+              ->where('approved', '0')
+              ->first() ?: $this->createPendingSubscriptionTransaction(
+                $subscription->user_id,
+                $subscription->id,
+                $creator->id,
+                $displayAmount,
+                'Stripe',
+                $taxes ?? null,
+                $earnings['percentageApplied']
+              );
+
+            $transaction = $this->finalizePendingSubscriptionTransaction(
+              $pendingTransaction,
               $object['id'],
-              $subscription->user_id,
-              $subscription->id,
-              $creator->id,
-              $chargedAmount,
-              $earnings['user'],
-              $earnings['admin'],
+              $displayAmount,
+              (float) $earnings['user'],
+              (float) $earnings['admin'],
               'Stripe',
-              'subscription',
               $earnings['percentageApplied'],
-              $taxes ?? null
+              $taxes ?? null,
+              $creator->id
             );
 
             $creator->increment('balance', $earnings['user']);
+
+            if (($object['billing_reason'] ?? null) !== 'subscription_cycle') {
+              \App\Models\Subscriptions::sendEmailAndNotify($user->name, $creator->id);
+              $this->sendWelcomeMessageAction($creator, $subscription->user_id);
+            }
           }
 
           if ($promoUsageToken) {
             $promoUsage = PromoCodeUsages::where('checkout_token', $promoUsageToken)->first();
 
             if ($promoUsage && $promoUsage->status !== 'completed') {
-              $this->promoCodeService->markUsageCompleted($promoUsage, [
+              $originalPlanAmount = (float) ($promoUsage->plan->price ?? $promoUsage->original_amount);
+              $taxRate = $this->promoCodeService->resolveTaxRateFromIds($taxes);
+              $originalPricing = app(PromoCodeService::class)->buildSubscriptionPricing(
+                $originalPlanAmount,
+                0.0,
+                null,
+                null,
+                $taxRate
+              );
+              $originalEarnings = $this->earningsAdminUser($creator->custom_fee, $originalPricing['charged_amount'], null, null);
+              $settledEarnings = [
+                'user' => $transaction->earning_net_user,
+                'admin' => $platformCommissionAmount,
+              ];
+              $usageSnapshot = $this->promoCodeService->buildUsageCompletionSnapshot(
+                (float) ($metadata['total_due'] ?? $amountPaid),
+                (float) ($metadata['gateway_fee_amount'] ?? 0),
+                $originalEarnings,
+                $settledEarnings
+              );
+
+              $this->promoCodeService->markUsageCompleted($promoUsage, array_merge([
                 'subscription_id' => $subscription->id,
                 'transaction_id' => $transaction->id,
                 'gateway_reference' => $object['id'],
                 'platform_commission_amount' => $platformCommissionAmount,
-              ]);
+              ], $usageSnapshot));
 
               $this->promoCodeService->createHistory(
                 $promoUsage->promo_code_id,
@@ -141,6 +180,7 @@ class StripeWebHookController extends WebhookController
                   'transaction_id' => $transaction->id,
                   'gateway_name' => 'Stripe',
                   'charged_amount' => $chargedAmount,
+                  'final_paid_amount' => (float) ($metadata['total_due'] ?? $amountPaid),
                 ]
               );
             }

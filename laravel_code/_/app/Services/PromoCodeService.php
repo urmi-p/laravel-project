@@ -6,6 +6,9 @@ use App\Helper;
 use App\Models\PromoCodeHistories;
 use App\Models\PromoCodes;
 use App\Models\PromoCodeUsages;
+use App\Models\Subscriptions;
+use App\Models\TaxRates;
+use App\Models\Transactions;
 use Carbon\Carbon;
 
 class PromoCodeService
@@ -82,10 +85,11 @@ class PromoCodeService
         float $originalAmount,
         float $discountAmount = 0.0,
         ?float $paymentFee = null,
-        ?float $paymentFeeCents = null
+        ?float $paymentFeeCents = null,
+        ?float $taxRateOverride = null
     ): array {
-        $originalAmount = $this->grossAmount($originalAmount);
-        $taxRate = $this->taxRate();
+        $originalAmount = $this->grossAmount($originalAmount, $taxRateOverride);
+        $taxRate = $this->taxRate($taxRateOverride);
         $discountAmount = min(round($discountAmount, 2), $originalAmount);
         $subtotalWithTax = round(max($originalAmount - $discountAmount, 0), 2);
 
@@ -117,10 +121,10 @@ class PromoCodeService
         ];
     }
 
-    protected function grossAmount(float $amount): float
+    protected function grossAmount(float $amount, ?float $taxRateOverride = null): float
     {
         $amount = round($amount, 2);
-        $taxRate = $this->taxRate();
+        $taxRate = $this->taxRate($taxRateOverride);
 
         if ($amount <= 0 || $taxRate <= 0) {
             return $amount;
@@ -129,9 +133,41 @@ class PromoCodeService
         return round($amount + (($amount * $taxRate) / 100), 2);
     }
 
-    protected function taxRate(): float
+    public function resolveTaxRateFromIds(?string $taxes): float
     {
-        return (float) auth()->user()->isTaxable()->sum('percentage');
+        if (! $taxes) {
+            return 0.0;
+        }
+
+        $taxIds = collect(explode('_', $taxes))
+            ->filter(function ($value) {
+                return $value !== null && $value !== '';
+            })
+            ->map(function ($value) {
+                return (int) $value;
+            })
+            ->filter();
+
+        if ($taxIds->isEmpty()) {
+            return 0.0;
+        }
+
+        return round((float) TaxRates::whereIn('id', $taxIds)->sum('percentage'), 4);
+    }
+
+    protected function taxRate(?float $taxRateOverride = null): float
+    {
+        if (! is_null($taxRateOverride)) {
+            return max(round($taxRateOverride, 4), 0);
+        }
+
+        $user = auth()->user();
+
+        if (! $user) {
+            return 0.0;
+        }
+
+        return (float) $user->isTaxable()->sum('percentage');
     }
 
     public function canEditDiscount(PromoCodes $promoCode): bool
@@ -199,6 +235,24 @@ class PromoCodeService
         return $usage;
     }
 
+    public function buildUsageCompletionSnapshot(
+        float $finalPaidAmount,
+        float $gatewayFeeAmount,
+        array $originalEarnings,
+        array $settledEarnings
+    ): array {
+        $originalCreatorNet = round((float) ($originalEarnings['user'] ?? 0), 2);
+        $settledCreatorNet = round((float) ($settledEarnings['user'] ?? 0), 2);
+
+        return [
+            'gateway_fee_amount' => round($gatewayFeeAmount, 2),
+            'final_paid_amount' => round($finalPaidAmount, 2),
+            'creator_net_amount' => $settledCreatorNet,
+            'admin_net_amount' => round((float) ($settledEarnings['admin'] ?? 0), 2),
+            'creator_earning_impact' => round(max($originalCreatorNet - $settledCreatorNet, 0), 2),
+        ];
+    }
+
     public function markUsageFailed(PromoCodeUsages $usage, ?string $notes = null): PromoCodeUsages
     {
         $usage->status = 'failed';
@@ -209,6 +263,111 @@ class PromoCodeService
         }
 
         return $usage;
+    }
+
+    public function reconcilePendingUsages(array $promoCodeIds = [], int $staleMinutes = 15): int
+    {
+        $query = PromoCodeUsages::where('status', 'pending');
+
+        if (! empty($promoCodeIds)) {
+            $query->whereIn('promo_code_id', $promoCodeIds);
+        }
+
+        $pendingUsages = $query->get();
+
+        if ($pendingUsages->isEmpty()) {
+            return 0;
+        }
+
+        $subscriptionIds = $pendingUsages->pluck('subscription_id')->filter()->unique()->values();
+        $transactionIds = $pendingUsages->pluck('transaction_id')->filter()->unique()->values();
+
+        $subscriptions = $subscriptionIds->isEmpty()
+            ? collect()
+            : Subscriptions::whereIn('id', $subscriptionIds)->get()->keyBy('id');
+
+        $transactions = $transactionIds->isEmpty()
+            ? collect()
+            : Transactions::whereIn('id', $transactionIds)->get()->keyBy('id');
+
+        $threshold = Carbon::now()->subMinutes($staleMinutes);
+        $reconciled = 0;
+
+        foreach ($pendingUsages as $usage) {
+            $subscription = $usage->subscription_id ? $subscriptions->get($usage->subscription_id) : null;
+            $transaction = $usage->transaction_id ? $transactions->get($usage->transaction_id) : null;
+            $failureReason = null;
+
+            if ($transaction && (string) $transaction->approved === '2') {
+                $failureReason = 'Checkout canceled before payment completion.';
+            } elseif ($subscription && ($subscription->cancelled === 'yes' || $subscription->stripe_status === 'canceled')) {
+                $failureReason = 'Subscription checkout was canceled before payment completion.';
+            } elseif (
+                $usage->gateway_name === 'Stripe'
+                && $subscription
+                && $subscription->stripe_status === 'incomplete'
+                && $usage->created_at
+                && $usage->created_at->lte($threshold)
+            ) {
+                $failureReason = 'Stripe payment confirmation was not completed.';
+            } elseif (
+                ! $subscription
+                && ! $transaction
+                && $usage->created_at
+                && $usage->created_at->lte($threshold)
+            ) {
+                $failureReason = 'Pending checkout expired before payment completion.';
+            }
+
+            if (! $failureReason) {
+                continue;
+            }
+
+            $this->closePendingCheckoutArtifacts($usage, $subscription, $transaction);
+            $this->markUsageFailed($usage, $failureReason);
+            $reconciled++;
+        }
+
+        return $reconciled;
+    }
+
+    protected function closePendingCheckoutArtifacts(
+        PromoCodeUsages $usage,
+        ?Subscriptions $subscription,
+        ?Transactions $transaction
+    ): void {
+        if ($transaction && (string) $transaction->approved === '0') {
+            $transaction->approved = '2';
+            $transaction->save();
+        }
+
+        if (! $subscription) {
+            return;
+        }
+
+        $hasApprovedTransaction = Transactions::where('subscriptions_id', $subscription->id)
+            ->where('type', 'subscription')
+            ->where('approved', '1')
+            ->exists();
+
+        if ($hasApprovedTransaction) {
+            return;
+        }
+
+        if ($subscription->cancelled !== 'yes') {
+            $subscription->cancelled = 'yes';
+        }
+
+        if ($subscription->stripe_status !== 'active') {
+            $subscription->stripe_status = 'canceled';
+        }
+
+        $subscription->save();
+
+        Transactions::where('subscriptions_id', $subscription->id)
+            ->where('type', 'subscription')
+            ->where('approved', '0')
+            ->update(['approved' => '2']);
     }
 
     public function createHistory(

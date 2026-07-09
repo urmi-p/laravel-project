@@ -79,7 +79,7 @@
 													@endif
 										 		</td>
 										 		<td>{{ $transaction->payment_gateway }}</td>
-										 		<td>{{ Helper::formatDate($transaction->created_at) }}</td>
+										 		<td>{{ optional($transaction->created_at)->format($settings->date_format . ' H:i') }}</td>
 										 		<td>
 													@if ($transaction->approved == '0')
 														<span class="rounded-pill badge bg-warning mb-2 text-uppercase">{{__('admin.pending')}}</span>
@@ -122,4 +122,3 @@
 		</div><!-- end row -->
 	</div><!-- end content -->
 @endsection
-
